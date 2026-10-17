@@ -1,0 +1,274 @@
+"""Whole-project validation: files, schemas, references, paths and checksums.
+
+Problems are collected as issues rather than raised, so one run reports
+everything that needs fixing. Errors make a project invalid; warnings do not.
+"""
+
+from __future__ import annotations
+
+import json
+from collections import Counter
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any, Literal, TypeVar
+
+from pydantic import BaseModel, ValidationError
+
+from ..schemas import AssetRegistry, ProjectManifest, ResearchLedger, SceneManifest
+from ..schemas.asset import AssetRoot, AssetType
+from ..schemas.common import SUPPORTED_SCHEMA_VERSIONS, duplicates
+from ..utils.fs import UnsafePathError, safe_resolve, sha256_file
+from .scaffold import MANIFEST_NAME
+
+Severity = Literal["error", "warning"]
+M = TypeVar("M", bound=BaseModel)
+NARRATION_TYPES = {AssetType.NARRATION, AssetType.AUDIO}
+_ID_KEYS = ("scene_id", "source_id", "claim_id", "asset_id")
+
+
+@dataclass(frozen=True)
+class Issue:
+    severity: Severity
+    code: str
+    location: str
+    message: str
+
+    def __str__(self) -> str:
+        return f"{self.severity.upper():<7} {self.code:<22} {self.location}: {self.message}"
+
+
+@dataclass
+class ValidationResult:
+    project_dir: Path
+    manifest: ProjectManifest | None = None
+    ledger: ResearchLedger | None = None
+    scenes: SceneManifest | None = None
+    registry: AssetRegistry | None = None
+    issues: list[Issue] = field(default_factory=list)
+
+    @property
+    def errors(self) -> list[Issue]:
+        return [i for i in self.issues if i.severity == "error"]
+
+    @property
+    def warnings(self) -> list[Issue]:
+        return [i for i in self.issues if i.severity == "warning"]
+
+    @property
+    def ok(self) -> bool:
+        return not self.errors
+
+    def add(self, severity: Severity, code: str, location: str, message: str) -> None:
+        self.issues.append(Issue(severity, code, location, message))
+
+
+def validate_project(path: Path, *, media_root: Path | None = None,
+                     verify_checksums: bool = True) -> ValidationResult:
+    result = ValidationResult(project_dir=path)
+    if not path.exists():
+        result.add("error", "path.missing", str(path), "does not exist")
+        return result
+    if not path.is_dir():
+        result.add("error", "path.not_directory", str(path), "pass the project folder, not a file")
+        return result
+
+    result.manifest = _load(result, path, MANIFEST_NAME, ProjectManifest)
+    if result.manifest is None:
+        return result
+    manifest = result.manifest
+    folder = path.resolve().name
+    if manifest.project_id != folder:
+        result.add("warning", "project.id_mismatch", MANIFEST_NAME,
+                   f"project_id {manifest.project_id!r} differs from folder name {folder!r}")
+
+    for label in ("brief", "script"):
+        _resolve_existing(result, path, getattr(manifest.paths, label), f"paths.{label}")
+    result.ledger = _load(result, path, manifest.paths.research_ledger, ResearchLedger)
+    result.scenes = _load(result, path, manifest.paths.scenes, SceneManifest)
+    result.registry = _load(result, path, manifest.paths.asset_registry, AssetRegistry)
+
+    _check_ids(result)
+    _check_references(result)
+    if result.registry is not None:
+        _check_asset_files(result, path, media_root, verify_checksums)
+    return result
+
+
+# --- loading -----------------------------------------------------------------
+
+def _resolve_existing(result: ValidationResult, root: Path, rel: str, location: str) -> Path | None:
+    try:
+        target = safe_resolve(root, rel)
+    except UnsafePathError as exc:
+        result.add("error", "path.unsafe", location, str(exc))
+        return None
+    if not target.is_file():
+        result.add("error", "file.missing", location, f"{rel} not found")
+        return None
+    return target
+
+
+def _load(result: ValidationResult, root: Path, rel: str, model: type[M]) -> M | None:
+    target = _resolve_existing(result, root, rel, rel)
+    if target is None:
+        return None
+    try:
+        data = json.loads(target.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        result.add("error", "json.invalid", rel, f"line {exc.lineno}, column {exc.colno}: {exc.msg}")
+        return None
+    except UnicodeDecodeError:
+        result.add("error", "json.invalid", rel, "file is not UTF-8 text")
+        return None
+    if not isinstance(data, dict):
+        result.add("error", "json.invalid", rel, "top level must be a JSON object")
+        return None
+    version = data.get("schema_version")
+    if version not in SUPPORTED_SCHEMA_VERSIONS:
+        hint = " Run 'pipeline project migrate <path>'." if version == "0.1" else ""
+        result.add("error", "schema.unsupported_version", rel,
+                   f"schema_version {version!r} is not supported "
+                   f"(supported: {sorted(SUPPORTED_SCHEMA_VERSIONS)}).{hint}")
+        return None
+    try:
+        return model.model_validate(data)
+    except ValidationError as exc:
+        for err in exc.errors():
+            result.add("error", "schema.invalid", f"{rel}: {_describe_loc(data, err['loc'])}",
+                       _clean_msg(err["msg"]))
+        return None
+
+
+def _describe_loc(data: Any, loc: tuple) -> str:
+    """Render a pydantic error location, tagging list items with their record ID."""
+    parts, node = [], data
+    for key in loc:
+        if isinstance(key, int):
+            label = f"[{key}]"
+            if isinstance(node, list) and key < len(node) and isinstance(node[key], dict):
+                record_id = next((node[key][k] for k in _ID_KEYS if k in node[key]), None)
+                if record_id is not None:
+                    label = f"[{key}]({record_id})"
+            parts.append(label)
+        else:
+            parts.append(("." if parts else "") + str(key))
+        try:
+            node = node[key]
+        except (KeyError, IndexError, TypeError):
+            node = None
+    return "".join(parts) or "(root)"
+
+
+def _clean_msg(msg: str) -> str:
+    return msg.removeprefix("Value error, ")
+
+
+# --- cross-file checks -------------------------------------------------------
+
+def _check_ids(result: ValidationResult) -> None:
+    def dupes(values: list, code: str, location: str, what: str) -> None:
+        for value in duplicates(values):
+            result.add("error", code, location, f"duplicate {what} {value!r}")
+
+    if result.scenes:
+        rel = result.manifest.paths.scenes
+        dupes([s.scene_id for s in result.scenes.scenes], "id.duplicate", rel, "scene_id")
+        dupes([s.order for s in result.scenes.scenes], "scene.order_duplicate", rel, "order")
+    if result.ledger:
+        rel = result.manifest.paths.research_ledger
+        dupes([s.source_id for s in result.ledger.sources], "id.duplicate", rel, "source_id")
+        dupes([c.claim_id for c in result.ledger.claims], "id.duplicate", rel, "claim_id")
+    if result.registry:
+        rel = result.manifest.paths.asset_registry
+        dupes([a.asset_id for a in result.registry.assets], "id.duplicate", rel, "asset_id")
+        locations = Counter((a.root, a.path) for a in result.registry.assets)
+        for (root, p), n in locations.items():
+            if n > 1:
+                result.add("error", "asset.path_duplicate", rel,
+                           f"{n} assets share path {p!r} (root {root}); each file needs one record")
+
+
+def _check_references(result: ValidationResult) -> None:
+    paths = result.manifest.paths
+    scenes = result.scenes.scenes if result.scenes else []
+    sources = {s.source_id: s for s in result.ledger.sources} if result.ledger else None
+    claims = {c.claim_id: c for c in result.ledger.claims} if result.ledger else None
+    assets = {a.asset_id: a for a in result.registry.assets} if result.registry else None
+    scene_ids = {s.scene_id for s in scenes} if result.scenes else None
+
+    def missing(ref: str, pool: dict | set | None, code: str, location: str, what: str) -> None:
+        if pool is not None and ref not in pool:
+            result.add("error", code, location, f"unknown {what} {ref!r}")
+
+    for s in scenes:
+        loc = f"{paths.scenes}: {s.scene_id}"
+        for a in s.asset_ids:
+            missing(a, assets, "ref.missing_asset", loc, "asset_id")
+        for src in s.source_ids:
+            missing(src, sources, "ref.missing_source", loc, "source_id")
+        for c in s.claim_ids:
+            missing(c, claims, "ref.missing_claim", loc, "claim_id")
+        if s.narration_asset_id is not None:
+            missing(s.narration_asset_id, assets, "ref.missing_asset", loc, "narration_asset_id")
+            narration = (assets or {}).get(s.narration_asset_id)
+            if narration is not None and narration.type not in NARRATION_TYPES:
+                result.add("error", "ref.wrong_asset_type", loc,
+                           f"narration_asset_id {s.narration_asset_id!r} is a {narration.type}, "
+                           "not narration/audio")
+
+    if result.ledger:
+        rel = paths.research_ledger
+        for c in result.ledger.claims:
+            for src in c.source_ids:
+                missing(src, sources, "ref.missing_source", f"{rel}: {c.claim_id}", "source_id")
+                if src in sources and c.claim_id not in sources[src].supported_claim_ids:
+                    result.add("warning", "ledger.asymmetric", f"{rel}: {c.claim_id}",
+                               f"claim cites {src!r}, but that source does not list this claim "
+                               "in supported_claim_ids")
+        for s in result.ledger.sources:
+            for c in s.supported_claim_ids:
+                missing(c, claims, "ref.missing_claim", f"{rel}: {s.source_id}", "claim_id")
+                if c in claims and s.source_id not in claims[c].source_ids:
+                    result.add("warning", "ledger.asymmetric", f"{rel}: {s.source_id}",
+                               f"source lists claim {c!r}, but that claim does not cite this source")
+
+    if result.registry:
+        rel = paths.asset_registry
+        used = {a for s in scenes for a in s.asset_ids} | {
+            s.narration_asset_id for s in scenes if s.narration_asset_id}
+        for a in result.registry.assets:
+            loc = f"{rel}: {a.asset_id}"
+            for sid in a.intended_scene_ids:
+                missing(sid, scene_ids, "ref.missing_scene", loc, "scene_id")
+            if a.derived_from is not None:
+                missing(a.derived_from, assets, "ref.missing_asset", loc, "derived_from")
+            if result.scenes and a.asset_id not in used and not a.intended_scene_ids \
+                    and a.asset_id not in {x.derived_from for x in result.registry.assets}:
+                result.add("warning", "asset.unused", loc, "not used by any scene")
+
+
+def _check_asset_files(result: ValidationResult, project_dir: Path, media_root: Path | None,
+                       verify_checksums: bool) -> None:
+    rel = result.manifest.paths.asset_registry
+    for a in result.registry.assets:
+        loc = f"{rel}: {a.asset_id}"
+        if a.root is AssetRoot.MEDIA:
+            if media_root is None:
+                result.add("error", "asset.media_root_unset", loc,
+                           "asset uses root 'media' but PIPELINE_MEDIA_ROOT is not set")
+                continue
+            base = media_root
+        else:
+            base = project_dir
+        try:
+            target = safe_resolve(base, a.path)
+        except UnsafePathError as exc:
+            result.add("error", "path.unsafe", loc, str(exc))
+            continue
+        if not target.is_file():
+            result.add("error", "file.missing", loc, f"{a.path} not found under {a.root} root")
+            continue
+        if verify_checksums and sha256_file(target) != a.sha256:
+            result.add("error", "asset.checksum_mismatch", loc,
+                       f"{a.path} does not match its recorded sha256; the file changed or the "
+                       "record is wrong")

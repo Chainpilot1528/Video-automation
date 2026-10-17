@@ -1,0 +1,103 @@
+{
+  "schema_version": "1.0",
+  "sources": [
+    {
+      "source_id": "src-claim-rules",
+      "title": "Claim schema: review rules",
+      "authors": [],
+      "publisher": "Reckoning Self pipeline repository",
+      "identifier": "src/reckoning_pipeline/schemas/research.py",
+      "accessed_date": "2026-10-17",
+      "source_type": "internal_document",
+      "classification": "primary",
+      "supported_claim_ids": ["claim-review-required"],
+      "excerpts": [
+        {
+          "claim_id": "claim-review-required",
+          "text": "requires a human reviewer and review_date",
+          "locator": "Claim._review_rules"
+        }
+      ],
+      "reliability_notes": "Primary: the validation code itself. Example data for the demo project.",
+      "verification_status": "unchecked",
+      "citation_text": "Reckoning Self pipeline, src/reckoning_pipeline/schemas/research.py (accessed 2026-10-17).",
+      "usage_notes": "Internal source; not for public citation."
+    },
+    {
+      "source_id": "src-checksum-check",
+      "title": "Project validator: asset checksum check",
+      "authors": [],
+      "publisher": "Reckoning Self pipeline repository",
+      "identifier": "src/reckoning_pipeline/project/validate.py",
+      "accessed_date": "2026-10-17",
+      "source_type": "internal_document",
+      "classification": "primary",
+      "supported_claim_ids": ["claim-checksum-catches-changes"],
+      "excerpts": [
+        {
+          "claim_id": "claim-checksum-catches-changes",
+          "text": "does not match its recorded sha256",
+          "locator": "_check_asset_files"
+        }
+      ],
+      "reliability_notes": "Primary: the validation code itself. Example data for the demo project.",
+      "verification_status": "unchecked",
+      "citation_text": "Reckoning Self pipeline, src/reckoning_pipeline/project/validate.py (accessed 2026-10-17).",
+      "usage_notes": "Internal source; not for public citation."
+    },
+    {
+      "source_id": "src-readme",
+      "title": "Project README",
+      "authors": [],
+      "publisher": "Reckoning Self pipeline repository",
+      "identifier": "README.md",
+      "accessed_date": "2026-10-17",
+      "source_type": "internal_document",
+      "classification": "primary",
+      "supported_claim_ids": ["claim-no-auto-publish"],
+      "excerpts": [
+        {
+          "claim_id": "claim-no-auto-publish",
+          "text": "Humans approve scripts, visuals and exports. Nothing is published automatically.",
+          "locator": "first paragraph"
+        }
+      ],
+      "reliability_notes": "States intended policy; enforcement arrives in Phase 8 QA. Example data.",
+      "verification_status": "unchecked",
+      "citation_text": "Reckoning Self pipeline, README.md (accessed 2026-10-17).",
+      "usage_notes": "Internal source; not for public citation."
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "claim-review-required",
+      "text": "In this pipeline, a claim cannot be marked verified unless a named human reviewer and a review date are recorded.",
+      "claim_type": "factual",
+      "importance": "critical",
+      "source_ids": ["src-claim-rules"],
+      "verification_status": "unverified",
+      "caveats": ["Describes schema validation; it cannot stop someone typing a false reviewer name."],
+      "counter_evidence": []
+    },
+    {
+      "claim_id": "claim-checksum-catches-changes",
+      "text": "If an asset file changes after it is registered, validation reports a checksum mismatch before rendering.",
+      "claim_type": "factual",
+      "importance": "supporting",
+      "source_ids": ["src-checksum-check"],
+      "verification_status": "unverified",
+      "caveats": ["Only when validation runs with checksum verification enabled (the default)."],
+      "counter_evidence": []
+    },
+    {
+      "claim_id": "claim-no-auto-publish",
+      "text": "Nothing is published automatically; a person approves the script, visuals and final export.",
+      "claim_type": "factual",
+      "importance": "supporting",
+      "source_ids": ["src-readme"],
+      "verification_status": "unverified",
+      "caveats": ["Approval gates are a design rule today; QA enforcement comes in Phase 8."],
+      "counter_evidence": []
+    }
+  ]
+}

@@ -72,6 +72,35 @@ def test_validate_invalid_path(runner, tmp_path):
     assert "does not exist" in result.output
 
 
+def test_validate_demo(runner):
+    from conftest import DEMO
+    result = runner.invoke(app, ["project", "validate", str(DEMO)])
+    assert result.exit_code == EXIT_OK, result.output
+    assert "4 scenes, 3 sources, 3 claims, 4 assets" in result.output
+
+
+def test_validate_strict_fails_on_warnings(runner, demo, tmp_path):
+    renamed = demo.rename(tmp_path / "renamed")
+    assert runner.invoke(app, ["project", "validate", str(renamed)]).exit_code == EXIT_OK
+    result = runner.invoke(app, ["project", "validate", str(renamed), "--strict"])
+    assert result.exit_code == EXIT_FAILED
+    assert "project.id_mismatch" in result.output
+
+
+def test_migrate_dry_run_writes_nothing(runner, tmp_path):
+    d = tmp_path / "old"
+    d.mkdir()
+    original = json.dumps({"schema_version": "0.1", "project_id": "old", "title": "Old",
+                           "project_status": "draft", "created_at": "2026-10-17T15:37:03+00:00"})
+    (d / "project.json").write_text(original)
+    result = runner.invoke(app, ["project", "migrate", str(d), "--dry-run"])
+    assert result.exit_code == EXIT_OK
+    assert "[dry-run]" in result.output
+    assert sorted(p.name for p in d.iterdir()) == ["project.json"]
+    assert runner.invoke(app, ["project", "migrate", str(d)]).exit_code == EXIT_OK
+    assert runner.invoke(app, ["project", "validate", str(d)]).exit_code == EXIT_OK
+
+
 def test_render_preview_not_implemented(runner, tmp_path):
     result = runner.invoke(app, ["render", "preview", str(tmp_path)])
     assert result.exit_code == EXIT_NOT_IMPLEMENTED

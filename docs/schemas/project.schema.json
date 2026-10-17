@@ -1,0 +1,187 @@
+{
+  "$defs": {
+    "OutputProfileName": {
+      "enum": [
+        "preview",
+        "master_16x9",
+        "vertical_9x16"
+      ],
+      "title": "OutputProfileName",
+      "type": "string"
+    },
+    "Platform": {
+      "enum": [
+        "youtube",
+        "youtube_shorts",
+        "instagram_reels",
+        "instagram",
+        "substack"
+      ],
+      "title": "Platform",
+      "type": "string"
+    },
+    "ProjectPaths": {
+      "additionalProperties": false,
+      "description": "Locations of the project's other files, relative to the project folder.",
+      "properties": {
+        "asset_registry": {
+          "default": "assets/registry.json",
+          "title": "Asset Registry",
+          "type": "string"
+        },
+        "brief": {
+          "default": "brief.md",
+          "title": "Brief",
+          "type": "string"
+        },
+        "research_ledger": {
+          "default": "research/ledger.json",
+          "title": "Research Ledger",
+          "type": "string"
+        },
+        "scenes": {
+          "default": "scenes.json",
+          "title": "Scenes",
+          "type": "string"
+        },
+        "script": {
+          "default": "script/script.md",
+          "title": "Script",
+          "type": "string"
+        }
+      },
+      "title": "ProjectPaths",
+      "type": "object"
+    },
+    "ProjectStatus": {
+      "enum": [
+        "draft",
+        "in_research",
+        "script_approved",
+        "in_production",
+        "in_review",
+        "publication_ready",
+        "archived"
+      ],
+      "title": "ProjectStatus",
+      "type": "string"
+    },
+    "Resolution": {
+      "additionalProperties": false,
+      "properties": {
+        "height": {
+          "maximum": 4320,
+          "minimum": 16,
+          "title": "Height",
+          "type": "integer"
+        },
+        "width": {
+          "maximum": 7680,
+          "minimum": 16,
+          "title": "Width",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "width",
+        "height"
+      ],
+      "title": "Resolution",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "audio_sample_rate": {
+      "default": 48000,
+      "enum": [
+        44100,
+        48000
+      ],
+      "title": "Audio Sample Rate",
+      "type": "integer"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "frame_rate": {
+      "default": 30.0,
+      "title": "Frame Rate",
+      "type": "number"
+    },
+    "language": {
+      "default": "en",
+      "pattern": "^[a-z]{2,3}(-[A-Z]{2})?$",
+      "title": "Language",
+      "type": "string"
+    },
+    "output_profiles": {
+      "items": {
+        "$ref": "#/$defs/OutputProfileName"
+      },
+      "minItems": 1,
+      "title": "Output Profiles",
+      "type": "array"
+    },
+    "paths": {
+      "$ref": "#/$defs/ProjectPaths"
+    },
+    "project_id": {
+      "maxLength": 64,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "project_status": {
+      "$ref": "#/$defs/ProjectStatus",
+      "default": "draft"
+    },
+    "resolution": {
+      "$ref": "#/$defs/Resolution"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "target_platforms": {
+      "items": {
+        "$ref": "#/$defs/Platform"
+      },
+      "minItems": 1,
+      "title": "Target Platforms",
+      "type": "array"
+    },
+    "title": {
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "tool_versions": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Tool Versions",
+      "type": "object"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "working_title": {
+      "default": "",
+      "title": "Working Title",
+      "type": "string"
+    }
+  },
+  "required": [
+    "project_id",
+    "title"
+  ],
+  "title": "ProjectManifest",
+  "type": "object"
+}

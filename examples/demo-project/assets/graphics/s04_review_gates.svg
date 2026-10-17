@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+<rect width="1920" height="1080" fill="#14161a"/>
+<text x="160" y="200" font-family="Helvetica, Arial, sans-serif" font-size="64" font-weight="700" fill="#f2efe8" text-anchor="start">People approve. Nothing publishes itself.</text>
+<rect x="160" y="440" width="340" height="200" rx="18" fill="none" stroke="#e0a33a" stroke-width="4"/>
+<text x="330" y="555" font-family="Helvetica, Arial, sans-serif" font-size="52" font-weight="700" fill="#f2efe8" text-anchor="middle">Script</text>
+<line x1="505" y1="540" x2="551" y2="540" stroke="#e0a33a" stroke-width="6"/>
+<polygon points="575,540 545,524 545,556" fill="#e0a33a"/>
+<rect x="580" y="440" width="340" height="200" rx="18" fill="none" stroke="#e0a33a" stroke-width="4"/>
+<text x="750" y="555" font-family="Helvetica, Arial, sans-serif" font-size="52" font-weight="700" fill="#f2efe8" text-anchor="middle">Visuals</text>
+<line x1="925" y1="540" x2="971" y2="540" stroke="#e0a33a" stroke-width="6"/>
+<polygon points="995,540 965,524 965,556" fill="#e0a33a"/>
+<rect x="1000" y="440" width="340" height="200" rx="18" fill="none" stroke="#e0a33a" stroke-width="4"/>
+<text x="1170" y="555" font-family="Helvetica, Arial, sans-serif" font-size="52" font-weight="700" fill="#f2efe8" text-anchor="middle">Final export</text>
+<line x1="1345" y1="540" x2="1391" y2="540" stroke="#e0a33a" stroke-width="6"/>
+<polygon points="1415,540 1385,524 1385,556" fill="#e0a33a"/>
+<rect x="1420" y="440" width="340" height="200" rx="18" fill="none" stroke="#e0a33a" stroke-width="4"/>
+<text x="1590" y="555" font-family="Helvetica, Arial, sans-serif" font-size="52" font-weight="700" fill="#f2efe8" text-anchor="middle">Publish</text>
+<text x="160" y="820" font-family="Helvetica, Arial, sans-serif" font-size="44" font-weight="400" fill="#9a968d" text-anchor="start">Each gate is a recorded human decision.</text>
+</svg>

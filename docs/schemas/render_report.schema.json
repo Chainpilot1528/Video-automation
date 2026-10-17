@@ -1,0 +1,250 @@
+{
+  "$defs": {
+    "OutputProfileName": {
+      "enum": [
+        "preview",
+        "master_16x9",
+        "vertical_9x16"
+      ],
+      "title": "OutputProfileName",
+      "type": "string"
+    },
+    "RenderInput": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "role": {
+          "default": "",
+          "title": "Role",
+          "type": "string"
+        },
+        "scene_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scene Id"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "title": "RenderInput",
+      "type": "object"
+    },
+    "RenderOutcome": {
+      "enum": [
+        "succeeded",
+        "failed",
+        "partial"
+      ],
+      "title": "RenderOutcome",
+      "type": "string"
+    },
+    "RenderOutput": {
+      "additionalProperties": false,
+      "properties": {
+        "audio_codec": {
+          "default": "",
+          "title": "Audio Codec",
+          "type": "string"
+        },
+        "duration_seconds": {
+          "minimum": 0,
+          "title": "Duration Seconds",
+          "type": "number"
+        },
+        "frame_rate": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Frame Rate"
+        },
+        "height": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Height"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size_bytes": {
+          "minimum": 0,
+          "title": "Size Bytes",
+          "type": "integer"
+        },
+        "video_codec": {
+          "default": "",
+          "title": "Video Codec",
+          "type": "string"
+        },
+        "width": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Width"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "size_bytes",
+        "duration_seconds"
+      ],
+      "title": "RenderOutput",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "commands": {
+      "items": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Commands",
+      "type": "array"
+    },
+    "errors": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Errors",
+      "type": "array"
+    },
+    "ffmpeg_version": {
+      "default": "",
+      "title": "Ffmpeg Version",
+      "type": "string"
+    },
+    "finished_at": {
+      "format": "date-time",
+      "title": "Finished At",
+      "type": "string"
+    },
+    "inputs": {
+      "items": {
+        "$ref": "#/$defs/RenderInput"
+      },
+      "title": "Inputs",
+      "type": "array"
+    },
+    "output": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RenderOutput"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "pipeline_version": {
+      "title": "Pipeline Version",
+      "type": "string"
+    },
+    "profile": {
+      "$ref": "#/$defs/OutputProfileName"
+    },
+    "project_id": {
+      "maxLength": 64,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "settings": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          }
+        ]
+      },
+      "title": "Settings",
+      "type": "object"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/RenderOutcome"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "project_id",
+    "profile",
+    "status",
+    "started_at",
+    "finished_at",
+    "pipeline_version"
+  ],
+  "title": "RenderReport",
+  "type": "object"
+}

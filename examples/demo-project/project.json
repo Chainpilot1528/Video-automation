@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "project_id": "demo-project",
+  "title": "Anatomy of a Traceable Scene",
+  "working_title": "Demo: how a claim becomes a scene",
+  "language": "en",
+  "target_platforms": ["youtube"],
+  "output_profiles": ["preview", "master_16x9"],
+  "frame_rate": 30.0,
+  "resolution": {"width": 1920, "height": 1080},
+  "audio_sample_rate": 48000,
+  "paths": {
+    "brief": "brief.md",
+    "research_ledger": "research/ledger.json",
+    "script": "script/script.md",
+    "scenes": "scenes.json",
+    "asset_registry": "assets/registry.json"
+  },
+  "project_status": "draft",
+  "created_at": "2026-10-17T16:00:00+00:00",
+  "updated_at": "2026-10-17T16:00:00+00:00",
+  "tool_versions": {"reckoning-pipeline": "0.1.0"}
+}

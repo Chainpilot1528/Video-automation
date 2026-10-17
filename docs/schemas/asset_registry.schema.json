@@ -1,0 +1,309 @@
+{
+  "$defs": {
+    "Asset": {
+      "additionalProperties": false,
+      "properties": {
+        "acquired_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Acquired Date"
+        },
+        "asset_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "attribution_required": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attribution Required"
+        },
+        "attribution_text": {
+          "default": "",
+          "title": "Attribution Text",
+          "type": "string"
+        },
+        "commercial_use": {
+          "$ref": "#/$defs/CommercialUse",
+          "default": "unknown"
+        },
+        "creation_method": {
+          "$ref": "#/$defs/CreationMethod"
+        },
+        "creator": {
+          "default": "",
+          "title": "Creator",
+          "type": "string"
+        },
+        "derivatives_allowed": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Derivatives Allowed"
+        },
+        "derived_from": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Derived From"
+        },
+        "generation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GenerationInfo"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "intended_scene_ids": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+            "type": "string"
+          },
+          "title": "Intended Scene Ids",
+          "type": "array"
+        },
+        "license_name": {
+          "default": "",
+          "title": "License Name",
+          "type": "string"
+        },
+        "license_url": {
+          "default": "",
+          "title": "License Url",
+          "type": "string"
+        },
+        "notes": {
+          "default": "",
+          "title": "Notes",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "provider": {
+          "default": "",
+          "title": "Provider",
+          "type": "string"
+        },
+        "publication_status": {
+          "$ref": "#/$defs/PublicationStatus",
+          "default": "pending_review"
+        },
+        "review_status": {
+          "$ref": "#/$defs/ReviewStatus",
+          "default": "pending"
+        },
+        "rights_evidence": {
+          "default": "",
+          "title": "Rights Evidence",
+          "type": "string"
+        },
+        "rights_holder": {
+          "default": "",
+          "title": "Rights Holder",
+          "type": "string"
+        },
+        "root": {
+          "$ref": "#/$defs/AssetRoot",
+          "default": "project"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Url"
+        },
+        "type": {
+          "$ref": "#/$defs/AssetType"
+        }
+      },
+      "required": [
+        "asset_id",
+        "path",
+        "type",
+        "creation_method",
+        "sha256"
+      ],
+      "title": "Asset",
+      "type": "object"
+    },
+    "AssetRoot": {
+      "enum": [
+        "project",
+        "media"
+      ],
+      "title": "AssetRoot",
+      "type": "string"
+    },
+    "AssetType": {
+      "enum": [
+        "image",
+        "video",
+        "audio",
+        "narration",
+        "music",
+        "sound_effect",
+        "graphic",
+        "font",
+        "document",
+        "other"
+      ],
+      "title": "AssetType",
+      "type": "string"
+    },
+    "CommercialUse": {
+      "enum": [
+        "allowed",
+        "not_allowed",
+        "unknown"
+      ],
+      "title": "CommercialUse",
+      "type": "string"
+    },
+    "CreationMethod": {
+      "enum": [
+        "downloaded",
+        "user_supplied",
+        "generated",
+        "original_graphic",
+        "recorded"
+      ],
+      "title": "CreationMethod",
+      "type": "string"
+    },
+    "GenerationInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "generated_on": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Generated On"
+        },
+        "model": {
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "model_version": {
+          "default": "",
+          "title": "Model Version",
+          "type": "string"
+        },
+        "prompt": {
+          "default": "",
+          "title": "Prompt",
+          "type": "string"
+        },
+        "provider": {
+          "minLength": 1,
+          "title": "Provider",
+          "type": "string"
+        },
+        "settings": {
+          "additionalProperties": true,
+          "title": "Settings",
+          "type": "object"
+        },
+        "terms_url": {
+          "default": "",
+          "title": "Terms Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "model"
+      ],
+      "title": "GenerationInfo",
+      "type": "object"
+    },
+    "PublicationStatus": {
+      "enum": [
+        "approved",
+        "pending_review",
+        "blocked"
+      ],
+      "title": "PublicationStatus",
+      "type": "string"
+    },
+    "ReviewStatus": {
+      "enum": [
+        "pending",
+        "approved",
+        "rejected"
+      ],
+      "title": "ReviewStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "assets": {
+      "items": {
+        "$ref": "#/$defs/Asset"
+      },
+      "title": "Assets",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "title": "AssetRegistry",
+  "type": "object"
+}

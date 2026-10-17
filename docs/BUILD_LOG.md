@@ -7,7 +7,8 @@ Phase status, decisions, tests, known issues, and next action. Newest entries at
 | Phase | Status | Date |
 |---|---|---|
 | 0 — Discovery | PASS (approved by user) | 2026-10-17 |
-| 1 — Python foundation and CLI | PASS (awaiting user review) | 2026-10-17 |
+| 1 — Python foundation and CLI | PASS (committed 5e6d735) | 2026-10-17 |
+| 2 — Data contracts | PASS (awaiting user review) | 2026-10-17 |
 
 ---
 
@@ -87,4 +88,45 @@ All findings below come from command output observed on 2026-10-17.
 - `.env` is not auto-loaded. Variables must be exported.
 
 ### Next action
-- User reviews Phase 1, optionally commits, and installs FFmpeg. Then Phase 2 (data contracts).
+- Done. Phase 1 committed as `5e6d735`.
+
+---
+
+## Phase 2 — Data contracts (2026-10-17)
+
+### Implemented
+- `schemas/` package with Pydantic models for the project manifest, scenes, research ledger (sources and claims), asset registry and render report, all at `schema_version` "1.0". Unknown fields are rejected.
+- Record-level rules:
+  - Unsafe relative paths are rejected.
+  - Planned, measured and final durations are kept separate, and a measured duration requires a narration asset.
+  - Claim statuses other than `unverified` need a human reviewer and date.
+  - Unknown rights can't be approved.
+  - Generated assets must record their provenance.
+- `project/validate.py` collects every issue in one pass: errors are duplicate IDs and orders, missing cross-references, unsafe paths and symlink escapes, missing files, sha256 mismatches and unsupported versions; warnings are asymmetric ledger links, unused assets and folder/ID mismatches. Errors name the record, e.g. `scenes[1](s02-claim-ledger).order`.
+- `project/migrate.py` migrates 0.1 to 1.0 explicitly, keeps a backup, never overwrites, and refuses when data would be lost.
+- CLI: `project validate` (`--strict`, `--skip-checksums`), `project migrate` (`--dry-run`), `schema export`. `project init` now creates a complete 1.0 project.
+- Demo project `examples/demo-project/`: 4 scenes, 3 sources, 3 claims, 4 original SVG graphics made by `scripts/build_demo_assets.py`.
+- Docs: `docs/SCHEMAS.md`, plus generated `docs/schemas/*.schema.json`.
+
+### Decisions
+- One ledger file holds both sources and claims. `scenes.json` holds the canonical narration; `script.md` is an editorial draft only.
+- Added `claim_ids` to scenes, alongside `source_ids`, so each scene's claims are traceable directly.
+- Demo folder is named `demo-project`, not the plan's `demo_project`, because project IDs are hyphenated slugs. A folder/ID mismatch is a warning, not an error.
+- Demo claims cite files in this repo and are left **unverified**. No human has reviewed them, and the model must never mark claims verified.
+- The demo assets stay `pending_review`. A human must approve them.
+- The demo has narration text only. Narration audio arrives in Phase 5.
+
+### Verification
+- `pytest`: 124 passed.
+- `pipeline project validate examples/demo-project`: OK with 0 errors and 0 warnings, including with `--strict`.
+- Migrating a 0.1 project with `--dry-run` writes nothing. A real migration then validates OK.
+- All four demo SVGs render in the browser, and their text fits inside the 1920 px frame (measured bounding boxes).
+- No network or external services used.
+
+### Known issues / limitations
+- The research report (Phase 3) and rights report (Phase 4) aren't built yet. Phase 2 only validates structure and references.
+- Checksums hash every asset on each validation. For large media, use `--skip-checksums` for quick checks; caching comes with Phase 7.
+- Not pushed to GitHub yet, because the `gh auth login` step is still pending on the user's side.
+
+### Next action
+- User reviews Phase 2. Then Phase 3: research report, claim ledger tooling and script approval.

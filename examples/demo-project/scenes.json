@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "scenes": [
+    {
+      "scene_id": "s01-cold-open",
+      "order": 1,
+      "purpose": "Cold open: pose the question",
+      "narration_text": "Every scene in a documentary makes a promise: what you see and hear is backed by something real. So what has to be true before a scene is allowed in?",
+      "visual_strategy": "Original typographic title card; slow hold.",
+      "asset_ids": ["s01-title"],
+      "planned_duration_seconds": 10,
+      "transition_out": {"type": "fade", "duration_seconds": 0.5},
+      "on_screen_text": ["Anatomy of a Traceable Scene"],
+      "notes": "Example data."
+    },
+    {
+      "scene_id": "s02-claim-ledger",
+      "order": 2,
+      "purpose": "Explain that claims are tracked separately from sources",
+      "narration_text": "Here, a claim is tracked separately from its source. It stays unverified until a named person reviews it and records the date.",
+      "visual_strategy": "Original diagram: claim, source, review.",
+      "asset_ids": ["s02-claim-ledger"],
+      "source_ids": ["src-claim-rules"],
+      "claim_ids": ["claim-review-required"],
+      "planned_duration_seconds": 14,
+      "transition_in": {"type": "fade", "duration_seconds": 0.5}
+    },
+    {
+      "scene_id": "s03-asset-record",
+      "order": 3,
+      "purpose": "Show that every asset carries rights and a checksum",
+      "narration_text": "Every visual carries its paperwork: who made it, under what licence, and a checksum that flags a changed file before it reaches a render.",
+      "visual_strategy": "Original diagram of an asset record.",
+      "asset_ids": ["s03-asset-record"],
+      "source_ids": ["src-checksum-check"],
+      "claim_ids": ["claim-checksum-catches-changes"],
+      "planned_duration_seconds": 14
+    },
+    {
+      "scene_id": "s04-review-gates",
+      "order": 4,
+      "purpose": "Resolution: humans approve, nothing auto-publishes",
+      "narration_text": "And nothing publishes itself. A person approves the script, the visuals, and the final export.",
+      "visual_strategy": "Original diagram of the approval gates; end on hold.",
+      "asset_ids": ["s04-review-gates"],
+      "source_ids": ["src-readme"],
+      "claim_ids": ["claim-no-auto-publish"],
+      "planned_duration_seconds": 10,
+      "transition_out": {"type": "fade_to_black", "duration_seconds": 1.0}
+    }
+  ]
+}

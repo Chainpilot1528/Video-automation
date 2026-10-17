@@ -1,0 +1,343 @@
+{
+  "$defs": {
+    "Claim": {
+      "additionalProperties": false,
+      "properties": {
+        "caveats": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Caveats",
+          "type": "array"
+        },
+        "claim_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "claim_type": {
+          "$ref": "#/$defs/ClaimType"
+        },
+        "counter_evidence": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Counter Evidence",
+          "type": "array"
+        },
+        "importance": {
+          "$ref": "#/$defs/Importance"
+        },
+        "review_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Review Date"
+        },
+        "reviewer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reviewer"
+        },
+        "source_ids": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+            "type": "string"
+          },
+          "title": "Source Ids",
+          "type": "array"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "verification_status": {
+          "$ref": "#/$defs/ClaimStatus",
+          "default": "unverified"
+        }
+      },
+      "required": [
+        "claim_id",
+        "text",
+        "claim_type",
+        "importance"
+      ],
+      "title": "Claim",
+      "type": "object"
+    },
+    "ClaimStatus": {
+      "enum": [
+        "unverified",
+        "partially_verified",
+        "verified",
+        "disputed",
+        "rejected"
+      ],
+      "title": "ClaimStatus",
+      "type": "string"
+    },
+    "ClaimType": {
+      "enum": [
+        "factual",
+        "statistical",
+        "causal",
+        "quotation",
+        "historical",
+        "interpretive",
+        "speculative"
+      ],
+      "title": "ClaimType",
+      "type": "string"
+    },
+    "Excerpt": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "locator": {
+          "default": "",
+          "title": "Locator",
+          "type": "string"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "claim_id",
+        "text"
+      ],
+      "title": "Excerpt",
+      "type": "object"
+    },
+    "Importance": {
+      "enum": [
+        "critical",
+        "supporting",
+        "contextual"
+      ],
+      "title": "Importance",
+      "type": "string"
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "accessed_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Accessed Date"
+        },
+        "archive_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Archive Id"
+        },
+        "authors": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Authors",
+          "type": "array"
+        },
+        "citation_text": {
+          "default": "",
+          "title": "Citation Text",
+          "type": "string"
+        },
+        "classification": {
+          "$ref": "#/$defs/SourceClass"
+        },
+        "excerpts": {
+          "items": {
+            "$ref": "#/$defs/Excerpt"
+          },
+          "title": "Excerpts",
+          "type": "array"
+        },
+        "identifier": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Identifier"
+        },
+        "published_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Published Date"
+        },
+        "publisher": {
+          "default": "",
+          "title": "Publisher",
+          "type": "string"
+        },
+        "reliability_notes": {
+          "default": "",
+          "title": "Reliability Notes",
+          "type": "string"
+        },
+        "source_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "source_type": {
+          "$ref": "#/$defs/SourceType"
+        },
+        "supported_claim_ids": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+            "type": "string"
+          },
+          "title": "Supported Claim Ids",
+          "type": "array"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "usage_notes": {
+          "default": "",
+          "title": "Usage Notes",
+          "type": "string"
+        },
+        "verification_status": {
+          "$ref": "#/$defs/SourceStatus",
+          "default": "unchecked"
+        }
+      },
+      "required": [
+        "source_id",
+        "title",
+        "source_type",
+        "classification"
+      ],
+      "title": "Source",
+      "type": "object"
+    },
+    "SourceClass": {
+      "enum": [
+        "primary",
+        "secondary",
+        "tertiary"
+      ],
+      "title": "SourceClass",
+      "type": "string"
+    },
+    "SourceStatus": {
+      "enum": [
+        "unchecked",
+        "checked",
+        "inaccessible",
+        "retracted"
+      ],
+      "title": "SourceStatus",
+      "type": "string"
+    },
+    "SourceType": {
+      "enum": [
+        "journal_article",
+        "preprint",
+        "book",
+        "report",
+        "dataset",
+        "news",
+        "interview",
+        "archive",
+        "government_document",
+        "website",
+        "video",
+        "internal_document",
+        "other"
+      ],
+      "title": "SourceType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "claims": {
+      "items": {
+        "$ref": "#/$defs/Claim"
+      },
+      "title": "Claims",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sources": {
+      "items": {
+        "$ref": "#/$defs/Source"
+      },
+      "title": "Sources",
+      "type": "array"
+    }
+  },
+  "title": "ResearchLedger",
+  "type": "object"
+}

@@ -1,0 +1,248 @@
+{
+  "$defs": {
+    "ApprovalStatus": {
+      "enum": [
+        "pending",
+        "approved",
+        "changes_requested",
+        "rejected"
+      ],
+      "title": "ApprovalStatus",
+      "type": "string"
+    },
+    "CaptionStatus": {
+      "enum": [
+        "none",
+        "approximate",
+        "word_aligned",
+        "reviewed"
+      ],
+      "title": "CaptionStatus",
+      "type": "string"
+    },
+    "RenderStatus": {
+      "enum": [
+        "not_started",
+        "stale",
+        "rendered",
+        "failed"
+      ],
+      "title": "RenderStatus",
+      "type": "string"
+    },
+    "Scene": {
+      "additionalProperties": false,
+      "properties": {
+        "actual_narration_duration_seconds": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Actual Narration Duration Seconds"
+        },
+        "approval_status": {
+          "$ref": "#/$defs/ApprovalStatus",
+          "default": "pending"
+        },
+        "asset_ids": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+            "type": "string"
+          },
+          "title": "Asset Ids",
+          "type": "array"
+        },
+        "caption_status": {
+          "$ref": "#/$defs/CaptionStatus",
+          "default": "none"
+        },
+        "claim_ids": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+            "type": "string"
+          },
+          "title": "Claim Ids",
+          "type": "array"
+        },
+        "final_duration_seconds": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Final Duration Seconds"
+        },
+        "input_fingerprint": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Input Fingerprint"
+        },
+        "music_cue": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Music Cue"
+        },
+        "narration_asset_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Narration Asset Id"
+        },
+        "narration_text": {
+          "default": "",
+          "title": "Narration Text",
+          "type": "string"
+        },
+        "notes": {
+          "default": "",
+          "title": "Notes",
+          "type": "string"
+        },
+        "on_screen_text": {
+          "items": {
+            "type": "string"
+          },
+          "title": "On Screen Text",
+          "type": "array"
+        },
+        "order": {
+          "minimum": 1,
+          "title": "Order",
+          "type": "integer"
+        },
+        "planned_duration_seconds": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Planned Duration Seconds"
+        },
+        "purpose": {
+          "minLength": 1,
+          "title": "Purpose",
+          "type": "string"
+        },
+        "render_status": {
+          "$ref": "#/$defs/RenderStatus",
+          "default": "not_started"
+        },
+        "scene_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+          "title": "Scene Id",
+          "type": "string"
+        },
+        "source_ids": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+            "type": "string"
+          },
+          "title": "Source Ids",
+          "type": "array"
+        },
+        "transition_in": {
+          "$ref": "#/$defs/Transition"
+        },
+        "transition_out": {
+          "$ref": "#/$defs/Transition"
+        },
+        "visual_strategy": {
+          "default": "",
+          "title": "Visual Strategy",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scene_id",
+        "order",
+        "purpose"
+      ],
+      "title": "Scene",
+      "type": "object"
+    },
+    "Transition": {
+      "additionalProperties": false,
+      "properties": {
+        "duration_seconds": {
+          "default": 0.0,
+          "maximum": 5,
+          "minimum": 0,
+          "title": "Duration Seconds",
+          "type": "number"
+        },
+        "type": {
+          "$ref": "#/$defs/TransitionType",
+          "default": "cut"
+        }
+      },
+      "title": "Transition",
+      "type": "object"
+    },
+    "TransitionType": {
+      "enum": [
+        "cut",
+        "fade",
+        "dissolve",
+        "fade_to_black"
+      ],
+      "title": "TransitionType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "scenes": {
+      "items": {
+        "$ref": "#/$defs/Scene"
+      },
+      "title": "Scenes",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "title": "SceneManifest",
+  "type": "object"
+}
