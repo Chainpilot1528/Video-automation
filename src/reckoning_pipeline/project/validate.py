@@ -14,7 +14,10 @@ from typing import Any, Literal, TypeVar
 
 from pydantic import BaseModel, ValidationError
 
-from ..schemas import AssetRegistry, ProjectManifest, ResearchLedger, SceneManifest
+from ..approvals import active_exceptions, script_approval_state, script_fingerprint
+from ..research.report import build_report
+from ..schemas import ApprovalLog, AssetRegistry, ProjectManifest, ResearchLedger, SceneManifest
+from ..schemas.project import ProjectStatus
 from ..schemas.asset import AssetRoot, AssetType
 from ..schemas.common import SUPPORTED_SCHEMA_VERSIONS, duplicates
 from ..utils.fs import UnsafePathError, safe_resolve, sha256_file
@@ -23,6 +26,8 @@ from .scaffold import MANIFEST_NAME
 Severity = Literal["error", "warning"]
 M = TypeVar("M", bound=BaseModel)
 NARRATION_TYPES = {AssetType.NARRATION, AssetType.AUDIO}
+APPROVAL_REQUIRED = {ProjectStatus.SCRIPT_APPROVED, ProjectStatus.IN_PRODUCTION,
+                     ProjectStatus.IN_REVIEW, ProjectStatus.PUBLICATION_READY}
 _ID_KEYS = ("scene_id", "source_id", "claim_id", "asset_id")
 
 
@@ -44,6 +49,7 @@ class ValidationResult:
     ledger: ResearchLedger | None = None
     scenes: SceneManifest | None = None
     registry: AssetRegistry | None = None
+    approvals: ApprovalLog | None = None
     issues: list[Issue] = field(default_factory=list)
 
     @property
@@ -86,11 +92,14 @@ def validate_project(path: Path, *, media_root: Path | None = None,
     result.ledger = _load(result, path, manifest.paths.research_ledger, ResearchLedger)
     result.scenes = _load(result, path, manifest.paths.scenes, SceneManifest)
     result.registry = _load(result, path, manifest.paths.asset_registry, AssetRegistry)
+    result.approvals = _load_optional(result, path, manifest.paths.approvals, ApprovalLog)
 
     _check_ids(result)
     _check_references(result)
+    _check_approvals(result)
     if result.registry is not None:
         _check_asset_files(result, path, media_root, verify_checksums)
+    _check_status_gates(result)
     return result
 
 
@@ -137,6 +146,16 @@ def _load(result: ValidationResult, root: Path, rel: str, model: type[M]) -> M |
             result.add("error", "schema.invalid", f"{rel}: {_describe_loc(data, err['loc'])}",
                        _clean_msg(err["msg"]))
         return None
+
+
+def _load_optional(result: ValidationResult, root: Path, rel: str, model: type[M]) -> M | None:
+    """Like _load, but a missing file means "empty" rather than an error."""
+    try:
+        exists = safe_resolve(root, rel).exists()
+    except UnsafePathError as exc:
+        result.add("error", "path.unsafe", rel, str(exc))
+        return None
+    return _load(result, root, rel, model) if exists else model()
 
 
 def _describe_loc(data: Any, loc: tuple) -> str:
@@ -245,6 +264,43 @@ def _check_references(result: ValidationResult) -> None:
             if result.scenes and a.asset_id not in used and not a.intended_scene_ids \
                     and a.asset_id not in {x.derived_from for x in result.registry.assets}:
                 result.add("warning", "asset.unused", loc, "not used by any scene")
+
+
+def _check_approvals(result: ValidationResult) -> None:
+    if result.approvals is None:
+        return
+    rel = result.manifest.paths.approvals
+    events = result.approvals.events
+    for value in duplicates([e.event_id for e in events]):
+        result.add("error", "id.duplicate", rel, f"duplicate event_id {value!r}")
+    for prev, cur in zip(events, events[1:]):
+        if cur.at < prev.at:
+            result.add("error", "approvals.out_of_order", rel,
+                       f"{cur.event_id} is dated before {prev.event_id}; the log is append-only")
+    if result.ledger is not None:
+        claim_ids = {c.claim_id for c in result.ledger.claims}
+        for e in events:
+            if e.claim_id is not None and e.claim_id not in claim_ids:
+                result.add("warning", "approvals.unknown_claim", f"{rel}: {e.event_id}",
+                           f"refers to claim {e.claim_id!r}, which is no longer in the ledger")
+
+
+def _check_status_gates(result: ValidationResult) -> None:
+    """Statuses that assert human sign-off must be backed by the approval log."""
+    status = result.manifest.project_status
+    if status not in APPROVAL_REQUIRED or None in (result.scenes, result.ledger, result.approvals):
+        return
+    state = script_approval_state(result.approvals, script_fingerprint(result.scenes, result.ledger))
+    if state.status != "approved":
+        result.add("error", "project.status_requires_approval", MANIFEST_NAME,
+                   f"project_status '{status}' requires a current script approval; script is "
+                   f"{state.describe()}. Run 'pipeline script validate'.")
+    if status is ProjectStatus.PUBLICATION_READY:
+        report = build_report(result.ledger, result.scenes,
+                              active_exceptions(result.approvals, result.ledger))
+        for f in report.blockers:
+            result.add("error", "project.publication_blocked", f"{MANIFEST_NAME}: {f.subject}",
+                       f"{f.code}: {f.message}")
 
 
 def _check_asset_files(result: ValidationResult, project_dir: Path, media_root: Path | None,

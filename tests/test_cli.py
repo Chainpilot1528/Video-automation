@@ -130,3 +130,80 @@ def test_json_logs_carry_context(runner, monkeypatch, capfd):
     assert record["scene_id"] == "s01"
     assert record["level"] == "INFO"
     assert "ts" in record
+
+
+def test_research_report_and_strict(runner, demo):
+    result = runner.invoke(app, ["research", "report", str(demo)])
+    assert result.exit_code == EXIT_OK
+    assert "claim.critical_unreviewed" in result.output
+    assert runner.invoke(app, ["research", "report", str(demo), "--strict"]).exit_code == EXIT_FAILED
+    data = json.loads(runner.invoke(app, ["research", "report", str(demo), "--json"]).output)
+    assert data["blocker_count"] == 1
+
+
+def test_research_review_and_script_approval_flow(runner, demo):
+    assert runner.invoke(app, ["script", "validate", str(demo)]).exit_code == EXIT_FAILED
+    for cid in ("claim-review-required", "claim-checksum-catches-changes", "claim-no-auto-publish"):
+        r = runner.invoke(app, ["research", "review", str(demo), cid, "--status", "verified",
+                                "--by", "Test Reviewer", "--note", "read the code"])
+        assert r.exit_code == EXIT_OK, r.output
+    r = runner.invoke(app, ["script", "validate", str(demo)])
+    assert r.exit_code == EXIT_OK, r.output
+    assert "not approved" in r.output
+    r = runner.invoke(app, ["script", "approve", str(demo), "--by", "Test Reviewer"])
+    assert r.exit_code == EXIT_OK, r.output
+    assert "script_approved" in r.output
+    assert "approved by Test Reviewer" in runner.invoke(app, ["script", "validate", str(demo)]).output
+    r = runner.invoke(app, ["script", "revoke", str(demo), "--by", "Test Reviewer", "--reason", "redo"])
+    assert r.exit_code == EXIT_OK and "in_research" in r.output
+
+
+def test_review_rejects_unauthorized(runner, demo, monkeypatch):
+    monkeypatch.setenv("PIPELINE_AUTHORIZED_REVIEWERS", "Asha, Nikhil")
+    r = runner.invoke(app, ["research", "review", str(demo), "claim-no-auto-publish", "--status", "verified",
+                            "--by", "Mallory"])
+    assert r.exit_code == EXIT_FAILED and "AUTHORIZED" in r.output
+
+
+def test_research_exception_cli(runner, demo):
+    r = runner.invoke(app, ["research", "exception", str(demo), "claim-review-required", "--by", "Editor",
+                            "--rationale", "short"])
+    assert r.exit_code == EXIT_FAILED and "rationale" in r.output
+    r = runner.invoke(app, ["research", "exception", str(demo), "claim-review-required", "--by", "Editor",
+                            "--rationale", "Internal demo claim, checked against the code."])
+    assert r.exit_code == EXIT_OK, r.output
+    assert runner.invoke(app, ["script", "validate", str(demo)]).exit_code == EXIT_OK
+    r = runner.invoke(app, ["research", "exception", str(demo), "claim-review-required", "--by", "Editor",
+                            "--revoke"])
+    assert r.exit_code == EXIT_OK
+    assert runner.invoke(app, ["script", "validate", str(demo)]).exit_code == EXIT_FAILED
+
+
+def test_research_import_cli(runner, demo, tmp_path):
+    f = tmp_path / "in.json"
+    f.write_text('{"claims": [{"claim_id": "new-claim", "text": "New", "claim_type": "factual", '
+                 '"importance": "contextual"}]}')
+    r = runner.invoke(app, ["research", "import", str(demo), str(f), "--dry-run"])
+    assert r.exit_code == EXIT_OK and "[dry-run] add 1: new-claim" in r.output
+    assert "new-claim" not in (demo / "research/ledger.json").read_text()
+    assert runner.invoke(app, ["research", "import", str(demo), str(f)]).exit_code == EXIT_OK
+    assert "new-claim" in (demo / "research/ledger.json").read_text()
+    assert runner.invoke(app, ["research", "import", str(demo), str(f)]).exit_code == EXIT_FAILED
+
+
+def test_research_bibliography_cli(runner, demo):
+    r = runner.invoke(app, ["research", "bibliography", str(demo)])
+    assert r.exit_code == EXIT_OK and "No public sources" in r.output
+    r = runner.invoke(app, ["research", "bibliography", str(demo), "--include-internal", "--write"])
+    assert "README.md" in r.output
+    assert (demo / "reports/sources.md").is_file()
+
+
+def test_research_suggest_without_provider(runner, demo):
+    r = runner.invoke(app, ["research", "suggest", str(demo)])
+    assert r.exit_code == EXIT_NOT_IMPLEMENTED and "Phase 9" in r.output
+
+
+def test_commands_refuse_invalid_project(runner, tmp_path):
+    r = runner.invoke(app, ["research", "report", str(tmp_path / "missing")])
+    assert r.exit_code == EXIT_FAILED

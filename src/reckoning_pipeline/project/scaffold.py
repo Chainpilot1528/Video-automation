@@ -10,7 +10,7 @@ from ..schemas.common import MAX_SLUG_LEN, SLUG_PATTERN
 from ..utils.fs import write_json_atomic, write_text_atomic
 
 MANIFEST_NAME = "project.json"
-PROJECT_SUBDIRS = ("research", "script", "assets", "narration", "renders", "reports")
+PROJECT_SUBDIRS = ("research", "research/notes", "script", "assets", "narration", "renders", "reports")
 _SLUG_RE = re.compile(SLUG_PATTERN)
 
 BRIEF_TEMPLATE = """# Brief: {title}
@@ -27,6 +27,10 @@ BRIEF_TEMPLATE = """# Brief: {title}
 SCRIPT_TEMPLATE = """# Script draft: {title}
 
 Editorial draft only. Approved narration lives in `scenes.json`, one scene at a time.
+Tag factual statements with ledger claims using markers like [claim:<claim-id>].
+`pipeline script validate` checks every [claim:...] marker exists in the research ledger.
+
+Label each statement as evidence, interpretation, speculation, or open question.
 
 ## Cold open / question
 

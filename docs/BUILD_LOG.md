@@ -8,7 +8,8 @@ Phase status, decisions, tests, known issues, and next action. Newest entries at
 |---|---|---|
 | 0 — Discovery | PASS (approved by user) | 2026-10-17 |
 | 1 — Python foundation and CLI | PASS (committed 5e6d735) | 2026-10-17 |
-| 2 — Data contracts | PASS (awaiting user review) | 2026-10-17 |
+| 2 — Data contracts | PASS (committed d060526) | 2026-10-17 |
+| 3 — Research, claim ledger, script approval | PASS (awaiting user review) | 2026-10-17 |
 
 ---
 
@@ -129,4 +130,53 @@ All findings below come from command output observed on 2026-10-17.
 - Not pushed to GitHub yet, because the `gh auth login` step is still pending on the user's side.
 
 ### Next action
-- User reviews Phase 2. Then Phase 3: research report, claim ledger tooling and script approval.
+- Done. Phase 2 committed as `d060526`.
+
+---
+
+## Phase 3 — Research, claim ledger and script approval (2026-10-17)
+
+### Implemented
+- **Research report** (`research/report.py`): blockers, warnings and info for:
+  - claims without sources
+  - critical claims in narration that are unverified, partial or disputed
+  - rejected claims still in use
+  - retracted sources
+  - "verified" claims with no checked supporting source
+  - quotations without an excerpt and locator
+  - causal claims resting only on correlational evidence
+  - unused sources
+  - scenes without claims
+  - unreviewed AI suggestions
+
+  Blockers only count claims the narration uses.
+- **Ledger tooling:** `research import` (collision-safe, `--dry-run`, `--replace`) and `research review` (records reviewer, date and note; re-validated before an atomic write).
+- **Approvals** (`approvals.py`, `schemas/approval.py`): an append-only `approvals.json`. A script approval is bound to a fingerprint of the narration and the claims it uses; editing either makes it stale. Claim exceptions need a 20+ character rationale and expire when the claim changes. Rejected-in-use, retracted-source and unknown-marker blockers can't be excepted.
+- **Script gate** (`script/check.py`): `script validate` checks required sections, `[claim:id]` markers, empty narration, research blockers and approval state. `script approve` and `revoke` move status between `in_research` and `script_approved`.
+- **Status gates in `project validate`:** `script_approved` and later statuses need a current approval; `publication_ready` also needs zero blockers.
+- **Bibliography:** `research bibliography` lists sources in narration order, skipping retracted and internal sources unless `--include-internal`.
+- **LLM adapter interface** (`providers/llm/base.py`), disabled. `research/assist.py` forces suggestions to unverified, unsourced and `origin: llm_suggestion`, and writes them to `research/notes/`, never the ledger. `research suggest` exits 3 until Phase 9.
+- `PIPELINE_AUTHORIZED_REVIEWERS` optionally restricts who may approve or review.
+- New projects get a `research/notes/` folder and a script template that explains claim markers.
+- Docs: `docs/EDITORIAL_QA.md`; `docs/SCHEMAS.md` updated; JSON Schemas regenerated, including `approvals.schema.json`.
+
+### Decisions
+- New claim fields (`review_notes`, `evidence_basis`, `origin`) and `paths.approvals` are additive and optional, so `schema_version` stays 1.0 and Phase 2 files remain valid.
+- Correlation-only detection uses an explicit `evidence_basis` recorded by the researcher. Inferring it from text would be unreliable.
+- Quotations used in narration without an excerpt and locator are blockers, because misattributed quotes are high-risk.
+- The demo is left honestly blocked: its critical claim is unverified because no human has reviewed it. Tests simulate a reviewer to exercise the approval flow. I did not record any real reviews or approvals.
+
+### Verification
+- `pytest`: 162 passed.
+- `research report` on the demo: 1 blocker (`claim.critical_unreviewed`), 2 warnings, 1 info.
+- `script validate` on the demo exits 1 because of that blocker. In tests, after simulated reviews, approval succeeds; editing narration or a claim then makes it stale, and `project validate` flags the status.
+- `project validate examples/demo-project --strict`: OK.
+- No network or external services used.
+
+### Known issues / limitations
+- No LLM provider yet (Phase 9).
+- Automated checks can't verify that a reviewer actually read a source. The recorded name is the accountability.
+- Not pushed to GitHub yet: `gh auth login` is still pending on the user's side.
+
+### Next action
+- User reviews Phase 3. Optionally, they can try reviewing and approving the demo claims themselves. Then Phase 4: asset sourcing, licensing and provenance.

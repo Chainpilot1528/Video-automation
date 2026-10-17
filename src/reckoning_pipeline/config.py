@@ -33,6 +33,15 @@ class PipelineConfig(BaseModel):
     warn_free_disk_gb: float = Field(default=25.0, ge=0)
     allow_network: bool = False
     allow_paid_providers: bool = False
+    # Names allowed to approve scripts and record claim reviews/exceptions. Empty = any named person.
+    authorized_reviewers: list[str] = Field(default_factory=list)
+
+    @field_validator("authorized_reviewers", mode="before")
+    @classmethod
+    def _split_reviewers(cls, value: object) -> object:
+        if isinstance(value, str):
+            return [name.strip() for name in value.split(",") if name.strip()]
+        return value
 
     @field_validator("log_level", mode="before")
     @classmethod
@@ -63,6 +72,7 @@ _ENV_FIELDS = {
     "WARN_FREE_DISK_GB": "warn_free_disk_gb",
     "ALLOW_NETWORK": "allow_network",
     "ALLOW_PAID_PROVIDERS": "allow_paid_providers",
+    "AUTHORIZED_REVIEWERS": "authorized_reviewers",
 }
 
 

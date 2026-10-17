@@ -25,8 +25,19 @@
           "title": "Counter Evidence",
           "type": "array"
         },
+        "evidence_basis": {
+          "items": {
+            "$ref": "#/$defs/EvidenceBasis"
+          },
+          "title": "Evidence Basis",
+          "type": "array"
+        },
         "importance": {
           "$ref": "#/$defs/Importance"
+        },
+        "origin": {
+          "$ref": "#/$defs/ClaimOrigin",
+          "default": "human"
         },
         "review_date": {
           "anyOf": [
@@ -40,6 +51,11 @@
           ],
           "default": null,
           "title": "Review Date"
+        },
+        "review_notes": {
+          "default": "",
+          "title": "Review Notes",
+          "type": "string"
         },
         "reviewer": {
           "anyOf": [
@@ -80,6 +96,15 @@
       "title": "Claim",
       "type": "object"
     },
+    "ClaimOrigin": {
+      "enum": [
+        "human",
+        "imported",
+        "llm_suggestion"
+      ],
+      "title": "ClaimOrigin",
+      "type": "string"
+    },
     "ClaimStatus": {
       "enum": [
         "unverified",
@@ -102,6 +127,20 @@
         "speculative"
       ],
       "title": "ClaimType",
+      "type": "string"
+    },
+    "EvidenceBasis": {
+      "description": "What kind of evidence the cited sources provide for a claim.",
+      "enum": [
+        "experimental",
+        "meta_analysis",
+        "quasi_experimental",
+        "observational",
+        "documentary",
+        "expert_opinion",
+        "anecdotal"
+      ],
+      "title": "EvidenceBasis",
       "type": "string"
     },
     "Excerpt": {

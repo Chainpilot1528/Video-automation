@@ -24,6 +24,11 @@
       "additionalProperties": false,
       "description": "Locations of the project's other files, relative to the project folder.",
       "properties": {
+        "approvals": {
+          "default": "approvals.json",
+          "title": "Approvals",
+          "type": "string"
+        },
         "asset_registry": {
           "default": "assets/registry.json",
           "title": "Asset Registry",

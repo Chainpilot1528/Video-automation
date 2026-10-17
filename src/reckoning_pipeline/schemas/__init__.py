@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from .approval import ApprovalEvent, ApprovalLog
 from .asset import Asset, AssetRegistry
 from .common import SCHEMA_VERSION, SUPPORTED_SCHEMA_VERSIONS
 from .project import ProjectManifest
@@ -18,6 +19,7 @@ FILE_MODELS = {
     "scenes": SceneManifest,
     "research_ledger": ResearchLedger,
     "asset_registry": AssetRegistry,
+    "approvals": ApprovalLog,
     "render_report": RenderReport,
 }
 
@@ -42,7 +44,7 @@ def export_json_schemas(out_dir: Path) -> list[Path]:
 
 __all__ = [
     "SCHEMA_VERSION", "SUPPORTED_SCHEMA_VERSIONS", "FILE_MODELS",
-    "Asset", "AssetRegistry", "Claim", "ProjectManifest", "RenderReport",
+    "ApprovalEvent", "ApprovalLog", "Asset", "AssetRegistry", "Claim", "ProjectManifest", "RenderReport",
     "ResearchLedger", "Scene", "SceneManifest", "Source",
     "export_json_schemas", "json_schemas",
 ]

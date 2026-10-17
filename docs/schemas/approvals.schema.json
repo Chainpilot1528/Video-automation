@@ -1,0 +1,94 @@
+{
+  "$defs": {
+    "ApprovalEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "at": {
+          "format": "date-time",
+          "title": "At",
+          "type": "string"
+        },
+        "by": {
+          "minLength": 1,
+          "title": "By",
+          "type": "string"
+        },
+        "claim_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Claim Id"
+        },
+        "event_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "fingerprint": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fingerprint"
+        },
+        "kind": {
+          "$ref": "#/$defs/ApprovalKind"
+        },
+        "rationale": {
+          "default": "",
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "kind",
+        "by",
+        "at"
+      ],
+      "title": "ApprovalEvent",
+      "type": "object"
+    },
+    "ApprovalKind": {
+      "enum": [
+        "script_approved",
+        "script_approval_revoked",
+        "claim_exception",
+        "claim_exception_revoked"
+      ],
+      "title": "ApprovalKind",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "events": {
+      "items": {
+        "$ref": "#/$defs/ApprovalEvent"
+      },
+      "title": "Events",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "title": "ApprovalLog",
+  "type": "object"
+}

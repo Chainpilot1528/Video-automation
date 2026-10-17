@@ -57,6 +57,7 @@ class ProjectPaths(Record):
     script: RelPath = "script/script.md"
     scenes: RelPath = "scenes.json"
     asset_registry: RelPath = "assets/registry.json"
+    approvals: RelPath = "approvals.json"  # optional; absent means no approvals yet
 
 
 class ProjectManifest(Record):

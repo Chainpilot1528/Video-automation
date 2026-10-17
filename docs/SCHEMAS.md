@@ -20,6 +20,8 @@ A test fails if the committed schemas are out of date.
 ├── research/ledger.json    ResearchLedger: sources and claims
 ├── scenes.json             SceneManifest: ordered scenes, canonical narration text
 ├── assets/registry.json    AssetRegistry: one record per media file
+├── approvals.json          ApprovalLog: append-only human decisions (optional)
+├── research/notes/         research notes and AI suggestions, kept out of the ledger
 ├── assets/…                project-local asset files
 ├── narration/  renders/  reports/
 ```
@@ -69,7 +71,7 @@ A source existing does not prove it supports a claim, so **verification lives on
 
 **Source:** `source_id`, `title`, `authors`, `publisher`, at least one of `url`, `archive_id` or `identifier` (DOI, ISBN or repo path), `published_date`, `accessed_date`, `source_type`, `classification` (`primary`, `secondary` or `tertiary`), `supported_claim_ids`, `excerpts` (`{claim_id, text, locator}`), `reliability_notes`, `verification_status` (`unchecked`, `checked`, `inaccessible`, `retracted`), `citation_text`, `usage_notes`.
 
-**Claim:** `claim_id`, `text`, `claim_type` (`factual`, `statistical`, `causal`, `quotation`, `historical`, `interpretive`, `speculative`), `importance` (`critical`, `supporting`, `contextual`), `source_ids`, `verification_status`, `caveats`, `counter_evidence`, `reviewer`, `review_date`.
+**Claim:** `claim_id`, `text`, `claim_type` (`factual`, `statistical`, `causal`, `quotation`, `historical`, `interpretive`, `speculative`), `importance` (`critical`, `supporting`, `contextual`), `source_ids`, `verification_status`, `caveats`, `counter_evidence`, `reviewer`, `review_date`, `review_notes`, `evidence_basis` (any of `experimental`, `meta_analysis`, `quasi_experimental`, `observational`, `documentary`, `expert_opinion`, `anecdotal`), `origin` (`human`, `imported`, `llm_suggestion`).
 
 | Status | Requirements |
 |---|---|
@@ -94,6 +96,10 @@ The validator warns if a claim cites a source that doesn't list it, or the other
 
 Generated assets must record `generation`. Downloaded assets must record `source_url`. Each file has exactly one record, and the validator compares its sha256 against the file on disk.
 
+## `approvals.json` — ApprovalLog
+
+An append-only list of events: `event_id`, `kind` (`script_approved`, `script_approval_revoked`, `claim_exception`, `claim_exception_revoked`), `by`, `at`, `rationale`, `fingerprint`, `claim_id`. Current state is always derived from the log, never stored separately. Approvals and exceptions record the fingerprint of the content a person reviewed, and any later change makes them stale. Claim exceptions need a rationale of at least 20 characters. If the file is missing, there are no approvals yet. See `docs/EDITORIAL_QA.md`.
+
 ## Render report
 
 Written to `reports/` from Phase 7 onward. It records the profile, status, timestamps, pipeline and FFmpeg versions, exact commands, settings, input checksums, output metadata and checksum, warnings and errors.
@@ -105,8 +111,13 @@ Written to `reports/` from Phase 7 onward. It records the profile, status, times
 ```
 
 - **Errors** (exit 1): invalid JSON, unsupported schema, schema violations, duplicate IDs or scene orders, missing references, unsafe paths, missing files, checksum mismatches, a `media` root with no `PIPELINE_MEDIA_ROOT`.
-- **Warnings** (exit 0, or 1 with `--strict`): folder name differs from `project_id`, asymmetric ledger links, unused assets.
+- **Status gates** (errors): `script_approved`, `in_production`, `in_review` and `publication_ready` need a current, non-stale script approval. `publication_ready` also needs zero research blockers.
+- **Warnings** (exit 0, or 1 with `--strict`): folder name differs from `project_id`, asymmetric ledger links, unused assets, approval events that point at deleted claims.
 - `--skip-checksums` skips hashing for a quick check.
+
+## Compatibility
+
+Adding a new optional field with a safe default doesn't change `schema_version`. Older files remain valid and mean the same thing. Phase 3 added `Claim.review_notes`, `Claim.evidence_basis`, `Claim.origin` and `paths.approvals` this way. Renaming, removing or reinterpreting a field requires a new version and a migration.
 
 ## Migration
 

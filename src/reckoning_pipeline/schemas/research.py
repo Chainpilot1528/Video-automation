@@ -118,6 +118,28 @@ class ClaimStatus(StrEnum):
     REJECTED = "rejected"
 
 
+class EvidenceBasis(StrEnum):
+    """What kind of evidence the cited sources provide for a claim."""
+
+    EXPERIMENTAL = "experimental"            # randomised or controlled experiment
+    META_ANALYSIS = "meta_analysis"          # systematic review / meta-analysis
+    QUASI_EXPERIMENTAL = "quasi_experimental"  # natural experiment, RDD, diff-in-diff
+    OBSERVATIONAL = "observational"          # correlational / cohort / survey
+    DOCUMENTARY = "documentary"              # primary records, archives, official data
+    EXPERT_OPINION = "expert_opinion"
+    ANECDOTAL = "anecdotal"
+
+
+CORRELATIONAL_BASES = frozenset({EvidenceBasis.OBSERVATIONAL, EvidenceBasis.ANECDOTAL,
+                                 EvidenceBasis.EXPERT_OPINION})
+
+
+class ClaimOrigin(StrEnum):
+    HUMAN = "human"
+    IMPORTED = "imported"
+    LLM_SUGGESTION = "llm_suggestion"
+
+
 class Claim(Record):
     claim_id: Identifier
     text: NonEmptyStr
@@ -129,6 +151,9 @@ class Claim(Record):
     counter_evidence: list[str] = Field(default_factory=list)
     reviewer: str | None = None
     review_date: date | None = None
+    review_notes: str = ""
+    evidence_basis: list[EvidenceBasis] = Field(default_factory=list)
+    origin: ClaimOrigin = ClaimOrigin.HUMAN
 
     @field_validator("source_ids")
     @classmethod
