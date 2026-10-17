@@ -7,6 +7,7 @@ from pathlib import Path
 
 from .approval import ApprovalEvent, ApprovalLog
 from .asset import Asset, AssetRegistry
+from .narration import NarrationReport, PronunciationList
 from .common import SCHEMA_VERSION, SUPPORTED_SCHEMA_VERSIONS
 from .project import ProjectManifest
 from .render import RenderReport
@@ -20,6 +21,8 @@ FILE_MODELS = {
     "research_ledger": ResearchLedger,
     "asset_registry": AssetRegistry,
     "approvals": ApprovalLog,
+    "pronunciations": PronunciationList,
+    "narration_report": NarrationReport,
     "render_report": RenderReport,
 }
 

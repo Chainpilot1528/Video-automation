@@ -1,0 +1,54 @@
+{
+  "$defs": {
+    "Pronunciation": {
+      "additionalProperties": false,
+      "properties": {
+        "case_sensitive": {
+          "default": false,
+          "title": "Case Sensitive",
+          "type": "boolean"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        },
+        "say_as": {
+          "minLength": 1,
+          "title": "Say As",
+          "type": "string"
+        },
+        "term": {
+          "minLength": 1,
+          "title": "Term",
+          "type": "string"
+        }
+      },
+      "required": [
+        "term",
+        "say_as"
+      ],
+      "title": "Pronunciation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "``narration/pronunciations.json``. Applied to TTS input only, never to captions.",
+  "properties": {
+    "overrides": {
+      "items": {
+        "$ref": "#/$defs/Pronunciation"
+      },
+      "title": "Overrides",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "title": "PronunciationList",
+  "type": "object"
+}

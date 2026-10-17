@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Callable
 
 from .config import PipelineConfig
+from .media.tools import find_tool
 
 GIB = 1024**3
 
@@ -76,7 +77,8 @@ def check_tool(
     version = run([path, "-version" if name in {"ffmpeg", "ffprobe"} else "--version"])
     if version is None:
         return CheckResult(name, Status.FAIL if required else Status.WARN,
-                           f"{path} found but did not run", remedy)
+                           f"{path} found but did not run (exited with an error or timed out)",
+                           "Run it once by hand; the first launch after install can be slow.")
     return CheckResult(name, Status.PASS, f"{path} — {version}")
 
 
@@ -139,7 +141,7 @@ def run_checks(
     disk_usage: DiskUsage | None = None,
 ) -> list[CheckResult]:
     # Resolve defaults at call time so tests can monkeypatch module attributes.
-    which = which or shutil.which
+    which = which or (lambda name: find_tool(name))
     run = run or _run_first_line
     disk_usage = disk_usage or shutil.disk_usage
     ffmpeg_remedy = "Install FFmpeg (see docs/INSTALL.md), or set PIPELINE_FFMPEG_PATH / PIPELINE_FFPROBE_PATH."

@@ -10,7 +10,8 @@ Phase status, decisions, tests, known issues, and next action. Newest entries at
 | 1 — Python foundation and CLI | PASS (committed 5e6d735) | 2026-10-17 |
 | 2 — Data contracts | PASS (committed d060526) | 2026-10-17 |
 | 3 — Research, claim ledger, script approval | PASS (committed ea90b23) | 2026-10-17 |
-| 4 — Asset sourcing, licensing, provenance | PASS (awaiting user review) | 2026-10-17 |
+| 4 — Asset sourcing, licensing, provenance | PASS (committed 98a99d6) | 2026-10-17 |
+| 5 — Narration, timing, subtitles | PASS (awaiting user review) | 2026-10-17 |
 
 ---
 
@@ -220,4 +221,43 @@ All findings below come from command output observed on 2026-10-17.
 - Not pushed to GitHub yet: `gh auth login` is still pending on the user's side.
 
 ### Next action
-- User reviews Phase 4. Then Phase 5: narration, timing and subtitles. That phase needs FFmpeg, and Homebrew doesn't support this Intel Mac, so we need to pick an install route first.
+- Done. Phase 4 committed as `98a99d6`.
+
+---
+
+## Phase 5 — Narration, timing and subtitles (2026-10-17)
+
+### Environment
+- The user installed MacPorts 2.12.7 (Apple-notarized installer) and FFmpeg 9.0.2 (`+gpl2+vmaf`) via MacPorts. Homebrew refuses Intel Macs.
+- `pipeline doctor`: 7 pass, 3 warn (Python 3.14, Intel, no Ollama), 0 fail.
+- Doctor and the pipeline now also look in `/opt/local/bin`, `/usr/local/bin` and `/opt/homebrew/bin` when a tool isn't on PATH.
+
+### Implemented
+- `media/audio.py`: ffprobe measurement; normalization to project-rate mono 16-bit WAV with 10 ms edge fades (bit-exact and deterministic); EBU R128 loudness and true peak; silence detection. All commands are argument arrays.
+- **TTS interface** (`providers/tts/base.py`), declaring data egress and commercial clearance. **macOS `say` adapter**: offline and free, text passed via a file so it can't be read as options. It's marked not commercially cleared (Apple's licence), so its output is registered as `not_allowed` and `blocked`.
+- **Imported human narration**, the first-class route: `narration import` with numbered takes; the highest take wins and earlier takes are kept.
+- **Per-scene build** (`narration build`): imported take first, then TTS (only if a provider is chosen), otherwise reported missing. Output files are named by an input fingerprint, so unchanged scenes are reused and nothing is overwritten. The build measures duration, loudness and silence, updates scene durations, resets captions and timeline when the audio changes, registers `narr-<scene>` assets, and writes `reports/narration.json`.
+- **Checks:** near-empty or silent audio, true peak above -1 dBTP, long leading/trailing silence, pauses over 2 s, implausible words/min, measured vs planned duration, and loudness spread across scenes.
+- **Pronunciation overrides** (`narration/pronunciations.json`), applied to TTS input only and part of the cache key.
+- **Captions** (`captions build` and `captions validate`): sentence, then clause, then word segmentation into at most 2×42-character cues; approximate timing within each scene's measured speech; strict SRT parse and validation; a `ForcedAligner` interface for later word-aligned timing.
+- Docs: `docs/OPERATIONS.md` (new); `INSTALL.md` updated for MacPorts; `SCHEMAS.md`, README and JSON Schemas updated (`pronunciations`, `narration_report`).
+
+### Decisions
+- Kokoro-82M was not installed. It needs a model download (several hundred MB) plus an ML runtime. PyTorch no longer publishes Intel-Mac wheels, and this project runs Python 3.14, so whether Kokoro can run here at all needs checking first. That's a decision for the user (Phase 9 benchmark).
+- `say` is preview-only and is enforced through the rights system, not just documented.
+- Normalization changes format and sample rate, not loudness. Final levels are set in the Phase 7 mix.
+- Captions follow the narration timeline (scenes back to back). Phase 7 re-times them against the final edit.
+- The demo project stays without committed narration audio: `say` output can't be published, and audio is git-ignored. Tests build narration for it from synthetic tones and, on macOS, from `say`.
+
+### Verification
+- `pytest`: 217 passed. Tests cover normalization determinism, measurements against known synthetic silence, cache hits and invalidation (text, take, voice, pronunciation), no overwrites, warnings, the TTS route, `say` output being blocked, captions end to end, SRT round trip and validation, and the CLI.
+- Manual run on a demo copy with `say` (voice Rishi): 4 chunks, 31.1 s, first build about 6 s and the cached rebuild 1.2 s. 9 caption cues, 0 errors, 0 warnings. Two chunks flagged at about -0.8 dBTP true peak.
+- No network use apart from the user's MacPorts install.
+
+### Known issues / limitations
+- Captions are approximate (no forced aligner yet).
+- Downmixing stereo takes to mono lowers their level by about 3 dB. It's measured and reported, and the mix handles it.
+- Not pushed to GitHub yet, because the `gh auth login` step is still pending.
+
+### Next action
+- User reviews Phase 5, and decides whether to evaluate Kokoro (download plus licence review). Then Phase 6: visual planning and provider adapters.

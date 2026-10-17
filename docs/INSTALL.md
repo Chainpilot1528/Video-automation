@@ -32,29 +32,32 @@ Check it:
 
 No models are downloaded and no ML packages are installed by these steps.
 
-## 2. FFmpeg (you run these yourself)
+## 2. FFmpeg via MacPorts (you run the password steps)
 
-The Homebrew installer asks for your macOS admin password, so run these yourself in Terminal.
+Homebrew now supports Apple Silicon only, so this Intel Mac uses **MacPorts**. Installed on this machine on 2026-10-17: MacPorts 2.12.7 and FFmpeg 9.0.2.
 
-Install Homebrew (official script from brew.sh; on Intel it installs to `/usr/local`):
+1. Download the macOS 15 Sequoia installer from <https://www.macports.org/install.php>. Check that it's signed and notarized:
+   ```bash
+   pkgutil --check-signature ~/Downloads/MacPorts-2.12.7-15-Sequoia.pkg
+   ```
+2. Install it, either by double-clicking it or with:
+   ```bash
+   sudo installer -pkg ~/Downloads/MacPorts-2.12.7-15-Sequoia.pkg -target /
+   ```
+3. Open a **new** Terminal window, so `/opt/local/bin` is on PATH. Then:
+   ```bash
+   sudo port selfupdate && sudo port -N install ffmpeg
+   ```
+4. Verify:
+   ```bash
+   .venv/bin/pipeline doctor
+   ```
 
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-Install FFmpeg (includes ffprobe):
-
-```bash
-brew install ffmpeg
-```
-
-Verify:
-
-```bash
-ffmpeg -version && ffprobe -version
-```
-
-Homebrew plus FFmpeg and its dependencies takes roughly 1–2 GB of disk.
+Notes:
+- `doctor` and the pipeline also look in `/opt/local/bin` directly, for apps that don't load `~/.zprofile`.
+- MacPorts' FFmpeg is built with GPL components (x264, x265). Running it locally to render your videos is fine; the licence matters only if you redistribute FFmpeg itself.
+- The first run of a freshly installed `ffmpeg` can be slow while macOS scans it.
+- The Terminal panel inside the Claude app didn't pass `sudo` password input through. Use the separate Terminal app for password prompts.
 
 ## Intel Mac notes
 

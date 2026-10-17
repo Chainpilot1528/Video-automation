@@ -29,7 +29,7 @@ def test_version(runner):
 
 
 def test_doctor_fails_without_ffmpeg(runner, monkeypatch):
-    monkeypatch.setattr(doctor_mod.shutil, "which", lambda name: None)
+    monkeypatch.setattr(doctor_mod, "find_tool", lambda name: None)
     result = runner.invoke(app, ["doctor"])
     assert result.exit_code == EXIT_FAILED
     assert "[FAIL] ffmpeg" in result.output
@@ -37,7 +37,7 @@ def test_doctor_fails_without_ffmpeg(runner, monkeypatch):
 
 
 def test_doctor_passes_with_tools(runner, monkeypatch):
-    monkeypatch.setattr(doctor_mod.shutil, "which", lambda name: f"/opt/{name}")
+    monkeypatch.setattr(doctor_mod, "find_tool", lambda name: f"/opt/{name}")
     monkeypatch.setattr(doctor_mod, "_run_first_line", lambda args: "v1")
     monkeypatch.setattr(doctor_mod.shutil, "disk_usage", lambda p: (1, 0, 100 * GIB))
     result = runner.invoke(app, ["doctor"])
@@ -261,3 +261,40 @@ def test_assets_add_conflicting_attribution_flags(runner, demo, tmp_path):
     r = runner.invoke(app, ["assets", "add", str(demo), str(f), "--id", "x", "--type", "image",
                             "--method", "user_supplied", "--attribution", "A", "--no-attribution"])
     assert r.exit_code == EXIT_FAILED
+
+
+def test_narration_and_captions_cli(runner, demo, tmp_path):
+    from test_narration import HAVE_FFMPEG, words_seconds
+    if not HAVE_FFMPEG:
+        pytest.skip("FFmpeg not installed")
+    import subprocess
+
+    from reckoning_pipeline.media.tools import find_tool
+    r = runner.invoke(app, ["captions", "build", str(demo)])
+    assert r.exit_code == EXIT_FAILED and "narration build" in r.output
+    for sid in ("s01-cold-open", "s02-claim-ledger", "s03-asset-record", "s04-review-gates"):
+        wav = tmp_path / f"{sid}.wav"
+        subprocess.run([find_tool("ffmpeg"), "-nostdin", "-loglevel", "error", "-y", "-f", "lavfi", "-i",
+                        f"sine=f=220:d={words_seconds(demo, sid):.2f}", str(wav)], check=True)
+        r = runner.invoke(app, ["narration", "import", str(demo), sid, str(wav), "--creator", "Test Narrator"])
+        assert r.exit_code == EXIT_OK, r.output
+    r = runner.invoke(app, ["narration", "import", str(demo), "nope", str(wav), "--creator", "X"])
+    assert r.exit_code == EXIT_FAILED
+    r = runner.invoke(app, ["narration", "build", str(demo), "--dry-run"])
+    assert r.exit_code == EXIT_OK and r.output.count("imported  build") == 4
+    r = runner.invoke(app, ["narration", "build", str(demo)])
+    assert r.exit_code == EXIT_OK, r.output
+    assert "4 chunk(s)" in r.output
+    assert runner.invoke(app, ["narration", "build", str(demo)]).output.count("cached") == 4
+    r = runner.invoke(app, ["captions", "build", str(demo)])
+    assert r.exit_code == EXIT_OK, r.output
+    srt = demo / "captions" / "demo-project.en.srt"
+    r = runner.invoke(app, ["captions", "validate", str(srt)])
+    assert r.exit_code == EXIT_OK and "0 error(s)" in r.output
+    srt.write_text("1\n00:00:02,000 --> 00:00:01,000\nbad\n")
+    assert runner.invoke(app, ["captions", "validate", str(srt)]).exit_code == EXIT_FAILED
+
+
+def test_narration_build_unknown_provider(runner, demo):
+    r = runner.invoke(app, ["narration", "build", str(demo), "--provider", "nope", "--voice", "x"])
+    assert r.exit_code == EXIT_FAILED and "unknown TTS provider" in r.output

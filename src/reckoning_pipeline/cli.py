@@ -26,6 +26,11 @@ from .assets import (
     AssetReviewError, Decision, IntakeError, apply_intake, build_credits, build_rights_report,
     format_rights_report, plan_derivative, plan_intake, review_asset,
 )
+from .media.audio import Tools
+from .media.tools import ToolNotFoundError
+from .narration import BuildOptions, NarrationError, build_narration, take_asset_id
+from .providers.tts import PROVIDERS, TTSError, get_tts_provider
+from .subtitles import CaptionError, build_captions, check_cues, parse_srt
 from .approvals import active_exceptions, append_event, check_reviewer, claim_fingerprint, load_log
 from .project.validate import ValidationResult
 from .providers.llm import ProviderUnavailableError, get_llm_provider
@@ -53,12 +58,16 @@ schema_app = typer.Typer(help="Inspect and export data contracts.", no_args_is_h
 research_app = typer.Typer(help="Sources, claims, reviews and the research report.", no_args_is_help=True)
 script_app = typer.Typer(help="Script readiness and human approval.", no_args_is_help=True)
 assets_app = typer.Typer(help="Asset intake, rights review and credits.", no_args_is_help=True)
+narration_app = typer.Typer(help="Scene-by-scene narration: import, TTS, measurement.", no_args_is_help=True)
+captions_app = typer.Typer(help="Build and check SRT captions.", no_args_is_help=True)
 app.add_typer(project_app, name="project")
 app.add_typer(render_app, name="render")
 app.add_typer(schema_app, name="schema")
 app.add_typer(research_app, name="research")
 app.add_typer(script_app, name="script")
 app.add_typer(assets_app, name="assets")
+app.add_typer(narration_app, name="narration")
+app.add_typer(captions_app, name="captions")
 
 
 def _config(ctx: typer.Context) -> PipelineConfig:
@@ -515,6 +524,144 @@ def assets_credits(
         out.parent.mkdir(parents=True, exist_ok=True)
         write_text_atomic(out, text)
         typer.echo(f"Wrote {out}", err=True)
+
+
+def _tools(ctx: typer.Context) -> Tools:
+    try:
+        return Tools.from_config(_config(ctx))
+    except ToolNotFoundError as exc:
+        _fail(str(exc))
+
+
+@narration_app.command("import")
+def narration_import(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    scene_id: str = typer.Argument(..., help="Scene this recording narrates"),
+    file: Path = typer.Argument(..., help="Audio file (copied, never changed)"),
+    creator: str = typer.Option(..., "--creator", help="Who voiced it."),
+    take: int = typer.Option(1, "--take", min=1, help="Take number; the highest take is used."),
+    method: CreationMethod = typer.Option(CreationMethod.RECORDED, "--method",
+                                          help="'recorded' (you recorded it) or 'user_supplied'."),
+    rights_holder: str = typer.Option("", "--rights-holder", help="Defaults to the creator."),
+    commercial_use: CommercialUse = typer.Option(CommercialUse.ALLOWED, "--commercial-use"),
+    evidence: str = typer.Option("", "--evidence", help="E.g. 'Recorded by me for this film'."),
+    dry_run: bool = typer.Option(False, "--dry-run"),
+) -> None:
+    """Import a human narration recording for one scene."""
+    result = _load_valid(ctx, path)
+    if scene_id not in {s.scene_id for s in result.scenes.scenes}:
+        _fail(f"unknown scene {scene_id!r}")
+    fields = {"asset_id": take_asset_id(scene_id, take), "type": "narration", "creation_method": method,
+              "creator": creator, "rights_holder": rights_holder or creator, "commercial_use": commercial_use,
+              "attribution_required": False, "derivatives_allowed": True,
+              "rights_evidence": evidence or f"Narration voiced by {creator}.",
+              "intended_scene_ids": [scene_id]}
+    config = _config(ctx)
+    try:
+        plan = plan_intake(path, result.registry, file, fields)
+        for line in plan.describe():
+            typer.echo(("[dry-run] " if dry_run else "") + line)
+        if not dry_run:
+            apply_intake(path, result.manifest, result.registry, plan, min_free_gb=config.min_free_disk_gb)
+            typer.echo(f"Imported take {take} for {scene_id}. Run 'pipeline narration build' next.")
+    except IntakeError as exc:
+        _fail(str(exc))
+
+
+@narration_app.command("voices")
+def narration_voices(
+    provider: str = typer.Option("macos-say", "--provider", help=f"One of: {', '.join(PROVIDERS)}"),
+    locale: str = typer.Option("", "--locale", help="Filter, e.g. en_IN or en."),
+) -> None:
+    """List voices for a TTS provider."""
+    try:
+        tts = get_tts_provider(provider)
+        voices = tts.list_voices()
+    except TTSError as exc:
+        _fail(str(exc))
+    for v in voices:
+        if v.locale.startswith(locale):
+            typer.echo(f"{v.name:<32} {v.locale:<8} {v.description}")
+    typer.echo(f"\nNote: {tts.license_note}" if not tts.commercial_use_cleared else "", err=True)
+
+
+@narration_app.command("build")
+def narration_build(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    provider: str = typer.Option(None, "--provider",
+                                 help=f"TTS for scenes without imported narration: {', '.join(PROVIDERS)}"),
+    voice: str = typer.Option(None, "--voice", help="TTS voice name."),
+    rate: int = typer.Option(None, "--rate", min=80, max=300, help="TTS speaking rate (words/min)."),
+    scenes: list[str] = typer.Option([], "--scene", help="Only these scenes (repeatable)."),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Show what would be built."),
+) -> None:
+    """Build, normalize and measure narration per scene; unchanged scenes are reused."""
+    result = _load_valid(ctx, path)
+    tts = None
+    if provider:
+        try:
+            tts = get_tts_provider(provider)
+        except TTSError as exc:
+            _fail(str(exc))
+        if not tts.commercial_use_cleared:
+            typer.echo(f"note: {tts.license_note} Its output is registered as blocked from publication.",
+                       err=True)
+    options = BuildOptions(provider=tts, voice=voice, rate_wpm=rate, scene_ids=scenes or None, dry_run=dry_run)
+    try:
+        built = build_narration(result, _tools(ctx), options)
+    except (NarrationError, ValueError) as exc:
+        _fail(_error_text(exc))
+    if dry_run:
+        for c in built.plan:
+            state = "cached" if c.cached else ("build" if c.route in ("imported", "tts") else "-")
+            typer.echo(f"[dry-run] {c.scene.scene_id:<24} {c.route:<9} {state}")
+        return
+    for c in built.report.chunks:
+        typer.echo(f"{c.scene_id:<24} {c.route:<9} {c.duration_seconds:7.2f} s  "
+                   f"{c.integrated_lufs if c.integrated_lufs is not None else '-':>6} LUFS  "
+                   f"{'cached' if c.cached else 'built'}")
+        for w in c.warnings:
+            typer.echo(f"    warning: {w}")
+    for w in built.report.warnings:
+        typer.echo(f"warning: {w}")
+    total = sum(c.duration_seconds for c in built.report.chunks)
+    typer.echo(f"\n{len(built.report.chunks)} chunk(s), {total:.1f} s of narration. Report: reports/narration.json")
+
+
+@captions_app.command("build")
+def captions_build(ctx: typer.Context, path: Path = typer.Argument(..., help="Project folder")) -> None:
+    """Write approximate SRT captions from narration text and measured audio."""
+    result = _load_valid(ctx, path)
+    try:
+        built = build_captions(result)
+    except CaptionError as exc:
+        _fail(str(exc))
+    for w in built.warnings:
+        typer.echo(f"warning: {w}")
+    if built.errors:
+        for e in built.errors:
+            typer.echo(f"error: {e}", err=True)
+        raise typer.Exit(EXIT_FAILED)
+    typer.echo(f"Wrote {built.path} ({len(built.cues)} cues, {built.method} timing)")
+
+
+@captions_app.command("validate")
+def captions_validate(file: Path = typer.Argument(..., help="SRT file")) -> None:
+    """Check an SRT file's structure, ordering and readability."""
+    try:
+        cues = parse_srt(file.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        _fail(str(exc))
+    errors, warnings = check_cues(cues)
+    for w in warnings:
+        typer.echo(f"warning: {w}")
+    for e in errors:
+        typer.echo(f"error: {e}", err=True)
+    typer.echo(f"{len(cues)} cues, {len(errors)} error(s), {len(warnings)} warning(s)")
+    if errors:
+        raise typer.Exit(EXIT_FAILED)
 
 
 @render_app.command("preview")

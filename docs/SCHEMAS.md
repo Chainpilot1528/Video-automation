@@ -22,6 +22,10 @@ A test fails if the committed schemas are out of date.
 ├── assets/registry.json    AssetRegistry: one record per media file
 ├── approvals.json          ApprovalLog: append-only human decisions (optional)
 ├── research/notes/         research notes and AI suggestions, kept out of the ledger
+├── narration/pronunciations.json   PronunciationList: TTS-only spelling overrides (optional)
+├── narration/<scene>/<fp>.wav      built narration chunks (git-ignored)
+├── captions/<id>.<lang>.srt        captions
+├── reports/narration.json          NarrationReport: per-chunk measurements and warnings
 ├── assets/…                project-local asset files
 ├── narration/  renders/  reports/
 ```
@@ -101,6 +105,12 @@ Generated assets must record `generation`. Downloaded assets must record `source
 ## `approvals.json` — ApprovalLog
 
 An append-only list of events: `event_id`, `kind` (`script_approved`, `script_approval_revoked`, `claim_exception`, `claim_exception_revoked`, `asset_approved`, `asset_blocked`), `by`, `at`, `rationale`, `fingerprint`, `claim_id`, `asset_id`. Current state is always derived from the log, never stored separately. Approvals and exceptions record the fingerprint of the content a person reviewed, and any later change makes them stale. Claim exceptions need a rationale of at least 20 characters. If the file is missing, there are no approvals yet. See `docs/EDITORIAL_QA.md`.
+
+## Narration files
+
+- `narration/pronunciations.json` (**PronunciationList**): `overrides` is a list of `{term, say_as, case_sensitive, note}`. Overrides apply to TTS input only.
+- `reports/narration.json` (**NarrationReport**): rewritten on each build. It holds `project_id`, `built_at`, `provider` and `voice`, plus `chunks`. Each chunk records scene, asset, route, path, sha256, fingerprint, cached, duration, sample rate, channels, integrated LUFS, true peak, leading and trailing silence, and warnings. The report also lists `missing` scenes and project `warnings`.
+- Narration assets are named `narr-<scene>` (built chunks) and `narr-src-<scene>-t<N>` (imported takes). See `docs/OPERATIONS.md`.
 
 ## Render report
 
