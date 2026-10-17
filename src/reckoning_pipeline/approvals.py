@@ -17,6 +17,7 @@ from typing import Literal
 from .schemas import ApprovalEvent, ApprovalLog, ProjectManifest, ResearchLedger, SceneManifest
 from .schemas.approval import ApprovalKind
 from .schemas.common import utcnow
+from .schemas.asset import Asset
 from .schemas.research import Claim
 from .utils.fs import safe_resolve, write_json_atomic
 
@@ -32,6 +33,25 @@ def claim_fingerprint(claim: Claim) -> str:
         "importance": claim.importance, "verification_status": claim.verification_status,
         "source_ids": sorted(claim.source_ids),
     })
+
+
+# Review/publication state is the outcome of a review, not part of what was reviewed.
+_ASSET_UNFINGERPRINTED = {"review_status", "publication_status", "notes", "intended_scene_ids"}
+
+
+def asset_fingerprint(asset: Asset) -> str:
+    """Fingerprint of an asset's file checksum and every rights/provenance field."""
+    return _digest(asset.model_dump(mode="json", exclude=_ASSET_UNFINGERPRINTED))
+
+
+def asset_approval_state(log: ApprovalLog, asset: Asset) -> Literal["none", "approved", "stale", "blocked"]:
+    events = [e for e in log.events if e.asset_id == asset.asset_id]
+    if not events:
+        return "none"
+    last = events[-1]
+    if last.kind is ApprovalKind.ASSET_BLOCKED:
+        return "blocked"
+    return "approved" if last.fingerprint == asset_fingerprint(asset) else "stale"
 
 
 def script_fingerprint(scenes: SceneManifest, ledger: ResearchLedger) -> str:
@@ -100,11 +120,12 @@ def load_log(project_dir: Path, manifest: ProjectManifest) -> ApprovalLog:
 
 def append_event(project_dir: Path, manifest: ProjectManifest, log: ApprovalLog, *,
                  kind: ApprovalKind, by: str, rationale: str = "", fingerprint: str | None = None,
-                 claim_id: str | None = None, at: datetime | None = None) -> ApprovalEvent:
+                 claim_id: str | None = None, asset_id: str | None = None,
+                 at: datetime | None = None) -> ApprovalEvent:
     """Validate and append one event, then write the log atomically."""
     event = ApprovalEvent(
         event_id=f"evt-{len(log.events) + 1:04d}", kind=kind, by=by, at=at or utcnow(),
-        rationale=rationale, fingerprint=fingerprint, claim_id=claim_id,
+        rationale=rationale, fingerprint=fingerprint, claim_id=claim_id, asset_id=asset_id,
     )
     updated = ApprovalLog(events=[*log.events, event])
     path = safe_resolve(project_dir, manifest.paths.approvals)

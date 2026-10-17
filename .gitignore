@@ -28,6 +28,7 @@ projects/*/narration/**
 projects/*/renders/**
 projects/*/tmp/**
 !projects/*/**/.gitkeep
+!projects/*/assets/registry.json
 media/
 renders/
 tmp/

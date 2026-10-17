@@ -14,6 +14,7 @@ from typing import Any, Literal, TypeVar
 
 from pydantic import BaseModel, ValidationError
 
+from ..assets.rights import build_rights_report
 from ..approvals import active_exceptions, script_approval_state, script_fingerprint
 from ..research.report import build_report
 from ..schemas import ApprovalLog, AssetRegistry, ProjectManifest, ResearchLedger, SceneManifest
@@ -261,6 +262,13 @@ def _check_references(result: ValidationResult) -> None:
                 missing(sid, scene_ids, "ref.missing_scene", loc, "scene_id")
             if a.derived_from is not None:
                 missing(a.derived_from, assets, "ref.missing_asset", loc, "derived_from")
+                parent = assets.get(a.derived_from)
+                if parent is not None and parent.derivatives_allowed is False:
+                    result.add("error", "asset.derivative_not_allowed", loc,
+                               f"derived from {a.derived_from!r}, which does not allow derivatives")
+                if a.path.startswith("assets/originals/"):
+                    result.add("warning", "asset.derived_in_originals", loc,
+                               "derivatives belong in assets/derived/, keeping originals untouched")
             if result.scenes and a.asset_id not in used and not a.intended_scene_ids \
                     and a.asset_id not in {x.derived_from for x in result.registry.assets}:
                 result.add("warning", "asset.unused", loc, "not used by any scene")
@@ -298,7 +306,10 @@ def _check_status_gates(result: ValidationResult) -> None:
     if status is ProjectStatus.PUBLICATION_READY:
         report = build_report(result.ledger, result.scenes,
                               active_exceptions(result.approvals, result.ledger))
-        for f in report.blockers:
+        blockers = list(report.blockers)
+        if result.registry is not None:
+            blockers += build_rights_report(result.registry, result.scenes, result.approvals).blockers
+        for f in blockers:
             result.add("error", "project.publication_blocked", f"{MANIFEST_NAME}: {f.subject}",
                        f"{f.code}: {f.message}")
 

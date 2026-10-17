@@ -9,7 +9,8 @@ Phase status, decisions, tests, known issues, and next action. Newest entries at
 | 0 — Discovery | PASS (approved by user) | 2026-10-17 |
 | 1 — Python foundation and CLI | PASS (committed 5e6d735) | 2026-10-17 |
 | 2 — Data contracts | PASS (committed d060526) | 2026-10-17 |
-| 3 — Research, claim ledger, script approval | PASS (awaiting user review) | 2026-10-17 |
+| 3 — Research, claim ledger, script approval | PASS (committed ea90b23) | 2026-10-17 |
+| 4 — Asset sourcing, licensing, provenance | PASS (awaiting user review) | 2026-10-17 |
 
 ---
 
@@ -179,4 +180,44 @@ All findings below come from command output observed on 2026-10-17.
 - Not pushed to GitHub yet: `gh auth login` is still pending on the user's side.
 
 ### Next action
-- User reviews Phase 3. Optionally, they can try reviewing and approving the demo claims themselves. Then Phase 4: asset sourcing, licensing and provenance.
+- Done. Phase 3 committed as `ea90b23`.
+
+---
+
+## Phase 4 — Asset sourcing, licensing and provenance (2026-10-17)
+
+### Implemented
+- **Rights checklist fields** on assets: `identifiable_people` and `people_clearance`, `trademarks_visible` and `trademark_notes`, `raw_redistribution_allowed`, `platform_cleared`. Approval also requires `license_url` for downloads and `generation.terms_url` for generated media.
+- **Manual intake** (`assets add`):
+  - copies the file into `assets/originals/<id>.<ext>` or the media root, verifies the SHA-256 against the source, and makes the copy read-only
+  - never overwrites, checks disk space, and supports `--dry-run`
+  - starts every asset as `pending_review`, or `blocked` if commercial use isn't allowed
+  - takes extra fields from a `--metadata` JSON file
+- **Derivatives** (`assets derive`): stored in `assets/derived/`, inherit the original's rights and point back to it. Refused when the original forbids derivatives.
+- **Asset review** (`assets review --decision approve|block`): recorded in `approvals.json` with a fingerprint of the checksum and rights fields, so later edits make the approval stale. Blocking needs a reason. Approval is refused while any checklist item is missing.
+- **Rights report** (`assets report`): groups assets as approved, pending_review or blocked, and lists what each pending asset still needs. Non-exceptable publication blockers: unapproved, blocked, stale or unrecorded assets used by scenes, and derivatives of no-derivatives originals.
+- **Credits** (`assets credits`): exact attribution text (de-duplicated, in order of first use), licensed material and AI-generated material.
+- **Publication gate:** `publication_ready` now also requires zero rights blockers. Validation also errors on no-derivatives violations and warns about derivatives stored under `originals/`.
+- `.gitignore` now keeps `projects/*/assets/registry.json` tracked while still ignoring media.
+- Docs: `docs/RIGHTS_AND_PROVENANCE.md`; `docs/SCHEMAS.md` updated; JSON Schemas regenerated.
+
+### Decisions
+- Intake is manual only. There are no stock or archive search adapters, downloads or scraping in the MVP; search adapters come later and only for sources whose terms allow API access.
+- Asset approval reuses Phase 3's append-only approval log and fingerprinting, so there's one audit trail for every human decision.
+- Rights blockers can never be excepted, unlike research blockers. Publishing with unknown rights isn't a judgment call.
+- A derivative copies its parent's rights fields but gets its own review.
+- The demo graphics stay `pending_review`. I didn't approve them, so `assets report` shows 4 publication blockers.
+
+### Verification
+- `pytest`: 191 passed. Tests cover the original staying unchanged (bytes and mtime), the copy being read-only, refusals, the media root, the disk margin, derivatives, the checklist, staleness, the gate and credits.
+- `assets report` on the demo: 4 pending, 4 blockers ("rights recorded; ready for human review").
+- `project validate examples/demo-project --strict`: OK.
+- No network or external services used.
+
+### Known issues / limitations
+- No stock or archive search adapters (deliberately deferred).
+- Read-only originals guard against accidental edits, not against someone deliberately changing permissions. Checksums catch either.
+- Not pushed to GitHub yet: `gh auth login` is still pending on the user's side.
+
+### Next action
+- User reviews Phase 4. Then Phase 5: narration, timing and subtitles. That phase needs FFmpeg, and Homebrew doesn't support this Intel Mac, so we need to pick an install route first.

@@ -2,7 +2,7 @@
 
 A modular, rights-aware pipeline for evidence-led YouTube documentaries. It tracks claims and sources, records asset provenance and licences, builds narration-timed timelines, and renders with FFmpeg. Humans approve scripts, visuals and exports. Nothing is published automatically.
 
-Status: **Phase 3 (research, claim ledger, script approval)** complete. See `docs/BUILD_LOG.md`, `docs/SCHEMAS.md` and `docs/EDITORIAL_QA.md`.
+Status: **Phase 4 (asset intake, licensing, provenance)** complete. See `docs/BUILD_LOG.md`, `docs/SCHEMAS.md`, `docs/EDITORIAL_QA.md` and `docs/RIGHTS_AND_PROVENANCE.md`.
 
 ## Quick start
 
@@ -47,6 +47,11 @@ Full setup, including FFmpeg, is in `docs/INSTALL.md`. The manifest formats are 
 | `pipeline research suggest <path>` | exits 3: no LLM provider until Phase 9 |
 | `pipeline script validate <path>` | working |
 | `pipeline script approve / revoke <path> --by NAME` | working (human decision) |
+| `pipeline assets report <path> [--json] [--strict]` | working |
+| `pipeline assets add <path> <file> --id --type --method ... [--dry-run]` | working (manual intake) |
+| `pipeline assets derive <path> <parent> <file> --id` | working |
+| `pipeline assets review <path> <asset> --decision approve/block --by NAME` | working (human decision) |
+| `pipeline assets credits <path> [--write]` | working |
 | `pipeline render preview <path>` | not implemented, exits 3 (Phase 7) |
 
 Exit codes: `0` ok, `1` check/validation failure, `2` usage error, `3` not implemented, `4` configuration error.

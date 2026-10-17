@@ -22,6 +22,10 @@ from .config import ConfigError, PipelineConfig, load_config
 from .doctor import Status, has_failures, run_checks
 from .logging_utils import configure_logging, get_logger
 from .project import ProjectError, apply_migration, init_project, plan_migration, validate_project
+from .assets import (
+    AssetReviewError, Decision, IntakeError, apply_intake, build_credits, build_rights_report,
+    format_rights_report, plan_derivative, plan_intake, review_asset,
+)
 from .approvals import active_exceptions, append_event, check_reviewer, claim_fingerprint, load_log
 from .project.validate import ValidationResult
 from .providers.llm import ProviderUnavailableError, get_llm_provider
@@ -31,6 +35,7 @@ from .research import (
 )
 from .schemas import export_json_schemas
 from .schemas.approval import ApprovalKind
+from .schemas.asset import AssetRoot, AssetType, CommercialUse, CreationMethod
 from .schemas.research import ClaimStatus
 from .script import ScriptError, approve_script, check_script, revoke_script_approval
 from .utils.fs import safe_resolve, write_text_atomic
@@ -47,11 +52,13 @@ render_app = typer.Typer(help="Render videos from validated projects.", no_args_
 schema_app = typer.Typer(help="Inspect and export data contracts.", no_args_is_help=True)
 research_app = typer.Typer(help="Sources, claims, reviews and the research report.", no_args_is_help=True)
 script_app = typer.Typer(help="Script readiness and human approval.", no_args_is_help=True)
+assets_app = typer.Typer(help="Asset intake, rights review and credits.", no_args_is_help=True)
 app.add_typer(project_app, name="project")
 app.add_typer(render_app, name="render")
 app.add_typer(schema_app, name="schema")
 app.add_typer(research_app, name="research")
 app.add_typer(script_app, name="script")
+app.add_typer(assets_app, name="assets")
 
 
 def _config(ctx: typer.Context) -> PipelineConfig:
@@ -364,6 +371,150 @@ def script_revoke(
     except (ScriptError, ValueError) as exc:
         _fail(_error_text(exc))
     typer.echo(f"Approval revoked by {event.by} ({event.event_id}); status: {result.manifest.project_status}")
+
+
+@assets_app.command("report")
+def assets_report(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    as_json: bool = typer.Option(False, "--json", help="Machine-readable output."),
+    strict: bool = typer.Option(False, "--strict", help="Exit 1 if there are publication blockers."),
+) -> None:
+    """Group assets by publication status and list what blocks each one."""
+    result = _load_valid(ctx, path)
+    report = build_rights_report(result.registry, result.scenes, result.approvals)
+    typer.echo(json.dumps(report.to_dict(), indent=2) if as_json else format_rights_report(report))
+    if strict and report.blockers:
+        raise typer.Exit(EXIT_FAILED)
+
+
+@assets_app.command("add")
+def assets_add(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    file: Path = typer.Argument(..., help="File to ingest (it is copied, never moved or changed)"),
+    asset_id: str = typer.Option(..., "--id", help="New asset ID, e.g. s02-archive-photo"),
+    asset_type: AssetType = typer.Option(..., "--type"),
+    method: CreationMethod = typer.Option(..., "--method", help="How the asset was obtained."),
+    source_url: str = typer.Option(None, "--source-url"),
+    provider: str = typer.Option("", "--provider", help="Site, archive or service it came from."),
+    creator: str = typer.Option("", "--creator"),
+    rights_holder: str = typer.Option("", "--rights-holder"),
+    license_name: str = typer.Option("", "--license", help="Exact licence name, e.g. 'CC BY 4.0'."),
+    license_url: str = typer.Option("", "--license-url"),
+    commercial_use: CommercialUse = typer.Option(CommercialUse.UNKNOWN, "--commercial-use"),
+    attribution: str = typer.Option(None, "--attribution", help="Exact required attribution text."),
+    no_attribution: bool = typer.Option(False, "--no-attribution", help="Licence requires no attribution."),
+    evidence: str = typer.Option("", "--evidence", help="Where the rights decision comes from."),
+    scenes: list[str] = typer.Option([], "--scene", help="Intended scene ID (repeatable)."),
+    metadata: Path = typer.Option(None, "--metadata", help="JSON file with further asset fields."),
+    media: bool = typer.Option(False, "--media", help="Store under PIPELINE_MEDIA_ROOT."),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Validate and show the plan; copy nothing."),
+) -> None:
+    """Ingest a file you supply and record its source, licence and checksum."""
+    result = _load_valid(ctx, path)
+    if attribution is not None and no_attribution:
+        _fail("use either --attribution or --no-attribution, not both")
+    fields: dict = {}
+    if metadata is not None:
+        try:
+            fields = json.loads(metadata.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            _fail(f"cannot read --metadata: {exc}")
+        if not isinstance(fields, dict):
+            _fail("--metadata must contain a JSON object")
+    cli_fields = {
+        "asset_id": asset_id, "type": asset_type, "creation_method": method, "source_url": source_url,
+        "provider": provider, "creator": creator, "rights_holder": rights_holder,
+        "license_name": license_name, "license_url": license_url, "rights_evidence": evidence,
+        "intended_scene_ids": scenes,
+    }
+    fields.update({k: v for k, v in cli_fields.items() if v not in (None, "", [])})
+    if commercial_use is not CommercialUse.UNKNOWN or "commercial_use" not in fields:
+        fields["commercial_use"] = commercial_use
+    if attribution is not None:
+        fields.update(attribution_required=True, attribution_text=attribution)
+    elif no_attribution:
+        fields.update(attribution_required=False)
+    config = _config(ctx)
+    try:
+        plan = plan_intake(path, result.registry, file, fields,
+                           root=AssetRoot.MEDIA if media else AssetRoot.PROJECT, media_root=config.media_root)
+        for line in plan.describe():
+            typer.echo(("[dry-run] " if dry_run else "") + line)
+        gaps = [g for g in plan.asset.approval_blockers() if not g.startswith("review_status")]
+        for gap in gaps:
+            typer.echo(f"  before approval: {gap}")
+        if not dry_run:
+            apply_intake(path, result.manifest, result.registry, plan, min_free_gb=config.min_free_disk_gb)
+            typer.echo(f"Registered {plan.asset.asset_id}. It stays unapproved until 'pipeline assets review'.")
+    except IntakeError as exc:
+        _fail(str(exc))
+
+
+@assets_app.command("derive")
+def assets_derive(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    parent_id: str = typer.Argument(..., help="Original asset this file was made from"),
+    file: Path = typer.Argument(..., help="The derived file (crop, conversion, edit)"),
+    asset_id: str = typer.Option(..., "--id", help="New asset ID for the derivative"),
+    notes: str = typer.Option("", "--notes", help="What was changed."),
+    dry_run: bool = typer.Option(False, "--dry-run"),
+) -> None:
+    """Register a derivative; it inherits the original's rights and needs its own review."""
+    result = _load_valid(ctx, path)
+    config = _config(ctx)
+    try:
+        plan = plan_derivative(path, result.registry, parent_id, file, asset_id, notes=notes,
+                               media_root=config.media_root)
+        for line in plan.describe():
+            typer.echo(("[dry-run] " if dry_run else "") + line)
+        if not dry_run:
+            apply_intake(path, result.manifest, result.registry, plan, min_free_gb=config.min_free_disk_gb)
+            typer.echo(f"Registered derivative {asset_id} of {parent_id}.")
+    except IntakeError as exc:
+        _fail(str(exc))
+
+
+@assets_app.command("review")
+def assets_review(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    asset_id: str = typer.Argument(...),
+    decision: Decision = typer.Option(..., "--decision", help="approve or block"),
+    by: str = typer.Option(..., "--by", help="Your name, recorded as reviewer."),
+    note: str = typer.Option("", "--note", help="What you checked (required to block)."),
+) -> None:
+    """Record your rights decision on an asset."""
+    result = _load_valid(ctx, path)
+    try:
+        asset, event = review_asset(path, result.manifest, result.registry, result.approvals, asset_id,
+                                    decision=decision, by=by, note=note,
+                                    authorized=_config(ctx).authorized_reviewers)
+    except (AssetReviewError, ValueError) as exc:
+        _fail(_error_text(exc))
+    typer.echo(f"{asset_id}: {asset.publication_status} by {event.by} ({event.event_id})")
+
+
+@assets_app.command("credits")
+def assets_credits(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    write: bool = typer.Option(False, "--write", help="Also write reports/credits.md."),
+) -> None:
+    """Print exact attributions and licence credits for assets used in scenes."""
+    result = _load_valid(ctx, path)
+    credits = build_credits(result.registry, result.scenes)
+    text = credits.to_markdown(result.manifest.title)
+    typer.echo(text, nl=False)
+    for aid, reason in credits.skipped.items():
+        typer.echo(f"skipped {aid}: {reason}", err=True)
+    if write:
+        out = safe_resolve(path, "reports/credits.md")
+        out.parent.mkdir(parents=True, exist_ok=True)
+        write_text_atomic(out, text)
+        typer.echo(f"Wrote {out}", err=True)
 
 
 @render_app.command("preview")

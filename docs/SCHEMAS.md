@@ -84,7 +84,7 @@ The validator warns if a claim cites a source that doesn't list it, or the other
 
 ## `assets/registry.json` — Asset
 
-`asset_id`, `path`, `root` (`project` or `media`), `type`, `creation_method` (`downloaded`, `user_supplied`, `generated`, `original_graphic`, `recorded`), `provider`, `source_url`, `creator`, `rights_holder`, `license_name`, `license_url`, `commercial_use` (`allowed`, `not_allowed`, `unknown`), `attribution_required` (`true`, `false`, or `null` for unknown), `attribution_text`, `derivatives_allowed`, `rights_evidence`, `generation` (provider, model, version, date, prompt, settings, terms), `acquired_date`, `sha256`, `derived_from`, `intended_scene_ids`, `review_status`, `publication_status` (`approved`, `pending_review`, `blocked`), `notes`.
+`asset_id`, `path`, `root` (`project` or `media`), `type`, `creation_method` (`downloaded`, `user_supplied`, `generated`, `original_graphic`, `recorded`), `provider`, `source_url`, `creator`, `rights_holder`, `license_name`, `license_url`, `commercial_use` (`allowed`, `not_allowed`, `unknown`), `attribution_required` (`true`, `false`, or `null` for unknown), `attribution_text`, `derivatives_allowed`, `rights_evidence`, rights checklist (`identifiable_people`, `people_clearance`, `trademarks_visible`, `trademark_notes`, `raw_redistribution_allowed`, `platform_cleared`), `generation` (provider, model, version, date, prompt, settings, terms), `acquired_date`, `sha256`, `derived_from`, `intended_scene_ids`, `review_status`, `publication_status` (`approved`, `pending_review`, `blocked`), `notes`.
 
 **Unknown rights never default to approved.** `publication_status: "approved"` is rejected unless all of these are true:
 
@@ -92,13 +92,15 @@ The validator warns if a claim cites a source that doesn't list it, or the other
 - `commercial_use` is `allowed`
 - `attribution_required` is known, and `attribution_text` is filled in if it's `true`
 - `rights_evidence` and `rights_holder` or `creator` are filled in
-- downloaded and user-supplied assets also have a `license_name`
+- downloaded and user-supplied assets also have a `license_name`, and downloaded ones a `license_url`
+- generated assets record `generation.terms_url`
+- the applicable rights-checklist questions are answered (see `docs/RIGHTS_AND_PROVENANCE.md`)
 
 Generated assets must record `generation`. Downloaded assets must record `source_url`. Each file has exactly one record, and the validator compares its sha256 against the file on disk.
 
 ## `approvals.json` — ApprovalLog
 
-An append-only list of events: `event_id`, `kind` (`script_approved`, `script_approval_revoked`, `claim_exception`, `claim_exception_revoked`), `by`, `at`, `rationale`, `fingerprint`, `claim_id`. Current state is always derived from the log, never stored separately. Approvals and exceptions record the fingerprint of the content a person reviewed, and any later change makes them stale. Claim exceptions need a rationale of at least 20 characters. If the file is missing, there are no approvals yet. See `docs/EDITORIAL_QA.md`.
+An append-only list of events: `event_id`, `kind` (`script_approved`, `script_approval_revoked`, `claim_exception`, `claim_exception_revoked`, `asset_approved`, `asset_blocked`), `by`, `at`, `rationale`, `fingerprint`, `claim_id`, `asset_id`. Current state is always derived from the log, never stored separately. Approvals and exceptions record the fingerprint of the content a person reviewed, and any later change makes them stale. Claim exceptions need a rationale of at least 20 characters. If the file is missing, there are no approvals yet. See `docs/EDITORIAL_QA.md`.
 
 ## Render report
 
@@ -111,13 +113,14 @@ Written to `reports/` from Phase 7 onward. It records the profile, status, times
 ```
 
 - **Errors** (exit 1): invalid JSON, unsupported schema, schema violations, duplicate IDs or scene orders, missing references, unsafe paths, missing files, checksum mismatches, a `media` root with no `PIPELINE_MEDIA_ROOT`.
-- **Status gates** (errors): `script_approved`, `in_production`, `in_review` and `publication_ready` need a current, non-stale script approval. `publication_ready` also needs zero research blockers.
+- **Status gates** (errors): `script_approved`, `in_production`, `in_review` and `publication_ready` need a current, non-stale script approval. `publication_ready` also needs zero research blockers and zero rights blockers.
+- Derivatives of assets with `derivatives_allowed: false` are errors.
 - **Warnings** (exit 0, or 1 with `--strict`): folder name differs from `project_id`, asymmetric ledger links, unused assets, approval events that point at deleted claims.
 - `--skip-checksums` skips hashing for a quick check.
 
 ## Compatibility
 
-Adding a new optional field with a safe default doesn't change `schema_version`. Older files remain valid and mean the same thing. Phase 3 added `Claim.review_notes`, `Claim.evidence_basis`, `Claim.origin` and `paths.approvals` this way. Renaming, removing or reinterpreting a field requires a new version and a migration.
+Adding a new optional field with a safe default doesn't change `schema_version`. Older files remain valid and mean the same thing. Phase 3 added `Claim.review_notes`, `Claim.evidence_basis`, `Claim.origin` and `paths.approvals` this way. Phase 4 added the asset rights-checklist fields and asset events. Phase 4 also tightened what `publication_status: approved` requires, but no existing files were affected because no asset had been approved yet. Renaming, removing or reinterpreting a field requires a new version and a migration.
 
 ## Migration
 

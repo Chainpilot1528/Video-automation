@@ -207,3 +207,57 @@ def test_research_suggest_without_provider(runner, demo):
 def test_commands_refuse_invalid_project(runner, tmp_path):
     r = runner.invoke(app, ["research", "report", str(tmp_path / "missing")])
     assert r.exit_code == EXIT_FAILED
+
+
+def test_assets_cli_flow(runner, demo, tmp_path):
+    photo = tmp_path / "p.png"
+    photo.write_bytes(b"png bytes")
+    r = runner.invoke(app, ["assets", "add", str(demo), str(photo), "--id", "s02-photo", "--type", "image",
+                            "--method", "downloaded", "--source-url", "https://example.org/p",
+                            "--creator", "Jane Doe", "--license", "CC BY 4.0",
+                            "--license-url", "https://creativecommons.org/licenses/by/4.0/",
+                            "--commercial-use", "allowed", "--attribution", "Photo: Jane Doe, CC BY 4.0",
+                            "--evidence", "archive page", "--scene", "s02-claim-ledger", "--dry-run"])
+    assert r.exit_code == EXIT_OK, r.output
+    assert "[dry-run] Copy" in r.output and "before approval: derivatives_allowed is unknown" in r.output
+    assert not (demo / "assets/originals").exists()
+
+    meta = tmp_path / "meta.json"
+    meta.write_text(json.dumps({"derivatives_allowed": True, "identifiable_people": False,
+                                "trademarks_visible": False}))
+    args = ["assets", "add", str(demo), str(photo), "--id", "s02-photo", "--type", "image",
+            "--method", "downloaded", "--source-url", "https://example.org/p", "--creator", "Jane Doe",
+            "--license", "CC BY 4.0", "--license-url", "https://creativecommons.org/licenses/by/4.0/",
+            "--commercial-use", "allowed", "--attribution", "Photo: Jane Doe, CC BY 4.0",
+            "--evidence", "archive page", "--metadata", str(meta)]
+    r = runner.invoke(app, args)
+    assert r.exit_code == EXIT_OK, r.output
+    assert "before approval" not in r.output
+    assert runner.invoke(app, args).exit_code == EXIT_FAILED  # duplicate ID
+
+    r = runner.invoke(app, ["assets", "review", str(demo), "s02-photo", "--decision", "approve", "--by", "Asha"])
+    assert r.exit_code == EXIT_OK, r.output
+    r = runner.invoke(app, ["assets", "report", str(demo)])
+    assert "approved: 1 (s02-photo)" in r.output
+    assert runner.invoke(app, ["assets", "report", str(demo), "--strict"]).exit_code == EXIT_FAILED
+
+    crop = tmp_path / "crop.png"
+    crop.write_bytes(b"cropped")
+    r = runner.invoke(app, ["assets", "derive", str(demo), "s02-photo", str(crop), "--id", "s02-crop"])
+    assert r.exit_code == EXIT_OK, r.output
+    assert (demo / "assets/derived/s02-crop.png").is_file()
+
+
+def test_assets_review_refuses_and_credits(runner, demo):
+    r = runner.invoke(app, ["assets", "review", str(demo), "s01-title", "--decision", "block", "--by", "Asha"])
+    assert r.exit_code == EXIT_FAILED and "reason" in r.output
+    r = runner.invoke(app, ["assets", "credits", str(demo), "--write"])
+    assert r.exit_code == EXIT_OK and (demo / "reports/credits.md").is_file()
+
+
+def test_assets_add_conflicting_attribution_flags(runner, demo, tmp_path):
+    f = tmp_path / "x.png"
+    f.write_bytes(b"x")
+    r = runner.invoke(app, ["assets", "add", str(demo), str(f), "--id", "x", "--type", "image",
+                            "--method", "user_supplied", "--attribution", "A", "--no-attribution"])
+    assert r.exit_code == EXIT_FAILED

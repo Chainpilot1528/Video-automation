@@ -59,6 +59,12 @@ class PublicationStatus(StrEnum):
     BLOCKED = "blocked"
 
 
+EXTERNAL_METHODS = frozenset({CreationMethod.DOWNLOADED, CreationMethod.USER_SUPPLIED,
+                              CreationMethod.GENERATED})
+VISUAL_TYPES = frozenset({AssetType.IMAGE, AssetType.VIDEO})
+AUDIO_MUSIC_TYPES = frozenset({AssetType.MUSIC, AssetType.SOUND_EFFECT})
+
+
 class GenerationInfo(Record):
     provider: NonEmptyStr
     model: NonEmptyStr
@@ -86,6 +92,13 @@ class Asset(Record):
     attribution_text: str = ""
     derivatives_allowed: bool | None = None
     rights_evidence: str = ""
+    # Rights checklist. None = not yet checked; approval needs the relevant ones answered.
+    identifiable_people: bool | None = None
+    people_clearance: str = ""       # release obtained, or why none is needed (e.g. editorial use)
+    trademarks_visible: bool | None = None
+    trademark_notes: str = ""        # how use avoids implying endorsement
+    raw_redistribution_allowed: bool | None = None  # may the raw file ship in a public archive?
+    platform_cleared: bool | None = None  # music/SFX: confirmed safe for YouTube/Instagram use
     generation: GenerationInfo | None = None
     acquired_date: date | None = None
     sha256: Sha256
@@ -134,7 +147,36 @@ class Asset(Record):
         if self.creation_method in (CreationMethod.DOWNLOADED, CreationMethod.USER_SUPPLIED) \
                 and not self.license_name:
             problems.append("license_name is empty")
-        return problems
+        if self.creation_method is CreationMethod.DOWNLOADED and not self.license_url:
+            problems.append("license_url is empty (record the exact licence for this asset)")
+        if self.creation_method is CreationMethod.GENERATED and self.generation \
+                and not self.generation.terms_url:
+            problems.append("generation.terms_url is empty (record the service terms)")
+        return problems + self.checklist_gaps()
+
+    @property
+    def is_external(self) -> bool:
+        return self.creation_method in EXTERNAL_METHODS
+
+    def checklist_gaps(self) -> list[str]:
+        """Rights-checklist questions that must be answered before approval."""
+        gaps = []
+        visual = self.type in VISUAL_TYPES
+        if self.is_external and self.derivatives_allowed is None:
+            gaps.append("derivatives_allowed is unknown")
+        if visual and self.creation_method is not CreationMethod.ORIGINAL_GRAPHIC:
+            if self.identifiable_people is None:
+                gaps.append("identifiable_people is unknown")
+            elif self.identifiable_people and not self.people_clearance:
+                gaps.append("identifiable people shown but people_clearance is empty")
+        if visual and self.is_external:
+            if self.trademarks_visible is None:
+                gaps.append("trademarks_visible is unknown")
+            elif self.trademarks_visible and not self.trademark_notes:
+                gaps.append("trademarks visible but trademark_notes is empty")
+        if self.type in AUDIO_MUSIC_TYPES and self.is_external and self.platform_cleared is not True:
+            gaps.append("music/SFX not confirmed cleared for platform use (platform_cleared)")
+        return gaps
 
 
 class AssetRegistry(Record):

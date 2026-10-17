@@ -3,6 +3,19 @@
     "ApprovalEvent": {
       "additionalProperties": false,
       "properties": {
+        "asset_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Asset Id"
+        },
         "at": {
           "format": "date-time",
           "title": "At",
@@ -67,7 +80,9 @@
         "script_approved",
         "script_approval_revoked",
         "claim_exception",
-        "claim_exception_revoked"
+        "claim_exception_revoked",
+        "asset_approved",
+        "asset_blocked"
       ],
       "title": "ApprovalKind",
       "type": "string"

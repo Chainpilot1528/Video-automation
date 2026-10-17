@@ -4,6 +4,7 @@ import pytest
 from conftest import edit_json
 from pydantic import ValidationError
 
+from reckoning_pipeline.assets import Decision, review_asset
 from reckoning_pipeline.approvals import (
     active_exceptions, append_event, check_reviewer, claim_fingerprint, load_log, script_approval_state,
     script_fingerprint,
@@ -25,6 +26,13 @@ def verify_all(demo):
                            on=date(2026, 10, 17))
     save_ledger(demo, result.manifest, led)
     return validate_project(demo)
+
+
+def approve_demo_assets(demo):
+    for aid in ("s01-title", "s02-claim-ledger", "s03-asset-record", "s04-review-gates"):
+        result = validate_project(demo)
+        review_asset(demo, result.manifest, result.registry, result.approvals, aid,
+                     decision=Decision.APPROVE, by="Test Reviewer")
 
 
 def test_event_rules():
@@ -122,6 +130,7 @@ def test_approval_required_statuses_and_publication_gate(demo):
     edit_json(demo / "project.json", lambda d: d.update(project_status="draft"))
     result = verify_all(demo)
     approve_script(result, result.approvals, by="Asha")
+    approve_demo_assets(demo)
     edit_json(demo / "project.json", lambda d: d.update(project_status="publication_ready"))
     assert validate_project(demo).ok
 
@@ -138,9 +147,11 @@ def test_publication_ready_blocked_by_research_blockers(demo):
     result = validate_project(demo)
     append_event(demo, result.manifest, result.approvals, kind=ApprovalKind.CLAIM_EXCEPTION_REVOKED,
                  by="Editor", claim_id=claim.claim_id)
+    approve_demo_assets(demo)
     edit_json(demo / "project.json", lambda d: d.update(project_status="publication_ready"))
-    errors = [i.code for i in validate_project(demo).errors]
-    assert errors == ["project.publication_blocked"]
+    errors = validate_project(demo).errors
+    assert [i.code for i in errors] == ["project.publication_blocked"]
+    assert "claim.critical_unreviewed" in errors[0].message
 
 
 def test_approval_log_integrity(demo):
