@@ -27,3 +27,4 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+faulthandler_timeout = 240  # dump stacks if a test hangs (e.g. a stuck FFmpeg)

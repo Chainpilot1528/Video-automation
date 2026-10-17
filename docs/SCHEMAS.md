@@ -28,6 +28,9 @@ A test fails if the committed schemas are out of date.
 ├── visuals.json                    VisualPlan: beats → visuals (optional)
 ├── visuals/placeholders/           preview-only placeholder frames (git-ignored)
 ├── reports/visuals.html            contact sheet
+├── reports/timeline-<profile>.json TimelinePlan: compiled render plan
+├── reports/render-<profile>-<t>.json RenderReport
+├── renders/<profile>/              scene renders, final MP4 + SRT, logs (git-ignored)
 ├── reports/narration.json          NarrationReport: per-chunk measurements and warnings
 ├── assets/…                project-local asset files
 ├── narration/  renders/  reports/
@@ -121,9 +124,13 @@ An append-only list of events: `event_id`, `kind` (`script_approved`, `script_ap
 
 **GraphicSpec** (input to `pipeline graphics render`): `asset_id`, `kind` (`title`, `bar_chart`, `timeline`), `title`, `subtitle`, `source_ids`, `data_locator`, `units`, `bars` (`label`, `value` ≥ 0), `events` (`when`, `text`), `intended_scene_ids`.
 
+## Timeline plan
+
+`reports/timeline-<profile>.json` (**TimelinePlan**) records `project_id`, `profile` (size, fps, preset, CRF, audio), `burn_captions`, pipeline and FFmpeg versions, `total_duration`, `placeholder_count`, `warnings`, `fingerprint`, and `scenes`. Each scene has `start`, `duration`, `lead_in`, `fade_in`, `fade_out`, `narration` (asset, path, sha256, duration), `segments` (beat, kind `image`/`video`/`placeholder`, path, sha256, start, duration, motion, label), scene-relative caption `cues`, and its `fingerprint`. See `docs/ARCHITECTURE.md` for the timing and cache model.
+
 ## Render report
 
-Written to `reports/` from Phase 7 onward. It records the profile, status, timestamps, pipeline and FFmpeg versions, exact commands, settings, input checksums, output metadata and checksum, warnings and errors.
+`reports/render-<profile>-<timestamp>.json` (**RenderReport**) is written for every render, successful or not. It records the profile, status, start and finish times, pipeline and FFmpeg versions, the exact FFmpeg commands run, settings, every input with its checksum and role, output metadata and checksum, warnings and errors.
 
 ## Validation
 

@@ -17,13 +17,17 @@ PLACEHOLDER_DIR = "visuals/placeholders"
 
 
 def placeholder_svg(beat: VisualBeat) -> str:
-    lines = wrap(beat.requirements, 40, W - 400)[:4]
+    return placeholder_svg_text(f"{beat.scene_id} · {beat.beat_id} · {beat.visual_type.value}", beat.requirements)
+
+
+def placeholder_svg_text(heading: str, detail: str) -> str:
+    lines = wrap(detail, 40, W - 400)[:4]
     body = (f'<rect x="60" y="60" width="{W - 120}" height="{H - 120}" fill="none" stroke="#d9534f" '
             f'stroke-width="8" stroke-dasharray="40 24"/>\n'
             f'<text x="{W // 2}" y="300" font-family="{FONT}" font-size="72" font-weight="700" fill="#d9534f" '
             f'text-anchor="middle">PLACEHOLDER: NOT FOR PUBLICATION</text>\n'
             f'<text x="{W // 2}" y="400" font-family="{FONT}" font-size="44" fill="#f2efe8" '
-            f'text-anchor="middle">{escape(beat.scene_id)} · {escape(beat.beat_id)} · {escape(beat.visual_type.value)}</text>\n')
+            f'text-anchor="middle">{escape(heading)}</text>\n')
     for i, line in enumerate(lines):
         body += (f'<text x="{W // 2}" y="{540 + i * 56}" font-family="{FONT}" font-size="40" fill="#9a968d" '
                  f'text-anchor="middle">{escape(line)}</text>\n')

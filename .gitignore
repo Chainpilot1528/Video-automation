@@ -30,7 +30,7 @@ projects/*/tmp/**
 projects/*/visuals/placeholders/
 !projects/*/**/.gitkeep
 !projects/*/assets/registry.json
-media/
+/media/
 renders/
 tmp/
 *.tmp

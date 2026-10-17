@@ -101,11 +101,6 @@ def test_migrate_dry_run_writes_nothing(runner, tmp_path):
     assert runner.invoke(app, ["project", "validate", str(d)]).exit_code == EXIT_OK
 
 
-def test_render_preview_not_implemented(runner, tmp_path):
-    result = runner.invoke(app, ["render", "preview", str(tmp_path)])
-    assert result.exit_code == EXIT_NOT_IMPLEMENTED
-    assert "Phase 7" in result.output
-
 
 def test_missing_argument_is_usage_error(runner):
     assert runner.invoke(app, ["project", "validate"]).exit_code == 2

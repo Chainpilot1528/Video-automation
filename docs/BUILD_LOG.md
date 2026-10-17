@@ -12,7 +12,8 @@ Phase status, decisions, tests, known issues, and next action. Newest entries at
 | 3 — Research, claim ledger, script approval | PASS (committed ea90b23) | 2026-10-17 |
 | 4 — Asset sourcing, licensing, provenance | PASS (committed 98a99d6) | 2026-10-17 |
 | 5 — Narration, timing, subtitles | PASS (committed a4b697e) | 2026-10-17 |
-| 6 — Visual planning and provider adapters | PASS (awaiting user review) | 2026-10-17 |
+| 6 — Visual planning and provider adapters | PASS (committed bac1068) | 2026-10-17 |
+| 7 — Timeline compiler and FFmpeg rendering | PASS (awaiting user review) | 2026-10-18 |
 
 ---
 
@@ -296,4 +297,51 @@ All findings below come from command output observed on 2026-10-17.
 - Not pushed to GitHub yet: `gh auth login` is still pending.
 
 ### Next action
-- User reviews Phase 6. Then Phase 7: timeline compiler and FFmpeg rendering, a four-scene preview MP4 with per-scene caching.
+- Done. Phase 6 committed as `bac1068`.
+
+---
+
+## Phase 7 — Timeline compiler and FFmpeg rendering (2026-10-18)
+
+### Implemented
+- **Profiles:** `preview` (960×540, veryfast, CRF 28, placeholders allowed, silent scenes allowed) and `master_16x9` (project resolution, medium, CRF 18, needs narration, no placeholders). `vertical_9x16` exits with a Phase 11 message.
+- **Timeline compiler** (`timeline/compiler.py`, pure):
+  - Narrated scene = 0.25 s lead-in + measured narration + 0.5 s tail; silent scene = planned estimate.
+  - Fades sit inside each scene (no overlaps), with dissolves rendered as a dip through black.
+  - Beats split evenly or follow explicit offsets.
+  - Placeholders fill unresolved or unplanned scenes.
+  - Generated and reconstruction labels are carried through.
+  - Captions are retimed per scene.
+  - Per-scene fingerprints cover all inputs, the profile, the FFmpeg version and a hash of the command builder.
+- **Command builder** (`render/commands.py`, pure): argument arrays only. Helper files are referenced by relative names, so no text is interpolated into filtergraphs. It explicitly normalizes size, fps, yuv420p and 48 kHz stereo AAC, and supports slow-push and pan via zoompan, labels via drawtext, and captions via libass with a backing box.
+- **Runner** (`render/runner.py`):
+  - Re-validates the project including checksums and checks disk space.
+  - Pre-decodes every picture input, and gives each FFmpeg call a timeout.
+  - Renders each scene to `.partial`, verifies it with ffprobe and promotes it atomically; reuses a scene only on an exact fingerprint match that still probes.
+  - Concat-copies the scenes and validates the final file's duration, size, fps, codecs and audio rate.
+  - Writes fingerprint-named outputs (never overwritten), sidecar SRT, and `final_duration_seconds` back to scenes.
+  - Writes a render report for both success and failure. Logs and intermediates are kept on failure, and a re-run resumes.
+- CLI: `timeline build`, `render preview`, `render master` (`--burn-captions`, `--dry-run`), `render vertical` (exits 3).
+- Docs: `docs/ARCHITECTURE.md` (new: modules, data flow, provider boundaries, cache and timing model), the Phase 7 section in `OPERATIONS.md`, and updates to `SCHEMAS.md` and the README. JSON Schemas regenerated.
+
+### Issues found and fixed during verification
+- **Stale cache after a renderer change:** changing caption styling reused old scene renders. Fixed by hashing `render/commands.py` into every scene fingerprint.
+- **Hang on an undecodable image:** FFmpeg's looped-image input spun at 170% CPU for over 9 minutes. Fixed by pre-decoding every input and adding per-call timeouts scaled to scene length. pytest now dumps stacks after 240 s.
+- **Frame-rate check:** after concat, the average frame rate (29.992) only just passed; the check now uses the nominal rate.
+- **Caption legibility:** burned captions collided with text in a graphic; they now sit on a semi-opaque backing box.
+- **Missing source files in git (affects commit `a4b697e`):** the `.gitignore` rule `media/` also matched the source package `src/reckoning_pipeline/media/`, so `media/tools.py` and `media/audio.py` were never committed in Phase 5. A clean checkout of `a4b697e` or `bac1068` won't import. Fixed by anchoring the rule to `/media/` and adding the package in this commit. Verified by exporting the staged tree on its own and running the full suite against it (271 passed).
+
+### Verification
+- `pytest`: 271 passed in about 60 s. Tests cover pure compiler and command tests, integration renders at 320×180, caching (one changed scene re-renders only that scene), narrated renders with sidecar and burned captions, master refusals, placeholders, failure logs and resume, and the CLI.
+- Demo preview with macOS `say` narration in `tmp/demo-preview/` (git-ignored): 4 scenes, about 36 s, 960×540 H.264/AAC at 30 fps. The first render took about 12 s; the cached re-render took 0.5 s. I inspected frames: slow push on the title, crisp diagrams, readable captions. Audio measures -18 LUFS integrated.
+- No network or external services used.
+
+### Known issues / limitations
+- No music mix or loudness normalization of the final mix yet.
+- `reveal`, `highlight` and `build` motion are shown static.
+- AAC padding can add up to about 50 ms per scene join (validated within tolerance).
+- The demo preview uses `say`, which isn't publishable. A publishable master needs your recorded narration and approved assets.
+- Not pushed to GitHub yet: `gh auth login` is still pending.
+
+### Next action
+- User reviews the demo preview and Phase 7. Then Phase 8: automated QA and the human-review report.

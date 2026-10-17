@@ -35,6 +35,9 @@ from .graphics import GraphicError, render_graphic
 from .providers.image import ImageProviderUnavailableError, get_image_provider
 from .schemas.visual import GraphicSpec
 from .visuals import build_visual_report, format_visual_report, write_placeholders, write_sheet
+from .render import ProfileError, RenderError, plan_render
+from .render import render as run_render
+from .timeline import TimelineError
 from .approvals import active_exceptions, append_event, check_reviewer, claim_fingerprint, load_log
 from .project.validate import ValidationResult
 from .providers.llm import ProviderUnavailableError, get_llm_provider
@@ -58,6 +61,7 @@ app = typer.Typer(help="Reckoning Self documentary production pipeline.", no_arg
                   add_completion=False)
 project_app = typer.Typer(help="Create and validate projects.", no_args_is_help=True)
 render_app = typer.Typer(help="Render videos from validated projects.", no_args_is_help=True)
+timeline_app = typer.Typer(help="Compile the render timeline without rendering.", no_args_is_help=True)
 schema_app = typer.Typer(help="Inspect and export data contracts.", no_args_is_help=True)
 research_app = typer.Typer(help="Sources, claims, reviews and the research report.", no_args_is_help=True)
 script_app = typer.Typer(help="Script readiness and human approval.", no_args_is_help=True)
@@ -68,6 +72,7 @@ visuals_app = typer.Typer(help="Visual plan report, contact sheet and placeholde
 graphics_app = typer.Typer(help="Deterministic original graphics (SVG).", no_args_is_help=True)
 app.add_typer(project_app, name="project")
 app.add_typer(render_app, name="render")
+app.add_typer(timeline_app, name="timeline")
 app.add_typer(schema_app, name="schema")
 app.add_typer(research_app, name="research")
 app.add_typer(script_app, name="script")
@@ -745,11 +750,91 @@ def graphics_render(
                    f"{spec.asset_id} (pending rights review)")
 
 
+def _validated_for_render(ctx: typer.Context, path: Path) -> ValidationResult:
+    """Full validation including asset checksums: never render from changed files."""
+    result = validate_project(path, media_root=_config(ctx).media_root, verify_checksums=True)
+    if not result.ok:
+        for issue in result.errors:
+            typer.echo(str(issue), err=True)
+        _fail(f"{path} has {len(result.errors)} validation error(s); fix them before rendering")
+    return result
+
+
+@timeline_app.command("build")
+def timeline_build(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    profile: str = typer.Option("preview", "--profile", help="preview or master_16x9"),
+) -> None:
+    """Compile and write reports/timeline-<profile>.json (no rendering)."""
+    result = _validated_for_render(ctx, path)
+    try:
+        plan, _ = plan_render(result, _tools(ctx), profile, media_root=_config(ctx).media_root)
+    except (ProfileError, TimelineError) as exc:
+        _fail(str(exc))
+    for s in plan.scenes:
+        kinds = ", ".join(f"{g.kind}{'+' + g.motion.value if g.motion.value != 'none' else ''}" for g in s.segments)
+        typer.echo(f"{s.start:7.2f}  {s.duration:6.2f} s  {s.scene_id:<24} {kinds}")
+    for w in plan.warnings:
+        typer.echo(f"warning: {w}")
+    typer.echo(f"\nTotal {plan.total_duration:.2f} s, {plan.placeholder_count} placeholder(s). "
+               f"Wrote reports/timeline-{profile}.json")
+
+
+def _render(ctx: typer.Context, path: Path, profile: str, burn_captions: bool, dry_run: bool) -> None:
+    result = _validated_for_render(ctx, path)
+    config = _config(ctx)
+    log = get_logger(project_id=result.manifest.project_id, stage=f"render.{profile}")
+    try:
+        out = run_render(result, _tools(ctx), profile, media_root=config.media_root, burn_captions=burn_captions,
+                         min_free_gb=config.min_free_disk_gb, dry_run=dry_run)
+    except (ProfileError, TimelineError) as exc:
+        _fail(str(exc))
+    except RenderError as exc:
+        log.error("render failed")
+        _fail(str(exc))
+    for w in out.plan.warnings:
+        typer.echo(f"warning: {w}")
+    if dry_run:
+        typer.echo(f"[dry-run] {len(out.plan.scenes)} scenes, {out.plan.total_duration:.2f} s, "
+                   f"{out.plan.placeholder_count} placeholder(s); timeline written to reports/timeline-{profile}.json")
+        return
+    log.info("rendered %d scene(s), reused %d", len(out.rendered), len(out.cached))
+    typer.echo(f"Scenes rendered: {', '.join(out.rendered) or 'none'}; reused: {', '.join(out.cached) or 'none'}")
+    typer.echo(f"Video: {out.output}{' (unchanged)' if out.final_cached else ''}")
+    if out.captions:
+        typer.echo(f"Captions: {out.captions}")
+    typer.echo(f"Report: {out.report_path}")
+    if out.plan.placeholder_count:
+        typer.echo(f"note: contains {out.plan.placeholder_count} placeholder(s); preview only")
+
+
 @render_app.command("preview")
-def render_preview(path: Path = typer.Argument(..., help="Project folder")) -> None:
-    """Render a low-resolution preview (Phase 7)."""
-    typer.echo("error: 'render preview' is not implemented yet (planned for Phase 7: "
-               "timeline compiler and FFmpeg rendering).", err=True)
+def render_preview(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    burn_captions: bool = typer.Option(False, "--burn-captions", help="Draw captions onto the picture."),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Compile the timeline only."),
+) -> None:
+    """Render a fast 960x540 preview MP4 (placeholders allowed)."""
+    _render(ctx, path, "preview", burn_captions, dry_run)
+
+
+@render_app.command("master")
+def render_master(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    burn_captions: bool = typer.Option(False, "--burn-captions", help="Draw captions onto the picture."),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Compile the timeline only."),
+) -> None:
+    """Render the 16:9 master at project resolution (needs narration and no placeholders)."""
+    _render(ctx, path, "master_16x9", burn_captions, dry_run)
+
+
+@render_app.command("vertical")
+def render_vertical(path: Path = typer.Argument(..., help="Project folder")) -> None:
+    """9:16 derivatives (Phase 11, after the landscape master is approved)."""
+    typer.echo("error: vertical renders come after the landscape master is approved (Phase 11).", err=True)
     raise typer.Exit(EXIT_NOT_IMPLEMENTED)
 
 

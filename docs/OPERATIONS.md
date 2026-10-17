@@ -139,3 +139,34 @@ Deterministic SVGs from a JSON spec. The same spec always produces the same file
 - Charts and timelines print their source citation in the frame, taken from the research ledger.
 - The output goes to `assets/graphics/<asset_id>.svg` and is registered as an `original_graphic` asset with pending rights review. An existing file is never overwritten; give a changed graphic a new `asset_id`.
 - Text sizes are chosen for phone legibility (body text at least 34 px at 1080p).
+
+## Rendering (Phase 7)
+
+```bash
+.venv/bin/pipeline timeline build projects/my-film
+```
+
+```bash
+.venv/bin/pipeline render preview projects/my-film --burn-captions
+```
+
+```bash
+.venv/bin/pipeline render master projects/my-film
+```
+
+| Profile | Size | Encoding | Rules |
+|---|---|---|---|
+| `preview` | 960×540 | x264 veryfast, CRF 28, AAC 128k | placeholders allowed; scenes without narration play silently for their planned estimate |
+| `master_16x9` | project resolution (1920×1080) | x264 medium, CRF 18, AAC 192k | every narrated scene needs measured audio; no placeholders |
+| `vertical_9x16` | — | — | Phase 11, after the landscape master is approved |
+
+- `timeline build` compiles `reports/timeline-<profile>.json` (scene starts, durations, segments, fades, cues) without rendering. Use `render … --dry-run` to do the same before a render.
+- Rendering first re-validates the whole project **including asset checksums**, and refuses changed files.
+- Each scene renders to `renders/<profile>/scenes/<scene>-<fingerprint>.mp4`. Unchanged scenes are reused, so editing one scene re-renders only that scene.
+- The final file is `renders/<profile>/<project>-<profile>-<fingerprint>.mp4`, checked for duration, size, frame rate, codecs and audio rate before it's promoted. Earlier renders are kept.
+- Sidecar captions on the final timeline sit next to the video (`.srt`). `--burn-captions` also draws them onto the picture in a readable box.
+- On-screen labels for generated visuals and reconstructions are always drawn.
+- `slow_push` and `pan` motion are rendered. `reveal`, `highlight` and `build` are shown static, with a warning, until they're authored as animated graphics.
+- Music isn't mixed yet. Narration plays at its recorded level; final loudness levelling comes with the audio-mix work.
+- **On failure**, the error names the scene. Its FFmpeg log is in `renders/<profile>/logs/<scene>.log`, and a `status: failed` render report is written. Fix the input and re-run: finished scenes are reused.
+- Disk space is checked before rendering. Superseded scene and final files are never auto-deleted; remove old `renders/` folders yourself when you need the space.
