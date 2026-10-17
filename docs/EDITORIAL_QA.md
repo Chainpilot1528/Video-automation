@@ -83,4 +83,18 @@ LLM help is optional, and none is enabled yet (Phase 9). When enabled, `pipeline
 - [ ] Every section advances the argument
 - [ ] Names, dates and numbers are checked against the sources
 
-Visual and final-video checklists are added in Phases 6 and 8.
+## Human review checklist for visuals
+
+Run `pipeline visuals sheet` and review `reports/visuals.html`:
+
+- [ ] Each visual communicates its beat's takeaway
+- [ ] No visual implies evidence that doesn't exist; precise claims use evidence or an explanatory graphic, not generic montage
+- [ ] Charts match their cited source, start at zero, and show the source on screen
+- [ ] Reconstructions and AI illustrations are labelled on screen
+- [ ] On-screen text is readable on a phone
+- [ ] Motion has a purpose; no gratuitous transitions
+- [ ] Every asset's rights are recorded (`pipeline assets report`)
+
+Mark a beat reviewed by setting its `review_status` to `approved` in `visuals.json`, or `changes_requested` with notes.
+
+The final-video checklist is added in Phase 8.

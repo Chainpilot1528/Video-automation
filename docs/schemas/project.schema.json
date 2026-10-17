@@ -53,6 +53,11 @@
           "default": "script/script.md",
           "title": "Script",
           "type": "string"
+        },
+        "visual_plan": {
+          "default": "visuals.json",
+          "title": "Visual Plan",
+          "type": "string"
         }
       },
       "title": "ProjectPaths",

@@ -27,6 +27,7 @@ projects/*/assets/**
 projects/*/narration/**
 projects/*/renders/**
 projects/*/tmp/**
+projects/*/visuals/placeholders/
 !projects/*/**/.gitkeep
 !projects/*/assets/registry.json
 media/

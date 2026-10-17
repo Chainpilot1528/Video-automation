@@ -58,6 +58,7 @@ class ProjectPaths(Record):
     scenes: RelPath = "scenes.json"
     asset_registry: RelPath = "assets/registry.json"
     approvals: RelPath = "approvals.json"  # optional; absent means no approvals yet
+    visual_plan: RelPath = "visuals.json"  # optional; absent means no visual plan yet
 
 
 class ProjectManifest(Record):

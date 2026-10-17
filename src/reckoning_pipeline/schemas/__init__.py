@@ -13,6 +13,7 @@ from .project import ProjectManifest
 from .render import RenderReport
 from .research import Claim, ResearchLedger, Source
 from .scene import Scene, SceneManifest
+from .visual import GraphicSpec, VisualBeat, VisualPlan
 
 # File-level models, keyed by the JSON Schema file name they export to.
 FILE_MODELS = {
@@ -21,6 +22,8 @@ FILE_MODELS = {
     "research_ledger": ResearchLedger,
     "asset_registry": AssetRegistry,
     "approvals": ApprovalLog,
+    "visuals": VisualPlan,
+    "graphic_spec": GraphicSpec,
     "pronunciations": PronunciationList,
     "narration_report": NarrationReport,
     "render_report": RenderReport,
@@ -48,6 +51,6 @@ def export_json_schemas(out_dir: Path) -> list[Path]:
 __all__ = [
     "SCHEMA_VERSION", "SUPPORTED_SCHEMA_VERSIONS", "FILE_MODELS",
     "ApprovalEvent", "ApprovalLog", "Asset", "AssetRegistry", "Claim", "ProjectManifest", "RenderReport",
-    "ResearchLedger", "Scene", "SceneManifest", "Source",
+    "GraphicSpec", "ResearchLedger", "Scene", "SceneManifest", "Source", "VisualBeat", "VisualPlan",
     "export_json_schemas", "json_schemas",
 ]

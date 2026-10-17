@@ -25,6 +25,9 @@ A test fails if the committed schemas are out of date.
 ├── narration/pronunciations.json   PronunciationList: TTS-only spelling overrides (optional)
 ├── narration/<scene>/<fp>.wav      built narration chunks (git-ignored)
 ├── captions/<id>.<lang>.srt        captions
+├── visuals.json                    VisualPlan: beats → visuals (optional)
+├── visuals/placeholders/           preview-only placeholder frames (git-ignored)
+├── reports/visuals.html            contact sheet
 ├── reports/narration.json          NarrationReport: per-chunk measurements and warnings
 ├── assets/…                project-local asset files
 ├── narration/  renders/  reports/
@@ -111,6 +114,12 @@ An append-only list of events: `event_id`, `kind` (`script_approved`, `script_ap
 - `narration/pronunciations.json` (**PronunciationList**): `overrides` is a list of `{term, say_as, case_sensitive, note}`. Overrides apply to TTS input only.
 - `reports/narration.json` (**NarrationReport**): rewritten on each build. It holds `project_id`, `built_at`, `provider` and `voice`, plus `chunks`. Each chunk records scene, asset, route, path, sha256, fingerprint, cached, duration, sample rate, channels, integrated LUFS, true peak, leading and trailing silence, and warnings. The report also lists `missing` scenes and project `warnings`.
 - Narration assets are named `narr-<scene>` (built chunks) and `narr-src-<scene>-t<N>` (imported takes). See `docs/OPERATIONS.md`.
+
+## `visuals.json` — VisualPlan
+
+`beats`: `beat_id`, `scene_id`, `order` (unique per scene), `takeaway`, `visual_question`, `visual_type` (`primary_evidence`, `original_graphic`, `licensed_stock`, `generated`, `typography`), `graphic_kind` (`title`, `diagram`, `chart`, `timeline`, `map`, `screen`), `asset_ids`, `source_ids`, `claim_ids`, `requirements`, `on_screen_text`, `motion` (`none`, `slow_push`, `pan`, `reveal`, `highlight`, `build`), `motion_purpose`, `offset_seconds`, `duration_seconds`, `is_reconstruction`, `label`, `generation` (`prompt`, `negative_prompt`, `provider`, `settings`, `status`), `review_status` (`pending`, `approved`, `changes_requested`), `notes`. See `docs/OPERATIONS.md` for the rules. A missing file means no plan yet.
+
+**GraphicSpec** (input to `pipeline graphics render`): `asset_id`, `kind` (`title`, `bar_chart`, `timeline`), `title`, `subtitle`, `source_ids`, `data_locator`, `units`, `bars` (`label`, `value` ≥ 0), `events` (`when`, `text`), `intended_scene_ids`.
 
 ## Render report
 

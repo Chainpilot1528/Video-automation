@@ -11,7 +11,8 @@ Phase status, decisions, tests, known issues, and next action. Newest entries at
 | 2 — Data contracts | PASS (committed d060526) | 2026-10-17 |
 | 3 — Research, claim ledger, script approval | PASS (committed ea90b23) | 2026-10-17 |
 | 4 — Asset sourcing, licensing, provenance | PASS (committed 98a99d6) | 2026-10-17 |
-| 5 — Narration, timing, subtitles | PASS (awaiting user review) | 2026-10-17 |
+| 5 — Narration, timing, subtitles | PASS (committed a4b697e) | 2026-10-17 |
+| 6 — Visual planning and provider adapters | PASS (awaiting user review) | 2026-10-17 |
 
 ---
 
@@ -260,4 +261,39 @@ All findings below come from command output observed on 2026-10-17.
 - Not pushed to GitHub yet, because the `gh auth login` step is still pending.
 
 ### Next action
-- User reviews Phase 5, and decides whether to evaluate Kokoro (download plus licence review). Then Phase 6: visual planning and provider adapters.
+- Done. Phase 5 committed as `a4b697e`.
+
+---
+
+## Phase 6 — Visual planning and provider adapters (2026-10-17)
+
+### Implemented
+- **Visual plan** (`schemas/visual.py`, `visuals.json`, optional `paths.visual_plan`): per-beat takeaway, visual question, type from the decision hierarchy, graphic kind, assets, sources and claims, requirements, on-screen text, purposeful motion, timing, reconstruction label, generation request, and review status. Schema rules: data graphics must cite sources, primary evidence must reference sources or claims, generated visuals and reconstructions must be labelled, motion needs a purpose, and unresolved beats must state requirements.
+- Project validation cross-checks beat references (scene, asset, source, claim), duplicate beat IDs and duplicate per-scene order.
+- **Visuals report** (`visuals report`): resolved or unresolved beats, rights and review state, gaps, generic visuals for precise or critical claims, type mismatches, unlabelled generated assets, text too long for a phone, and too many generated beats.
+- **Deterministic graphics** (`graphics render`): title cards, zero-based bar charts (1–8 bars, data locator required) and timelines (2–6 events) as SVG. The ledger citation is printed in the frame, text is XML-escaped, and labels are clamped to safe edges. Outputs are registered as `original_graphic` assets pending review and are never overwritten.
+- **Placeholders** (`visuals placeholders`): red "NOT FOR PUBLICATION" frames for unresolved beats, which are never registered as assets.
+- **Contact sheet** (`visuals sheet`): self-contained HTML (inline CSS, light and dark, phone-width friendly, all text escaped) with narration, beats, thumbnails, badges and gaps.
+- **Image provider interface** (`providers/image/base.py`), with none enabled. `visuals generate` exits 3 and points to placeholders or manual assets.
+- Demo project: `visuals.json` with one original-graphic beat per scene, linked to its claims and sources. It reports 0 gaps and 0 warnings.
+- Docs: Phase 6 section in `OPERATIONS.md`, visuals checklist in `EDITORIAL_QA.md`, `SCHEMAS.md` and README updated, JSON Schemas regenerated (`visuals`, `graphic_spec`). `.gitignore` covers placeholder frames.
+
+### Decisions
+- No image or video generation provider. Local diffusion isn't viable on an 8 GB Intel Mac; hosted options cost money and send prompts externally (Phase 9, with approval).
+- Beat `review_status` is a field in `visuals.json` rather than an approval-log event. Visual review is editorial and iterative, and the rights gate for the underlying assets is already fingerprinted in the log.
+- Charts are SVG only for now. Phase 7 rasterizes them with FFmpeg's librsvg (confirmed available).
+
+### Verification
+- `pytest`: 248 passed.
+- Rendered sample bar chart, timeline and title SVGs to PNG and inspected them. Fixed timeline edge labels that overflowed the safe area.
+- Rendered the contact sheet with headless Chrome and inspected it: gaps and warnings at the top, scene cards, thumbnails, the placeholder frame and badges.
+- `visuals report examples/demo-project`: 0 gaps, 0 warnings.
+- No network or external services used.
+
+### Known issues / limitations
+- No map renderer yet; `graphic_kind: map` beats need a manual asset.
+- Motion is planned but not rendered until Phase 7.
+- Not pushed to GitHub yet: `gh auth login` is still pending.
+
+### Next action
+- User reviews Phase 6. Then Phase 7: timeline compiler and FFmpeg rendering, a four-scene preview MP4 with per-scene caching.

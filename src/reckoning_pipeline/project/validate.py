@@ -17,7 +17,7 @@ from pydantic import BaseModel, ValidationError
 from ..assets.rights import build_rights_report
 from ..approvals import active_exceptions, script_approval_state, script_fingerprint
 from ..research.report import build_report
-from ..schemas import ApprovalLog, AssetRegistry, ProjectManifest, ResearchLedger, SceneManifest
+from ..schemas import ApprovalLog, AssetRegistry, ProjectManifest, ResearchLedger, SceneManifest, VisualPlan
 from ..schemas.project import ProjectStatus
 from ..schemas.asset import AssetRoot, AssetType
 from ..schemas.common import SUPPORTED_SCHEMA_VERSIONS, duplicates
@@ -51,6 +51,7 @@ class ValidationResult:
     scenes: SceneManifest | None = None
     registry: AssetRegistry | None = None
     approvals: ApprovalLog | None = None
+    visuals: VisualPlan | None = None
     issues: list[Issue] = field(default_factory=list)
 
     @property
@@ -94,10 +95,12 @@ def validate_project(path: Path, *, media_root: Path | None = None,
     result.scenes = _load(result, path, manifest.paths.scenes, SceneManifest)
     result.registry = _load(result, path, manifest.paths.asset_registry, AssetRegistry)
     result.approvals = _load_optional(result, path, manifest.paths.approvals, ApprovalLog)
+    result.visuals = _load_optional(result, path, manifest.paths.visual_plan, VisualPlan)
 
     _check_ids(result)
     _check_references(result)
     _check_approvals(result)
+    _check_visuals(result)
     if result.registry is not None:
         _check_asset_files(result, path, media_root, verify_checksums)
     _check_status_gates(result)
@@ -291,6 +294,31 @@ def _check_approvals(result: ValidationResult) -> None:
             if e.claim_id is not None and e.claim_id not in claim_ids:
                 result.add("warning", "approvals.unknown_claim", f"{rel}: {e.event_id}",
                            f"refers to claim {e.claim_id!r}, which is no longer in the ledger")
+
+
+def _check_visuals(result: ValidationResult) -> None:
+    if not result.visuals:
+        return
+    rel = result.manifest.paths.visual_plan
+    beats = result.visuals.beats
+    for value in duplicates([b.beat_id for b in beats]):
+        result.add("error", "id.duplicate", rel, f"duplicate beat_id {value!r}")
+    for value in duplicates([(b.scene_id, b.order) for b in beats]):
+        result.add("error", "visual.order_duplicate", rel, f"two beats share scene/order {value}")
+    pools = {
+        "scene": {s.scene_id for s in result.scenes.scenes} if result.scenes else None,
+        "asset": {a.asset_id: a for a in result.registry.assets} if result.registry else None,
+        "source": {s.source_id for s in result.ledger.sources} if result.ledger else None,
+        "claim": {c.claim_id for c in result.ledger.claims} if result.ledger else None,
+    }
+    for b in beats:
+        loc = f"{rel}: {b.beat_id}"
+        refs = [("scene", [b.scene_id]), ("asset", b.asset_ids), ("source", b.source_ids), ("claim", b.claim_ids)]
+        for kind, ids in refs:
+            pool = pools[kind]
+            for ref in ids:
+                if pool is not None and ref not in pool:
+                    result.add("error", f"ref.missing_{kind}", loc, f"unknown {kind} {ref!r}")
 
 
 def _check_status_gates(result: ValidationResult) -> None:

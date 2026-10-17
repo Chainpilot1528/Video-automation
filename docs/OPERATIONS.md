@@ -79,3 +79,63 @@ Longer terms are applied first, and matching respects word boundaries. Editing a
 - Caption times follow the narration timeline (scenes back to back). Phase 7 re-times them against the final edit.
 - A forced aligner can be plugged in through `subtitles.srt.ForcedAligner` for word-accurate timing (`word_aligned`). None ships yet.
 - If narration changes after captions were built, `captions build` refuses until `narration build` has been re-run.
+
+## Visual planning (Phase 6)
+
+Every narration beat gets a visual chosen down this hierarchy. It's a decision order, not a quota:
+
+1. **Primary evidence**: documents, original data, real artifacts or footage that directly support the claim.
+2. **Original graphics**: diagrams, charts, timelines, maps and screens that explain the mechanism.
+3. **Licensed stock/archive**: context and atmosphere.
+4. **Generated**: conceptual illustration or otherwise unavailable shots. Use a few high-impact ones, always labelled.
+5. **Typography**: restrained text, when it improves clarity.
+
+### The plan: `visuals.json`
+
+Each beat records `beat_id`, `scene_id`, `order`, the `takeaway`, the `visual_question` it answers, `visual_type` (and `graphic_kind` for original graphics), `asset_ids`, the `source_ids` and `claim_ids` it shows, `requirements` while it's unresolved, `on_screen_text`, `motion` with a `motion_purpose`, optional timing, `is_reconstruction` with a `label`, an optional `generation` request, and `review_status`.
+
+Rules enforced by the schema:
+- Charts, timelines and maps must cite `source_ids`. Data is never invented.
+- Primary evidence must reference the sources or claims it shows.
+- Generated visuals and reconstructions must carry an on-screen `label` (for example "AI illustration" or "Reconstruction"). They're never passed off as genuine footage.
+- Any motion needs a stated purpose: clarify, reveal evidence, guide attention, or pacing.
+- An unresolved beat must say what it needs.
+
+### Commands
+
+```bash
+.venv/bin/pipeline visuals report projects/my-film
+```
+
+```bash
+.venv/bin/pipeline visuals sheet projects/my-film
+```
+
+```bash
+.venv/bin/pipeline visuals placeholders projects/my-film
+```
+
+- `visuals report` lists every beat as resolved or unresolved, its rights state and its review state. It warns about scenes with no plan or no visual strategy, unresolved beats, precise or critical claims shown only with stock, generated or typographic visuals, beat/asset type mismatches, generated assets in unlabelled beats, on-screen text too long for a phone (over 42 characters or 14 words), and plans where more than a third of beats are generated.
+- `visuals sheet` writes `reports/visuals.html`, a contact sheet of every scene's narration, beats, thumbnails, badges and gaps. Open it from the project's `reports/` folder.
+- `visuals placeholders` writes red "PLACEHOLDER: NOT FOR PUBLICATION" frames to `visuals/placeholders/` for unresolved beats. They aren't assets, previews may show them, and QA blocks master renders containing them (Phase 8). The pipeline never silently substitutes unrelated media.
+- `visuals generate` exits 3: no image provider ships. Local diffusion isn't practical on this Mac, and hosted services need cost and terms approval (Phase 9).
+
+### Original graphics: `pipeline graphics render`
+
+Deterministic SVGs from a JSON spec. The same spec always produces the same file:
+
+```json
+{"schema_version": "1.0", "asset_id": "s04-screen-time-chart", "kind": "bar_chart",
+ "title": "Daily phone use by age", "source_ids": ["src-survey-2023"], "data_locator": "Table 2",
+ "units": "h", "bars": [{"label": "13-17", "value": 4.8}, {"label": "18-29", "value": 3.9}],
+ "intended_scene_ids": ["s04-evidence"]}
+```
+
+```bash
+.venv/bin/pipeline graphics render projects/my-film specs/screen-time.json --dry-run
+```
+
+- Supported kinds: `title`, `bar_chart` (1–8 bars, zero-based, `data_locator` required) and `timeline` (2–6 events).
+- Charts and timelines print their source citation in the frame, taken from the research ledger.
+- The output goes to `assets/graphics/<asset_id>.svg` and is registered as an `original_graphic` asset with pending rights review. An existing file is never overwritten; give a changed graphic a new `asset_id`.
+- Text sizes are chosen for phone legibility (body text at least 34 px at 1080p).

@@ -1,0 +1,261 @@
+{
+  "$defs": {
+    "BeatReview": {
+      "enum": [
+        "pending",
+        "approved",
+        "changes_requested"
+      ],
+      "title": "BeatReview",
+      "type": "string"
+    },
+    "GenerationRequest": {
+      "additionalProperties": false,
+      "description": "A request for a generated visual, linked to its beat and scene.",
+      "properties": {
+        "negative_prompt": {
+          "default": "",
+          "title": "Negative Prompt",
+          "type": "string"
+        },
+        "prompt": {
+          "minLength": 1,
+          "title": "Prompt",
+          "type": "string"
+        },
+        "provider": {
+          "default": "",
+          "title": "Provider",
+          "type": "string"
+        },
+        "settings": {
+          "additionalProperties": true,
+          "title": "Settings",
+          "type": "object"
+        },
+        "status": {
+          "default": "requested",
+          "enum": [
+            "requested",
+            "generated",
+            "rejected"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "prompt"
+      ],
+      "title": "GenerationRequest",
+      "type": "object"
+    },
+    "GraphicKind": {
+      "enum": [
+        "title",
+        "diagram",
+        "chart",
+        "timeline",
+        "map",
+        "screen"
+      ],
+      "title": "GraphicKind",
+      "type": "string"
+    },
+    "Motion": {
+      "enum": [
+        "none",
+        "slow_push",
+        "pan",
+        "reveal",
+        "highlight",
+        "build"
+      ],
+      "title": "Motion",
+      "type": "string"
+    },
+    "VisualBeat": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_ids": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+            "type": "string"
+          },
+          "title": "Asset Ids",
+          "type": "array"
+        },
+        "beat_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+          "title": "Beat Id",
+          "type": "string"
+        },
+        "claim_ids": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+            "type": "string"
+          },
+          "title": "Claim Ids",
+          "type": "array"
+        },
+        "duration_seconds": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duration Seconds"
+        },
+        "generation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GenerationRequest"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "graphic_kind": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GraphicKind"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "is_reconstruction": {
+          "default": false,
+          "title": "Is Reconstruction",
+          "type": "boolean"
+        },
+        "label": {
+          "default": "",
+          "title": "Label",
+          "type": "string"
+        },
+        "motion": {
+          "$ref": "#/$defs/Motion",
+          "default": "none"
+        },
+        "motion_purpose": {
+          "default": "",
+          "title": "Motion Purpose",
+          "type": "string"
+        },
+        "notes": {
+          "default": "",
+          "title": "Notes",
+          "type": "string"
+        },
+        "offset_seconds": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Offset Seconds"
+        },
+        "on_screen_text": {
+          "items": {
+            "type": "string"
+          },
+          "title": "On Screen Text",
+          "type": "array"
+        },
+        "order": {
+          "minimum": 1,
+          "title": "Order",
+          "type": "integer"
+        },
+        "requirements": {
+          "default": "",
+          "title": "Requirements",
+          "type": "string"
+        },
+        "review_status": {
+          "$ref": "#/$defs/BeatReview",
+          "default": "pending"
+        },
+        "scene_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+          "title": "Scene Id",
+          "type": "string"
+        },
+        "source_ids": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+            "type": "string"
+          },
+          "title": "Source Ids",
+          "type": "array"
+        },
+        "takeaway": {
+          "minLength": 1,
+          "title": "Takeaway",
+          "type": "string"
+        },
+        "visual_question": {
+          "default": "",
+          "title": "Visual Question",
+          "type": "string"
+        },
+        "visual_type": {
+          "$ref": "#/$defs/VisualType"
+        }
+      },
+      "required": [
+        "beat_id",
+        "scene_id",
+        "order",
+        "takeaway",
+        "visual_type"
+      ],
+      "title": "VisualBeat",
+      "type": "object"
+    },
+    "VisualType": {
+      "enum": [
+        "primary_evidence",
+        "original_graphic",
+        "licensed_stock",
+        "generated",
+        "typography"
+      ],
+      "title": "VisualType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "beats": {
+      "items": {
+        "$ref": "#/$defs/VisualBeat"
+      },
+      "title": "Beats",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "title": "VisualPlan",
+  "type": "object"
+}

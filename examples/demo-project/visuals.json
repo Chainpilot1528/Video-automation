@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "beats": [
+    {
+      "beat_id": "v01-title",
+      "scene_id": "s01-cold-open",
+      "order": 1,
+      "takeaway": "This film is about what makes a scene trustworthy.",
+      "visual_question": "What is this about?",
+      "visual_type": "original_graphic",
+      "graphic_kind": "title",
+      "asset_ids": ["s01-title"],
+      "on_screen_text": ["Anatomy of a Traceable Scene"],
+      "motion": "slow_push",
+      "motion_purpose": "pacing: a slow hold while the question lands"
+    },
+    {
+      "beat_id": "v02-claim-chain",
+      "scene_id": "s02-claim-ledger",
+      "order": 1,
+      "takeaway": "A claim, its source and its review are separate links in a chain.",
+      "visual_question": "How does a claim get checked?",
+      "visual_type": "original_graphic",
+      "graphic_kind": "diagram",
+      "asset_ids": ["s02-claim-ledger"],
+      "claim_ids": ["claim-review-required"],
+      "source_ids": ["src-claim-rules"],
+      "motion": "build",
+      "motion_purpose": "clarify: reveal claim, then source, then review, in narration order"
+    },
+    {
+      "beat_id": "v03-asset-record",
+      "scene_id": "s03-asset-record",
+      "order": 1,
+      "takeaway": "Every visual has a record: who made it, its licence, and a checksum.",
+      "visual_question": "What travels with each asset?",
+      "visual_type": "original_graphic",
+      "graphic_kind": "diagram",
+      "asset_ids": ["s03-asset-record"],
+      "claim_ids": ["claim-checksum-catches-changes"],
+      "source_ids": ["src-checksum-check"],
+      "motion": "highlight",
+      "motion_purpose": "guide attention to the checksum row as it is mentioned"
+    },
+    {
+      "beat_id": "v04-gates",
+      "scene_id": "s04-review-gates",
+      "order": 1,
+      "takeaway": "People approve each stage; nothing publishes itself.",
+      "visual_question": "Who decides what gets published?",
+      "visual_type": "original_graphic",
+      "graphic_kind": "diagram",
+      "asset_ids": ["s04-review-gates"],
+      "claim_ids": ["claim-no-auto-publish"],
+      "source_ids": ["src-readme"],
+      "motion": "none"
+    }
+  ]
+}

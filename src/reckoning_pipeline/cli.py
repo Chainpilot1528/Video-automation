@@ -31,6 +31,10 @@ from .media.tools import ToolNotFoundError
 from .narration import BuildOptions, NarrationError, build_narration, take_asset_id
 from .providers.tts import PROVIDERS, TTSError, get_tts_provider
 from .subtitles import CaptionError, build_captions, check_cues, parse_srt
+from .graphics import GraphicError, render_graphic
+from .providers.image import ImageProviderUnavailableError, get_image_provider
+from .schemas.visual import GraphicSpec
+from .visuals import build_visual_report, format_visual_report, write_placeholders, write_sheet
 from .approvals import active_exceptions, append_event, check_reviewer, claim_fingerprint, load_log
 from .project.validate import ValidationResult
 from .providers.llm import ProviderUnavailableError, get_llm_provider
@@ -60,6 +64,8 @@ script_app = typer.Typer(help="Script readiness and human approval.", no_args_is
 assets_app = typer.Typer(help="Asset intake, rights review and credits.", no_args_is_help=True)
 narration_app = typer.Typer(help="Scene-by-scene narration: import, TTS, measurement.", no_args_is_help=True)
 captions_app = typer.Typer(help="Build and check SRT captions.", no_args_is_help=True)
+visuals_app = typer.Typer(help="Visual plan report, contact sheet and placeholders.", no_args_is_help=True)
+graphics_app = typer.Typer(help="Deterministic original graphics (SVG).", no_args_is_help=True)
 app.add_typer(project_app, name="project")
 app.add_typer(render_app, name="render")
 app.add_typer(schema_app, name="schema")
@@ -68,6 +74,8 @@ app.add_typer(script_app, name="script")
 app.add_typer(assets_app, name="assets")
 app.add_typer(narration_app, name="narration")
 app.add_typer(captions_app, name="captions")
+app.add_typer(visuals_app, name="visuals")
+app.add_typer(graphics_app, name="graphics")
 
 
 def _config(ctx: typer.Context) -> PipelineConfig:
@@ -662,6 +670,79 @@ def captions_validate(file: Path = typer.Argument(..., help="SRT file")) -> None
     typer.echo(f"{len(cues)} cues, {len(errors)} error(s), {len(warnings)} warning(s)")
     if errors:
         raise typer.Exit(EXIT_FAILED)
+
+
+def _visual_report(result: ValidationResult):
+    return build_visual_report(result.visuals, result.scenes, result.ledger, result.registry, result.approvals)
+
+
+@visuals_app.command("report")
+def visuals_report(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    as_json: bool = typer.Option(False, "--json", help="Machine-readable output."),
+    strict: bool = typer.Option(False, "--strict", help="Exit 1 if any scene has gaps."),
+) -> None:
+    """List every scene's visual beats, unresolved gaps and questionable choices."""
+    result = _load_valid(ctx, path)
+    report = _visual_report(result)
+    typer.echo(json.dumps(report.to_dict(), indent=2) if as_json else format_visual_report(report))
+    if strict and report.gaps:
+        raise typer.Exit(EXIT_FAILED)
+
+
+@visuals_app.command("sheet")
+def visuals_sheet(ctx: typer.Context, path: Path = typer.Argument(..., help="Project folder")) -> None:
+    """Write reports/visuals.html, a contact sheet of scenes, beats and gaps."""
+    result = _load_valid(ctx, path)
+    out = write_sheet(result, _visual_report(result), media_root=_config(ctx).media_root)
+    typer.echo(f"Wrote {out}")
+
+
+@visuals_app.command("placeholders")
+def visuals_placeholders(ctx: typer.Context, path: Path = typer.Argument(..., help="Project folder")) -> None:
+    """Write labelled placeholder frames for unresolved beats (preview only, never published)."""
+    result = _load_valid(ctx, path)
+    written = write_placeholders(path, result.visuals.beats)
+    for w in written:
+        typer.echo(f"Wrote {w}")
+    typer.echo(f"{len(written)} placeholder(s). They are blocked from master renders.")
+
+
+@visuals_app.command("generate")
+def visuals_generate(ctx: typer.Context, path: Path = typer.Argument(..., help="Project folder")) -> None:
+    """Generate visuals for beats with generation requests (needs an enabled provider)."""
+    _load_valid(ctx, path)
+    try:
+        get_image_provider(_config(ctx))
+    except ImageProviderUnavailableError as exc:
+        typer.echo(f"error: {exc}", err=True)
+        raise typer.Exit(EXIT_NOT_IMPLEMENTED)
+
+
+@graphics_app.command("render")
+def graphics_render(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    spec_file: Path = typer.Argument(..., help="Graphic spec JSON (title, bar_chart or timeline)"),
+    creator: str = typer.Option("Reckoning Self", "--creator", help="Recorded as creator/rights holder."),
+    dry_run: bool = typer.Option(False, "--dry-run"),
+) -> None:
+    """Render a graphic spec to SVG and register it as an original-graphic asset."""
+    result = _load_valid(ctx, path)
+    try:
+        spec = GraphicSpec.model_validate_json(spec_file.read_text(encoding="utf-8"))
+        rendered = render_graphic(path, result.manifest, result.registry, result.ledger, spec,
+                                  spec_name=spec_file.name, creator=creator, dry_run=dry_run)
+    except OSError as exc:
+        _fail(str(exc))
+    except (GraphicError, ValueError) as exc:
+        _fail(_error_text(exc))
+    if rendered.unchanged:
+        typer.echo(f"{spec.asset_id}: unchanged ({rendered.path})")
+    else:
+        typer.echo(f"{'[dry-run] would write' if dry_run else 'Wrote'} {rendered.path} and registered "
+                   f"{spec.asset_id} (pending rights review)")
 
 
 @render_app.command("preview")
