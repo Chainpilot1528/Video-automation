@@ -1,0 +1,90 @@
+# Build Log
+
+Phase status, decisions, tests, known issues, and next action. Newest entries at the bottom of each section.
+
+## Phase status
+
+| Phase | Status | Date |
+|---|---|---|
+| 0 — Discovery | PASS (approved by user) | 2026-10-17 |
+| 1 — Python foundation and CLI | PASS (awaiting user review) | 2026-10-17 |
+
+---
+
+## Phase 0 — Discovery report (2026-10-17)
+
+All findings below come from command output observed on 2026-10-17.
+
+### Repository
+- Working directory: `/Users/nikhiltalla/Desktop/Video`.
+- The folder was **empty** (0 bytes) and was **not** a Git repository. No existing code to reuse or conflict with.
+- `~/Desktop` is not synced to iCloud (no `CloudDocs/Desktop`), which matters because the Mac reports "iCloud Storage Full".
+
+### Machine
+| Item | Observed | Plan assumption |
+|---|---|---|
+| CPU | Intel Core i5-8257U @ 1.40 GHz (`x86_64`) | Apple Silicon M2 |
+| Model | MacBook Pro 13-inch, 2019 | — |
+| Memory | 8 GB | 8 GB |
+| GPU | Intel Iris Plus 645 | Apple GPU / Metal |
+| macOS | 15.8.1 (24H32) | — |
+| Disk | 233 GiB volume, **158 GiB free** | 256 GB SSD |
+
+### Toolchain
+| Tool | Status |
+|---|---|
+| Python | 3.14.7 (python.org framework build, `/Library/Frameworks/Python.framework/Versions/3.14`) |
+| pip | present (same framework) |
+| git | 2.39.5 (Apple) |
+| Xcode Command Line Tools | installed (`/Library/Developer/CommandLineTools`) |
+| Homebrew | **not installed** |
+| FFmpeg / ffprobe | **not installed** |
+| Ollama | not installed (optional) |
+| uv / pyenv / conda | not installed |
+
+### Caches
+- `~/.cache` 1.6 GB, `~/Library/Caches` 3.8 GB. No `~/.ollama`.
+- Only internal disk mounted (`/Volumes`: `Macintosh HD`, `Claude`). No external media drive.
+
+### Risks
+1. **Intel, not Apple Silicon.** No Metal/MLX/Neural Engine acceleration. Local LLM, local TTS (e.g. Kokoro), and diffusion will run on CPU and be much slower than the plan assumes. Treat local generation as "evaluate carefully", not a default. FFmpeg rendering on a 4-core i5 is fine for preview and 1080p but slow; preview profiles matter.
+2. **FFmpeg missing and no Homebrew.** Rendering (Phase 5+) is blocked until FFmpeg is installed. Installing Homebrew needs the user's admin password, so the user must run it.
+3. **Python 3.14 is very new.** Core deps (Pydantic, Typer, pytest) support it, but some ML packages may not ship 3.14 wheels yet. Optional providers may need a separate 3.11/3.12 environment later.
+4. **8 GB RAM.** Run heavy workloads one at a time (already in plan).
+
+### Decisions
+- Repo root: `/Users/nikhiltalla/Desktop/Video` (approved by user).
+- Package: `src/reckoning_pipeline`, CLI command `pipeline`.
+- Environment: stdlib `venv` at `.venv`, deps declared in `pyproject.toml`, exact versions locked in `requirements-lock.txt`.
+- Base deps: `pydantic`, `typer`; dev deps: `pytest`. No ML packages.
+- Large media stays outside Git; a configurable `PIPELINE_MEDIA_ROOT` is supported.
+- FFmpeg: install via Homebrew, run by the user (needs password). The exact command is listed in `docs/INSTALL.md`.
+
+---
+
+## Phase 1 — Python foundation and CLI (2026-10-17)
+
+### Implemented
+- `git init` (branch `main`, nothing committed yet).
+- Virtual environment at `.venv` (Python 3.14.7). Deps: pydantic 2.14.1, typer 0.27.3; dev: pytest 9.1.1. Exact versions are in `requirements-lock.txt`.
+- CLI `pipeline` with these commands: `doctor`, `project init`, `project validate`, `render preview` (exits 3 "not implemented, Phase 7"), plus `--version`.
+- Exit codes: 0 ok, 1 failure, 2 usage error, 3 not implemented, 4 config error.
+- Config from `PIPELINE_*` env vars with safe defaults (network and paid providers off).
+- Structured logs (text or JSON) to stderr with `ts`, `level`, `project_id`, `stage`, `scene_id`.
+- `doctor` checks Python, architecture, ffmpeg, ffprobe, git, ollama (optional), disk, projects root, media root and the provider policy. Each check reports PASS, WARN or FAIL with a remedy.
+- `project init` creates a slug-validated folder and a minimal `project.json` (schema 0.1), refuses to overwrite, and writes atomically. `project validate` checks the path, JSON, schema version, required fields and that `project_id` matches the folder name.
+- `.gitignore`, `.env.example`, `README.md`, `docs/INSTALL.md`.
+
+### Verification
+- `pytest`: 51 passed (config, missing tools, disk thresholds, invalid paths, slugs, manifest errors, CLI exit codes, JSON log context).
+- A fresh venv installed from `requirements-lock.txt` runs `pipeline doctor`, and the tests pass there too.
+- `pipeline doctor` on this Mac: 5 pass, 3 warn (Python 3.14, Intel x86_64, Ollama absent), 2 fail (ffmpeg, ffprobe missing). Exits 1.
+- No models downloaded. No external services called apart from PyPI for package installs.
+
+### Known issues / limitations
+- FFmpeg is not installed. The user needs to run the Homebrew commands in `docs/INSTALL.md` (they need the admin password). This blocks Phase 5+, not Phase 2.
+- `project.json` is a stub. Phase 2 replaces it with the full manifest schema and adds migration from 0.1.
+- `.env` is not auto-loaded. Variables must be exported.
+
+### Next action
+- User reviews Phase 1, optionally commits, and installs FFmpeg. Then Phase 2 (data contracts).

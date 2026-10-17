@@ -1,0 +1,51 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+build/
+dist/
+
+# Local secrets (keep .env.example)
+.env
+.env.*
+!.env.example
+
+# Model caches and weights
+models/
+*.gguf
+*.safetensors
+*.onnx
+*.pt
+*.bin
+.ollama/
+
+# Project media, renders and scratch (manifests and text stay tracked)
+projects/*/assets/**
+projects/*/narration/**
+projects/*/renders/**
+projects/*/tmp/**
+!projects/*/**/.gitkeep
+media/
+renders/
+tmp/
+*.tmp
+
+# Large media anywhere
+*.mp4
+*.mov
+*.mkv
+*.wav
+*.aif
+*.aiff
+*.flac
+*.m4a
+*.mp3
+*.prores
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/
