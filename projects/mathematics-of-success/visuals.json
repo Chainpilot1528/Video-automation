@@ -1,0 +1,173 @@
+{
+  "schema_version": "1.0",
+  "beats": [
+    {
+      "beat_id": "v01-city",
+      "scene_id": "s01-cold-open",
+      "order": 1,
+      "takeaway": "Ordinary people starting an ordinary day.",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "stock-city"
+      ]
+    },
+    {
+      "beat_id": "v01-title",
+      "scene_id": "s01-cold-open",
+      "order": 2,
+      "takeaway": "The film's question.",
+      "visual_type": "original_graphic",
+      "graphic_kind": "title",
+      "asset_ids": [
+        "g-title"
+      ],
+      "on_screen_text": [
+        "The Mathematics of Success"
+      ],
+      "motion": "slow_push",
+      "motion_purpose": "pacing: let the title land"
+    },
+    {
+      "beat_id": "v02-card",
+      "scene_id": "s02-same-start",
+      "order": 1,
+      "takeaway": "A real experiment: same songs, different outcomes.",
+      "visual_type": "original_graphic",
+      "graphic_kind": "title",
+      "asset_ids": [
+        "g-songs"
+      ],
+      "claim_ids": [
+        "c-identical-start"
+      ],
+      "source_ids": [
+        "src-salganik-2006"
+      ],
+      "on_screen_text": [
+        "Same songs. Different hits."
+      ],
+      "motion": "none"
+    },
+    {
+      "beat_id": "v02-phones",
+      "scene_id": "s02-same-start",
+      "order": 2,
+      "takeaway": "People choosing music, influenced by others.",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "stock-music"
+      ]
+    },
+    {
+      "beat_id": "v03-chart",
+      "scene_id": "s03-compounding",
+      "order": 1,
+      "takeaway": "Tiny daily differences become enormous over a year (illustration).",
+      "visual_type": "original_graphic",
+      "graphic_kind": "chart",
+      "asset_ids": [
+        "g-compounding"
+      ],
+      "claim_ids": [
+        "c-compound-arith"
+      ],
+      "source_ids": [
+        "src-calc-compounding"
+      ],
+      "motion": "slow_push",
+      "motion_purpose": "guide attention to the long bar as the number is spoken"
+    },
+    {
+      "beat_id": "v04-card",
+      "scene_id": "s04-superstars",
+      "order": 1,
+      "takeaway": "Performance is lopsided, measured across 633,263 people.",
+      "visual_type": "original_graphic",
+      "graphic_kind": "title",
+      "asset_ids": [
+        "g-power-law"
+      ],
+      "claim_ids": [
+        "c-power-law"
+      ],
+      "source_ids": [
+        "src-oboyle-2012"
+      ],
+      "motion": "none"
+    },
+    {
+      "beat_id": "v04-stage",
+      "scene_id": "s04-superstars",
+      "order": 2,
+      "takeaway": "One performer, a whole audience.",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "stock-crowd"
+      ]
+    },
+    {
+      "beat_id": "v05-card",
+      "scene_id": "s05-luck",
+      "order": 1,
+      "takeaway": "This finding comes from a simulation.",
+      "visual_type": "original_graphic",
+      "graphic_kind": "title",
+      "asset_ids": [
+        "g-luck"
+      ],
+      "claim_ids": [
+        "c-luck-model"
+      ],
+      "source_ids": [
+        "src-pluchino-2018"
+      ],
+      "motion": "none"
+    },
+    {
+      "beat_id": "v05-chance",
+      "scene_id": "s05-luck",
+      "order": 2,
+      "takeaway": "Chance, visually.",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "stock-dice"
+      ]
+    },
+    {
+      "beat_id": "v06-work",
+      "scene_id": "s06-strategy",
+      "order": 1,
+      "takeaway": "Focused, directed effort.",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "stock-notebook"
+      ]
+    },
+    {
+      "beat_id": "v07-close",
+      "scene_id": "s07-close",
+      "order": 1,
+      "takeaway": "The one thing you control.",
+      "visual_type": "original_graphic",
+      "graphic_kind": "title",
+      "asset_ids": [
+        "g-close"
+      ],
+      "on_screen_text": [
+        "Point your effort where it compounds"
+      ],
+      "motion": "slow_push",
+      "motion_purpose": "pacing: closing hold"
+    }
+  ]
+}

@@ -245,19 +245,29 @@ def _narration_record(chunk: PlannedChunk, options: BuildOptions, path: Path, ra
                   "notes": f"Normalized from {src.asset_id} to {rate} Hz mono 16-bit WAV."}
     else:
         p = options.provider
+        cleared, note, terms = voice_clearance(p, options.voice)
         record = {**base, "creation_method": CreationMethod.GENERATED, "provider": p.name,
                   "rights_holder": "", "creator": p.name,
-                  "commercial_use": CommercialUse.ALLOWED if p.commercial_use_cleared else CommercialUse.NOT_ALLOWED,
+                  "commercial_use": CommercialUse.ALLOWED if cleared else CommercialUse.NOT_ALLOWED,
                   "attribution_required": False, "derivatives_allowed": True,
-                  "rights_evidence": p.license_note,
+                  "rights_evidence": note,
                   "generation": {"provider": p.name, "model": options.voice, "model_version": p.version(),
                                  "generated_on": utcnow().date(), "prompt": chunk.tts_text,
                                  "settings": {"rate_wpm": options.rate_wpm, "sample_rate": rate},
-                                 "terms_url": p.terms_url},
-                  "publication_status": (PublicationStatus.PENDING_REVIEW if p.commercial_use_cleared
-                                         else PublicationStatus.BLOCKED),
-                  "notes": "" if p.commercial_use_cleared else "Preview-only TTS: " + p.license_note}
+                                 "terms_url": terms},
+                  "publication_status": PublicationStatus.PENDING_REVIEW if cleared else PublicationStatus.BLOCKED,
+                  "notes": "" if cleared else "Not cleared for publication: " + note}
     return Asset.model_validate(record)
+
+
+def voice_clearance(provider: TTSProvider, voice: str | None) -> tuple[bool, str, str]:
+    """(cleared, note, terms_url) for this provider and voice. Providers whose rights depend on
+    the voice (e.g. Voicebox presets vs cloned voices) implement ``voice_clearance``."""
+    check = getattr(provider, "voice_clearance", None)
+    if check is not None and voice:
+        c = check(voice)
+        return c.cleared, c.note, c.terms_url
+    return provider.commercial_use_cleared, provider.license_note, provider.terms_url
 
 
 def _upsert(registry: AssetRegistry, asset: Asset) -> AssetRegistry:

@@ -26,12 +26,17 @@ class LLMProvider(Protocol):
         ...
 
 
-def get_llm_provider(config: PipelineConfig) -> LLMProvider:
-    """Return the configured provider, or raise if none is enabled.
-
-    Phase 3 ships the interface only; adapters are added and benchmarked in Phase 9.
-    """
-    raise ProviderUnavailableError(
-        "no LLM provider is enabled. Adapters (e.g. a local Ollama model) arrive in Phase 9; "
-        "research and drafting work fully without one."
-    )
+def get_llm_provider(config: PipelineConfig, name: str | None = None) -> LLMProvider:
+    """Return the chosen provider (``--provider`` or PIPELINE_LLM_PROVIDER), or raise if none is enabled."""
+    choice = name or config.llm_provider
+    if choice == "voicebox":
+        from .voicebox_llm import VoiceboxLLM
+        return VoiceboxLLM(config.voicebox_url, model_size=config.llm_model_size, allow_remote=config.allow_network)
+    if choice == "ollama":
+        from .ollama import OllamaLLM
+        return OllamaLLM(config.ollama_url, model=config.ollama_model, allow_remote=config.allow_network)
+    if choice in ("", "none"):
+        raise ProviderUnavailableError(
+            "no LLM provider is enabled. Use --provider ollama (local, recommended) or --provider voicebox, or set "
+            "PIPELINE_LLM_PROVIDER; research and writing also work fully without one.")
+    raise ProviderUnavailableError(f"unknown LLM provider {choice!r}; available: ollama, voicebox")

@@ -196,7 +196,7 @@ def test_research_bibliography_cli(runner, demo):
 
 def test_research_suggest_without_provider(runner, demo):
     r = runner.invoke(app, ["research", "suggest", str(demo)])
-    assert r.exit_code == EXIT_NOT_IMPLEMENTED and "Phase 9" in r.output
+    assert r.exit_code == EXIT_NOT_IMPLEMENTED and "no LLM provider" in r.output
 
 
 def test_commands_refuse_invalid_project(runner, tmp_path):

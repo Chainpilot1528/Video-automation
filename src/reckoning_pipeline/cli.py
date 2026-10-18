@@ -29,6 +29,7 @@ from .assets import (
 from .media.audio import Tools
 from .media.tools import ToolNotFoundError
 from .narration import BuildOptions, NarrationError, build_narration, take_asset_id
+from .narration.build import voice_clearance
 from .providers.tts import PROVIDERS, TTSError, get_tts_provider
 from .subtitles import CaptionError, build_captions, check_cues, parse_srt
 from .graphics import GraphicError, render_graphic
@@ -38,6 +39,10 @@ from .visuals import build_visual_report, format_visual_report, write_placeholde
 from .render import ProfileError, RenderError, plan_render
 from .render import render as run_render
 from .timeline import TimelineError
+from .assets.checklist import ChecklistError, record_checklist
+from .assets.stock import add_stock_item, existing_for
+from .providers.stock import StockError, get_stock_provider, parse_ref
+from .script.draft import DraftError, draft_script
 from .approvals import active_exceptions, append_event, check_reviewer, claim_fingerprint, load_log
 from .project.validate import ValidationResult
 from .providers.llm import ProviderUnavailableError, get_llm_provider
@@ -70,6 +75,8 @@ narration_app = typer.Typer(help="Scene-by-scene narration: import, TTS, measure
 captions_app = typer.Typer(help="Build and check SRT captions.", no_args_is_help=True)
 visuals_app = typer.Typer(help="Visual plan report, contact sheet and placeholders.", no_args_is_help=True)
 graphics_app = typer.Typer(help="Deterministic original graphics (SVG).", no_args_is_help=True)
+stock_app = typer.Typer(help="Search and add licensed stock media (contacts the provider's API).",
+                        no_args_is_help=True)
 app.add_typer(project_app, name="project")
 app.add_typer(render_app, name="render")
 app.add_typer(timeline_app, name="timeline")
@@ -81,6 +88,7 @@ app.add_typer(narration_app, name="narration")
 app.add_typer(captions_app, name="captions")
 app.add_typer(visuals_app, name="visuals")
 app.add_typer(graphics_app, name="graphics")
+app.add_typer(stock_app, name="stock")
 
 
 def _config(ctx: typer.Context) -> PipelineConfig:
@@ -332,14 +340,28 @@ def research_bibliography(
 
 
 @research_app.command("suggest")
-def research_suggest(ctx: typer.Context, path: Path = typer.Argument(..., help="Project folder")) -> None:
-    """Ask an enabled LLM provider for claim suggestions (written to research/notes/)."""
-    _load_valid(ctx, path)
+def research_suggest(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    provider: str = typer.Option(None, "--provider", help="LLM provider (voicebox = local Qwen3)."),
+) -> None:
+    """Ask a local LLM to list claims worth researching (written to research/notes/, never the ledger)."""
+    from .research.assist import SuggestionError, suggest_claims, write_suggestions
+    result = _load_valid(ctx, path)
     try:
-        get_llm_provider(_config(ctx))
+        llm = get_llm_provider(_config(ctx), provider)
     except ProviderUnavailableError as exc:
         typer.echo(f"error: {exc}", err=True)
         raise typer.Exit(EXIT_NOT_IMPLEMENTED)
+    brief = safe_resolve(path, result.manifest.paths.brief).read_text(encoding="utf-8")
+    try:
+        claims = suggest_claims(llm, brief)
+    except (ProviderUnavailableError, SuggestionError) as exc:
+        _fail(str(exc))
+    out = write_suggestions(safe_resolve(path, "research/notes"), claims, llm.name)
+    for c in claims:
+        typer.echo(f"  {c.claim_id}: ({c.claim_type}, {c.importance}) {c.text}")
+    typer.echo(f"Wrote {out}: {len(claims)} unverified suggestion(s). Find sources before importing any of them.")
 
 
 @script_app.command("validate")
@@ -589,9 +611,9 @@ def narration_voices(
 ) -> None:
     """List voices for a TTS provider."""
     try:
-        tts = get_tts_provider(provider)
+        tts = get_tts_provider(provider, load_config())
         voices = tts.list_voices()
-    except TTSError as exc:
+    except (TTSError, ConfigError) as exc:
         _fail(str(exc))
     for v in voices:
         if v.locale.startswith(locale):
@@ -615,12 +637,12 @@ def narration_build(
     tts = None
     if provider:
         try:
-            tts = get_tts_provider(provider)
+            tts = get_tts_provider(provider, _config(ctx))
+            cleared, note, _ = voice_clearance(tts, voice) if voice else (True, "", "")
         except TTSError as exc:
             _fail(str(exc))
-        if not tts.commercial_use_cleared:
-            typer.echo(f"note: {tts.license_note} Its output is registered as blocked from publication.",
-                       err=True)
+        if not cleared:
+            typer.echo(f"note: {note} Its output is registered as blocked from publication.", err=True)
     options = BuildOptions(provider=tts, voice=voice, rate_wpm=rate, scene_ids=scenes or None, dry_run=dry_run)
     try:
         built = build_narration(result, _tools(ctx), options)
@@ -807,6 +829,136 @@ def _render(ctx: typer.Context, path: Path, profile: str, burn_captions: bool, d
     typer.echo(f"Report: {out.report_path}")
     if out.plan.placeholder_count:
         typer.echo(f"note: contains {out.plan.placeholder_count} placeholder(s); preview only")
+
+
+def _yes_no(value: str | None, flag: str) -> bool | None:
+    if value is None:
+        return None
+    v = value.strip().lower()
+    if v in ("yes", "y", "true"):
+        return True
+    if v in ("no", "n", "false"):
+        return False
+    _fail(f"{flag} must be yes or no")
+
+
+@assets_app.command("checklist")
+def assets_checklist(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    asset_id: str = typer.Argument(...),
+    people: str = typer.Option(None, "--people", help="yes/no: identifiable people visible?"),
+    people_clearance: str = typer.Option(None, "--people-clearance", help="Release, or why none is needed."),
+    trademarks: str = typer.Option(None, "--trademarks", help="yes/no: logos or trademarks visible?"),
+    trademark_notes: str = typer.Option(None, "--trademark-notes", help="How endorsement is avoided."),
+    derivatives: str = typer.Option(None, "--derivatives", help="yes/no: editing permitted?"),
+    platform_cleared: str = typer.Option(None, "--platform-cleared", help="yes/no: music/SFX cleared for YouTube?"),
+) -> None:
+    """Record what you checked by watching/inspecting an asset (needed before approval)."""
+    result = _load_valid(ctx, path)
+    answers = {k: v for k, v in {
+        "identifiable_people": _yes_no(people, "--people"), "people_clearance": people_clearance,
+        "trademarks_visible": _yes_no(trademarks, "--trademarks"), "trademark_notes": trademark_notes,
+        "derivatives_allowed": _yes_no(derivatives, "--derivatives"),
+        "platform_cleared": _yes_no(platform_cleared, "--platform-cleared"),
+    }.items() if v is not None}
+    try:
+        asset = record_checklist(path, result.manifest, result.registry, asset_id, answers)
+    except ChecklistError as exc:
+        _fail(str(exc))
+    gaps = [g for g in asset.approval_blockers() if not g.startswith("review_status")]
+    typer.echo(f"{asset_id}: recorded {', '.join(answers)}")
+    typer.echo("Ready for 'pipeline assets review'." if not gaps else "Still needed: " + "; ".join(gaps))
+
+
+@stock_app.command("search")
+def stock_search(
+    ctx: typer.Context,
+    query: str = typer.Argument(..., help="What to look for, e.g. 'empty office at night'"),
+    kind: str = typer.Option("video", "--type", help="video or photo"),
+    orientation: str = typer.Option("landscape", "--orientation", help="landscape, portrait or square"),
+    count: int = typer.Option(10, "--count", min=1, max=40),
+    provider: str = typer.Option("pexels", "--provider"),
+    project: Path = typer.Option(None, "--project", help="Mark results already used in this project."),
+) -> None:
+    """Search stock media. Sends only the query to the provider; downloads nothing."""
+    if kind not in ("video", "photo"):
+        _fail("--type must be video or photo")
+    registry = _load_valid(ctx, project).registry if project else None
+    try:
+        items = get_stock_provider(provider).search(query, kind, per_page=count, orientation=orientation or None)
+    except StockError as exc:
+        _fail(str(exc))
+    if not items:
+        typer.echo("No results.")
+        return
+    for it in items:
+        used = existing_for(registry, it) if registry else None
+        size = f"{it.width}x{it.height}" if it.width else "?"
+        dur = f"{it.duration_seconds:5.1f}s" if it.duration_seconds else "      "
+        typer.echo(f"{it.ref:<24} {size:>10} {dur} {it.creator[:24]:<24} {it.page_url}"
+                   + (f"  [used as {used}]" if used else ""))
+    typer.echo(f"\nAdd one with: pipeline stock add <project> {items[0].ref} --id <asset-id> --scene <scene-id>")
+
+
+@stock_app.command("add")
+def stock_add(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    ref: str = typer.Argument(..., help="e.g. pexels:video:1234567 (from 'stock search')"),
+    asset_id: str = typer.Option(..., "--id", help="New asset ID"),
+    scenes: list[str] = typer.Option([], "--scene", help="Intended scene (repeatable)."),
+    media: bool = typer.Option(False, "--media", help="Store under PIPELINE_MEDIA_ROOT."),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Look up and validate; download nothing."),
+) -> None:
+    """Download a stock item via the provider's API and register it (pending your rights review)."""
+    result = _load_valid(ctx, path)
+    config = _config(ctx)
+    try:
+        name, kind, item_id = parse_ref(ref)
+        provider = get_stock_provider(name)
+        item = provider.get(kind, item_id)
+        added = add_stock_item(path, result.manifest, result.registry, provider, item, asset_id, scenes=scenes,
+                               target_width=result.manifest.resolution.width, media_root=config.media_root,
+                               use_media_root=media, min_free_gb=config.min_free_disk_gb, dry_run=dry_run)
+    except (StockError, IntakeError) as exc:
+        _fail(str(exc))
+    c = added.chosen
+    prefix = "[dry-run] " if dry_run else ""
+    typer.echo(f"{prefix}{item.ref} by {item.creator}: {c.width}x{c.height} {c.file_type}"
+               + (f", {added.bytes_downloaded / 1e6:.1f} MB" if not dry_run else ""))
+    for line in added.plan.describe():
+        typer.echo(prefix + line)
+    if not dry_run:
+        typer.echo(f"Next: watch it, then 'pipeline assets checklist {path} {asset_id} --people no --trademarks no' "
+                   f"(with your real answers), then 'pipeline assets review'.")
+
+
+@script_app.command("draft")
+def script_draft(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    provider: str = typer.Option(None, "--provider", help="LLM provider: ollama or voicebox (both local)."),
+    minutes: float = typer.Option(2.0, "--minutes", min=0.5, max=30, help="Target narration length."),
+    model_size: str = typer.Option(None, "--model-size", help="Qwen3 size: 0.6B, 1.7B or 4B."),
+) -> None:
+    """Draft a script with a local AI from brief.md and the ledger (written to script/drafts/)."""
+    result = _load_valid(ctx, path)
+    config = _config(ctx)
+    if model_size:
+        config = config.model_copy(update={"llm_model_size": model_size})
+    try:
+        llm = get_llm_provider(config, provider)
+        if getattr(llm, "sends_data_externally", False):
+            typer.echo("note: this provider sends the brief and claims off this machine", err=True)
+        out = draft_script(result, llm, minutes=minutes,
+                           progress=lambda i, n, h: typer.echo(f"[{i}/{n}] drafting '{h}'...", err=True))
+    except (ProviderUnavailableError, DraftError) as exc:
+        _fail(str(exc))
+    typer.echo(f"Draft: {out.path} ({out.words} words, {len(out.claims_used)} claims used)")
+    for f in out.flags:
+        typer.echo(f"  flag: {f}")
+    typer.echo("Edit it, copy what you keep into script/script.md, then run 'pipeline script validate'.")
 
 
 @render_app.command("preview")

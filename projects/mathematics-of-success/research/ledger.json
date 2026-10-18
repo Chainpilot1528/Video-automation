@@ -1,0 +1,310 @@
+{
+  "schema_version": "1.0",
+  "sources": [
+    {
+      "source_id": "src-salganik-2006",
+      "title": "Experimental Study of Inequality and Unpredictability in an Artificial Cultural Market",
+      "authors": [
+        "Matthew J. Salganik",
+        "Peter Sheridan Dodds",
+        "Duncan J. Watts"
+      ],
+      "publisher": "Science 311(5762):854-856",
+      "url": "https://pdodds.w3.uvm.edu/research/papers/years/2006/salganik2006a.pdf",
+      "archive_id": null,
+      "identifier": "doi:10.1126/science.1121066",
+      "published_date": "2006-02-10",
+      "accessed_date": "2026-10-18",
+      "source_type": "journal_article",
+      "classification": "primary",
+      "supported_claim_ids": [
+        "c-identical-start",
+        "c-quality-partly"
+      ],
+      "excerpts": [],
+      "reliability_notes": "Bibliographic details confirmed on 2026-10-18 via the authors' hosted PDF and DOI records. Claim support NOT yet checked against the full text; read it before marking claims verified.",
+      "verification_status": "unchecked",
+      "citation_text": "Salganik, M. J., Dodds, P. S., & Watts, D. J. (2006). Experimental study of inequality and unpredictability in an artificial cultural market. Science, 311, 854-856.",
+      "usage_notes": ""
+    },
+    {
+      "source_id": "src-merton-1968",
+      "title": "The Matthew Effect in Science",
+      "authors": [
+        "Robert K. Merton"
+      ],
+      "publisher": "Science 159(3810):56-63",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/5634379",
+      "archive_id": null,
+      "identifier": "doi:10.1126/science.159.3810.56",
+      "published_date": "1968-01-05",
+      "accessed_date": "2026-10-18",
+      "source_type": "journal_article",
+      "classification": "primary",
+      "supported_claim_ids": [
+        "c-matthew",
+        "c-strategy"
+      ],
+      "excerpts": [],
+      "reliability_notes": "Bibliographic details confirmed on 2026-10-18 via PubMed (PMID 5634379) and Crossref. Claim support NOT yet checked against the full text; read it before marking claims verified.",
+      "verification_status": "unchecked",
+      "citation_text": "Merton, R. K. (1968). The Matthew effect in science. Science, 159(3810), 56-63.",
+      "usage_notes": ""
+    },
+    {
+      "source_id": "src-rosen-1981",
+      "title": "The Economics of Superstars",
+      "authors": [
+        "Sherwin Rosen"
+      ],
+      "publisher": "American Economic Review 71(5):845-858",
+      "url": "https://ideas.repec.org/h/elg/eechap/2591_29.html",
+      "archive_id": null,
+      "identifier": "jstor:1803469",
+      "published_date": "1981-12-01",
+      "accessed_date": "2026-10-18",
+      "source_type": "journal_article",
+      "classification": "primary",
+      "supported_claim_ids": [
+        "c-superstars",
+        "c-strategy"
+      ],
+      "excerpts": [],
+      "reliability_notes": "Bibliographic details confirmed on 2026-10-18 via RePEc and JSTOR records. Claim support NOT yet checked against the full text; read it before marking claims verified. A theoretical model, not data.",
+      "verification_status": "unchecked",
+      "citation_text": "Rosen, S. (1981). The economics of superstars. American Economic Review, 71(5), 845-858.",
+      "usage_notes": ""
+    },
+    {
+      "source_id": "src-oboyle-2012",
+      "title": "The Best and the Rest: Revisiting the Norm of Normality of Individual Performance",
+      "authors": [
+        "Ernest O'Boyle Jr.",
+        "Herman Aguinis"
+      ],
+      "publisher": "Personnel Psychology 65:79-119",
+      "url": "https://www.hermanaguinis.com/pdf/PPsych2012.pdf",
+      "archive_id": null,
+      "identifier": null,
+      "published_date": "2012-01-01",
+      "accessed_date": "2026-10-18",
+      "source_type": "journal_article",
+      "classification": "primary",
+      "supported_claim_ids": [
+        "c-power-law",
+        "c-strategy"
+      ],
+      "excerpts": [],
+      "reliability_notes": "Bibliographic details confirmed on 2026-10-18 via the co-author's hosted PDF. Claim support NOT yet checked against the full text; read it before marking claims verified.",
+      "verification_status": "unchecked",
+      "citation_text": "O'Boyle, E., Jr., & Aguinis, H. (2012). The best and the rest: Revisiting the norm of normality of individual performance. Personnel Psychology, 65, 79-119.",
+      "usage_notes": ""
+    },
+    {
+      "source_id": "src-pluchino-2018",
+      "title": "Talent versus Luck: The Role of Randomness in Success and Failure",
+      "authors": [
+        "Alessandro Pluchino",
+        "Alessio Emanuele Biondo",
+        "Andrea Rapisarda"
+      ],
+      "publisher": "Advances in Complex Systems 21:1850014",
+      "url": "https://arxiv.org/abs/1802.07068",
+      "archive_id": null,
+      "identifier": "doi:10.1142/S0219525918500145",
+      "published_date": "2018-07-27",
+      "accessed_date": "2026-10-18",
+      "source_type": "journal_article",
+      "classification": "primary",
+      "supported_claim_ids": [
+        "c-luck-model"
+      ],
+      "excerpts": [],
+      "reliability_notes": "Bibliographic details confirmed on 2026-10-18 via the publisher DOI and arXiv 1802.07068. Claim support NOT yet checked against the full text; read it before marking claims verified. An agent-based simulation, not observed careers.",
+      "verification_status": "unchecked",
+      "citation_text": "Pluchino, A., Biondo, A. E., & Rapisarda, A. (2018). Talent versus luck: The role of randomness in success and failure. Advances in Complex Systems, 21, 1850014.",
+      "usage_notes": ""
+    },
+    {
+      "source_id": "src-calc-compounding",
+      "title": "Arithmetic: compounding 1% per day for 365 days",
+      "authors": [],
+      "publisher": "Calculation",
+      "url": null,
+      "archive_id": null,
+      "identifier": "calc:(1.01)^365=37.78;(0.99)^365=0.026",
+      "published_date": null,
+      "accessed_date": "2026-10-18",
+      "source_type": "other",
+      "classification": "primary",
+      "supported_claim_ids": [
+        "c-compound-arith"
+      ],
+      "excerpts": [],
+      "reliability_notes": "Computed with Python on 2026-10-18. Pure arithmetic: an illustration of compounding, not a measurement of real people.",
+      "verification_status": "unchecked",
+      "citation_text": "Arithmetic illustration: 1.01^365 ≈ 37.78; 0.99^365 ≈ 0.026.",
+      "usage_notes": ""
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "c-identical-start",
+      "text": "In an online experiment with 14,341 participants, the same songs ended up with very different levels of success in separate groups when people could see what others downloaded.",
+      "claim_type": "factual",
+      "importance": "critical",
+      "source_ids": [
+        "src-salganik-2006"
+      ],
+      "verification_status": "unverified",
+      "caveats": [
+        "Music downloads by volunteers; generalising to careers is an analogy."
+      ],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [
+        "experimental"
+      ],
+      "origin": "human"
+    },
+    {
+      "claim_id": "c-quality-partly",
+      "text": "Quality still mattered in that experiment: the best songs rarely did badly and the worst rarely did well.",
+      "claim_type": "factual",
+      "importance": "supporting",
+      "source_ids": [
+        "src-salganik-2006"
+      ],
+      "verification_status": "unverified",
+      "caveats": [],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [
+        "experimental"
+      ],
+      "origin": "human"
+    },
+    {
+      "claim_id": "c-compound-arith",
+      "text": "Improving by 1% a day for a year multiplies a starting value by about 37.8; declining by 1% a day leaves about 2.6% of it.",
+      "claim_type": "statistical",
+      "importance": "supporting",
+      "source_ids": [
+        "src-calc-compounding"
+      ],
+      "verification_status": "unverified",
+      "caveats": [
+        "Arithmetic illustration, not data about real people; real growth is not a steady 1% a day."
+      ],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [],
+      "origin": "human"
+    },
+    {
+      "claim_id": "c-matthew",
+      "text": "Sociologist Robert Merton named the Matthew effect: scientists who are already recognised tend to receive more credit for comparable work.",
+      "claim_type": "historical",
+      "importance": "critical",
+      "source_ids": [
+        "src-merton-1968"
+      ],
+      "verification_status": "unverified",
+      "caveats": [],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [
+        "documentary"
+      ],
+      "origin": "human"
+    },
+    {
+      "claim_id": "c-superstars",
+      "text": "Economist Sherwin Rosen's model explains how, when one performer can serve a whole market, small differences in talent can produce very large differences in earnings.",
+      "claim_type": "factual",
+      "importance": "critical",
+      "source_ids": [
+        "src-rosen-1981"
+      ],
+      "verification_status": "unverified",
+      "caveats": [
+        "A theoretical model, not an empirical measurement."
+      ],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [
+        "expert_opinion"
+      ],
+      "origin": "human"
+    },
+    {
+      "claim_id": "c-power-law",
+      "text": "A study of 633,263 researchers, entertainers, politicians and athletes found that individual performance follows a power-law distribution: a small group of top performers far outpaces the rest.",
+      "claim_type": "statistical",
+      "importance": "critical",
+      "source_ids": [
+        "src-oboyle-2012"
+      ],
+      "verification_status": "unverified",
+      "caveats": [],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [
+        "observational"
+      ],
+      "origin": "human"
+    },
+    {
+      "claim_id": "c-luck-model",
+      "text": "In a computer simulation of 40-year careers, the most successful agents were usually not the most talented but moderately talented and luckier.",
+      "claim_type": "factual",
+      "importance": "supporting",
+      "source_ids": [
+        "src-pluchino-2018"
+      ],
+      "verification_status": "unverified",
+      "caveats": [
+        "A simulation, not observed careers; it doesn't show how much real success is luck."
+      ],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [],
+      "origin": "human"
+    },
+    {
+      "claim_id": "c-strategy",
+      "text": "Taken together, this research suggests hard work pays most when it goes into skills and markets where gains build on themselves.",
+      "claim_type": "interpretive",
+      "importance": "supporting",
+      "source_ids": [
+        "src-merton-1968",
+        "src-rosen-1981",
+        "src-oboyle-2012"
+      ],
+      "verification_status": "unverified",
+      "caveats": [
+        "An interpretation of several studies, not a finding of any one of them."
+      ],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [],
+      "origin": "human"
+    }
+  ]
+}

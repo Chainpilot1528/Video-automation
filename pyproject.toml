@@ -9,6 +9,7 @@ description = "Evidence-led, rights-aware documentary production pipeline for Re
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "certifi>=2024.2.2",  # trusted CA bundle for HTTPS (python.org builds ship none)
     "pydantic>=2.12,<3",
     "typer>=0.12,<1",
 ]

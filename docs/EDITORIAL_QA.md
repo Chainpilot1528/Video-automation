@@ -63,9 +63,47 @@ Exceptions are bound to the claim's current text, status and sources, so editing
 - To limit who may approve, set `PIPELINE_AUTHORIZED_REVIEWERS="Name One, Name Two"`. Otherwise any named person may approve, and their name is always recorded.
 - Project statuses from `script_approved` onward require a current approval, and `publication_ready` also requires zero research blockers. `pipeline project validate` enforces both.
 
-## AI assistance
+## AI assistance (local models: Ollama recommended)
 
-LLM help is optional, and none is enabled yet (Phase 9). When enabled, `pipeline research suggest` writes suggestions to `research/notes/` and never to the ledger. Every suggested claim starts `unverified`, with no sources and `origin: llm_suggestion`. A person has to find the sources, import the claim and review it. **The model can never mark a claim verified.**
+**Recommended on this Mac: Ollama with Qwen3 4B (4-bit).** It's quantized to 2.5 GB, so it fits in 8 GB of RAM:
+
+```bash
+.venv/bin/pipeline script draft projects/my-film --provider ollama --minutes 2
+```
+
+Measured on the demo with the same prompt: Qwen3 4B via Ollama took 1 min 40 s with 0 repeated sentences, 0 invented claim markers and 3 flags (all "claim not yet verified"). Qwen3 0.6B via Voicebox took 2.5 min, repeated itself, and invented a marker. Voicebox couldn't run Qwen3 1.7B on this Mac (it loads the model unquantized). Both providers are local; the Voicebox details below still apply when you use `--provider voicebox`.
+
+### Voicebox Qwen3 (alternative)
+
+AI help is optional and local. It uses the Qwen3 model built into the Voicebox app (Apache-2.0), so nothing leaves your Mac. Download a size in Voicebox → **Models**: **Qwen3 1.7B** is the default; 4B writes better but is slower on this CPU; 0.6B is fastest but weakest.
+
+**Draft a script:**
+
+```bash
+.venv/bin/pipeline script draft projects/my-film --provider voicebox --minutes 3
+```
+
+- The AI sees only `brief.md` and the ledger's claims (rejected claims excluded). It's told to state facts only from those claims and tag each with `[claim:<id>]`, to hedge unverified claims, to show both sides of disputed ones, and to write `[NEEDS SOURCE: …]` where a fact is missing.
+- It writes section by section, following the script template's headings, and adds generated source and visual notes.
+- The draft goes to `script/drafts/draft-<time>.md`, which starts with an "AI DRAFT, NOT APPROVED" header recording the model and the brief and ledger fingerprints. It **never overwrites** `script.md` or `scenes.json`.
+- **Automatic checks flag:** unknown or rejected claim markers, unverified claims used, sentences with numbers or quotes but no claim marker (likely invented), `[NEEDS SOURCE]` gaps, and sections that state no tagged facts.
+- **Then you:** check every marked sentence against its source, resolve every flag, rewrite in your own voice, copy what you keep into `script/script.md`, run `pipeline script validate`, and approve as usual. A draft is never approved itself.
+
+**Suggest claims to research:**
+
+```bash
+.venv/bin/pipeline research suggest projects/my-film --provider voicebox
+```
+
+Suggestions go to `research/notes/` and never to the ledger. Each starts `unverified`, with no sources and `origin: llm_suggestion`. **The model can never mark a claim verified.**
+
+**Safety checks on the Voicebox LLM:**
+- Before every call, the adapter reads Voicebox's settings and refuses if a custom remote LLM endpoint is configured.
+- It refuses, rather than starting a download, if the chosen Qwen3 size isn't downloaded.
+- It discards any reply that didn't come from a local Qwen3 size.
+- Qwen3's `<think>` reasoning is stripped from all output.
+
+Set `PIPELINE_LLM_PROVIDER=voicebox` and `PIPELINE_LLM_MODEL_SIZE=1.7B` to skip `--provider`.
 
 ## Editorial rules
 

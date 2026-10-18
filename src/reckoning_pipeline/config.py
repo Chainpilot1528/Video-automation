@@ -33,6 +33,12 @@ class PipelineConfig(BaseModel):
     warn_free_disk_gb: float = Field(default=25.0, ge=0)
     allow_network: bool = False
     allow_paid_providers: bool = False
+    voicebox_url: str = "http://127.0.0.1:17493"
+    voicebox_engine: str = "kokoro"
+    llm_provider: str = "none"          # "voicebox" = local Qwen3 inside the Voicebox app
+    llm_model_size: Literal["0.6B", "1.7B", "4B"] = "1.7B"
+    ollama_url: str = "http://127.0.0.1:11434"
+    ollama_model: str = "qwen3:4b-instruct-2507-q4_K_M"
     # Names allowed to approve scripts and record claim reviews/exceptions. Empty = any named person.
     authorized_reviewers: list[str] = Field(default_factory=list)
 
@@ -73,6 +79,12 @@ _ENV_FIELDS = {
     "ALLOW_NETWORK": "allow_network",
     "ALLOW_PAID_PROVIDERS": "allow_paid_providers",
     "AUTHORIZED_REVIEWERS": "authorized_reviewers",
+    "VOICEBOX_URL": "voicebox_url",
+    "VOICEBOX_ENGINE": "voicebox_engine",
+    "LLM_PROVIDER": "llm_provider",
+    "LLM_MODEL_SIZE": "llm_model_size",
+    "OLLAMA_URL": "ollama_url",
+    "OLLAMA_MODEL": "ollama_model",
 }
 
 

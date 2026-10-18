@@ -83,7 +83,33 @@ Generated output isn't assumed to be copyright-safe. Record the service, model, 
 
 `assets credits` lists the exact attribution text (once each, in order of first use), licensed material and AI-generated material for assets used in scenes, ready for the video description.
 
+## Stock search (Pexels)
+
+Manual intake proved reliable, so the first stock adapter now uses Pexels' **official API**:
+
+```bash
+.venv/bin/pipeline stock search "empty office at night" --type video --project projects/my-film
+```
+
+```bash
+.venv/bin/pipeline stock add projects/my-film pexels:video:35867210 --id s02-night-city --scene s02-evidence
+```
+
+```bash
+.venv/bin/pipeline assets checklist projects/my-film s02-night-city --people no --trademarks no
+```
+
+```bash
+.venv/bin/pipeline assets review projects/my-film s02-night-city --decision approve --by "Your Name"
+```
+
+- **`stock search`** sends only your query (plus the API key, in a header) and downloads nothing. With `--project`, it marks clips that project already uses.
+- **`stock add`** fetches the item through the API, picks the largest file no wider than the project resolution, downloads it only from Pexels' media hosts over HTTPS (size-capped), and registers it through normal intake: checksum, read-only original. It fills in source URL, creator, Pexels License name and URL, commercial use allowed, attribution not required (a courtesy credit is stored), derivatives allowed, and raw redistribution not allowed. It refuses a clip the project already has (the "used footage" ledger). `--dry-run` downloads nothing.
+- **People and trademarks stay unknown** until you've watched the clip and recorded your answers with `assets checklist`. Approval is impossible before that. Changing checklist answers later makes an earlier approval stale.
+- The key is read only from `PIPELINE_PEXELS_API_KEY` in your shell profile. It's never written to manifests, logs, reports or error messages.
+- HTTPS certificates are verified using the bundled `certifi` CA store.
+
 ## Not in the MVP
 
-- Stock or archive search adapters. These come after manual intake has proven reliable, and only for sources whose terms permit API access.
+- Further stock adapters (Pixabay, Wikimedia Commons) come next, each after a licence review. Wikimedia licences vary per file and often require attribution.
 - Any scraping, or bypassing of access controls. Never.

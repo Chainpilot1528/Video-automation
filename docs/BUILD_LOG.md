@@ -13,7 +13,11 @@ Phase status, decisions, tests, known issues, and next action. Newest entries at
 | 4 — Asset sourcing, licensing, provenance | PASS (committed 98a99d6) | 2026-10-17 |
 | 5 — Narration, timing, subtitles | PASS (committed a4b697e) | 2026-10-17 |
 | 6 — Visual planning and provider adapters | PASS (committed bac1068) | 2026-10-17 |
-| 7 — Timeline compiler and FFmpeg rendering | PASS (awaiting user review) | 2026-10-18 |
+| 7 — Timeline compiler and FFmpeg rendering | PASS (committed 601822a) | 2026-10-18 |
+| 9 (early) — Voicebox TTS adapter | PASS (fake-server tests); live API reachable; Kokoro build pending model download | 2026-10-18 |
+| 9 (early) — Pexels stock adapter | PASS (fake-API tests + live search) | 2026-10-18 |
+| 9 (early) — AI script drafting (Voicebox Qwen3, then Ollama) | PASS (tests + live drafts) | 2026-10-18 |
+| 10 (rehearsal) — "The Mathematics of Success" | PREVIEW 2 rendered; awaiting human claim and rights review | 2026-10-18 |
 
 ---
 
@@ -345,3 +349,132 @@ All findings below come from command output observed on 2026-10-17.
 
 ### Next action
 - User reviews the demo preview and Phase 7. Then Phase 8: automated QA and the human-review report.
+
+---
+
+## Phase 9 (early) — Voicebox TTS adapter (2026-10-18)
+
+The user picked [jamiepine/voicebox](https://github.com/jamiepine/voicebox) from five suggested repos; it's the only voice tool among them. The user installs the app. Phase 8 hasn't started yet.
+
+### Research (from the repo's source, not guessed)
+- Licence MIT, actively maintained, ships an Intel Mac build, and runs on CPU when there's no Apple Silicon or CUDA.
+- Local REST API at `127.0.0.1:17493`. An OpenAI-compatible `POST /v1/audio/speech` (`model`, `input`, `voice`, `response_format`, `speed`) returns audio directly. `GET /profiles`, `GET /profiles/presets/kokoro`, `POST /profiles` and `GET /` (version) are also available.
+- Kokoro-82M model licence: **Apache-2.0**, confirmed on the Hugging Face model card (`hexgrad/Kokoro-82M`) and in voicebox's `kokoro_backend.py`. It has English and Hindi preset voices.
+- Voicebox Cloud routes return 404 unless `VOICEBOX_CLOUD_ENABLED` is set, so generation stays local.
+
+### Implemented
+- `providers/tts/voicebox.py`:
+  - Uses only the standard library's HTTP client (no new dependencies), with clear errors when the app isn't running or a model isn't downloaded.
+  - Refuses non-loopback URLs unless network use is approved.
+  - `kokoro:<voice_id>` creates or reuses a Voicebox preset profile.
+  - Clearance is per voice: Kokoro presets are cleared (Apache-2.0); cloned voices are blocked until consent is recorded; designed voices and unreviewed engines are blocked.
+  - The provider version (`voicebox <ver> / <engine>`) is part of the narration cache key.
+- Narration build now asks the provider for per-voice clearance (`voice_clearance`). macOS `say` keeps its static, preview-only rule.
+- Config: `PIPELINE_VOICEBOX_URL`, `PIPELINE_VOICEBOX_ENGINE`. `narration voices` and `narration build` accept `--provider voicebox`.
+- Docs: Voicebox setup in `INSTALL.md`, rules in `OPERATIONS.md`, and the provider table in `ARCHITECTURE.md`.
+
+### Verification
+- `pytest`: 282 passed. 11 new tests run against a fake local server that mirrors Voicebox's routes. They cover remote-URL refusal, unreachable-app errors, listing, preset auto-creation (no duplicates), clearance, the request shape, error surfacing, the 10,000-character limit, and full narration builds (Kokoro preset → allowed and pending review; cloned voice → blocked).
+- **Not yet verified against the real app.** Voicebox isn't installed on this Mac yet, so the live Kokoro test is pending.
+
+### Live check (2026-10-18)
+- Voicebox wasn't on this Mac at first, despite earlier reports. I downloaded the official `Voicebox_0.5.0_x64.dmg` (587 MB, GitHub release v0.5.0) with the user's permission. The image is intact, signed "Developer ID Application: James Pine (YB4V2VA9YY)", and Apple-notarized. At the user's request I copied it into /Applications and launched it.
+- The API answered within seconds: `{"version":"0.5.0"}`, health shows `backend_type: pytorch`, `backend_variant: cpu`. `pipeline narration voices --provider voicebox` lists 28 English Kokoro presets from the real app.
+- The Kokoro model isn't downloaded yet: `/models/status` still showed `downloaded: false` after 20 minutes of polling. So the live narration build and preview are pending.
+
+### Next action
+- User downloads Kokoro 82M in Voicebox → Models. Then build demo narration with `kokoro:af_heart` in `tmp/demo-preview` and render a preview.
+
+---
+
+## Phase 9 (early) — Pexels stock adapter (2026-10-18)
+
+### Implemented
+- `providers/stock/` (provider-neutral interface) and `pexels.py`, the official API: video and photo search, fetch by id.
+  - The key comes only from `PIPELINE_PEXELS_API_KEY` and goes only in the `Authorization` header. It's never logged, stored or put in errors.
+  - Errors are clear for 401, 404 and 429.
+- `assets/stock.py`: picks the largest file within the project width; downloads only from Pexels/Vimeo media hosts over HTTPS with a 1.5 GB cap; refuses clips the project already has (the used-footage ledger); registers via normal intake with the Pexels License fields filled in. People and trademarks are left unknown for human review.
+- `assets/checklist.py` and `pipeline assets checklist`: record the human rights answers (people, clearance, trademarks, derivatives, platform clearance). Changing them later makes an earlier approval stale.
+- `utils/http.py`: verified TLS with the `certifi` CA bundle (new dependency, pinned in `requirements-lock.txt`). The python.org build of Python on this Mac had no root certificates, and verification is never disabled.
+- CLI: `stock search`, `stock add`, `assets checklist`. Docs: `RIGHTS_AND_PROVENANCE.md`, `INSTALL.md`, `ARCHITECTURE.md`, README. `.env.example` has a placeholder only.
+
+### Security note
+- The user pasted their Pexels key into chat. I didn't use or store it from there, and advised regenerating it. The user then set the key in `~/.zprofile` themselves (length check: 56). The pipeline reads it only from the environment.
+
+### Verification
+- `pytest`: 292 passed. 10 new tests run against a fake Pexels API (no network). They cover the key being required and never appearing in errors or URLs, parsing, file choice, refusing other hosts and plain http, the size cap, end-to-end add (pending review), approval blocked until the checklist is done and then allowed, duplicate refusal, dry run downloading nothing, and the CLI.
+- **Live:** `stock search "empty office at night"` returned 5 real clips. `stock add … pexels:video:35867210 --dry-run` chose the 1920×1080 MP4 and validated the record. No real download yet; that needs the user's go-ahead.
+
+---
+
+## Phase 9 (early) — AI script drafting with Voicebox's Qwen3 (2026-10-18)
+
+The user chose Voicebox's built-in Qwen3 (local, already installed) over installing Ollama.
+
+### Research (from Voicebox source and the live app)
+- `POST /llm/generate` takes `prompt` (≤50k), `system` (≤4k), `model_size` (0.6B/1.7B/4B), `max_tokens` (≤4096) and `temperature`, and returns `{text, model_size}`. If the model isn't cached, it **starts a download** and returns 202.
+- Voicebox can forward LLM calls to a custom OpenAI-compatible endpoint (`custom_llm_endpoint` in `GET /settings/captures`). On this Mac it is unset (live check).
+- Live `/models/status`: Qwen3 0.6B, 1.7B and 4B are all **not downloaded** yet, and neither is Kokoro.
+
+### Implemented
+- `providers/llm/voicebox_llm.py`: a local LLM adapter.
+  - Before each call it refuses a remote custom endpoint, and refuses rather than starting a download when the model is missing.
+  - It verifies the reply came from a local Qwen3 size and strips `<think>` blocks.
+  - It enforces Voicebox's size limits. `get_llm_provider` now supports `voicebox`, and config adds `PIPELINE_LLM_PROVIDER` and `PIPELINE_LLM_MODEL_SIZE`.
+- `script/draft.py` and `pipeline script draft`:
+  - Drafts section by section (template headings) with an editorial system prompt, from the brief and non-rejected claims only.
+  - Deterministic post-checks flag unknown or rejected markers, unverified claims, sentences with numbers or quotes but no marker, `[NEEDS SOURCE]` gaps, and untagged sections. It also writes source and visual notes.
+  - Output goes to `script/drafts/` with a provenance header and never overwrites `script.md` or `scenes.json`.
+- `pipeline research suggest` now works with `--provider voicebox`, writing unverified suggestions to `research/notes/`.
+- Docs: AI section in `EDITORIAL_QA.md`, `ARCHITECTURE.md`, README and `.env.example`.
+
+### Issues found during testing
+- Thinking blocks were stripped only in the Voicebox adapter, so another provider's reasoning could have leaked into drafts. The draft builder now strips them itself.
+
+### Verification
+- `pytest`: 306 passed. 14 new tests cover the claims block, cleaning, `<think>` stripping, a full draft with a scripted model (file location, header, flags, `script.md` and `scenes.json` untouched, prompt contents), refusals (empty brief, empty reply), and the adapter: happy path, custom-endpoint refusal before any text is sent, undownloaded model, non-local reply, 202, 500, URL and size checks.
+- Live: `pipeline script draft examples/demo-project --provider voicebox` reached Voicebox and stopped with "Qwen3 1.7B isn't downloaded", as designed.
+
+### Next action
+- User downloads Qwen3 1.7B (and Kokoro 82M) in Voicebox → Models. Then run a live draft on `tmp/demo-preview` and review its quality and flags.
+
+### Live results (2026-10-18)
+- Voicebox's own model downloads stalled with 0 bytes, twice. Models were fetched directly into its Hugging Face cache with `huggingface_hub` (in a scratch venv, not a project dependency) with the user's approval: Qwen3 0.6B (1.52 GB), Kokoro-82M (0.36 GB) and Qwen3 1.7B (4.08 GB). A leftover 0-byte `.incomplete` file from Voicebox's stalled attempt hid the finished 1.7B download; I moved it to scratch rather than deleting it.
+- **Qwen3 0.6B (Voicebox):** a 2.5 min draft. The checks caught an invented marker (copied from the prompt's example). The text was repetitive and one section was cut off, so I added `repeated` and `cut_off` checks and removed the copyable example marker from the prompt.
+- **Qwen3 1.7B (Voicebox):** fails with "LLM generation failed" even with other models unloaded. The checksums are fine, so it's most likely the unquantized CPU load on 8 GB.
+- **Voicebox 0.5.0 compatibility:** the installed release lacks `/v1/audio/speech`, which exists in the repo HEAD I first read. The TTS adapter now checks `/openapi.json` and falls back to `POST /generate/stream` (seed 0, nothing saved to Voicebox history).
+
+---
+
+## Phase 9 (early) — Ollama LLM provider (2026-10-18)
+
+- With the user's approval: downloaded `Ollama.dmg` v0.40.6 (214 MB, official GitHub release). It's intact, signed "Developer ID Application: Infra Technologies, Inc (3MU9H2V9Y9)" and notarized. Copied it to /Applications and launched it. The API (0.40.6) listens on 127.0.0.1:11434 only.
+- Pulled `qwen3:4b-instruct-2507-q4_K_M` (2.5 GB, Q4_K_M) at about 3.3 MB/s.
+- `providers/llm/ollama.py`: `POST /api/chat` (`think: false`, `num_ctx` 8192), loopback-only unless approved, never pulls models (it names the `ollama pull` command instead), strips `<think>`. Config adds `PIPELINE_OLLAMA_URL` and `PIPELINE_OLLAMA_MODEL`.
+- Tests: 3 new tests against a fake Ollama (request shape, missing model, load failure, remote refusal, config).
+- **Live comparison** (demo, `--minutes 1`): Ollama Qwen3 4B took 1:40, 153 words, 0 repeats, 0 invented markers, and correctly used the ledger's caveats; 3 flags, all "unverified claim". Voicebox 0.6B took 2:31, with 4 repeats, 1 invented marker and 1 cut-off section. Ollama is now the recommended drafting provider.
+
+---
+
+## Phase 10 (rehearsal) — "The Mathematics of Success" (2026-10-18)
+
+The user supplied the topic and a five-principle summary. Project: `projects/mathematics-of-success/` (manifests tracked; media git-ignored).
+
+- **Research:** 6 sources, each confirmed bibliographically (PubMed/Crossref/RePEc/DOI/arXiv) but not yet checked against full text:
+  - Salganik, Dodds & Watts 2006, *Science*
+  - Merton 1968, *Science*
+  - Rosen 1981, *AER*
+  - O'Boyle & Aguinis 2012, *Personnel Psychology*
+  - Pluchino, Biondo & Rapisarda 2018, *ACS*
+  - a computed arithmetic source for the 1%-a-day illustration (1.01^365 ≈ 37.78; 0.99^365 ≈ 0.026)
+
+  8 claims, all `unverified` pending the user's review; 4 are critical.
+- **Script:** 7 scenes, 327 words, written by Claude from the summary and ledger. Every fact is tagged. The narration says when something is a model (Rosen) or a simulation (Pluchino), and labels interpretation and speculation.
+- **Visuals:** 6 deterministic graphics (title, three cards that cite their source, a zero-based compounding chart labelled as an illustration, closing card) and 5 Pexels clips (with the user's approval). The visual plan has 0 gaps.
+- **Preview 1:** macOS voice, 5 placeholders, 2:14. **Preview 2:** Kokoro `af_heart` via Voicebox (7 scenes in 83 s, all at about -19.7 LUFS), stock linked, 2:09, rendered in 36 s, 37 caption cues.
+- **Open before a master:**
+  - User verifies the 8 claims against their sources.
+  - Checklist and review the 5 clips. The train clip shows an "AT" transit logo; the crowd clip shows identifiable people.
+  - Review the 6 graphics and 7 narration assets, and approve the script.
+  - Two clips are 720p, which a 1080p master would upscale.
+- **Cosmetic issues:** burned captions cover the chart's source line; two title cards break lines unevenly; the chart footer shows doubled brackets.

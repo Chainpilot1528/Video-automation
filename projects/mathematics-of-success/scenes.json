@@ -1,0 +1,221 @@
+{
+  "schema_version": "1.0",
+  "scenes": [
+    {
+      "scene_id": "s01-cold-open",
+      "order": 1,
+      "purpose": "Cold open: pose the question",
+      "narration_text": "Two people start on the same day, with the same skills, and work just as hard. A year later, one is far ahead. Is that unfair, or is it maths? Researchers have found patterns in who makes it. Here are five.",
+      "visual_strategy": "Title card over a calm morning city shot.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": 12.0,
+      "actual_narration_duration_seconds": 13.0,
+      "final_duration_seconds": 13.75,
+      "narration_asset_id": "narr-s01-cold-open",
+      "caption_status": "approximate",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "fade",
+        "duration_seconds": 0.5
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Draft narration for review; written from the creator's summary and the research ledger.",
+      "render_status": "not_started",
+      "input_fingerprint": null
+    },
+    {
+      "scene_id": "s02-same-start",
+      "order": 2,
+      "purpose": "Principle 1: the same start doesn't guarantee the same outcome",
+      "narration_text": "First: the same start doesn't mean the same outcome. In one online experiment, 14,341 people could download unfamiliar songs. When they could see what others picked, the same songs ended up with very different levels of success in separate groups. Quality still mattered: the best songs rarely did badly.",
+      "visual_strategy": "Typographic card naming the experiment and its source, then stock of people choosing music on phones.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [
+        "c-identical-start",
+        "c-quality-partly"
+      ],
+      "planned_duration_seconds": 18.0,
+      "actual_narration_duration_seconds": 20.85,
+      "final_duration_seconds": 21.6,
+      "narration_asset_id": "narr-s02-same-start",
+      "caption_status": "approximate",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 0.5
+      },
+      "transition_out": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Draft narration for review; written from the creator's summary and the research ledger.",
+      "render_status": "not_started",
+      "input_fingerprint": null
+    },
+    {
+      "scene_id": "s03-compounding",
+      "order": 3,
+      "purpose": "Principle 2: small advantages compound",
+      "narration_text": "Second: small advantages compound. Improve by one percent a day and, on paper, a year multiplies where you started by almost thirty-eight. Slip one percent a day and you keep less than three percent. Real life is messier, but the shape is real. Sociologist Robert Merton called it the Matthew effect: scientists who are already recognised tend to get more credit for similar work.",
+      "visual_strategy": "Zero-based bar chart of the arithmetic, clearly labelled as an illustration.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [
+        "c-compound-arith",
+        "c-matthew"
+      ],
+      "planned_duration_seconds": 22.0,
+      "actual_narration_duration_seconds": 23.425,
+      "final_duration_seconds": 24.175,
+      "narration_asset_id": "narr-s03-compounding",
+      "caption_status": "approximate",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Draft narration for review; written from the creator's summary and the research ledger.",
+      "render_status": "not_started",
+      "input_fingerprint": null
+    },
+    {
+      "scene_id": "s04-superstars",
+      "order": 4,
+      "purpose": "Principle 3: rewards are not shared out evenly",
+      "narration_text": "Third: rewards aren't shared out evenly. Economist Sherwin Rosen showed how, when one performer can reach a whole market, a small edge in talent can mean a huge gap in earnings. And a study of more than six hundred thousand researchers, entertainers, politicians and athletes found that performance itself is lopsided: a small group at the top far outpaces everyone else.",
+      "visual_strategy": "Typographic card with the study's scale and source, then stock of a crowded stadium or stage.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [
+        "c-superstars",
+        "c-power-law"
+      ],
+      "planned_duration_seconds": 22.0,
+      "actual_narration_duration_seconds": 23.425,
+      "final_duration_seconds": 24.175,
+      "narration_asset_id": "narr-s04-superstars",
+      "caption_status": "approximate",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Draft narration for review; written from the creator's summary and the research ledger.",
+      "render_status": "not_started",
+      "input_fingerprint": null
+    },
+    {
+      "scene_id": "s05-luck",
+      "order": 5,
+      "purpose": "Principle 4: luck can compound",
+      "narration_text": "Fourth: luck compounds too. One computer model of forty-year careers found the most successful people were rarely the most talented, but moderately talented and luckier. It's a simulation, not real lives. One possible lesson: be prepared, so a lucky break has somewhere to go.",
+      "visual_strategy": "Typographic card naming the simulation as a model, then stock suggesting chance (a coin, dice, a chance meeting).",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [
+        "c-luck-model"
+      ],
+      "planned_duration_seconds": 18.0,
+      "actual_narration_duration_seconds": 18.15,
+      "final_duration_seconds": 18.9,
+      "narration_asset_id": "narr-s05-luck",
+      "caption_status": "approximate",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Draft narration for review; written from the creator's summary and the research ledger.",
+      "render_status": "not_started",
+      "input_fingerprint": null
+    },
+    {
+      "scene_id": "s06-strategy",
+      "order": 6,
+      "purpose": "Principle 5: direct the effort",
+      "narration_text": "Fifth: aim your effort. Taken together, this research suggests hard work pays most when it goes into skills and markets where gains build on themselves. Choosing the field, the skill and the thing you build matters as much as the hours.",
+      "visual_strategy": "Stock of focused work: someone planning, drafting, building.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [
+        "c-strategy"
+      ],
+      "planned_duration_seconds": 16.0,
+      "actual_narration_duration_seconds": 14.85,
+      "final_duration_seconds": 15.6,
+      "narration_asset_id": "narr-s06-strategy",
+      "caption_status": "approximate",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Draft narration for review; written from the creator's summary and the research ledger.",
+      "render_status": "not_started",
+      "input_fingerprint": null
+    },
+    {
+      "scene_id": "s07-close",
+      "order": 7,
+      "purpose": "Resolution",
+      "narration_text": "So effort matters, but it isn't the whole equation. Compounding, unequal rewards and luck shape the result. The part you control is where you point your effort.",
+      "visual_strategy": "Closing typographic card; slow hold.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": 12.0,
+      "actual_narration_duration_seconds": 10.325,
+      "final_duration_seconds": 11.075,
+      "narration_asset_id": "narr-s07-close",
+      "caption_status": "approximate",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "fade_to_black",
+        "duration_seconds": 1.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Draft narration for review; written from the creator's summary and the research ledger.",
+      "render_status": "not_started",
+      "input_fingerprint": null
+    }
+  ]
+}

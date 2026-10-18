@@ -28,7 +28,12 @@ Re-record a scene by importing `--take 2`, `--take 3` and so on. The highest tak
 
 - `macos-say` is free and offline, but Apple licenses its voices for **personal, non-commercial use only**. Its output is registered as `commercial_use: not_allowed` and `blocked`, so it's useful for timing previews but can never be approved for publication.
 - A scene with an imported take always uses the take, even when `--provider` is given.
-- Other TTS providers, such as a Kokoro-class local model or a hosted service, plug in through `providers/tts/base.py`. Each needs a licence review and approval before it's added (Phase 9).
+- **`voicebox`** is a local, offline [Voicebox](https://github.com/jamiepine/voicebox) app (setup in `docs/INSTALL.md`). Voices are Voicebox profiles, or `kokoro:<voice_id>` for a Kokoro preset (`pipeline narration voices --provider voicebox`). Rights are decided per voice:
+  - **Kokoro preset voices** are cleared: the model is Apache-2.0. Their narration is registered `commercial_use: allowed`, `pending_review`, and still needs `pipeline assets review`.
+  - **Cloned voices** are blocked until the voice owner's written consent is recorded in `rights_evidence` and the asset is reviewed. Only clone your own voice, or a voice whose owner has agreed in writing.
+  - **Designed voices and other engines** (Chatterbox, Qwen, LuxTTS, TADA) are blocked until their model licence has been reviewed and added to `REVIEWED_ENGINES`.
+  - Non-local Voicebox URLs are refused unless `PIPELINE_ALLOW_NETWORK=true` is approved.
+- Other providers, such as hosted TTS services, plug in through `providers/tts/base.py` after a licence and cost review (Phase 9).
 
 ### Build
 

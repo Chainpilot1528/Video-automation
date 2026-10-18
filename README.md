@@ -54,7 +54,8 @@ Full setup, including FFmpeg, is in `docs/INSTALL.md`. The architecture is in `d
 | `pipeline research review <path> <claim> --status S --by NAME` | working (human decision) |
 | `pipeline research exception <path> <claim> --by NAME --rationale TEXT [--revoke]` | working |
 | `pipeline research bibliography <path> [--write]` | working |
-| `pipeline research suggest <path>` | exits 3: no LLM provider until Phase 9 |
+| `pipeline research suggest <path> --provider voicebox` | working (local Qwen3; suggestions only) |
+| `pipeline script draft <path> --provider ollama|voicebox [--minutes]` | working (local AI draft to script/drafts/) |
 | `pipeline script validate <path>` | working |
 | `pipeline script approve / revoke <path> --by NAME` | working (human decision) |
 | `pipeline assets report <path> [--json] [--strict]` | working |
@@ -62,8 +63,11 @@ Full setup, including FFmpeg, is in `docs/INSTALL.md`. The architecture is in `d
 | `pipeline assets derive <path> <parent> <file> --id` | working |
 | `pipeline assets review <path> <asset> --decision approve/block --by NAME` | working (human decision) |
 | `pipeline assets credits <path> [--write]` | working |
+| `pipeline assets checklist <path> <asset> --people yes/no --trademarks yes/no ...` | working (human answers) |
+| `pipeline stock search "<query>" [--type video/photo] [--project]` | working (Pexels API) |
+| `pipeline stock add <path> pexels:video:<id> --id --scene [--dry-run]` | working |
 | `pipeline narration import <path> <scene> <file> --creator NAME [--take N]` | working |
-| `pipeline narration voices [--provider] [--locale]` | working |
+| `pipeline narration voices [--provider macos-say/voicebox] [--locale]` | working |
 | `pipeline narration build <path> [--provider --voice] [--dry-run]` | working (per-scene, cached) |
 | `pipeline captions build <path>` | working (approximate timing) |
 | `pipeline captions validate <file.srt>` | working |

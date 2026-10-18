@@ -18,7 +18,7 @@
 | `project/` | Scaffolding, whole-project validation (references, paths, checksums, status gates), migrations |
 | `approvals.py` | Fingerprints and derived approval state (script, claim exceptions, assets) |
 | `research/` | Research report, ledger import and review, bibliography, LLM-suggestion guardrails |
-| `script/` | Script readiness checks, approve and revoke |
+| `script/` | Script readiness checks, approve and revoke, AI drafting (`draft.py`) with deterministic checks |
 | `assets/` | Manual intake (read-only originals), derivatives, rights review, rights report, credits |
 | `media/` | FFmpeg/ffprobe discovery, audio measurement and normalization, video probing |
 | `narration/` | Per-scene narration build (imported takes, then optional TTS) |
@@ -27,7 +27,8 @@
 | `visuals/` | Visual-plan report, placeholders, HTML contact sheet |
 | `timeline/` | **Pure** compiler: manifests → `TimelinePlan` |
 | `render/` | Profiles, FFmpeg command builders (pure), runner (execute, cache, concat, validate, report) |
-| `providers/{llm,tts,image}` | Adapter interfaces. Only macOS `say` (preview-only) is implemented |
+| `providers/{llm,tts,image,stock}` | Adapter interfaces. TTS: macOS `say` (preview-only) and Voicebox (local). Stock: Pexels |
+| `utils/http.py` | Verified HTTPS (certifi CA bundle) |
 
 ## Data flow
 
@@ -52,9 +53,10 @@ render runner ──► renders/<profile>/scenes/<scene>-<fp>.mp4 ──► conc
 
 | Interface | File | Enabled by default | Implementations |
 |---|---|---|---|
-| LLM | `providers/llm/base.py` | no | none yet (Phase 9) |
-| TTS | `providers/tts/base.py` | only when `--provider` is given | `macos-say` (offline, not commercially cleared, so its output is blocked from publication) |
+| LLM | `providers/llm/base.py` | only with `--provider` or `PIPELINE_LLM_PROVIDER` | `ollama` (local quantized models over loopback; never pulls models itself) and `voicebox` (Voicebox's built-in Qwen3 over loopback; refuses custom remote endpoints and undownloaded models) |
+| TTS | `providers/tts/base.py` | only when `--provider` is given | `macos-say` (offline, not commercially cleared, so its output is blocked); `voicebox` (local app over loopback HTTP; clearance per voice: Kokoro presets cleared, cloned or unreviewed voices blocked) |
 | Image/video generation | `providers/image/base.py` | no | none (placeholders instead) |
+| Stock search | `providers/stock/base.py` | only on an explicit `stock` command | `pexels` (official API; sends the query and key only; downloads restricted to Pexels media hosts; TLS verified with certifi) |
 
 Each adapter declares `sends_data_externally` and `commercial_use_cleared`. Output that isn't cleared is registered as `commercial_use: not_allowed` and can never be approved.
 
