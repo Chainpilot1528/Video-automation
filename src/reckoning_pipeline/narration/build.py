@@ -90,6 +90,7 @@ class BuildOptions:
     provider: TTSProvider | None = None
     voice: str | None = None
     rate_wpm: int | None = None
+    speed: float = 1.0  # pitch-preserving tempo applied to TTS output (never to human recordings)
     scene_ids: list[str] | None = None
     dry_run: bool = False
 
@@ -139,7 +140,7 @@ def plan_build(result: ValidationResult, options: BuildOptions) -> list[PlannedC
             text = pron.apply(scene.narration_text)
             fp = _digest({"route": "tts", "provider": options.provider.name,
                           "provider_version": options.provider.version(), "voice": options.voice,
-                          "rate_wpm": options.rate_wpm, "text": text, "sample_rate": rate,
+                          "rate_wpm": options.rate_wpm, "speed": options.speed, "text": text, "sample_rate": rate,
                           "normalize": NORMALIZE_VERSION})
             chunk = PlannedChunk(scene, "tts", fp, tts_text=text)
         elif scene.narration_asset_id and scene.narration_asset_id != managed_id \
@@ -225,7 +226,7 @@ def _render_chunk(result: ValidationResult, tools: Tools, options: BuildOptions,
                 raw = Path(tmp) / "raw.aiff"
                 options.provider.synthesize(chunk.tts_text, options.voice, raw,
                                             TTSOptions(rate_wpm=options.rate_wpm))
-                normalize_audio(tools, raw, out, sample_rate=rate)
+                normalize_audio(tools, raw, out, sample_rate=rate, tempo=options.speed)
     except (MediaError, TTSError) as exc:
         raise NarrationError(f"{chunk.scene.scene_id}: {exc}") from exc
 
@@ -253,7 +254,8 @@ def _narration_record(chunk: PlannedChunk, options: BuildOptions, path: Path, ra
                   "rights_evidence": note,
                   "generation": {"provider": p.name, "model": options.voice, "model_version": p.version(),
                                  "generated_on": utcnow().date(), "prompt": chunk.tts_text,
-                                 "settings": {"rate_wpm": options.rate_wpm, "sample_rate": rate},
+                                 "settings": {"rate_wpm": options.rate_wpm, "speed": options.speed,
+                                              "sample_rate": rate},
                                  "terms_url": terms},
                   "publication_status": PublicationStatus.PENDING_REVIEW if cleared else PublicationStatus.BLOCKED,
                   "notes": "" if cleared else "Not cleared for publication: " + note}

@@ -377,7 +377,7 @@
     },
     {
       "asset_id": "narr-s01-cold-open",
-      "path": "narration/s01-cold-open/4100fc756f143b7f.wav",
+      "path": "narration/s01-cold-open/b95b24f3cf9e5a26.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -391,7 +391,7 @@
       "attribution_required": false,
       "attribution_text": "",
       "derivatives_allowed": true,
-      "rights_evidence": "Voicebox (MIT) kokoro preset voice 'af_heart'; model licensed Apache-2.0 (https://huggingface.co/hexgrad/Kokoro-82M).",
+      "rights_evidence": "Voicebox (MIT) kokoro preset voice 'am_liam'; model licensed Apache-2.0 (https://huggingface.co/hexgrad/Kokoro-82M).",
       "identifiable_people": null,
       "people_clearance": "",
       "trademarks_visible": null,
@@ -400,18 +400,19 @@
       "platform_cleared": null,
       "generation": {
         "provider": "voicebox",
-        "model": "kokoro:af_heart",
+        "model": "kokoro:am_liam",
         "model_version": "voicebox 0.5.0 / kokoro",
         "generated_on": "2026-10-18",
         "prompt": "Two people start on the same day, with the same skills, and work just as hard. A year later, one is far ahead. Is that unfair, or is it maths? Researchers have found patterns in who makes it. Here are five.",
         "settings": {
           "rate_wpm": null,
+          "speed": 0.87,
           "sample_rate": 48000
         },
         "terms_url": "https://huggingface.co/hexgrad/Kokoro-82M"
       },
       "acquired_date": null,
-      "sha256": "72e3cbdb04c26a60d2150b7047dcb8c2c9395a045b02baa3d0896416dafa1faa",
+      "sha256": "fd1471f92dd221e41421425faa489f180d890698d0d2ebf4d603c5d5fe0d70ad",
       "derived_from": null,
       "intended_scene_ids": [
         "s01-cold-open"
@@ -422,7 +423,7 @@
     },
     {
       "asset_id": "narr-s02-same-start",
-      "path": "narration/s02-same-start/bfd7acc57df7aefc.wav",
+      "path": "narration/s02-same-start/090167c3cd9d8659.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -436,7 +437,7 @@
       "attribution_required": false,
       "attribution_text": "",
       "derivatives_allowed": true,
-      "rights_evidence": "Voicebox (MIT) kokoro preset voice 'af_heart'; model licensed Apache-2.0 (https://huggingface.co/hexgrad/Kokoro-82M).",
+      "rights_evidence": "Voicebox (MIT) kokoro preset voice 'am_liam'; model licensed Apache-2.0 (https://huggingface.co/hexgrad/Kokoro-82M).",
       "identifiable_people": null,
       "people_clearance": "",
       "trademarks_visible": null,
@@ -445,18 +446,19 @@
       "platform_cleared": null,
       "generation": {
         "provider": "voicebox",
-        "model": "kokoro:af_heart",
+        "model": "kokoro:am_liam",
         "model_version": "voicebox 0.5.0 / kokoro",
         "generated_on": "2026-10-18",
         "prompt": "First: the same start doesn't mean the same outcome. In one online experiment, 14,341 people could download unfamiliar songs. When they could see what others picked, the same songs ended up with very different levels of success in separate groups. Quality still mattered: the best songs rarely did badly.",
         "settings": {
           "rate_wpm": null,
+          "speed": 0.87,
           "sample_rate": 48000
         },
         "terms_url": "https://huggingface.co/hexgrad/Kokoro-82M"
       },
       "acquired_date": null,
-      "sha256": "53f7074afa8153f2f8bf3927ebca6d473284ee12f701d7903c88f5b235c1417c",
+      "sha256": "0e757f04b7fe5876b465c0b266fda099504c629681593a22b4ad53a5c03cd495",
       "derived_from": null,
       "intended_scene_ids": [
         "s02-same-start"
@@ -467,7 +469,7 @@
     },
     {
       "asset_id": "narr-s03-compounding",
-      "path": "narration/s03-compounding/b917687bf7fe5346.wav",
+      "path": "narration/s03-compounding/7c5506b3858df81c.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -481,7 +483,7 @@
       "attribution_required": false,
       "attribution_text": "",
       "derivatives_allowed": true,
-      "rights_evidence": "Voicebox (MIT) kokoro preset voice 'af_heart'; model licensed Apache-2.0 (https://huggingface.co/hexgrad/Kokoro-82M).",
+      "rights_evidence": "Voicebox (MIT) kokoro preset voice 'am_liam'; model licensed Apache-2.0 (https://huggingface.co/hexgrad/Kokoro-82M).",
       "identifiable_people": null,
       "people_clearance": "",
       "trademarks_visible": null,
@@ -490,18 +492,19 @@
       "platform_cleared": null,
       "generation": {
         "provider": "voicebox",
-        "model": "kokoro:af_heart",
+        "model": "kokoro:am_liam",
         "model_version": "voicebox 0.5.0 / kokoro",
         "generated_on": "2026-10-18",
         "prompt": "Second: small advantages compound. Improve by one percent a day and, on paper, a year multiplies where you started by almost thirty-eight. Slip one percent a day and you keep less than three percent. Real life is messier, but the shape is real. Sociologist Robert Merton called it the Matthew effect: scientists who are already recognised tend to get more credit for similar work.",
         "settings": {
           "rate_wpm": null,
+          "speed": 0.87,
           "sample_rate": 48000
         },
         "terms_url": "https://huggingface.co/hexgrad/Kokoro-82M"
       },
       "acquired_date": null,
-      "sha256": "d980d6b56bb39474b2643fdf2459ea15133a7a035305c2ff5180cea3a37004e3",
+      "sha256": "96109828fdb9f8521cfec27c152830c161656032de5dc447e98992ac1bcd5d67",
       "derived_from": null,
       "intended_scene_ids": [
         "s03-compounding"
@@ -512,7 +515,7 @@
     },
     {
       "asset_id": "narr-s04-superstars",
-      "path": "narration/s04-superstars/137aa7f2385acf6e.wav",
+      "path": "narration/s04-superstars/3c655e62c7f19f0d.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -526,7 +529,7 @@
       "attribution_required": false,
       "attribution_text": "",
       "derivatives_allowed": true,
-      "rights_evidence": "Voicebox (MIT) kokoro preset voice 'af_heart'; model licensed Apache-2.0 (https://huggingface.co/hexgrad/Kokoro-82M).",
+      "rights_evidence": "Voicebox (MIT) kokoro preset voice 'am_liam'; model licensed Apache-2.0 (https://huggingface.co/hexgrad/Kokoro-82M).",
       "identifiable_people": null,
       "people_clearance": "",
       "trademarks_visible": null,
@@ -535,18 +538,19 @@
       "platform_cleared": null,
       "generation": {
         "provider": "voicebox",
-        "model": "kokoro:af_heart",
+        "model": "kokoro:am_liam",
         "model_version": "voicebox 0.5.0 / kokoro",
         "generated_on": "2026-10-18",
         "prompt": "Third: rewards aren't shared out evenly. Economist Sherwin Rosen showed how, when one performer can reach a whole market, a small edge in talent can mean a huge gap in earnings. And a study of more than six hundred thousand researchers, entertainers, politicians and athletes found that performance itself is lopsided: a small group at the top far outpaces everyone else.",
         "settings": {
           "rate_wpm": null,
+          "speed": 0.87,
           "sample_rate": 48000
         },
         "terms_url": "https://huggingface.co/hexgrad/Kokoro-82M"
       },
       "acquired_date": null,
-      "sha256": "5c5474cc12bf5b74bf2f78130789b95b5320f6af6ddbafa6640177907fe55f46",
+      "sha256": "76b178a3680d30799280693214403129939feb0d7a0269aaf2dd9e97e587d7f1",
       "derived_from": null,
       "intended_scene_ids": [
         "s04-superstars"
@@ -557,7 +561,7 @@
     },
     {
       "asset_id": "narr-s05-luck",
-      "path": "narration/s05-luck/a6716393bf5a33ba.wav",
+      "path": "narration/s05-luck/dd33243347dd6f1f.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -571,7 +575,7 @@
       "attribution_required": false,
       "attribution_text": "",
       "derivatives_allowed": true,
-      "rights_evidence": "Voicebox (MIT) kokoro preset voice 'af_heart'; model licensed Apache-2.0 (https://huggingface.co/hexgrad/Kokoro-82M).",
+      "rights_evidence": "Voicebox (MIT) kokoro preset voice 'am_liam'; model licensed Apache-2.0 (https://huggingface.co/hexgrad/Kokoro-82M).",
       "identifiable_people": null,
       "people_clearance": "",
       "trademarks_visible": null,
@@ -580,18 +584,19 @@
       "platform_cleared": null,
       "generation": {
         "provider": "voicebox",
-        "model": "kokoro:af_heart",
+        "model": "kokoro:am_liam",
         "model_version": "voicebox 0.5.0 / kokoro",
         "generated_on": "2026-10-18",
         "prompt": "Fourth: luck compounds too. One computer model of forty-year careers found the most successful people were rarely the most talented, but moderately talented and luckier. It's a simulation, not real lives. One possible lesson: be prepared, so a lucky break has somewhere to go.",
         "settings": {
           "rate_wpm": null,
+          "speed": 0.87,
           "sample_rate": 48000
         },
         "terms_url": "https://huggingface.co/hexgrad/Kokoro-82M"
       },
       "acquired_date": null,
-      "sha256": "c4574d1adf2f499d120fce660361a077709f71b8d3cb996d466157293315ebdb",
+      "sha256": "b2f7870427c4fe787a7dbe09cc6b2341c53189f185a7ab741cd46efc7444717d",
       "derived_from": null,
       "intended_scene_ids": [
         "s05-luck"
@@ -602,7 +607,7 @@
     },
     {
       "asset_id": "narr-s06-strategy",
-      "path": "narration/s06-strategy/f952eddcc497ee5d.wav",
+      "path": "narration/s06-strategy/0c836157b12183a8.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -616,7 +621,7 @@
       "attribution_required": false,
       "attribution_text": "",
       "derivatives_allowed": true,
-      "rights_evidence": "Voicebox (MIT) kokoro preset voice 'af_heart'; model licensed Apache-2.0 (https://huggingface.co/hexgrad/Kokoro-82M).",
+      "rights_evidence": "Voicebox (MIT) kokoro preset voice 'am_liam'; model licensed Apache-2.0 (https://huggingface.co/hexgrad/Kokoro-82M).",
       "identifiable_people": null,
       "people_clearance": "",
       "trademarks_visible": null,
@@ -625,18 +630,19 @@
       "platform_cleared": null,
       "generation": {
         "provider": "voicebox",
-        "model": "kokoro:af_heart",
+        "model": "kokoro:am_liam",
         "model_version": "voicebox 0.5.0 / kokoro",
         "generated_on": "2026-10-18",
         "prompt": "Fifth: aim your effort. Taken together, this research suggests hard work pays most when it goes into skills and markets where gains build on themselves. Choosing the field, the skill and the thing you build matters as much as the hours.",
         "settings": {
           "rate_wpm": null,
+          "speed": 0.87,
           "sample_rate": 48000
         },
         "terms_url": "https://huggingface.co/hexgrad/Kokoro-82M"
       },
       "acquired_date": null,
-      "sha256": "9a9cd17e5389149e335252675f605a8d9f17f4ea91c8f8c7098aac35c94e6182",
+      "sha256": "b41caf59cee6ad0369c650903f299e256e311b3d5efa4259e2bf52d0b32fdaa6",
       "derived_from": null,
       "intended_scene_ids": [
         "s06-strategy"
@@ -647,7 +653,7 @@
     },
     {
       "asset_id": "narr-s07-close",
-      "path": "narration/s07-close/68312dca310bba8c.wav",
+      "path": "narration/s07-close/b74842353cc179da.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -661,7 +667,7 @@
       "attribution_required": false,
       "attribution_text": "",
       "derivatives_allowed": true,
-      "rights_evidence": "Voicebox (MIT) kokoro preset voice 'af_heart'; model licensed Apache-2.0 (https://huggingface.co/hexgrad/Kokoro-82M).",
+      "rights_evidence": "Voicebox (MIT) kokoro preset voice 'am_liam'; model licensed Apache-2.0 (https://huggingface.co/hexgrad/Kokoro-82M).",
       "identifiable_people": null,
       "people_clearance": "",
       "trademarks_visible": null,
@@ -670,18 +676,19 @@
       "platform_cleared": null,
       "generation": {
         "provider": "voicebox",
-        "model": "kokoro:af_heart",
+        "model": "kokoro:am_liam",
         "model_version": "voicebox 0.5.0 / kokoro",
         "generated_on": "2026-10-18",
         "prompt": "So effort matters, but it isn't the whole equation. Compounding, unequal rewards and luck shape the result. The part you control is where you point your effort.",
         "settings": {
           "rate_wpm": null,
+          "speed": 0.87,
           "sample_rate": 48000
         },
         "terms_url": "https://huggingface.co/hexgrad/Kokoro-82M"
       },
       "acquired_date": null,
-      "sha256": "70973fab271df516a67f52594108eaa67752e809cb76a2ee87b0e688a99f4d7b",
+      "sha256": "deb0f97f401d4b843b647d9cf3b8363ec9a81169cb8951e70800e930614778a7",
       "derived_from": null,
       "intended_scene_ids": [
         "s07-close"

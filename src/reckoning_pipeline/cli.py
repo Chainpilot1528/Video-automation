@@ -628,7 +628,9 @@ def narration_build(
     provider: str = typer.Option(None, "--provider",
                                  help=f"TTS for scenes without imported narration: {', '.join(PROVIDERS)}"),
     voice: str = typer.Option(None, "--voice", help="TTS voice name."),
-    rate: int = typer.Option(None, "--rate", min=80, max=300, help="TTS speaking rate (words/min)."),
+    rate: int = typer.Option(None, "--rate", min=80, max=300, help="TTS speaking rate (words/min), if supported."),
+    speed: float = typer.Option(1.0, "--speed", min=0.5, max=2.0,
+                                help="Tempo for TTS output without changing pitch, e.g. 0.87 = 13% slower."),
     scenes: list[str] = typer.Option([], "--scene", help="Only these scenes (repeatable)."),
     dry_run: bool = typer.Option(False, "--dry-run", help="Show what would be built."),
 ) -> None:
@@ -643,7 +645,8 @@ def narration_build(
             _fail(str(exc))
         if not cleared:
             typer.echo(f"note: {note} Its output is registered as blocked from publication.", err=True)
-    options = BuildOptions(provider=tts, voice=voice, rate_wpm=rate, scene_ids=scenes or None, dry_run=dry_run)
+    options = BuildOptions(provider=tts, voice=voice, rate_wpm=rate, speed=speed, scene_ids=scenes or None,
+                           dry_run=dry_run)
     try:
         built = build_narration(result, _tools(ctx), options)
     except (NarrationError, ValueError) as exc:

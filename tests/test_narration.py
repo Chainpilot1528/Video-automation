@@ -257,3 +257,30 @@ def test_say_treats_text_as_text(tmp_path):
     MacSayProvider().synthesize("-o /tmp/evil.aiff hello", "Samantha", out, TTSOptions())
     assert out.stat().st_size > 0
     assert not Path("/tmp/evil.aiff").exists() or Path("/tmp/evil.aiff").stat().st_mtime < out.stat().st_mtime - 60
+
+
+def test_normalize_tempo_changes_duration_not_sample_rate(tools, tmp_path):
+    src = tone(tools, tmp_path / "a.wav", 2.0)
+    normalize_audio(tools, src, tmp_path / "slow.wav", sample_rate=48000, tempo=0.8)
+    info = probe_audio(tools, tmp_path / "slow.wav")
+    assert info.duration_seconds == pytest.approx(2.5, abs=0.05) and info.sample_rate == 48000
+    with pytest.raises(MediaError, match="tempo"):
+        normalize_audio(tools, src, tmp_path / "x.wav", sample_rate=48000, tempo=3.0)
+
+
+def test_speed_is_part_of_the_tts_cache_key_and_ignored_for_takes(demo, tools, tmp_path):
+    tts = FakeTTS(tools)
+    sid = "s04-review-gates"
+    base = build_narration(validate_project(demo), tools, BuildOptions(provider=tts, voice="v", scene_ids=[sid]))
+    slow = build_narration(validate_project(demo), tools,
+                           BuildOptions(provider=tts, voice="v", scene_ids=[sid], speed=0.8))
+    assert not slow.report.chunks[0].cached and len(tts.calls) == 2
+    assert slow.report.chunks[0].duration_seconds == pytest.approx(base.report.chunks[0].duration_seconds / 0.8, abs=0.1)
+    asset = next(a for a in validate_project(demo).registry.assets if a.asset_id == f"narr-{sid}")
+    assert asset.generation.settings["speed"] == 0.8
+
+    import_take(demo, tools, "s03-asset-record", words_seconds(demo, "s03-asset-record"), tmp=tmp_path)
+    take = build_narration(validate_project(demo), tools, BuildOptions(scene_ids=["s03-asset-record"], speed=0.8))
+    again = build_narration(validate_project(demo), tools, BuildOptions(scene_ids=["s03-asset-record"]))
+    assert again.report.chunks[0].cached  # human recordings never change speed, so speed doesn't affect them
+    assert take.report.chunks[0].duration_seconds == again.report.chunks[0].duration_seconds
