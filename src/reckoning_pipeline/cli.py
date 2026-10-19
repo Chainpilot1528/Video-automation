@@ -26,10 +26,11 @@ from .assets import (
     AssetReviewError, Decision, IntakeError, apply_intake, build_credits, build_rights_report,
     format_rights_report, plan_derivative, plan_intake, review_asset,
 )
-from .media.audio import Tools
+from .media.audio import MediaError, Tools
 from .media.tools import ToolNotFoundError
 from .narration import BuildOptions, NarrationError, build_narration, take_asset_id
 from .narration.build import voice_clearance
+from .narration.styles import StyleError, get_preset, style_filters
 from .providers.tts import PROVIDERS, TTSError, get_tts_provider
 from .subtitles import CaptionError, build_captions, check_cues, parse_srt
 from .graphics import GraphicError, render_graphic
@@ -44,7 +45,7 @@ from .assets.stock import add_stock_item, existing_for
 from .providers.stock import StockError, get_stock_provider, parse_ref
 from .script.draft import DraftError, draft_script
 from .approvals import active_exceptions, append_event, check_reviewer, claim_fingerprint, load_log
-from .project.validate import ValidationResult
+from .project.validate import ValidationResult, music_ids
 from .providers.llm import ProviderUnavailableError, get_llm_provider
 from .research import (
     LedgerError, build_bibliography, build_report, format_report, import_records, parse_import,
@@ -75,6 +76,7 @@ narration_app = typer.Typer(help="Scene-by-scene narration: import, TTS, measure
 captions_app = typer.Typer(help="Build and check SRT captions.", no_args_is_help=True)
 visuals_app = typer.Typer(help="Visual plan report, contact sheet and placeholders.", no_args_is_help=True)
 graphics_app = typer.Typer(help="Deterministic original graphics (SVG).", no_args_is_help=True)
+music_app = typer.Typer(help="Music beds: create, attach, remove.", no_args_is_help=True)
 stock_app = typer.Typer(help="Search and add licensed stock media (contacts the provider's API).",
                         no_args_is_help=True)
 app.add_typer(project_app, name="project")
@@ -89,6 +91,7 @@ app.add_typer(captions_app, name="captions")
 app.add_typer(visuals_app, name="visuals")
 app.add_typer(graphics_app, name="graphics")
 app.add_typer(stock_app, name="stock")
+app.add_typer(music_app, name="music")
 
 
 def _config(ctx: typer.Context) -> PipelineConfig:
@@ -426,7 +429,7 @@ def assets_report(
 ) -> None:
     """Group assets by publication status and list what blocks each one."""
     result = _load_valid(ctx, path)
-    report = build_rights_report(result.registry, result.scenes, result.approvals)
+    report = build_rights_report(result.registry, result.scenes, result.approvals, music_ids(result.manifest))
     typer.echo(json.dumps(report.to_dict(), indent=2) if as_json else format_rights_report(report))
     if strict and report.blockers:
         raise typer.Exit(EXIT_FAILED)
@@ -549,7 +552,7 @@ def assets_credits(
 ) -> None:
     """Print exact attributions and licence credits for assets used in scenes."""
     result = _load_valid(ctx, path)
-    credits = build_credits(result.registry, result.scenes)
+    credits = build_credits(result.registry, result.scenes, music_ids(result.manifest))
     text = credits.to_markdown(result.manifest.title)
     typer.echo(text, nl=False)
     for aid, reason in credits.skipped.items():
@@ -629,13 +632,31 @@ def narration_build(
                                  help=f"TTS for scenes without imported narration: {', '.join(PROVIDERS)}"),
     voice: str = typer.Option(None, "--voice", help="TTS voice name."),
     rate: int = typer.Option(None, "--rate", min=80, max=300, help="TTS speaking rate (words/min), if supported."),
-    speed: float = typer.Option(1.0, "--speed", min=0.5, max=2.0,
+    speed: float = typer.Option(None, "--speed", min=0.5, max=2.0,
                                 help="Tempo for TTS output without changing pitch, e.g. 0.87 = 13% slower."),
+    style: str = typer.Option(None, "--style", help="Voice processing: none or documentary."),
+    preset: str = typer.Option(None, "--preset", help="Named voice preset, e.g. reckoner (sets provider, voice, "
+                                                      "speed and style; explicit options win)."),
     scenes: list[str] = typer.Option([], "--scene", help="Only these scenes (repeatable)."),
     dry_run: bool = typer.Option(False, "--dry-run", help="Show what would be built."),
 ) -> None:
     """Build, normalize and measure narration per scene; unchanged scenes are reused."""
     result = _load_valid(ctx, path)
+    if preset:
+        try:
+            p = get_preset(preset)
+        except StyleError as exc:
+            _fail(str(exc))
+        provider, voice = provider or p.provider, voice or p.voice
+        speed = p.speed if speed is None else speed
+        style = style or p.style
+        typer.echo(f"preset {p.name}: {p.voice} via {p.provider}, speed {speed:g}, style {style}", err=True)
+    speed = 1.0 if speed is None else speed
+    style = style or "none"
+    try:
+        style_filters(style)
+    except StyleError as exc:
+        _fail(str(exc))
     tts = None
     if provider:
         try:
@@ -645,8 +666,8 @@ def narration_build(
             _fail(str(exc))
         if not cleared:
             typer.echo(f"note: {note} Its output is registered as blocked from publication.", err=True)
-    options = BuildOptions(provider=tts, voice=voice, rate_wpm=rate, speed=speed, scene_ids=scenes or None,
-                           dry_run=dry_run)
+    options = BuildOptions(provider=tts, voice=voice, rate_wpm=rate, speed=speed, style=style,
+                           scene_ids=scenes or None, dry_run=dry_run)
     try:
         built = build_narration(result, _tools(ctx), options)
     except (NarrationError, ValueError) as exc:
@@ -962,6 +983,55 @@ def script_draft(
     for f in out.flags:
         typer.echo(f"  flag: {f}")
     typer.echo("Edit it, copy what you keep into script/script.md, then run 'pipeline script validate'.")
+
+
+@music_app.command("pad")
+def music_pad(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    asset_id: str = typer.Option("music-pad", "--id", help="New asset ID"),
+    duration: float = typer.Option(None, "--duration", help="Seconds (default: narration length + 10 s)."),
+    key: str = typer.Option("A", "--key", help="Root key: A, C, D or E."),
+) -> None:
+    """Synthesize an original ambient music bed (rights-clear) and register it."""
+    from .assets.music_bed import create_pad
+    result = _load_valid(ctx, path)
+    if duration is None:
+        spoken = sum((s.actual_narration_duration_seconds or s.planned_duration_seconds or 3.0)
+                     for s in result.scenes.scenes)
+        duration = round(spoken + 0.75 * len(result.scenes.scenes) + 10, 1)
+    try:
+        asset = create_pad(path, result.manifest, result.registry, _tools(ctx), asset_id, duration=duration, key=key)
+    except (IntakeError, MediaError) as exc:
+        _fail(str(exc))
+    typer.echo(f"Created {asset.path} ({duration:g} s, key {key}); registered {asset.asset_id} (pending review)")
+
+
+@music_app.command("set")
+def music_set(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    asset_id: str = typer.Argument(..., help="Music asset to use as the bed"),
+    gain_db: float = typer.Option(-14.0, "--gain-db", min=-40, max=0, help="Bed level before ducking."),
+    no_duck: bool = typer.Option(False, "--no-duck", help="Don't lower the bed under narration."),
+) -> None:
+    """Put a music bed under the whole video (mixed after scenes are joined)."""
+    from .assets.music_bed import set_music
+    result = _load_valid(ctx, path)
+    try:
+        set_music(path, result.manifest, result.registry, asset_id, gain_db=gain_db, duck=not no_duck)
+    except IntakeError as exc:
+        _fail(str(exc))
+    typer.echo(f"Music bed: {asset_id} at {gain_db:g} dB{'' if no_duck else ', ducked under narration'}")
+
+
+@music_app.command("clear")
+def music_clear(ctx: typer.Context, path: Path = typer.Argument(..., help="Project folder")) -> None:
+    """Remove the music bed from the project (the asset itself is kept)."""
+    from .assets.music_bed import set_music
+    result = _load_valid(ctx, path)
+    set_music(path, result.manifest, result.registry, None)
+    typer.echo("Music bed removed")
 
 
 @render_app.command("preview")

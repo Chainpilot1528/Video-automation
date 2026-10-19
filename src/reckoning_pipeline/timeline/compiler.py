@@ -18,13 +18,14 @@ from ..schemas.asset import AssetRoot, AssetType
 from ..schemas.narration import NarrationReport
 from ..schemas.scene import Scene, TransitionType
 from ..schemas.timeline import (
-    RenderProfile, TimelineCue, TimelineNarration, TimelinePlan, TimelineScene, TimelineSegment,
+    RenderProfile, TimelineCue, TimelineMusic, TimelineNarration, TimelinePlan, TimelineScene, TimelineSegment,
 )
 from ..schemas.visual import Motion, VisualBeat
 from ..subtitles.srt import SceneSpan, approximate_cues
 from ..utils.fs import safe_resolve
 
 RENDER_VERSION = "1"      # bump when the renderer's output for the same plan changes
+MIX_VERSION = "1"         # bump when the music mix changes
 # The command builder's source is part of every scene fingerprint, so editing how
 # scenes are drawn can never silently reuse renders made by older code.
 _COMMANDS_SOURCE = Path(__file__).resolve().parent.parent / "render" / "commands.py"
@@ -105,6 +106,17 @@ def compile_timeline(result: ValidationResult, profile: RenderProfile, *, ffmpeg
             fingerprint=_digest(body)))
         clock += duration
 
+    music = None
+    m = result.manifest.music
+    if m is not None:
+        bed = assets.get(m.asset_id)
+        if bed is None or bed.type is not AssetType.MUSIC:
+            errors.append(f"music asset {m.asset_id!r} is missing or not of type music")
+        else:
+            music = TimelineMusic(asset_id=bed.asset_id, path=str(asset_path(bed)), sha256=bed.sha256,
+                                  gain_db=m.gain_db, duck=m.duck, fade_in=m.fade_in_seconds,
+                                  fade_out=m.fade_out_seconds)
+
     placeholders = sum(s.kind == "placeholder" for sc in scenes_out for s in sc.segments)
     if placeholders and not profile.allow_placeholders:
         errors.append(f"{placeholders} placeholder segment(s); the {profile.name} profile needs every visual resolved")
@@ -113,8 +125,9 @@ def compile_timeline(result: ValidationResult, profile: RenderProfile, *, ffmpeg
     return TimelinePlan(
         project_id=result.manifest.project_id, profile=profile, burn_captions=burn_captions,
         pipeline_version=__version__, ffmpeg_version=ffmpeg_version, total_duration=round(clock, 3),
-        scenes=scenes_out, placeholder_count=placeholders, warnings=warnings,
-        fingerprint=_digest([s.fingerprint for s in scenes_out]))
+        scenes=scenes_out, placeholder_count=placeholders, music=music, warnings=warnings,
+        fingerprint=_digest([s.fingerprint for s in scenes_out]
+                            + ([music.model_dump(exclude={"path"}), MIX_VERSION] if music else [])))
 
 
 def _scene_timing(scene: Scene, assets, asset_path, profile, errors, warnings):
@@ -125,7 +138,8 @@ def _scene_timing(scene: Scene, assets, asset_path, profile, errors, warnings):
         path = asset_path(a)
         narration = TimelineNarration(asset_id=a.asset_id, path=str(path), sha256=a.sha256,
                                       duration=scene.actual_narration_duration_seconds)
-        return narration, round(LEAD_IN + narration.duration + TAIL_HOLD, 3), LEAD_IN
+        hold = TAIL_HOLD if scene.hold_after_seconds is None else scene.hold_after_seconds
+        return narration, round(LEAD_IN + narration.duration + hold, 3), LEAD_IN
 
     if scene.narration_text.strip():
         if profile.require_narration:

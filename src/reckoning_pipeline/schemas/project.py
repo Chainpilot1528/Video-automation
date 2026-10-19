@@ -8,7 +8,7 @@ from typing import Literal
 from pydantic import Field, field_validator, model_validator
 
 from .common import (
-    SCHEMA_VERSION, AwareDatetime, NonEmptyStr, Record, RelPath, Slug, no_duplicates, utcnow,
+    SCHEMA_VERSION, AwareDatetime, Identifier, NonEmptyStr, Record, RelPath, Slug, no_duplicates, utcnow,
 )
 
 ALLOWED_FRAME_RATES = (23.976, 24.0, 25.0, 29.97, 30.0, 50.0, 59.94, 60.0)
@@ -61,6 +61,16 @@ class ProjectPaths(Record):
     visual_plan: RelPath = "visuals.json"  # optional; absent means no visual plan yet
 
 
+class MusicSettings(Record):
+    """A music bed under the whole video, ducked under narration."""
+
+    asset_id: Identifier
+    gain_db: float = Field(default=-14.0, ge=-40, le=0)  # bed level before ducking
+    duck: bool = True                                   # lower the bed while narration plays
+    fade_in_seconds: float = Field(default=2.0, ge=0, le=10)
+    fade_out_seconds: float = Field(default=3.0, ge=0, le=15)
+
+
 class ProjectManifest(Record):
     schema_version: Literal["1.0"] = SCHEMA_VERSION
     project_id: Slug
@@ -79,6 +89,7 @@ class ProjectManifest(Record):
     created_at: AwareDatetime = Field(default_factory=utcnow)
     updated_at: AwareDatetime = Field(default_factory=utcnow)
     tool_versions: dict[str, str] = Field(default_factory=dict)
+    music: MusicSettings | None = None
 
     @field_validator("frame_rate")
     @classmethod

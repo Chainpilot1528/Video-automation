@@ -101,6 +101,7 @@ def validate_project(path: Path, *, media_root: Path | None = None,
     _check_references(result)
     _check_approvals(result)
     _check_visuals(result)
+    _check_music(result)
     if result.registry is not None:
         _check_asset_files(result, path, media_root, verify_checksums)
     _check_status_gates(result)
@@ -296,6 +297,21 @@ def _check_approvals(result: ValidationResult) -> None:
                            f"refers to claim {e.claim_id!r}, which is no longer in the ledger")
 
 
+def music_ids(manifest: ProjectManifest) -> tuple[str, ...]:
+    return (manifest.music.asset_id,) if manifest.music else ()
+
+
+def _check_music(result: ValidationResult) -> None:
+    m = result.manifest.music
+    if m is None or result.registry is None:
+        return
+    asset = next((a for a in result.registry.assets if a.asset_id == m.asset_id), None)
+    if asset is None:
+        result.add("error", "ref.missing_asset", f"{MANIFEST_NAME}: music", f"unknown asset {m.asset_id!r}")
+    elif asset.type is not AssetType.MUSIC:
+        result.add("error", "music.wrong_type", f"{MANIFEST_NAME}: music", f"{m.asset_id!r} is a {asset.type}, not music")
+
+
 def _check_visuals(result: ValidationResult) -> None:
     if not result.visuals:
         return
@@ -336,7 +352,8 @@ def _check_status_gates(result: ValidationResult) -> None:
                               active_exceptions(result.approvals, result.ledger))
         blockers = list(report.blockers)
         if result.registry is not None:
-            blockers += build_rights_report(result.registry, result.scenes, result.approvals).blockers
+            blockers += build_rights_report(result.registry, result.scenes, result.approvals,
+                                            music_ids(result.manifest)).blockers
         for f in blockers:
             result.add("error", "project.publication_blocked", f"{MANIFEST_NAME}: {f.subject}",
                        f"{f.code}: {f.message}")

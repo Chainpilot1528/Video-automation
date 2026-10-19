@@ -18,9 +18,9 @@ _ORDER = {"blocker": 0, "warning": 1, "info": 2}
 _INHERITED_RIGHTS = ("commercial_use", "license_name", "license_url", "rights_holder", "attribution_text")
 
 
-def used_asset_ids(scenes: SceneManifest) -> list[str]:
-    """Asset IDs used by scenes, in scene order (visuals, then narration)."""
-    ordered: list[str] = []
+def used_asset_ids(scenes: SceneManifest, extra: tuple[str, ...] = ()) -> list[str]:
+    """Asset IDs used by scenes, in scene order (visuals, then narration), plus project-level ones (music)."""
+    ordered: list[str] = list(dict.fromkeys(extra))
     for s in sorted(scenes.scenes, key=lambda s: s.order):
         for aid in [*s.asset_ids, *([s.narration_asset_id] if s.narration_asset_id else [])]:
             if aid not in ordered:
@@ -44,8 +44,9 @@ class RightsReport:
                 "findings": [asdict(f) | {"blocking": f.blocking} for f in self.findings]}
 
 
-def build_rights_report(registry: AssetRegistry, scenes: SceneManifest, log: ApprovalLog) -> RightsReport:
-    used = used_asset_ids(scenes)
+def build_rights_report(registry: AssetRegistry, scenes: SceneManifest, log: ApprovalLog,
+                        extra_used: tuple[str, ...] = ()) -> RightsReport:
+    used = used_asset_ids(scenes, extra_used)
     assets = {a.asset_id: a for a in registry.assets}
     groups = {s.value: [a.asset_id for a in registry.assets if a.publication_status is s]
               for s in PublicationStatus}
@@ -118,11 +119,11 @@ class Credits:
         return "\n".join(lines).rstrip() + "\n"
 
 
-def build_credits(registry: AssetRegistry, scenes: SceneManifest) -> Credits:
+def build_credits(registry: AssetRegistry, scenes: SceneManifest, extra_used: tuple[str, ...] = ()) -> Credits:
     """Exact attribution text and licence notes for assets used in scenes."""
     assets = {a.asset_id: a for a in registry.assets}
     credits = Credits()
-    for aid in used_asset_ids(scenes):
+    for aid in used_asset_ids(scenes, extra_used):
         a = assets.get(aid)
         if a is None:
             credits.skipped[aid] = "not in registry"

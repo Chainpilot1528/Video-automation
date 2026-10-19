@@ -284,3 +284,42 @@ def test_speed_is_part_of_the_tts_cache_key_and_ignored_for_takes(demo, tools, t
     again = build_narration(validate_project(demo), tools, BuildOptions(scene_ids=["s03-asset-record"]))
     assert again.report.chunks[0].cached  # human recordings never change speed, so speed doesn't affect them
     assert take.report.chunks[0].duration_seconds == again.report.chunks[0].duration_seconds
+
+
+def test_voice_styles_and_presets():
+    from reckoning_pipeline.narration.styles import StyleError, get_preset, style_filters
+    assert style_filters("none") == ""
+    chain = style_filters("documentary")
+    assert "acompressor" in chain and "deesser" in chain and chain.endswith("alimiter=limit=0.84:level=disabled")
+    p = get_preset("annt")
+    assert (p.provider, p.voice, p.speed, p.style) == ("voicebox", "kokoro:am_liam", 0.87, "annt")
+    annt = style_filters("annt")
+    assert annt.index("highshelf") < annt.index("deesser") < annt.index("acompressor")
+    assert "not a clone" in p.description
+    r = get_preset("reckoner")  # the house narrator; "annt" is its alias
+    assert (r.provider, r.voice, r.speed, r.style) == (p.provider, p.voice, p.speed, p.style)
+    with pytest.raises(StyleError):
+        style_filters("radio")
+    with pytest.raises(StyleError):
+        get_preset("someone-else")
+
+
+def test_documentary_style_processes_audio_and_rebuilds(demo, tools, tmp_path):
+    sid = "s03-asset-record"
+    import_take(demo, tools, sid, words_seconds(demo, sid), tmp=tmp_path)
+    plain = build_narration(validate_project(demo), tools, BuildOptions(scene_ids=[sid])).report.chunks[0]
+    styled = build_narration(validate_project(demo), tools,
+                             BuildOptions(scene_ids=[sid], style="documentary")).report.chunks[0]
+    assert not styled.cached and styled.sha256 != plain.sha256
+    assert styled.duration_seconds == pytest.approx(plain.duration_seconds, abs=0.05)
+    assert styled.true_peak_dbtp is not None and styled.true_peak_dbtp <= -0.5  # limiter keeps peaks down
+    again = build_narration(validate_project(demo), tools, BuildOptions(scene_ids=[sid], style="documentary"))
+    assert again.report.chunks[0].cached
+
+
+def test_cli_preset_and_bad_style(runner_env, demo):
+    runner, app, cli = runner_env
+    r = runner.invoke(app, ["narration", "build", str(demo), "--style", "radio"])
+    assert r.exit_code == cli.EXIT_FAILED and "unknown voice style" in r.output
+    r = runner.invoke(app, ["narration", "build", str(demo), "--preset", "nope"])
+    assert r.exit_code == cli.EXIT_FAILED and "unknown voice preset" in r.output

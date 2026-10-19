@@ -1,0 +1,142 @@
+{
+  "s01-meet-alex": [
+    {
+      "shot": "Silhouette of a man walking through the city at dawn",
+      "query": "man walking city silhouette sunrise"
+    },
+    {
+      "shot": "Man's reflection in a window, face not the focus",
+      "query": "man reflection window city"
+    }
+  ],
+  "s02-success": [
+    {
+      "shot": "Hands working fast and confidently at a laptop",
+      "query": "hands typing laptop fast"
+    },
+    {
+      "shot": "Man raising arms on a mountain top, seen from behind",
+      "query": "man raising arms mountain top back view"
+    }
+  ],
+  "s03-failure": [
+    {
+      "shot": "Paper crumpled and thrown away",
+      "query": "crumpled paper throwing"
+    },
+    {
+      "shot": "Man sitting alone with head down",
+      "query": "man sitting alone head down stairs"
+    }
+  ],
+  "s04-discomfort": [
+    {
+      "shot": "Rain running down a window at night",
+      "query": "rain on window night"
+    },
+    {
+      "shot": "Man staring at a screen in a dark room",
+      "query": "man staring laptop dark room night"
+    }
+  ],
+  "s05-excuses": [
+    {
+      "shot": "Laptop lid closing",
+      "query": "closing laptop"
+    },
+    {
+      "shot": "Man walking away down an empty street",
+      "query": "man walking away empty street"
+    }
+  ],
+  "s06-problem": [
+    {
+      "shot": "Chess pieces on a board, slow move",
+      "query": "chess pieces close up"
+    },
+    {
+      "shot": "Maze or labyrinth from above",
+      "query": "maze aerial view"
+    }
+  ],
+  "s07-identity": [
+    {
+      "shot": "Dominoes falling in a chain",
+      "query": "dominoes falling"
+    },
+    {
+      "shot": "Long shadow of a person on the ground",
+      "query": "person shadow on ground"
+    }
+  ],
+  "s08-verdict": [
+    {
+      "shot": "Storm clouds rolling, time-lapse",
+      "query": "storm clouds timelapse"
+    },
+    {
+      "shot": "Person sitting alone on a bench",
+      "query": "person sitting alone bench"
+    }
+  ],
+  "s09-story": [
+    {
+      "shot": "Old photographs being looked through",
+      "query": "old photographs hands"
+    },
+    {
+      "shot": "Reflection rippling in water",
+      "query": "reflection water ripples"
+    }
+  ],
+  "s10-turn": [
+    {
+      "shot": "Morning light coming through a window",
+      "query": "sunlight through window morning"
+    },
+    {
+      "shot": "Man looking out at the horizon, from behind",
+      "query": "man looking at horizon back view"
+    }
+  ],
+  "s11-questions": [
+    {
+      "shot": "Hand writing in a notebook",
+      "query": "hand writing notebook"
+    },
+    {
+      "shot": "Person reading a book by a window",
+      "query": "person reading book window"
+    }
+  ],
+  "s12-allowed": [
+    {
+      "shot": "Plant growing, time-lapse",
+      "query": "plant growing timelapse"
+    },
+    {
+      "shot": "Person walking a forest path",
+      "query": "person walking forest path"
+    }
+  ],
+  "s13-choice": [
+    {
+      "shot": "A fork in the road from above",
+      "query": "fork in the road aerial"
+    },
+    {
+      "shot": "Man standing at a crossroads",
+      "query": "man standing crossroads"
+    }
+  ],
+  "s14-close": [
+    {
+      "shot": "Sunrise over mountains",
+      "query": "sunrise mountains"
+    },
+    {
+      "shot": "A door opening onto light",
+      "query": "door opening light"
+    }
+  ]
+}

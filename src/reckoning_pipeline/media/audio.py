@@ -83,10 +83,12 @@ def probe_audio(tools: Tools, path: Path) -> AudioInfo:
                      s.get("codec_name", ""))
 
 
-def normalize_audio(tools: Tools, src: Path, dst: Path, *, sample_rate: int, tempo: float = 1.0) -> None:
+def normalize_audio(tools: Tools, src: Path, dst: Path, *, sample_rate: int, tempo: float = 1.0,
+                    extra_filters: str = "") -> None:
     """Convert to mono 16-bit PCM WAV at the project rate, with click-free edges.
 
     ``tempo`` changes speaking speed without changing pitch (0.87 = 13% slower).
+    ``extra_filters`` is an FFmpeg filter chain (a voice style) applied after resampling.
     Loudness is measured and reported, not altered here; the Phase 7 mix sets final levels.
     """
     if not 0.5 <= tempo <= 2.0:
@@ -95,7 +97,8 @@ def normalize_audio(tools: Tools, src: Path, dst: Path, *, sample_rate: int, tem
     out_duration = info.duration_seconds / tempo
     fade_out_start = max(out_duration - EDGE_FADE_SECONDS, 0)
     speed = f"atempo={tempo:.4f}," if abs(tempo - 1.0) > 1e-6 else ""
-    filters = (f"{speed}aresample={sample_rate},afade=t=in:d={EDGE_FADE_SECONDS},"
+    style = f"{extra_filters}," if extra_filters else ""
+    filters = (f"{speed}aresample={sample_rate},{style}afade=t=in:d={EDGE_FADE_SECONDS},"
                f"afade=t=out:st={fade_out_start:.3f}:d={EDGE_FADE_SECONDS}")
     dst.parent.mkdir(parents=True, exist_ok=True)
     tmp = dst.with_name(dst.stem + ".partial" + dst.suffix)

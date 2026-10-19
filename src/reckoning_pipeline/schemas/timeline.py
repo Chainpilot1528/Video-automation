@@ -79,6 +79,16 @@ class TimelineScene(Record):
     fingerprint: Sha256
 
 
+class TimelineMusic(Record):
+    asset_id: Identifier
+    path: str
+    sha256: Sha256
+    gain_db: float
+    duck: bool
+    fade_in: float
+    fade_out: float
+
+
 class TimelinePlan(Record):
     schema_version: Literal["1.0"] = SCHEMA_VERSION
     project_id: str
@@ -89,5 +99,6 @@ class TimelinePlan(Record):
     total_duration: float
     scenes: list[TimelineScene] = Field(default_factory=list)
     placeholder_count: int = 0
+    music: TimelineMusic | None = None
     warnings: list[str] = Field(default_factory=list)
     fingerprint: Sha256

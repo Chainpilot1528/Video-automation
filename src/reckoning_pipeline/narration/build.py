@@ -34,6 +34,7 @@ from ..schemas.asset import CommercialUse, CreationMethod, PublicationStatus, Re
 from ..schemas.common import utcnow
 from ..schemas.narration import ChunkReport, NarrationReport, PronunciationList
 from ..schemas.scene import CaptionStatus, Scene
+from .styles import style_filters
 from ..utils.fs import safe_resolve, sha256_file, write_json_atomic
 
 NARRATION_DIR = "narration"
@@ -81,6 +82,16 @@ def load_pronunciations(project_dir: Path) -> PronunciationList:
     return PronunciationList.model_validate_json(path.read_text(encoding="utf-8"))
 
 
+def _scene_speed(options: BuildOptions, scene: Scene) -> float:
+    """Project-wide TTS speed times the scene's own pacing multiplier (if any), clamped to 0.5-2.0."""
+    return round(min(max(options.speed * (scene.narration_speed or 1.0), 0.5), 2.0), 4)
+
+
+def _style_key(style: str) -> dict:
+    """Style name plus its exact filter chain, so editing a style rebuilds what used it."""
+    return {} if style == "none" else {"style": style, "style_filters": style_filters(style)}
+
+
 def _digest(payload: dict) -> str:
     return hashlib.sha256(json.dumps(payload, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()
 
@@ -91,6 +102,7 @@ class BuildOptions:
     voice: str | None = None
     rate_wpm: int | None = None
     speed: float = 1.0  # pitch-preserving tempo applied to TTS output (never to human recordings)
+    style: str = "none"  # voice processing chain (narration/styles.py), applied to TTS and recordings
     scene_ids: list[str] | None = None
     dry_run: bool = False
 
@@ -103,6 +115,7 @@ class PlannedChunk:
     output_rel: str | None = None
     source: Asset | None = None
     tts_text: str | None = None
+    speed: float = 1.0  # effective TTS tempo for this scene
     cached: bool = False
 
 
@@ -132,7 +145,8 @@ def plan_build(result: ValidationResult, options: BuildOptions) -> list[PlannedC
         take = latest_take(registry, scene.scene_id)
         if take is not None:
             fp = _digest({"route": "imported", "source_sha256": take.sha256, "source_id": take.asset_id,
-                          "sample_rate": rate, "normalize": NORMALIZE_VERSION})
+                          "sample_rate": rate, "normalize": NORMALIZE_VERSION,
+                          **_style_key(options.style)})
             chunk = PlannedChunk(scene, "imported", fp, source=take)
         elif options.provider is not None and scene.narration_text.strip():
             if not options.voice:
@@ -140,9 +154,10 @@ def plan_build(result: ValidationResult, options: BuildOptions) -> list[PlannedC
             text = pron.apply(scene.narration_text)
             fp = _digest({"route": "tts", "provider": options.provider.name,
                           "provider_version": options.provider.version(), "voice": options.voice,
-                          "rate_wpm": options.rate_wpm, "speed": options.speed, "text": text, "sample_rate": rate,
-                          "normalize": NORMALIZE_VERSION})
-            chunk = PlannedChunk(scene, "tts", fp, tts_text=text)
+                          "rate_wpm": options.rate_wpm, "speed": _scene_speed(options, scene), "text": text,
+                          "sample_rate": rate,
+                          "normalize": NORMALIZE_VERSION, **_style_key(options.style)})
+            chunk = PlannedChunk(scene, "tts", fp, tts_text=text, speed=_scene_speed(options, scene))
         elif scene.narration_asset_id and scene.narration_asset_id != managed_id \
                 and scene.narration_asset_id in assets:
             plan.append(PlannedChunk(scene, "external", source=assets[scene.narration_asset_id]))
@@ -220,13 +235,15 @@ def _render_chunk(result: ValidationResult, tools: Tools, options: BuildOptions,
         return
     try:
         if chunk.route == "imported":
-            normalize_audio(tools, safe_resolve(result.project_dir, chunk.source.path), out, sample_rate=rate)
+            normalize_audio(tools, safe_resolve(result.project_dir, chunk.source.path), out, sample_rate=rate,
+                            extra_filters=style_filters(options.style))
         else:
             with tempfile.TemporaryDirectory() as tmp:
                 raw = Path(tmp) / "raw.aiff"
                 options.provider.synthesize(chunk.tts_text, options.voice, raw,
                                             TTSOptions(rate_wpm=options.rate_wpm))
-                normalize_audio(tools, raw, out, sample_rate=rate, tempo=options.speed)
+                normalize_audio(tools, raw, out, sample_rate=rate, tempo=chunk.speed,
+                                extra_filters=style_filters(options.style))
     except (MediaError, TTSError) as exc:
         raise NarrationError(f"{chunk.scene.scene_id}: {exc}") from exc
 
@@ -254,8 +271,8 @@ def _narration_record(chunk: PlannedChunk, options: BuildOptions, path: Path, ra
                   "rights_evidence": note,
                   "generation": {"provider": p.name, "model": options.voice, "model_version": p.version(),
                                  "generated_on": utcnow().date(), "prompt": chunk.tts_text,
-                                 "settings": {"rate_wpm": options.rate_wpm, "speed": options.speed,
-                                              "sample_rate": rate},
+                                 "settings": {"rate_wpm": options.rate_wpm, "speed": chunk.speed,
+                                              "style": options.style, "sample_rate": rate},
                                  "terms_url": terms},
                   "publication_status": PublicationStatus.PENDING_REVIEW if cleared else PublicationStatus.BLOCKED,
                   "notes": "" if cleared else "Not cleared for publication: " + note}

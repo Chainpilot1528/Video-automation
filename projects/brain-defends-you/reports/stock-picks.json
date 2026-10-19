@@ -1,0 +1,282 @@
+[
+  {
+    "asset_id": "s01-meet-alex-a",
+    "query": "man walking city silhouette sunrise",
+    "ref": "pexels:video:11253955",
+    "page": "https://www.pexels.com/video/man-walking-on-sidewalk-during-sunrise-11253955/",
+    "creator": "Atif Dar",
+    "duration": 41.0,
+    "file": "1920x1080",
+    "mb": 20.0
+  },
+  {
+    "asset_id": "s01-meet-alex-b",
+    "query": "man reflection window city",
+    "ref": "pexels:video:4774976",
+    "page": "https://www.pexels.com/video/man-looking-outside-of-the-window-4774976/",
+    "creator": "Pavel Danilyuk",
+    "duration": 31.0,
+    "file": "1920x1080",
+    "mb": 18.8
+  },
+  {
+    "asset_id": "s02-success-a",
+    "query": "hands typing laptop fast",
+    "ref": "pexels:video:4352275",
+    "page": "https://www.pexels.com/video/home-office-remote-work-work-from-home-staying-in-4352275/",
+    "creator": "olia danilevich",
+    "duration": 14.0,
+    "file": "1920x1080",
+    "mb": 8.0
+  },
+  {
+    "asset_id": "s02-success-b",
+    "query": "man raising arms mountain top back view",
+    "ref": "pexels:video:6026072",
+    "page": "https://www.pexels.com/video/man-standing-on-a-rock-facing-snow-capped-mountains-6026072/",
+    "creator": "Pavel Danilyuk",
+    "duration": 9.0,
+    "file": "1920x1080",
+    "mb": 5.3
+  },
+  {
+    "asset_id": "s03-failure-a",
+    "query": "crumpled paper throwing",
+    "ref": "pexels:video:6914406",
+    "page": "https://www.pexels.com/video/people-throwing-crumpled-paper-in-the-trash-can-6914406/",
+    "creator": "Tima Miroshnichenko",
+    "duration": 18.0,
+    "file": "1920x1080",
+    "mb": 9.7
+  },
+  {
+    "asset_id": "s03-failure-b",
+    "query": "man sitting alone head down stairs",
+    "ref": "pexels:video:7280519",
+    "page": "https://www.pexels.com/video/a-problematic-man-looking-on-the-screen-of-a-cellphone-7280519/",
+    "creator": "MART  PRODUCTION",
+    "duration": 18.0,
+    "file": "1920x1080",
+    "mb": 3.4
+  },
+  {
+    "asset_id": "s04-discomfort-a",
+    "query": "rain on window night",
+    "ref": "pexels:video:4458918",
+    "page": "https://www.pexels.com/video/rainy-nights-4458918/",
+    "creator": "Imeel Bagdisar",
+    "duration": 10.0,
+    "file": "1920x1080",
+    "mb": 6.5
+  },
+  {
+    "asset_id": "s04-discomfort-b",
+    "query": "man staring laptop dark room night",
+    "ref": "pexels:video:8311535",
+    "page": "https://www.pexels.com/video/man-working-with-his-laptop-8311535/",
+    "creator": "matteo pennisi",
+    "duration": 24.0,
+    "file": "1920x1080",
+    "mb": 8.4
+  },
+  {
+    "asset_id": "s05-excuses-a",
+    "query": "closing laptop",
+    "ref": "pexels:video:7687967",
+    "page": "https://www.pexels.com/video/close-up-view-of-a-person-writing-on-paper-7687967/",
+    "creator": "Kindel Media",
+    "duration": 11.0,
+    "file": "1920x1080",
+    "mb": 6.0
+  },
+  {
+    "asset_id": "s05-excuses-b",
+    "query": "man walking away empty street",
+    "ref": "pexels:video:10189805",
+    "page": "https://www.pexels.com/video/a-man-carrying-a-mattress-in-an-abandoned-building-10189805/",
+    "creator": "cottonbro studio",
+    "duration": 21.0,
+    "file": "1366x720",
+    "mb": 6.9
+  },
+  {
+    "asset_id": "s06-problem-a",
+    "query": "chess pieces close up",
+    "ref": "pexels:video:855386",
+    "page": "https://www.pexels.com/video/queen-check-in-chess-855386/",
+    "creator": "Pixabay",
+    "duration": 9.0,
+    "file": "1920x1080",
+    "mb": 5.5
+  },
+  {
+    "asset_id": "s06-problem-b",
+    "query": "maze aerial view",
+    "ref": "pexels:video:37478253",
+    "page": "https://www.pexels.com/video/aerial-view-of-green-labyrinth-in-nature-37478253/",
+    "creator": "Giant Asparagus",
+    "duration": 27.0,
+    "file": "1920x1080",
+    "mb": 72.8
+  },
+  {
+    "asset_id": "s07-identity-a",
+    "query": "dominoes falling",
+    "ref": "pexels:video:8102764",
+    "page": "https://www.pexels.com/video/a-woman-putting-a-domino-and-blowing-it-down-8102764/",
+    "creator": "cottonbro studio",
+    "duration": 20.0,
+    "file": "1366x720",
+    "mb": 2.8
+  },
+  {
+    "asset_id": "s07-identity-b",
+    "query": "person shadow on ground",
+    "ref": "pexels:video:34575709",
+    "page": "https://www.pexels.com/video/shadow-silhouette-on-rough-terrain-34575709/",
+    "creator": "\u00d6zg\u00fcr S\u00fcrmeli",
+    "duration": 13.0,
+    "file": "1920x1080",
+    "mb": 2.4
+  },
+  {
+    "asset_id": "s08-verdict-a",
+    "query": "storm clouds timelapse",
+    "ref": "pexels:video:35225359",
+    "page": "https://www.pexels.com/video/dramatic-storm-clouds-rolling-over-landscape-35225359/",
+    "creator": "Dancing Sky",
+    "duration": 12.0,
+    "file": "1920x1080",
+    "mb": 4.1
+  },
+  {
+    "asset_id": "s08-verdict-b",
+    "query": "person sitting alone bench",
+    "ref": "pexels:video:35772965",
+    "page": "https://www.pexels.com/video/solitary-figure-by-serene-ocean-view-35772965/",
+    "creator": "Numan Gilgil",
+    "duration": 12.0,
+    "file": "1920x1080",
+    "mb": 38.9
+  },
+  {
+    "asset_id": "s09-story-a",
+    "query": "old photographs hands",
+    "ref": "pexels:video:7546434",
+    "page": "https://www.pexels.com/video/elderly-woman-looking-through-old-photos-7546434/",
+    "creator": "SHVETS production",
+    "duration": 10.0,
+    "file": "1920x1080",
+    "mb": 6.2
+  },
+  {
+    "asset_id": "s09-story-b",
+    "query": "reflection water ripples",
+    "ref": "pexels:video:6112713",
+    "page": "https://www.pexels.com/video/a-waterscape-6112713/",
+    "creator": "Engin Akyurt",
+    "duration": 53.0,
+    "file": "1920x1080",
+    "mb": 36.8
+  },
+  {
+    "asset_id": "s10-turn-a",
+    "query": "sunlight through window morning",
+    "ref": "pexels:video:15671645",
+    "page": "https://www.pexels.com/video/a-woman-opening-the-curtains-and-looking-out-the-window-15671645/",
+    "creator": "Ammad Rasool",
+    "duration": 27.0,
+    "file": "1920x1080",
+    "mb": 9.2
+  },
+  {
+    "asset_id": "s10-turn-b",
+    "query": "man looking at horizon back view",
+    "ref": "pexels:video:34535507",
+    "page": "https://www.pexels.com/video/silhouette-of-man-looking-out-window-at-sunset-34535507/",
+    "creator": "Burak Bahad\u0131r  B\u00fcy\u00fckk\u0131l\u0131n\u00e7",
+    "duration": 15.0,
+    "file": "1920x1080",
+    "mb": 4.2
+  },
+  {
+    "asset_id": "s11-questions-a",
+    "query": "hand writing notebook",
+    "ref": "pexels:video:6326847",
+    "page": "https://www.pexels.com/video/person-writing-on-a-notebook-using-a-pen-6326847/",
+    "creator": "https://kaboompics.com/",
+    "duration": 13.0,
+    "file": "1366x720",
+    "mb": 2.1
+  },
+  {
+    "asset_id": "s11-questions-b",
+    "query": "person reading book window",
+    "ref": "pexels:video:5084547",
+    "page": "https://www.pexels.com/video/woman-flipping-book-pages-5084547/",
+    "creator": "Yaroslav Shuraev",
+    "duration": 40.0,
+    "file": "1366x720",
+    "mb": 5.5
+  },
+  {
+    "asset_id": "s12-allowed-a",
+    "query": "plant growing timelapse",
+    "ref": "pexels:video:8522207",
+    "page": "https://www.pexels.com/video/time-lapse-of-seedlings-8522207/",
+    "creator": "David Roberts",
+    "duration": 13.0,
+    "file": "1920x1080",
+    "mb": 5.3
+  },
+  {
+    "asset_id": "s12-allowed-b",
+    "query": "person walking forest path",
+    "ref": "pexels:video:5597043",
+    "page": "https://www.pexels.com/video/a-person-walking-outdoors-5597043/",
+    "creator": "K",
+    "duration": 21.0,
+    "file": "1920x1080",
+    "mb": 14.8
+  },
+  {
+    "asset_id": "s13-choice-a",
+    "query": "fork in the road aerial",
+    "ref": "pexels:video:14239825",
+    "page": "https://www.pexels.com/video/roads-near-field-in-autumn-14239825/",
+    "creator": "Steven Van Elk",
+    "duration": 20.0,
+    "file": "1366x720",
+    "mb": 7.4
+  },
+  {
+    "asset_id": "s13-choice-b",
+    "query": "man standing crossroads",
+    "ref": "pexels:video:16739537",
+    "page": "https://www.pexels.com/video/man-walking-16739537/",
+    "creator": "Max Medyk",
+    "duration": 12.0,
+    "file": "1920x1080",
+    "mb": 9.3
+  },
+  {
+    "asset_id": "s14-close-a",
+    "query": "sunrise mountains",
+    "ref": "pexels:video:4250075",
+    "page": "https://www.pexels.com/video/drone-footage-of-mountains-4250075/",
+    "creator": "Adrian  Hoparda",
+    "duration": 12.0,
+    "file": "1920x1080",
+    "mb": 5.3
+  },
+  {
+    "asset_id": "s14-close-b",
+    "query": "door opening light",
+    "ref": "pexels:video:10577436",
+    "page": "https://www.pexels.com/video/woman-walking-and-getting-scared-at-night-10577436/",
+    "creator": "Nickole",
+    "duration": 26.0,
+    "file": "1920x1080",
+    "mb": 6.3
+  }
+]

@@ -55,6 +55,22 @@ For each scene, the build:
 
 It warns about near-empty or silent audio, true peak above -1 dBTP, leading silence over 1 s, trailing silence over 1.5 s, pauses over 2 s, speaking rates outside 90–210 words/min (often a sign the audio doesn't match the text), large gaps between measured and planned duration, and loudness differing by more than 3 LU between scenes.
 
+### Voice styles and presets
+
+- `--style documentary` processes the voice like a documentary narration: rumble cut, warmth, de-mud, presence lift, gentle de-essing, 3:1 compression, a barely-there room, and a limiter at about -1.5 dBFS (auto-level off). It applies to TTS and to your own recordings, and it's part of the cache key, so editing a style rebuilds only what used it.
+- `--style annt` is the documentary chain plus a **tone-matching EQ** measured against the ANNT reference (fuller low-mids, less 1.6–2.5 kHz "honk", more presence above 4 kHz). The average band gap dropped from 5.4 dB to 2.5 dB.
+- `--preset reckoner` (the channel's house narrator, named 2026-10-20; `--preset annt` is an alias and sounds identical) is shorthand for `--provider voicebox --voice kokoro:am_liam --speed 0.87 --style annt`. It's tuned to the **style** of the ANNT reference (`references/ANNT/`): male, about 133 Hz median pitch, about 165 words/min, about -20.5 LUFS. It is **not** a clone of that narrator, and the pipeline won't clone a voice without the owner's consent. Explicit options override the preset's values.
+
+```bash
+.venv/bin/pipeline narration build projects/my-film --preset reckoner
+```
+
+### Per-scene pacing
+
+Two optional fields in `scenes.json`:
+- `narration_speed` (0.7–1.3) multiplies the TTS speed for one scene. Use it to slow down for dramatic lines (0.93–0.97) or speed up through lists (1.03). It's part of the cache key, so only that scene rebuilds.
+- `hold_after_seconds` (0–5) sets how long the picture holds after the narration ends, replacing the default 0.5 s. Use it for a breath between ideas, or a longer final hold.
+
 ### Pronunciation overrides
 
 `narration/pronunciations.json` changes what the TTS voice reads, without changing narration text or captions:
@@ -175,3 +191,18 @@ Deterministic SVGs from a JSON spec. The same spec always produces the same file
 - Music isn't mixed yet. Narration plays at its recorded level; final loudness levelling comes with the audio-mix work.
 - **On failure**, the error names the scene. Its FFmpeg log is in `renders/<profile>/logs/<scene>.log`, and a `status: failed` render report is written. Fix the input and re-run: finished scenes are reused.
 - Disk space is checked before rendering. Superseded scene and final files are never auto-deleted; remove old `renders/` folders yourself when you need the space.
+
+## Music bed
+
+```bash
+.venv/bin/pipeline music pad projects/my-film --id music-pad
+```
+
+```bash
+.venv/bin/pipeline music set projects/my-film music-pad --gain-db -6
+```
+
+- `music pad` synthesizes an **original** ambient bed: a minor add-9 chord, slow breathing, a soft low pulse every 4 s and filtered "air". It has no samples, so it's rights-clear and can't match Content ID. It's registered as a `music` asset, pending review. The default length is the narration length plus 10 s. Use `--key A|C|D|E` to change the key.
+- `music set` puts any registered `music` asset under the whole video. That includes a licensed track added with `pipeline assets add --type music`, which needs `platform_cleared` before approval. `--gain-db` sets the bed level, and `--no-duck` turns ducking off. `music clear` removes it.
+- Rendering joins the scenes, then runs one audio-only pass: the bed is looped to length, faded in and out, **ducked under the narration** with a sidechain compressor, mixed, and limited. Video is copied untouched. Changing the music re-runs only this pass; scene renders are reused.
+- The music asset counts as "used" in `assets report`, so it must be approved before `publication_ready`.

@@ -1,0 +1,341 @@
+{
+  "schema_version": "1.0",
+  "beats": [
+    {
+      "beat_id": "v01a",
+      "scene_id": "s01-meet-alex",
+      "order": 1,
+      "takeaway": "Silhouette of a man walking through the city at dawn",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s01-meet-alex-a"
+      ]
+    },
+    {
+      "beat_id": "v01b",
+      "scene_id": "s01-meet-alex",
+      "order": 2,
+      "takeaway": "Man's reflection in a window, face not the focus",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s01-meet-alex-b"
+      ]
+    },
+    {
+      "beat_id": "v02a",
+      "scene_id": "s02-success",
+      "order": 1,
+      "takeaway": "Hands working fast and confidently at a laptop",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s02-success-a"
+      ]
+    },
+    {
+      "beat_id": "v02b",
+      "scene_id": "s02-success",
+      "order": 2,
+      "takeaway": "Man raising arms on a mountain top, seen from behind",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s02-success-b"
+      ]
+    },
+    {
+      "beat_id": "v03a",
+      "scene_id": "s03-failure",
+      "order": 1,
+      "takeaway": "Paper crumpled and thrown away",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s03-failure-a"
+      ]
+    },
+    {
+      "beat_id": "v03b",
+      "scene_id": "s03-failure",
+      "order": 2,
+      "takeaway": "Man sitting alone with head down",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s03-failure-b"
+      ]
+    },
+    {
+      "beat_id": "v04a",
+      "scene_id": "s04-discomfort",
+      "order": 1,
+      "takeaway": "Rain running down a window at night",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s04-discomfort-a"
+      ]
+    },
+    {
+      "beat_id": "v04b",
+      "scene_id": "s04-discomfort",
+      "order": 2,
+      "takeaway": "Man staring at a screen in a dark room",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s04-discomfort-b"
+      ]
+    },
+    {
+      "beat_id": "v05a",
+      "scene_id": "s05-excuses",
+      "order": 1,
+      "takeaway": "Laptop lid closing",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s05-excuses-a"
+      ]
+    },
+    {
+      "beat_id": "v05b",
+      "scene_id": "s05-excuses",
+      "order": 2,
+      "takeaway": "Man walking away down an empty street",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s05-excuses-b"
+      ]
+    },
+    {
+      "beat_id": "v06a",
+      "scene_id": "s06-problem",
+      "order": 1,
+      "takeaway": "Chess pieces on a board, slow move",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s06-problem-a"
+      ]
+    },
+    {
+      "beat_id": "v06b",
+      "scene_id": "s06-problem",
+      "order": 2,
+      "takeaway": "Maze or labyrinth from above",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s06-problem-b"
+      ]
+    },
+    {
+      "beat_id": "v07a",
+      "scene_id": "s07-identity",
+      "order": 1,
+      "takeaway": "Dominoes falling in a chain",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s07-identity-a"
+      ]
+    },
+    {
+      "beat_id": "v07b",
+      "scene_id": "s07-identity",
+      "order": 2,
+      "takeaway": "Long shadow of a person on the ground",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s07-identity-b"
+      ]
+    },
+    {
+      "beat_id": "v08a",
+      "scene_id": "s08-verdict",
+      "order": 1,
+      "takeaway": "Storm clouds rolling, time-lapse",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s08-verdict-a"
+      ]
+    },
+    {
+      "beat_id": "v08b",
+      "scene_id": "s08-verdict",
+      "order": 2,
+      "takeaway": "Person sitting alone on a bench",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s08-verdict-b"
+      ]
+    },
+    {
+      "beat_id": "v09a",
+      "scene_id": "s09-story",
+      "order": 1,
+      "takeaway": "Old photographs being looked through",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s09-story-a"
+      ]
+    },
+    {
+      "beat_id": "v09b",
+      "scene_id": "s09-story",
+      "order": 2,
+      "takeaway": "Reflection rippling in water",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s09-story-b"
+      ]
+    },
+    {
+      "beat_id": "v10a",
+      "scene_id": "s10-turn",
+      "order": 1,
+      "takeaway": "Morning light coming through a window",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s10-turn-a"
+      ]
+    },
+    {
+      "beat_id": "v10b",
+      "scene_id": "s10-turn",
+      "order": 2,
+      "takeaway": "Man looking out at the horizon, from behind",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s10-turn-b"
+      ]
+    },
+    {
+      "beat_id": "v11a",
+      "scene_id": "s11-questions",
+      "order": 1,
+      "takeaway": "Hand writing in a notebook",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s11-questions-a"
+      ]
+    },
+    {
+      "beat_id": "v11b",
+      "scene_id": "s11-questions",
+      "order": 2,
+      "takeaway": "Person reading a book by a window",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s11-questions-b"
+      ]
+    },
+    {
+      "beat_id": "v12a",
+      "scene_id": "s12-allowed",
+      "order": 1,
+      "takeaway": "Plant growing, time-lapse",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s12-allowed-a"
+      ]
+    },
+    {
+      "beat_id": "v12b",
+      "scene_id": "s12-allowed",
+      "order": 2,
+      "takeaway": "Person walking a forest path",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s12-allowed-b"
+      ]
+    },
+    {
+      "beat_id": "v13a",
+      "scene_id": "s13-choice",
+      "order": 1,
+      "takeaway": "A fork in the road from above",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s13-choice-a"
+      ]
+    },
+    {
+      "beat_id": "v13b",
+      "scene_id": "s13-choice",
+      "order": 2,
+      "takeaway": "Man standing at a crossroads",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s13-choice-b"
+      ]
+    },
+    {
+      "beat_id": "v14a",
+      "scene_id": "s14-close",
+      "order": 1,
+      "takeaway": "Sunrise over mountains",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s14-close-a"
+      ]
+    },
+    {
+      "beat_id": "v14b",
+      "scene_id": "s14-close",
+      "order": 2,
+      "takeaway": "A door opening onto light",
+      "visual_type": "licensed_stock",
+      "requirements": "",
+      "motion": "none",
+      "asset_ids": [
+        "s14-close-b"
+      ]
+    }
+  ]
+}

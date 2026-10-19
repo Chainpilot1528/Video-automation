@@ -377,7 +377,7 @@
     },
     {
       "asset_id": "narr-s01-cold-open",
-      "path": "narration/s01-cold-open/b95b24f3cf9e5a26.wav",
+      "path": "narration/s01-cold-open/b75961c0e25f3129.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -406,13 +406,14 @@
         "prompt": "Two people start on the same day, with the same skills, and work just as hard. A year later, one is far ahead. Is that unfair, or is it maths? Researchers have found patterns in who makes it. Here are five.",
         "settings": {
           "rate_wpm": null,
-          "speed": 0.87,
+          "speed": 0.8265,
+          "style": "annt",
           "sample_rate": 48000
         },
         "terms_url": "https://huggingface.co/hexgrad/Kokoro-82M"
       },
       "acquired_date": null,
-      "sha256": "fd1471f92dd221e41421425faa489f180d890698d0d2ebf4d603c5d5fe0d70ad",
+      "sha256": "99a27eef43fe172036ceb0726c74e6f9f47d6d0e0c070a4a0cd2b5c82cf7c430",
       "derived_from": null,
       "intended_scene_ids": [
         "s01-cold-open"
@@ -423,7 +424,7 @@
     },
     {
       "asset_id": "narr-s02-same-start",
-      "path": "narration/s02-same-start/090167c3cd9d8659.wav",
+      "path": "narration/s02-same-start/ad4415dafdc2990f.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -453,12 +454,13 @@
         "settings": {
           "rate_wpm": null,
           "speed": 0.87,
+          "style": "annt",
           "sample_rate": 48000
         },
         "terms_url": "https://huggingface.co/hexgrad/Kokoro-82M"
       },
       "acquired_date": null,
-      "sha256": "0e757f04b7fe5876b465c0b266fda099504c629681593a22b4ad53a5c03cd495",
+      "sha256": "e2006d13d33b8e4b00ed5582a89bfbcecbf457442cec3b24260bff5781cf32d1",
       "derived_from": null,
       "intended_scene_ids": [
         "s02-same-start"
@@ -469,7 +471,7 @@
     },
     {
       "asset_id": "narr-s03-compounding",
-      "path": "narration/s03-compounding/7c5506b3858df81c.wav",
+      "path": "narration/s03-compounding/56dd4d16a460762e.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -499,12 +501,13 @@
         "settings": {
           "rate_wpm": null,
           "speed": 0.87,
+          "style": "annt",
           "sample_rate": 48000
         },
         "terms_url": "https://huggingface.co/hexgrad/Kokoro-82M"
       },
       "acquired_date": null,
-      "sha256": "96109828fdb9f8521cfec27c152830c161656032de5dc447e98992ac1bcd5d67",
+      "sha256": "a3c6a0e31fc068038dbfe55cc40d4db3b489099281b9446ae7a273bbde87183b",
       "derived_from": null,
       "intended_scene_ids": [
         "s03-compounding"
@@ -515,7 +518,7 @@
     },
     {
       "asset_id": "narr-s04-superstars",
-      "path": "narration/s04-superstars/3c655e62c7f19f0d.wav",
+      "path": "narration/s04-superstars/2bd0967a913a8e78.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -544,13 +547,14 @@
         "prompt": "Third: rewards aren't shared out evenly. Economist Sherwin Rosen showed how, when one performer can reach a whole market, a small edge in talent can mean a huge gap in earnings. And a study of more than six hundred thousand researchers, entertainers, politicians and athletes found that performance itself is lopsided: a small group at the top far outpaces everyone else.",
         "settings": {
           "rate_wpm": null,
-          "speed": 0.87,
+          "speed": 0.8961,
+          "style": "annt",
           "sample_rate": 48000
         },
         "terms_url": "https://huggingface.co/hexgrad/Kokoro-82M"
       },
       "acquired_date": null,
-      "sha256": "76b178a3680d30799280693214403129939feb0d7a0269aaf2dd9e97e587d7f1",
+      "sha256": "dc4d3b1797d5daa0034c642cbd2fe7a25eeae09d1bbc497cab8b64ee98c09a0e",
       "derived_from": null,
       "intended_scene_ids": [
         "s04-superstars"
@@ -561,7 +565,7 @@
     },
     {
       "asset_id": "narr-s05-luck",
-      "path": "narration/s05-luck/dd33243347dd6f1f.wav",
+      "path": "narration/s05-luck/eb85cf902f4f9f74.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -590,13 +594,14 @@
         "prompt": "Fourth: luck compounds too. One computer model of forty-year careers found the most successful people were rarely the most talented, but moderately talented and luckier. It's a simulation, not real lives. One possible lesson: be prepared, so a lucky break has somewhere to go.",
         "settings": {
           "rate_wpm": null,
-          "speed": 0.87,
+          "speed": 0.8439,
+          "style": "annt",
           "sample_rate": 48000
         },
         "terms_url": "https://huggingface.co/hexgrad/Kokoro-82M"
       },
       "acquired_date": null,
-      "sha256": "b2f7870427c4fe787a7dbe09cc6b2341c53189f185a7ab741cd46efc7444717d",
+      "sha256": "1211d221037096fb2b1788efff6ec97fdc2d319198c196132dca5b1572b84774",
       "derived_from": null,
       "intended_scene_ids": [
         "s05-luck"
@@ -607,7 +612,7 @@
     },
     {
       "asset_id": "narr-s06-strategy",
-      "path": "narration/s06-strategy/0c836157b12183a8.wav",
+      "path": "narration/s06-strategy/d3c9096986a45f1e.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -637,12 +642,13 @@
         "settings": {
           "rate_wpm": null,
           "speed": 0.87,
+          "style": "annt",
           "sample_rate": 48000
         },
         "terms_url": "https://huggingface.co/hexgrad/Kokoro-82M"
       },
       "acquired_date": null,
-      "sha256": "b41caf59cee6ad0369c650903f299e256e311b3d5efa4259e2bf52d0b32fdaa6",
+      "sha256": "52867b7c4d8b19b2326f8a8582782ac8bc53250a185599b486f993bca750f1ad",
       "derived_from": null,
       "intended_scene_ids": [
         "s06-strategy"
@@ -653,7 +659,7 @@
     },
     {
       "asset_id": "narr-s07-close",
-      "path": "narration/s07-close/b74842353cc179da.wav",
+      "path": "narration/s07-close/f7adff20703b6d06.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -682,13 +688,14 @@
         "prompt": "So effort matters, but it isn't the whole equation. Compounding, unequal rewards and luck shape the result. The part you control is where you point your effort.",
         "settings": {
           "rate_wpm": null,
-          "speed": 0.87,
+          "speed": 0.8091,
+          "style": "annt",
           "sample_rate": 48000
         },
         "terms_url": "https://huggingface.co/hexgrad/Kokoro-82M"
       },
       "acquired_date": null,
-      "sha256": "deb0f97f401d4b843b647d9cf3b8363ec9a81169cb8951e70800e930614778a7",
+      "sha256": "8b48efc6d1d5d8e63014cbe002f73ee3f5485b65e996d262b4ec11627347c6fe",
       "derived_from": null,
       "intended_scene_ids": [
         "s07-close"
@@ -696,6 +703,50 @@
       "review_status": "pending",
       "publication_status": "pending_review",
       "notes": ""
+    },
+    {
+      "asset_id": "music-pad",
+      "path": "assets/music/music-pad.wav",
+      "root": "project",
+      "type": "music",
+      "creation_method": "generated",
+      "provider": "reckoning-pipeline",
+      "source_url": null,
+      "creator": "Reckoning Self",
+      "rights_holder": "Reckoning Self",
+      "license_name": "",
+      "license_url": "",
+      "commercial_use": "allowed",
+      "attribution_required": false,
+      "attribution_text": "",
+      "derivatives_allowed": true,
+      "rights_evidence": "Synthesized from sine oscillators and filtered noise by 'pipeline music pad' (pad v1); no samples, loops or third-party recordings, so no Content ID match is possible.",
+      "identifiable_people": null,
+      "people_clearance": "",
+      "trademarks_visible": null,
+      "trademark_notes": "",
+      "raw_redistribution_allowed": true,
+      "platform_cleared": true,
+      "generation": {
+        "provider": "reckoning-pipeline",
+        "model": "ambient-pad-v1",
+        "model_version": "0.1.0",
+        "generated_on": "2026-10-19",
+        "prompt": "",
+        "settings": {
+          "key": "A",
+          "root_hz": 110.0,
+          "duration": 138.0
+        },
+        "terms_url": "https://ffmpeg.org/legal.html"
+      },
+      "acquired_date": "2026-10-19",
+      "sha256": "1012c8211f14b542c2dc3874b3cbccf57d9962a5886ed4b81692697f45235744",
+      "derived_from": null,
+      "intended_scene_ids": [],
+      "review_status": "pending",
+      "publication_status": "pending_review",
+      "notes": "Original ambient bed (minor add9 chord, slow breathing, soft low pulse)."
     }
   ]
 }

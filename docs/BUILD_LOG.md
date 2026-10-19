@@ -478,3 +478,45 @@ The user supplied the topic and a five-principle summary. Project: `projects/mat
   - Review the 6 graphics and 7 narration assets, and approve the script.
   - Two clips are 720p, which a 1080p master would upscale.
 - **Cosmetic issues:** burned captions cover the chart's source line; two title cards break lines unevenly; the chart footer shows doubled brackets.
+
+---
+
+## Voice styles and the `annt` preset (2026-10-18)
+
+- The user supplied a reference narration (The Corporate Autopsy, "The Smartphone Autopsy") and asked to fine-tune a model to reproduce that voice. **Declined:** cloning or fine-tuning on a real narrator's voice without consent is impersonation. Offered and built style-matching instead.
+- Kept the reference as **ANNT** at `references/ANNT/ANNT.mp3` (read-only, git-ignored, sha256 af01abc3…). It's documented in `references/ANNT/README.md`, together with its measured style: male, about 133 Hz, about 165 wpm, -20.5 LUFS, continuous music bed.
+- `narration/styles.py`: a `documentary` voice-processing chain and the `annt` preset (Kokoro am_liam, speed 0.87, documentary). New `--style` and `--preset` options for `narration build`. `normalize_audio` takes `extra_filters`.
+- **Issues fixed during tuning:**
+  - `aecho` output gain 0.5 made the voice 6 dB quieter, so it's now 0.9.
+  - `alimiter`'s default auto-level pushed peaks back to -0.2 dBTP, so it's now `level=disabled` at limit 0.84.
+  - Final narration: -20.6 LUFS (ANNT is -20.5), all true peaks at -1.7 dBTP or lower.
+- **Option 4** (license the same library voice): a web search found no public information on the channel's voice or service. Next step is to check the channel's About page and video descriptions for credits.
+- Episode preview 4 rendered with the `annt` preset (2:07). An A/B file is at `references/ANNT/ANNT-vs-annt-preset.mp3` (git-ignored).
+
+---
+
+## Tone match, music bed and pacing (2026-10-19)
+
+The user asked to reproduce the ANNT voice exactly, first claiming it was their own voice and then that it was AI-generated. **Declined:** ownership couldn't be verified, and cloning from audio with a music bed underneath would be poor quality anyway. Pointed to recovering the voice from the generating service's account, or re-recording if it's their own voice. Built the three legitimate style steps instead:
+
+1. **Tone match:** `annt` style = documentary chain + match EQ derived from long-term spectra (60% applied). Mean band gap went from 5.4 dB to 2.5 dB. A/B: `references/ANNT/ANNT-vs-annt-v2.mp3`.
+2. **Music bed:**
+   - `media/music.py` synthesizes an original pad (deterministic, no samples). `pipeline music pad|set|clear`.
+   - `MusicSettings` on the project manifest (additive); validation checks the music asset type.
+   - The music asset counts in the rights report and publication gate.
+   - The renderer has a final audio-only pass: loop, fades, sidechain ducking, mix, limiter. Video is copied. The plan fingerprint includes the music, so scene renders are reused.
+3. **Pacing:** scene fields `narration_speed` (0.7–1.3, multiplies TTS speed, part of the cache key) and `hold_after_seconds` (0–5, replaces the 0.5 s tail).
+
+**Episode tuning:**
+- Pacing: s01 at 0.95 with a 1.0 s hold; s04 at 1.03; s05 at 0.97 with a 1.0 s hold; s07 at 0.93 with a 2.0 s hold; the rest hold 0.8 s.
+- Voice rebuilt with the tone-matched `annt` preset.
+- Original pad (138 s, key A) at -6 dB, ducked. The bed started at -14 dB, but that put the music about 18 dB under the voice, which was barely audible, so it was raised.
+- **Preview 5:** 2:12, -20.5 LUFS integrated, 3.4 LU range (ANNT: -20.5 / 3.7).
+
+Tests: 6 new tests for the music pad (deterministic, registered, loudness), settings validation, rights inclusion, plan fingerprint and scene reuse, a real ducked mix render, mix command shape, and per-scene speed and hold.
+
+## 2026-10-20: "Reckoner" house narrator
+
+- The narration voice is now named **Reckoner**: `--preset reckoner`, which is Kokoro `am_liam` at speed 0.87 with the tone-matched `annt` style.
+- `--preset annt` stays as an alias. It gives identical settings, so existing narration caches stay valid.
+- The "brain-defends-you" preview used this voice. It is 28 Pexels clips over 14 scenes with no text cards: 3:47 long, -20.6 LUFS.

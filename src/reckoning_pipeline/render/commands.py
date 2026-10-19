@@ -118,3 +118,27 @@ def concat_list(paths: list[Path]) -> str:
 def concat_command(ffmpeg: str, list_file: str, output: str) -> list[str]:
     return [ffmpeg, "-nostdin", "-hide_banner", "-loglevel", "warning", "-y", "-f", "concat", "-safe", "0",
             "-i", list_file, "-c", "copy", "-map_metadata", "-1", "-movflags", "+faststart", output]
+
+
+# Ducking: while narration plays, the bed drops by up to ~10 dB; it recovers over ~0.5 s in pauses.
+DUCK = "threshold=0.025:ratio=6:attack=20:release=450:makeup=1"
+
+
+def music_mix_command(ffmpeg: str, video: str, music, profile: RenderProfile, duration: float,
+                      output: str) -> list[str]:
+    """Mix a looped, faded music bed under the joined video's narration; video is copied untouched."""
+    d = f"{duration:.3f}"
+    fade_out_start = max(duration - music.fade_out, 0)
+    bed = (f"[1:a]aresample={profile.audio_sample_rate},aformat=sample_fmts=fltp:channel_layouts=stereo,"
+           f"atrim=duration={d},volume={music.gain_db}dB,"
+           f"afade=t=in:st=0:d={music.fade_in:.3f},afade=t=out:st={fade_out_start:.3f}:d={music.fade_out:.3f}[bed]")
+    if music.duck:
+        graph = (f"[0:a]asplit=2[narr][key];{bed};[bed][key]sidechaincompress={DUCK}[ducked];"
+                 f"[narr][ducked]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.89:level=disabled[aout]")
+    else:
+        graph = (f"{bed};[0:a][bed]amix=inputs=2:normalize=0:duration=first,"
+                 f"alimiter=limit=0.89:level=disabled[aout]")
+    return [ffmpeg, "-nostdin", "-hide_banner", "-loglevel", "warning", "-y", "-i", video,
+            "-stream_loop", "-1", "-i", music.path, "-filter_complex", graph, "-map", "0:v", "-map", "[aout]",
+            "-c:v", "copy", "-c:a", "aac", "-b:a", profile.audio_bitrate, "-ar", str(profile.audio_sample_rate),
+            "-ac", "2", "-t", d, "-map_metadata", "-1", "-movflags", "+faststart", output]

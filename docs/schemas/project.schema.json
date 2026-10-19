@@ -1,5 +1,47 @@
 {
   "$defs": {
+    "MusicSettings": {
+      "additionalProperties": false,
+      "description": "A music bed under the whole video, ducked under narration.",
+      "properties": {
+        "asset_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "duck": {
+          "default": true,
+          "title": "Duck",
+          "type": "boolean"
+        },
+        "fade_in_seconds": {
+          "default": 2.0,
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Fade In Seconds",
+          "type": "number"
+        },
+        "fade_out_seconds": {
+          "default": 3.0,
+          "maximum": 15,
+          "minimum": 0,
+          "title": "Fade Out Seconds",
+          "type": "number"
+        },
+        "gain_db": {
+          "default": -14.0,
+          "maximum": 0,
+          "minimum": -40,
+          "title": "Gain Db",
+          "type": "number"
+        }
+      },
+      "required": [
+        "asset_id"
+      ],
+      "title": "MusicSettings",
+      "type": "object"
+    },
     "OutputProfileName": {
       "enum": [
         "preview",
@@ -126,6 +168,17 @@
       "pattern": "^[a-z]{2,3}(-[A-Z]{2})?$",
       "title": "Language",
       "type": "string"
+    },
+    "music": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/MusicSettings"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
     },
     "output_profiles": {
       "items": {

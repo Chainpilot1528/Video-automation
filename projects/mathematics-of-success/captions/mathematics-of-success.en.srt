@@ -1,173 +1,173 @@
 1
-00:00:00,000 --> 00:00:04,729
+00:00:00,310 --> 00:00:05,171
 Two people start on the same day, with the
 same skills, and work just as hard.
 
 2
-00:00:04,729 --> 00:00:06,608
+00:00:05,171 --> 00:00:07,103
 A year later, one is far ahead.
 
 3
-00:00:06,608 --> 00:00:08,487
+00:00:07,103 --> 00:00:09,035
 Is that unfair, or is it maths?
 
 4
-00:00:08,487 --> 00:00:11,397
+00:00:09,035 --> 00:00:12,026
 Researchers have found patterns in who
 makes it.
 
 5
-00:00:11,397 --> 00:00:12,246
+00:00:12,026 --> 00:00:12,899
 Here are five.
 
 6
-00:00:12,848 --> 00:00:16,353
+00:00:13,540 --> 00:00:17,047
 First: the same start doesn't mean the
 same outcome.
 
 7
-00:00:16,353 --> 00:00:21,206
+00:00:17,047 --> 00:00:21,902
 In one online experiment, 14,341 people
 could download unfamiliar songs.
 
 8
-00:00:21,206 --> 00:00:23,835
+00:00:21,902 --> 00:00:24,532
 When they could see what others picked,
 
 9
-00:00:23,835 --> 00:00:29,295
+00:00:24,532 --> 00:00:29,994
 the same songs ended up with very
 different levels of success in separate
 groups.
 
 10
-00:00:29,295 --> 00:00:33,070
+00:00:29,994 --> 00:00:33,770
 Quality still mattered: the best songs
 rarely did badly.
 
 11
-00:00:33,711 --> 00:00:35,709
+00:00:34,421 --> 00:00:36,420
 Second: small advantages compound.
 
 12
-00:00:35,709 --> 00:00:38,236
+00:00:36,420 --> 00:00:38,947
 Improve by one percent a day and, on
 paper,
 
 13
-00:00:38,236 --> 00:00:41,703
+00:00:38,947 --> 00:00:42,415
 a year multiplies where you started by
 almost thirty-eight.
 
 14
-00:00:41,703 --> 00:00:45,228
+00:00:42,415 --> 00:00:45,942
 Slip one percent a day and you keep less
 than three percent.
 
 15
-00:00:45,228 --> 00:00:47,814
+00:00:45,942 --> 00:00:48,528
 Real life is messier, but the shape is
 real.
 
 16
-00:00:47,814 --> 00:00:51,046
+00:00:48,528 --> 00:00:51,761
 Sociologist Robert Merton called it the
 Matthew effect:
 
 17
-00:00:51,046 --> 00:00:55,688
+00:00:51,761 --> 00:00:56,405
 scientists who are already recognised tend
 to get more credit for similar work.
 
 18
-00:00:56,299 --> 00:00:58,695
+00:00:57,027 --> 00:00:59,355
 Third: rewards aren't shared out evenly.
 
 19
-00:00:58,695 --> 00:01:03,486
+00:00:59,355 --> 00:01:04,010
 Economist Sherwin Rosen showed how, when
 one performer can reach a whole market,
 
 20
-00:01:03,486 --> 00:01:06,780
+00:01:04,010 --> 00:01:07,210
 a small edge in talent can mean a huge gap
 in earnings.
 
 21
-00:01:06,780 --> 00:01:11,093
+00:01:07,210 --> 00:01:11,400
 And a study of more than six hundred
 thousand researchers, entertainers,
 
 22
-00:01:11,093 --> 00:01:15,106
+00:01:11,400 --> 00:01:15,299
 politicians and athletes found that
 performance itself is lopsided:
 
 23
-00:01:15,106 --> 00:01:18,220
+00:01:15,299 --> 00:01:18,325
 a small group at the top far outpaces
 everyone else.
 
 24
-00:01:18,859 --> 00:01:20,538
+00:01:18,948 --> 00:01:20,681
 Fourth: luck compounds too.
 
 25
-00:01:20,538 --> 00:01:25,388
+00:01:20,681 --> 00:01:25,687
 One computer model of forty-year careers
 found the most successful people were
 
 26
-00:01:25,388 --> 00:01:26,943
+00:01:25,687 --> 00:01:27,291
 rarely the most talented,
 
 27
-00:01:26,943 --> 00:01:29,181
+00:01:27,291 --> 00:01:29,601
 but moderately talented and luckier.
 
 28
-00:01:29,181 --> 00:01:31,295
+00:01:29,601 --> 00:01:31,783
 It's a simulation, not real lives.
 
 29
-00:01:31,295 --> 00:01:35,710
+00:01:31,783 --> 00:01:36,340
 One possible lesson: be prepared, so a
 lucky break has somewhere to go.
 
 30
-00:01:36,362 --> 00:01:37,778
+00:01:37,009 --> 00:01:38,426
 Fifth: aim your effort.
 
 31
-00:01:37,778 --> 00:01:38,701
+00:01:38,426 --> 00:01:39,350
 Taken together,
 
 32
-00:01:38,701 --> 00:01:43,934
+00:01:39,350 --> 00:01:44,585
 this research suggests hard work pays most
 when it goes into skills and markets where
 
 33
-00:01:43,934 --> 00:01:45,534
+00:01:44,585 --> 00:01:46,187
 gains build on themselves.
 
 34
-00:01:45,534 --> 00:01:50,644
+00:01:46,187 --> 00:01:51,299
 Choosing the field, the skill and the
 thing you build matters as much as the
 hours.
 
 35
-00:01:51,249 --> 00:01:54,300
+00:01:51,914 --> 00:01:55,202
 So effort matters, but it isn't the whole
 equation.
 
 36
-00:01:54,300 --> 00:01:57,591
+00:01:55,202 --> 00:01:58,747
 Compounding, unequal rewards and luck
 shape the result.
 
 37
-00:01:57,591 --> 00:02:00,702
+00:01:58,747 --> 00:02:02,099
 The part you control is where you point
 your effort.

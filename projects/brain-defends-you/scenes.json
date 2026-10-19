@@ -1,0 +1,439 @@
+{
+  "schema_version": "1.0",
+  "scenes": [
+    {
+      "scene_id": "s01-meet-alex",
+      "order": 1,
+      "purpose": "Introduce Alex and the story he tells himself",
+      "narration_text": "Imagine a person named Alex. Alex has always believed that he is smart, disciplined, and capable of achieving great things. These beliefs become part of his identity. They are not just things he thinks about himself anymore — they become the story he tells himself about who he is.",
+      "visual_strategy": "Pexels footage only: Silhouette of a man walking through the city at dawn; then Man's reflection in a window, face not the focus. Alex stays anonymous.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": null,
+      "actual_narration_duration_seconds": 18.698,
+      "final_duration_seconds": 19.948,
+      "narration_asset_id": "narr-s01-meet-alex",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 1.0
+      },
+      "transition_out": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Creator's narration, verbatim. A reflective story/essay, not factual reporting.",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": 0.96,
+      "hold_after_seconds": 1.0
+    },
+    {
+      "scene_id": "s02-success",
+      "order": 2,
+      "purpose": "Success strengthens the story",
+      "narration_text": "Whenever Alex succeeds, the story gets stronger. He thinks, “I knew I was capable. I knew I could do it.”",
+      "visual_strategy": "Pexels footage only: Hands working fast and confidently at a laptop; then Man raising arms on a mountain top, seen from behind. Alex stays anonymous.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": null,
+      "actual_narration_duration_seconds": 7.099,
+      "final_duration_seconds": 8.149,
+      "narration_asset_id": "narr-s02-success",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Creator's narration, verbatim. A reflective story/essay, not factual reporting.",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 0.8
+    },
+    {
+      "scene_id": "s03-failure",
+      "order": 3,
+      "purpose": "The failure",
+      "narration_text": "But one day, Alex fails at something important. Maybe he loses an opportunity, makes a bad decision, or tries something new and gets rejected.",
+      "visual_strategy": "Pexels footage only: Paper crumpled and thrown away; then Man sitting alone with head down. Alex stays anonymous.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": null,
+      "actual_narration_duration_seconds": 10.038,
+      "final_duration_seconds": 11.088,
+      "narration_asset_id": "narr-s03-failure",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Creator's narration, verbatim. A reflective story/essay, not factual reporting.",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": 0.97,
+      "hold_after_seconds": 0.8
+    },
+    {
+      "scene_id": "s04-discomfort",
+      "order": 4,
+      "purpose": "Discomfort; the mind starts protecting",
+      "narration_text": "For a moment, he feels uncomfortable. The failure challenges the person he believes himself to be. Instead of asking, “What did I do wrong, and what can I learn from this?” his mind starts looking for ways to protect him.",
+      "visual_strategy": "Pexels footage only: Rain running down a window at night; then Man staring at a screen in a dark room. Alex stays anonymous.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": null,
+      "actual_narration_duration_seconds": 13.669,
+      "final_duration_seconds": 14.719,
+      "narration_asset_id": "narr-s04-discomfort",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Creator's narration, verbatim. A reflective story/essay, not factual reporting.",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 0.8
+    },
+    {
+      "scene_id": "s05-excuses",
+      "order": 5,
+      "purpose": "The convenient explanations",
+      "narration_text": "He tells himself, “The timing wasn't right. People didn't understand my potential. I didn't get a fair chance.” Some of these explanations might even be true. But Alex never investigates them. He accepts whichever explanation makes him feel better and moves on without learning the lesson.",
+      "visual_strategy": "Pexels footage only: Laptop lid closing; then Man walking away down an empty street. Alex stays anonymous.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": null,
+      "actual_narration_duration_seconds": 17.349,
+      "final_duration_seconds": 18.599,
+      "narration_asset_id": "narr-s05-excuses",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Creator's narration, verbatim. A reflective story/essay, not factual reporting.",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 1.0
+    },
+    {
+      "scene_id": "s06-problem",
+      "order": 6,
+      "purpose": "The real problem: a mind that wins arguments",
+      "narration_text": "And this is where the real problem begins. Alex's brain is intelligent enough to build convincing arguments for almost anything he wants to believe. The smarter he is, the better he may become at defending his own mistakes rather than recognising them.",
+      "visual_strategy": "Pexels footage only: Chess pieces on a board, slow move; then Maze or labyrinth from above. Alex stays anonymous.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": null,
+      "actual_narration_duration_seconds": 17.142,
+      "final_duration_seconds": 18.192,
+      "narration_asset_id": "narr-s06-problem",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Creator's narration, verbatim. A reflective story/essay, not factual reporting.",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": 0.97,
+      "hold_after_seconds": 0.8
+    },
+    {
+      "scene_id": "s07-identity",
+      "order": 7,
+      "purpose": "Events turn into identity",
+      "narration_text": "Over time, he starts confusing individual experiences with his identity. One wrong answer becomes “I'm not good at this.” One rejection becomes “I'm unlucky.” One failed attempt becomes “Maybe I'm just not meant for this.”",
+      "visual_strategy": "Pexels footage only: Dominoes falling in a chain; then Long shadow of a person on the ground. Alex stays anonymous.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": null,
+      "actual_narration_duration_seconds": 15.203,
+      "final_duration_seconds": 16.253,
+      "narration_asset_id": "narr-s07-identity",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Creator's narration, verbatim. A reflective story/essay, not factual reporting.",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": 0.95,
+      "hold_after_seconds": 0.8
+    },
+    {
+      "scene_id": "s08-verdict",
+      "order": 8,
+      "purpose": "An event is not an identity",
+      "narration_text": "What should have been a single event becomes a verdict on his entire life. The truth is, being wrong is an event. Being a failure is an identity we attach to that event.",
+      "visual_strategy": "Pexels footage only: Storm clouds rolling, time-lapse; then Person sitting alone on a bench. Alex stays anonymous.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": null,
+      "actual_narration_duration_seconds": 11.886,
+      "final_duration_seconds": 13.336,
+      "narration_asset_id": "narr-s08-verdict",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Creator's narration, verbatim. A reflective story/essay, not factual reporting.",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": 0.93,
+      "hold_after_seconds": 1.2
+    },
+    {
+      "scene_id": "s09-story",
+      "order": 9,
+      "purpose": "Identity is only a story",
+      "narration_text": "But Alex doesn't realise that his identity is only a story — a story built from past experiences, assumptions, and the opinions he has formed about himself.",
+      "visual_strategy": "Pexels footage only: Old photographs being looked through; then Reflection rippling in water. Alex stays anonymous.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": null,
+      "actual_narration_duration_seconds": 10.825,
+      "final_duration_seconds": 12.075,
+      "narration_asset_id": "narr-s09-story",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Creator's narration, verbatim. A reflective story/essay, not factual reporting.",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 1.0
+    },
+    {
+      "scene_id": "s10-turn",
+      "order": 10,
+      "purpose": "The turning point",
+      "narration_text": "Then, one day, something changes. Alex begins to notice that whenever evidence challenges his beliefs, he immediately looks for a reason to dismiss it. He realises that he has been protecting his self-image instead of improving his life.",
+      "visual_strategy": "Pexels footage only: Morning light coming through a window; then Man looking out at the horizon, from behind. Alex stays anonymous.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": null,
+      "actual_narration_duration_seconds": 16.066,
+      "final_duration_seconds": 17.316,
+      "narration_asset_id": "narr-s10-turn",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Creator's narration, verbatim. A reflective story/essay, not factual reporting.",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": 0.96,
+      "hold_after_seconds": 1.0
+    },
+    {
+      "scene_id": "s11-questions",
+      "order": 11,
+      "purpose": "New questions",
+      "narration_text": "For the first time, he starts asking different questions. Instead of asking, “How can I prove that I'm right?” he asks, “What if I'm wrong?” Instead of explaining away his failures, he studies them. Instead of treating criticism as an attack, he considers whether there is something useful hidden inside it.",
+      "visual_strategy": "Pexels footage only: Hand writing in a notebook; then Person reading a book by a window. Alex stays anonymous.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": null,
+      "actual_narration_duration_seconds": 17.635,
+      "final_duration_seconds": 18.685,
+      "narration_asset_id": "narr-s11-questions",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Creator's narration, verbatim. A reflective story/essay, not factual reporting.",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 0.8
+    },
+    {
+      "scene_id": "s12-allowed",
+      "order": 12,
+      "purpose": "Allowed to change",
+      "narration_text": "Slowly, Alex learns that he doesn't have to defend every version of himself he has ever believed in. He is allowed to change his mind. He is allowed to be inexperienced. He is allowed to make mistakes without turning them into his identity. And most importantly, he learns that protecting your ego might make you feel better today, but questioning yourself might make your life better tomorrow.",
+      "visual_strategy": "Pexels footage only: Plant growing, time-lapse; then Person walking a forest path. Alex stays anonymous.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": null,
+      "actual_narration_duration_seconds": 22.606,
+      "final_duration_seconds": 23.856,
+      "narration_asset_id": "narr-s12-allowed",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Creator's narration, verbatim. A reflective story/essay, not factual reporting.",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 1.0
+    },
+    {
+      "scene_id": "s13-choice",
+      "order": 13,
+      "purpose": "The choice",
+      "narration_text": "Because eventually, everyone faces a choice. Do you want to protect the person you think you are, or do you want to become the person you have the potential to be?",
+      "visual_strategy": "Pexels footage only: A fork in the road from above; then Man standing at a crossroads. Alex stays anonymous.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": null,
+      "actual_narration_duration_seconds": 10.492,
+      "final_duration_seconds": 12.242,
+      "narration_asset_id": "narr-s13-choice",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Creator's narration, verbatim. A reflective story/essay, not factual reporting.",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": 0.93,
+      "hold_after_seconds": 1.5
+    },
+    {
+      "scene_id": "s14-close",
+      "order": 14,
+      "purpose": "Where growth begins",
+      "narration_text": "The moment you stop treating your beliefs as facts and start examining them as possibilities, real growth begins. The biggest obstacle to your improvement may not be a lack of intelligence, discipline, or opportunity. It may be your own mind, working tirelessly to convince you that you don't need to change.",
+      "visual_strategy": "Pexels footage only: Sunrise over mountains; then A door opening onto light. Alex stays anonymous.",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": null,
+      "actual_narration_duration_seconds": 19.318,
+      "final_duration_seconds": 22.068,
+      "narration_asset_id": "narr-s14-close",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "cut",
+        "duration_seconds": 0.0
+      },
+      "transition_out": {
+        "type": "fade_to_black",
+        "duration_seconds": 1.5
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "Creator's narration, verbatim. A reflective story/essay, not factual reporting.",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": 0.95,
+      "hold_after_seconds": 2.5
+    }
+  ]
+}

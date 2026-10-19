@@ -11,8 +11,8 @@
       "source_ids": [],
       "claim_ids": [],
       "planned_duration_seconds": 12.0,
-      "actual_narration_duration_seconds": 12.848,
-      "final_duration_seconds": 13.598,
+      "actual_narration_duration_seconds": 13.54,
+      "final_duration_seconds": 14.79,
       "narration_asset_id": "narr-s01-cold-open",
       "caption_status": "approximate",
       "approval_status": "pending",
@@ -28,7 +28,9 @@
       "on_screen_text": [],
       "notes": "Draft narration for review; written from the creator's summary and the research ledger.",
       "render_status": "not_started",
-      "input_fingerprint": null
+      "input_fingerprint": null,
+      "narration_speed": 0.95,
+      "hold_after_seconds": 1.0
     },
     {
       "scene_id": "s02-same-start",
@@ -43,8 +45,8 @@
         "c-quality-partly"
       ],
       "planned_duration_seconds": 18.0,
-      "actual_narration_duration_seconds": 20.863,
-      "final_duration_seconds": 21.613,
+      "actual_narration_duration_seconds": 20.881,
+      "final_duration_seconds": 21.931,
       "narration_asset_id": "narr-s02-same-start",
       "caption_status": "approximate",
       "approval_status": "pending",
@@ -60,7 +62,9 @@
       "on_screen_text": [],
       "notes": "Draft narration for review; written from the creator's summary and the research ledger.",
       "render_status": "not_started",
-      "input_fingerprint": null
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 0.8
     },
     {
       "scene_id": "s03-compounding",
@@ -75,8 +79,8 @@
         "c-matthew"
       ],
       "planned_duration_seconds": 22.0,
-      "actual_narration_duration_seconds": 22.588,
-      "final_duration_seconds": 23.338,
+      "actual_narration_duration_seconds": 22.606,
+      "final_duration_seconds": 23.656,
       "narration_asset_id": "narr-s03-compounding",
       "caption_status": "approximate",
       "approval_status": "pending",
@@ -92,7 +96,9 @@
       "on_screen_text": [],
       "notes": "Draft narration for review; written from the creator's summary and the research ledger.",
       "render_status": "not_started",
-      "input_fingerprint": null
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 0.8
     },
     {
       "scene_id": "s04-superstars",
@@ -107,8 +113,8 @@
         "c-power-law"
       ],
       "planned_duration_seconds": 22.0,
-      "actual_narration_duration_seconds": 22.56,
-      "final_duration_seconds": 23.31,
+      "actual_narration_duration_seconds": 21.921,
+      "final_duration_seconds": 22.971,
       "narration_asset_id": "narr-s04-superstars",
       "caption_status": "approximate",
       "approval_status": "pending",
@@ -124,7 +130,9 @@
       "on_screen_text": [],
       "notes": "Draft narration for review; written from the creator's summary and the research ledger.",
       "render_status": "not_started",
-      "input_fingerprint": null
+      "input_fingerprint": null,
+      "narration_speed": 1.03,
+      "hold_after_seconds": 0.8
     },
     {
       "scene_id": "s05-luck",
@@ -138,8 +146,8 @@
         "c-luck-model"
       ],
       "planned_duration_seconds": 18.0,
-      "actual_narration_duration_seconds": 17.503,
-      "final_duration_seconds": 18.253,
+      "actual_narration_duration_seconds": 18.061,
+      "final_duration_seconds": 19.311,
       "narration_asset_id": "narr-s05-luck",
       "caption_status": "approximate",
       "approval_status": "pending",
@@ -155,7 +163,9 @@
       "on_screen_text": [],
       "notes": "Draft narration for review; written from the creator's summary and the research ledger.",
       "render_status": "not_started",
-      "input_fingerprint": null
+      "input_fingerprint": null,
+      "narration_speed": 0.97,
+      "hold_after_seconds": 1.0
     },
     {
       "scene_id": "s06-strategy",
@@ -169,8 +179,8 @@
         "c-strategy"
       ],
       "planned_duration_seconds": 16.0,
-      "actual_narration_duration_seconds": 14.887,
-      "final_duration_seconds": 15.637,
+      "actual_narration_duration_seconds": 14.905,
+      "final_duration_seconds": 15.955,
       "narration_asset_id": "narr-s06-strategy",
       "caption_status": "approximate",
       "approval_status": "pending",
@@ -186,7 +196,9 @@
       "on_screen_text": [],
       "notes": "Draft narration for review; written from the creator's summary and the research ledger.",
       "render_status": "not_started",
-      "input_fingerprint": null
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 0.8
     },
     {
       "scene_id": "s07-close",
@@ -198,8 +210,8 @@
       "source_ids": [],
       "claim_ids": [],
       "planned_duration_seconds": 12.0,
-      "actual_narration_duration_seconds": 10.066,
-      "final_duration_seconds": 10.816,
+      "actual_narration_duration_seconds": 10.847,
+      "final_duration_seconds": 13.097,
       "narration_asset_id": "narr-s07-close",
       "caption_status": "approximate",
       "approval_status": "pending",
@@ -215,7 +227,9 @@
       "on_screen_text": [],
       "notes": "Draft narration for review; written from the creator's summary and the research ledger.",
       "render_status": "not_started",
-      "input_fingerprint": null
+      "input_fingerprint": null,
+      "narration_speed": 0.93,
+      "hold_after_seconds": 2.0
     }
   ]
 }

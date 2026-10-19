@@ -29,7 +29,7 @@ from ..subtitles.srt import Cue, check_cues, to_srt
 from ..timeline.compiler import compile_timeline
 from ..utils.fs import safe_resolve, sha256_file, write_json_atomic, write_text_atomic
 from ..visuals.placeholders import placeholder_svg_text
-from .commands import concat_command, concat_list, scene_command
+from .commands import concat_command, concat_list, music_mix_command, scene_command
 from .profiles import get_profile
 
 RENDERS_DIR = "renders"
@@ -101,7 +101,7 @@ def render(result: ValidationResult, tools: Tools, profile_name: str, *, media_r
         if final.exists() and _final_ok(tools, final, plan):
             out.final_cached = True
         else:
-            commands.append(_concat(tools, base, scene_files, final, plan))
+            commands.extend(_concat(tools, base, scene_files, final, plan))
         out.output = final
         out.captions = _write_sidecar(plan, base / f"{stem}.srt")
         _record_final_durations(result, plan)
@@ -210,18 +210,23 @@ def _check_decodable(tools: Tools, scene: TimelineScene, log: Path) -> None:
                               f"({Path(seg.path).name}); see {log}")
 
 
-def _concat(tools: Tools, base: Path, files: list[Path], final: Path, plan: TimelinePlan) -> list[str]:
+def _concat(tools: Tools, base: Path, files: list[Path], final: Path, plan: TimelinePlan) -> list[list[str]]:
     list_file = base / "build" / "concat.txt"
     write_text_atomic(list_file, concat_list(files))
     partial = final.with_name(final.stem + ".partial.mp4")
-    cmd = concat_command(tools.ffmpeg, str(list_file), str(partial))
-    _run(cmd, cwd=base / "build", log=base / "logs" / "concat.log", what="concat",
-         timeout=max(120.0, plan.total_duration * 2))
+    joined = base / "build" / f"joined-{plan.fingerprint[:12]}.mp4" if plan.music else partial
+    cmds = [concat_command(tools.ffmpeg, str(list_file), str(joined))]
+    timeout = max(120.0, plan.total_duration * 2)
+    _run(cmds[0], cwd=base / "build", log=base / "logs" / "concat.log", what="concat", timeout=timeout)
+    if plan.music:
+        cmds.append(music_mix_command(tools.ffmpeg, str(joined), plan.music, plan.profile, plan.total_duration,
+                                      str(partial)))
+        _run(cmds[1], cwd=base / "build", log=base / "logs" / "music.log", what="music mix", timeout=timeout)
     problems = _final_problems(probe_video(tools, partial), plan)
     if problems:
         raise RenderError("final render failed checks: " + "; ".join(problems) + f" (kept {partial.name})")
     os.replace(partial, final)
-    return cmd
+    return cmds
 
 
 def _run(cmd: list[str], *, cwd: Path, log: Path, what: str, timeout: float) -> None:
