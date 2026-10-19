@@ -27,6 +27,7 @@
 | `visuals/` | Visual-plan report, placeholders, HTML contact sheet |
 | `timeline/` | **Pure** compiler: manifests → `TimelinePlan` |
 | `render/` | Profiles, FFmpeg command builders (pure), runner (execute, cache, concat, validate, report) |
+| `qa/` | Phase 8: checks on the latest render and every publication gate, one FFmpeg analysis pass, JSON/Markdown reports, warning waivers and the human sign-off |
 | `providers/{llm,tts,image,stock}` | Adapter interfaces. TTS: macOS `say` (preview-only) and Voicebox (local). Stock: Pexels |
 | `utils/http.py` | Verified HTTPS (certifi CA bundle) |
 

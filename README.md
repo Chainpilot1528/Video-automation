@@ -2,7 +2,7 @@
 
 A modular, rights-aware pipeline for evidence-led YouTube documentaries. It tracks claims and sources, records asset provenance and licences, builds narration-timed timelines, and renders with FFmpeg. Humans approve scripts, visuals and exports. Nothing is published automatically.
 
-Status: **Phase 7 (timeline compiler, FFmpeg rendering)** complete. See `docs/BUILD_LOG.md`, `docs/OPERATIONS.md`, `docs/SCHEMAS.md`, `docs/EDITORIAL_QA.md` and `docs/RIGHTS_AND_PROVENANCE.md`.
+Status: **Phase 8 (automated QA and human sign-off)** complete, with early Phase 9 providers (local TTS, local LLM, Pexels). See `docs/BUILD_LOG.md`, `docs/OPERATIONS.md`, `docs/SCHEMAS.md`, `docs/EDITORIAL_QA.md` and `docs/RIGHTS_AND_PROVENANCE.md`.
 
 ## Quick start
 
@@ -68,7 +68,7 @@ Full setup, including FFmpeg, is in `docs/INSTALL.md`. The architecture is in `d
 | `pipeline stock add <path> pexels:video:<id> --id --scene [--dry-run]` | working |
 | `pipeline narration import <path> <scene> <file> --creator NAME [--take N]` | working |
 | `pipeline narration voices [--provider macos-say/voicebox] [--locale]` | working |
-| `pipeline narration build <path> [--provider --voice] [--dry-run]` | working (per-scene, cached) |
+| `pipeline narration build <path> [--preset reckoner] [--provider --voice --speed --style] [--dry-run]` | working (per-scene, cached) |
 | `pipeline captions build <path>` | working (approximate timing) |
 | `pipeline captions validate <file.srt>` | working |
 | `pipeline visuals report <path> [--json] [--strict]` | working |
@@ -80,12 +80,17 @@ Full setup, including FFmpeg, is in `docs/INSTALL.md`. The architecture is in `d
 | `pipeline render preview <path> [--burn-captions] [--dry-run]` | working (960×540) |
 | `pipeline render master <path> [--burn-captions] [--dry-run]` | working (project resolution; needs narration, no placeholders) |
 | `pipeline render vertical <path>` | exits 3 (Phase 11) |
+| `pipeline music pad <path> [--duration --key]` / `music set <path> <asset>` / `music clear` | working (original bed, ducked) |
+| `pipeline qa report <path> [--profile master/preview] [--skip-media]` | working (JSON + Markdown report) |
+| `pipeline qa waive <path> "<code>@<subject>" --by NAME --rationale TEXT` | working (human decision) |
+| `pipeline qa signoff <path> --by NAME --checklist-done` / `qa revoke` | working (human decision; publishing stays manual) |
 
 Exit codes: `0` ok, `1` check/validation failure, `2` usage error, `3` not implemented, `4` configuration error.
 
 ## Limitations
 
 - FFmpeg is required from Phase 5. On Intel Macs, install it with MacPorts (`docs/INSTALL.md`).
-- No music mix yet. `reveal`/`highlight`/`build` motion is shown static.
+- `reveal`/`highlight`/`build` motion is shown static.
 - Captions are approximately timed until a forced aligner is added.
-- No AI providers are wired in. The core route is designed to work free, local and manual.
+- AI providers (Voicebox TTS, Ollama/Voicebox LLM) are optional and local. The core route works free, local and manual.
+- Black and frozen picture detection in QA are heuristics and only ever warn.

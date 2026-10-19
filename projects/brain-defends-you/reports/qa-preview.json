@@ -1,0 +1,431 @@
+{
+  "schema_version": "1.0",
+  "project_id": "brain-defends-you",
+  "profile": "preview",
+  "generated_at": "2026-10-19T22:03:05Z",
+  "pipeline_version": "0.1.0",
+  "render_report": "reports/render-preview-20261019T064651Z.json",
+  "output_path": "/Users/nikhiltalla/Desktop/Video/projects/brain-defends-you/renders/preview/brain-defends-you-preview-cb19a1c87bac.mp4",
+  "output_sha256": "f6331296d1a9bb8ee3b4b9af5b63234c1329dc3e17768c8da74a671c8f5f7aac",
+  "inputs_fingerprint": "7187444bea6826fa3a145594f522e3254743de2fa521b21b1b9eb298f5409776",
+  "media_analysed": true,
+  "measurements": {
+    "duration_seconds": 226.602,
+    "integrated_lufs": -20.6,
+    "true_peak_dbtp": -4.6,
+    "loudness_range_lu": 3.7,
+    "black_intervals": [],
+    "frozen_intervals": [],
+    "silent_intervals": []
+  },
+  "checks": [
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "music-pad",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s01-meet-alex",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s02-success",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s03-failure",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s04-discomfort",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s05-excuses",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s06-problem",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s07-identity",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s08-verdict",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s09-story",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s10-turn",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s11-questions",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s12-allowed",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s13-choice",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s14-close",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s01-meet-alex-a",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s01-meet-alex-b",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s02-success-a",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s02-success-b",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s03-failure-a",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s03-failure-b",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s04-discomfort-a",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s04-discomfort-b",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s05-excuses-a",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s05-excuses-b",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s06-problem-a",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s06-problem-b",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s07-identity-a",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s07-identity-b",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s08-verdict-a",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s08-verdict-b",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s09-story-a",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s09-story-b",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s10-turn-a",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s10-turn-b",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s11-questions-a",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s11-questions-b",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s12-allowed-a",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s12-allowed-b",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s13-choice-a",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s13-choice-b",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s14-close-a",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "s14-close-b",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "script.not_approved",
+      "subject": "script",
+      "severity": "blocker",
+      "message": "script is not approved; run 'pipeline script approve'",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "captions.readability",
+      "subject": "brain-defends-you-preview-cb19a1c87bac.srt",
+      "severity": "warning",
+      "message": "4 readability note(s): cue 22: on screen only 0.65 s; cue 41: on screen only 0.33 s; cue 47: on screen only 0.40 s; and 1 more",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    }
+  ],
+  "blocker_count": 44,
+  "open_warning_count": 1,
+  "fingerprint": "2c6dd2b6f80699791460e4635ffdd351ed8f26ab80bd8c636b080a1fb52ca59f"
+}

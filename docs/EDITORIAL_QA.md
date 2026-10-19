@@ -61,7 +61,7 @@ Exceptions are bound to the claim's current text, status and sources, so editing
 - Every approval, revocation and exception is appended to `approvals.json` with the person's name and a timestamp. Nothing is ever edited in place.
 - A script approval is bound to a fingerprint of the narration and the claims it uses. If either changes afterwards, the approval shows as **STALE** and must be given again.
 - To limit who may approve, set `PIPELINE_AUTHORIZED_REVIEWERS="Name One, Name Two"`. Otherwise any named person may approve, and their name is always recorded.
-- Project statuses from `script_approved` onward require a current approval, and `publication_ready` also requires zero research blockers. `pipeline project validate` enforces both.
+- Project statuses from `script_approved` onward require a current approval. `publication_ready` also requires zero research and rights blockers and a current QA sign-off (see Phase 8 below). `pipeline project validate` enforces all of these.
 
 ## AI assistance (local models: Ollama recommended)
 
@@ -135,4 +135,54 @@ Run `pipeline visuals sheet` and review `reports/visuals.html`:
 
 Mark a beat reviewed by setting its `review_status` to `approved` in `visuals.json`, or `changes_requested` with notes.
 
-The final-video checklist is added in Phase 8.
+## Final QA and sign-off (Phase 8)
+
+Run QA on the latest master render:
+
+```bash
+.venv/bin/pipeline qa report projects/my-film
+```
+
+It writes `reports/qa-master_16x9.json` (machine-readable) and `reports/qa-master_16x9.md` (for people). Use `--profile preview` to check a preview; previews can't be signed off.
+
+**Automated checks.** Blockers must be fixed; they can't be waived.
+
+| Area | Blockers | Warnings (fix or waive) |
+|---|---|---|
+| Render | no successful render; file missing, empty, changed since its report, or outside `renders/<profile>/`; codec, size, frame rate or duration differs from the profile; render is stale (project or renderer changed since); placeholders | a cached scene render is gone; timeline warnings |
+| Audio | silent soundtrack; true peak at or above 0 dBTP (clipped) | loudness outside -24 to -13 LUFS; true peak above -1 dBTP; 3 s or more of silence mid-video |
+| Narration | text without measured audio; a silent or clipped narration file | peak above -1 dBTP; more than 1.5 s of leading or trailing silence; report out of date |
+| Picture | | 1 s or more of near-black picture mid-video; 4 s or more with no visible change |
+| Captions | can't be parsed; out of order or overlapping; run past the end | missing; readability notes (too short, too long, too many lines) |
+| Gates | project validation errors; script not approved; research blockers; rights blockers; licence needs attribution but none is recorded | validation and rights warnings; the same visual used in several beats; low disk space |
+
+Black and frozen picture detection are heuristics. A night shot, a fade or a still graphic can trigger them, which is why they're only warnings.
+
+**Waive a warning** you've checked and accept. A name and a written rationale (20+ characters) are recorded in `approvals.json`. A waiver covers that warning on that rendered file only, so a new render needs a fresh look:
+
+```bash
+.venv/bin/pipeline qa waive projects/my-film "picture.frozen@41.2s" --by "Your Name" --rationale "Deliberate still on the chart while it's explained."
+```
+
+Then run `qa report` again.
+
+**Human review checklist** (also printed in the `.md` report). Watch the full master yourself:
+
+- [ ] The opening is engaging but not misleading
+- [ ] Narration and visuals are in sync
+- [ ] Names, dates, numbers and captions are correct
+- [ ] The voice is clear over the music
+- [ ] No awkward gaps or repetitive visuals
+- [ ] The ending resolves the question or says what remains unknown
+- [ ] Credits and the source list are ready for the description
+
+**Sign off** when there are no blockers, every warning is fixed or waived, and the checklist is done:
+
+```bash
+.venv/bin/pipeline qa signoff projects/my-film --by "Your Name" --checklist-done
+```
+
+- Sign-off needs a full report (not `--skip-media`), checks that neither the project nor the video changed since the report, and is recorded in `approvals.json`. It sets the project to `publication_ready`.
+- `pipeline project validate` then keeps checking: any later change makes the sign-off stale, and the project is invalid until QA is re-run and signed off again.
+- `pipeline qa revoke --by NAME --reason "..."` withdraws it and moves the status back to `in_review`.
+- **Publishing is always manual.** The pipeline never uploads anything.

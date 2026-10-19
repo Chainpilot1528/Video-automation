@@ -14,7 +14,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Literal
 
-from .schemas import ApprovalEvent, ApprovalLog, ProjectManifest, ResearchLedger, SceneManifest
+from .schemas import (
+    ApprovalEvent, ApprovalLog, AssetRegistry, ProjectManifest, ResearchLedger, SceneManifest, VisualPlan,
+)
 from .schemas.approval import ApprovalKind
 from .schemas.common import utcnow
 from .schemas.asset import Asset
@@ -111,6 +113,42 @@ def active_exceptions(log: ApprovalLog, ledger: ResearchLedger) -> dict[str, App
     }
 
 
+def qa_inputs_fingerprint(manifest: ProjectManifest, scenes: SceneManifest, ledger: ResearchLedger,
+                          registry: AssetRegistry, visuals: VisualPlan | None) -> str:
+    """Fingerprint of the project content a QA report was run against (not its status or timestamps)."""
+    return _digest({
+        "scenes": scenes.model_dump(mode="json"), "ledger": ledger.model_dump(mode="json"),
+        "registry": registry.model_dump(mode="json"),
+        "visuals": visuals.model_dump(mode="json") if visuals else None,
+        "music": manifest.music.model_dump(mode="json") if manifest.music else None,
+    })
+
+
+def qa_waiver_fingerprint(check_id: str, output_sha256: str | None) -> str:
+    """A waiver covers one warning on one rendered file; a new render needs a new waiver."""
+    return _digest({"check": check_id, "output": output_sha256})
+
+
+def qa_waivers(log: ApprovalLog, output_sha256: str | None) -> dict[str, ApprovalEvent]:
+    """Waivers in force for this output, keyed by check id."""
+    out: dict[str, ApprovalEvent] = {}
+    for e in log.events:
+        if e.kind is ApprovalKind.QA_WARNING_WAIVED and e.fingerprint == qa_waiver_fingerprint(e.qa_check,
+                                                                                            output_sha256):
+            out[e.qa_check] = e
+    return out
+
+
+def qa_signoff_state(log: ApprovalLog, report_fingerprint: str) -> Literal["none", "current", "stale", "revoked"]:
+    relevant = [e for e in log.events if e.kind in (ApprovalKind.QA_SIGNOFF, ApprovalKind.QA_SIGNOFF_REVOKED)]
+    if not relevant:
+        return "none"
+    last = relevant[-1]
+    if last.kind is ApprovalKind.QA_SIGNOFF_REVOKED:
+        return "revoked"
+    return "current" if last.fingerprint == report_fingerprint else "stale"
+
+
 def load_log(project_dir: Path, manifest: ProjectManifest) -> ApprovalLog:
     path = safe_resolve(project_dir, manifest.paths.approvals)
     if not path.exists():
@@ -120,12 +158,12 @@ def load_log(project_dir: Path, manifest: ProjectManifest) -> ApprovalLog:
 
 def append_event(project_dir: Path, manifest: ProjectManifest, log: ApprovalLog, *,
                  kind: ApprovalKind, by: str, rationale: str = "", fingerprint: str | None = None,
-                 claim_id: str | None = None, asset_id: str | None = None,
+                 claim_id: str | None = None, asset_id: str | None = None, qa_check: str | None = None,
                  at: datetime | None = None) -> ApprovalEvent:
     """Validate and append one event, then write the log atomically."""
     event = ApprovalEvent(
         event_id=f"evt-{len(log.events) + 1:04d}", kind=kind, by=by, at=at or utcnow(),
-        rationale=rationale, fingerprint=fingerprint, claim_id=claim_id, asset_id=asset_id,
+        rationale=rationale, fingerprint=fingerprint, claim_id=claim_id, asset_id=asset_id, qa_check=qa_check,
     )
     updated = ApprovalLog(events=[*log.events, event])
     path = safe_resolve(project_dir, manifest.paths.approvals)

@@ -206,3 +206,16 @@ Deterministic SVGs from a JSON spec. The same spec always produces the same file
 - `music set` puts any registered `music` asset under the whole video. That includes a licensed track added with `pipeline assets add --type music`, which needs `platform_cleared` before approval. `--gain-db` sets the bed level, and `--no-duck` turns ducking off. `music clear` removes it.
 - Rendering joins the scenes, then runs one audio-only pass: the bed is looped to length, faded in and out, **ducked under the narration** with a sidechain compressor, mixed, and limited. Video is copied untouched. Changing the music re-runs only this pass; scene renders are reused.
 - The music asset counts as "used" in `assets report`, so it must be approved before `publication_ready`.
+
+## QA and sign-off (Phase 8)
+
+```bash
+.venv/bin/pipeline qa report projects/my-film
+```
+
+- Checks the latest **master** render (`--profile preview` for a preview) and every publication gate. It writes `reports/qa-master_16x9.json` and a readable `reports/qa-master_16x9.md` with the human review checklist, and exits 1 while blockers remain.
+- One FFmpeg pass measures loudness, true peak, silences, and black and frozen picture. It takes about 4 s for a 4-minute 540p preview. `--skip-media` skips this pass, but such a report can't be signed off.
+- Fix blockers. Fix or waive warnings: `pipeline qa waive <project> "<code>@<subject>" --by NAME --rationale "..."`.
+- Watch the master, work through the checklist, then `pipeline qa signoff <project> --by NAME --checklist-done`. The project becomes `publication_ready`. Upload it yourself; nothing is published automatically.
+- Details and thresholds: `docs/EDITORIAL_QA.md`.
+

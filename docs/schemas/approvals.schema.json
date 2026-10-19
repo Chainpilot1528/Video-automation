@@ -60,6 +60,18 @@
         "kind": {
           "$ref": "#/$defs/ApprovalKind"
         },
+        "qa_check": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Qa Check"
+        },
         "rationale": {
           "default": "",
           "title": "Rationale",
@@ -82,7 +94,10 @@
         "claim_exception",
         "claim_exception_revoked",
         "asset_approved",
-        "asset_blocked"
+        "asset_blocked",
+        "qa_warning_waived",
+        "qa_signoff",
+        "qa_signoff_revoked"
       ],
       "title": "ApprovalKind",
       "type": "string"

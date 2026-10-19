@@ -10,6 +10,7 @@ from .asset import Asset, AssetRegistry
 from .narration import NarrationReport, PronunciationList
 from .common import SCHEMA_VERSION, SUPPORTED_SCHEMA_VERSIONS
 from .project import ProjectManifest
+from .qa import QAReport
 from .render import RenderReport
 from .research import Claim, ResearchLedger, Source
 from .scene import Scene, SceneManifest
@@ -27,6 +28,7 @@ FILE_MODELS = {
     "pronunciations": PronunciationList,
     "narration_report": NarrationReport,
     "render_report": RenderReport,
+    "qa_report": QAReport,
 }
 
 
@@ -51,6 +53,6 @@ def export_json_schemas(out_dir: Path) -> list[Path]:
 __all__ = [
     "SCHEMA_VERSION", "SUPPORTED_SCHEMA_VERSIONS", "FILE_MODELS",
     "ApprovalEvent", "ApprovalLog", "Asset", "AssetRegistry", "Claim", "ProjectManifest", "RenderReport",
-    "GraphicSpec", "ResearchLedger", "Scene", "SceneManifest", "Source", "VisualBeat", "VisualPlan",
+    "GraphicSpec", "QAReport", "ResearchLedger", "Scene", "SceneManifest", "Source", "VisualBeat", "VisualPlan",
     "export_json_schemas", "json_schemas",
 ]

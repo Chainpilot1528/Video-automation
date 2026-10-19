@@ -520,3 +520,41 @@ Tests: 6 new tests for the music pad (deterministic, registered, loudness), sett
 - The narration voice is now named **Reckoner**: `--preset reckoner`, which is Kokoro `am_liam` at speed 0.87 with the tone-matched `annt` style.
 - `--preset annt` stays as an alias. It gives identical settings, so existing narration caches stay valid.
 - The "brain-defends-you" preview used this voice. It is 28 Pexels clips over 14 scenes with no text cards: 3:47 long, -20.6 LUFS.
+
+---
+
+## Phase 8 — Automated QA and human review (2026-10-20)
+
+### Implemented
+- **`pipeline qa report`** (`qa/checks.py`): checks the latest successful render of a profile (master by default) and every publication gate. It writes `reports/qa-<profile>.json` (new **QAReport** schema) and `reports/qa-<profile>.md`, the human report with the review checklist. It exits 1 while blockers remain.
+  - **Render:** the output exists, isn't empty, still matches its render report checksum, and lives under `renders/<profile>/`. Codec, size, frame rate and duration match the profile. The render isn't stale: the timeline is recompiled and its fingerprint compared, so a project or renderer change is caught. Scene renders exist, and there are no placeholders.
+  - **Audio and picture** (`qa/media.py`): one FFmpeg pass (scaled to 320 px for speed) measures integrated loudness, true peak, silences, and black and frozen picture. Clipping and silence are blockers. Loudness, peaks, mid-video silence, black and frozen picture are warnings; the last two are acknowledged heuristics.
+  - **Narration:** missing, silent or clipped files are blockers. High peaks, long pauses and an out-of-date report are warnings.
+  - **Captions:** parse, order and overlap errors, and cues running past the end, are blockers. Readability notes are a single warning.
+  - **Gates:** validation errors, script approval, research blockers, rights blockers, and missing attribution text are blockers. Repeated visuals and low disk space are warnings.
+- **Waivers:** `pipeline qa waive` accepts one warning, never a blocker. It records the name and a rationale of 20+ characters as a `qa_warning_waived` event, bound to that check on that rendered file.
+- **Sign-off:** `pipeline qa signoff --checklist-done` works only on a clean, fully analysed master report whose project and video are unchanged. It records `qa_signoff` and sets `publication_ready`. `pipeline qa revoke` withdraws it.
+  - `project validate` now requires a current sign-off for `publication_ready`, and flags the project invalid as soon as anything changes after QA.
+  - Sign-off, revoke and QA still run while those gate errors are present (`STATUS_GATE_CODES`), so the status can always be repaired.
+- **Publication stays manual.** Nothing uploads.
+
+### Issues found and fixed
+- **Rights gap (affects the publication gate since Phase 4):** assets referenced only by the visual plan were treated as unused, so they never blocked `publication_ready` or appeared in credits. Every Pexels clip in "brain-defends-you" was affected. `extra_used_ids` now adds each beat's rendered asset and the music bed to the rights report, the credits and the gate.
+- **The music bed was flagged as unused** by `project validate`; it now counts as used.
+
+### Verification
+- `pytest`: **333 passed**, 10 of them new in `tests/test_qa.py`:
+  - analysis parsing and thresholds
+  - an unprepared project
+  - visual-plan rights
+  - a full narrated master through waiver, sign-off, stale detection and revoke
+  - re-render invalidating waivers
+  - tampered or missing output and skipped media
+  - real FFmpeg analysis, event rules and the CLI
+- Run on both episodes (preview profile):
+  - **brain-defends-you:** 44 blockers (43 assets awaiting your rights review, script not approved) and 1 caption readability warning. -20.6 LUFS, true peak -4.6 dBTP, no black, frozen or silent stretches. Analysis took 4 s.
+  - **mathematics-of-success:** 25 blockers. Besides rights and research, its preview is now stale because the renderer code changed since 18 Oct. There are also 3 frozen-picture warnings on its still graphic cards (expected) and 1 caption note.
+
+### Next action
+- Approve the clips' rights and the script, render the master, then `qa report`, `qa waive` as needed, and `qa signoff`.
+

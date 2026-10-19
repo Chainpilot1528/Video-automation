@@ -132,7 +132,8 @@ def test_approval_required_statuses_and_publication_gate(demo):
     approve_script(result, result.approvals, by="Asha")
     approve_demo_assets(demo)
     edit_json(demo / "project.json", lambda d: d.update(project_status="publication_ready"))
-    assert validate_project(demo).ok
+    # Research and rights are clear; the only thing left is the Phase 8 QA sign-off.
+    assert [i.code for i in validate_project(demo).errors] == ["project.qa_signoff_required"]
 
 
 def test_publication_ready_blocked_by_research_blockers(demo):
@@ -149,7 +150,7 @@ def test_publication_ready_blocked_by_research_blockers(demo):
                  by="Editor", claim_id=claim.claim_id)
     approve_demo_assets(demo)
     edit_json(demo / "project.json", lambda d: d.update(project_status="publication_ready"))
-    errors = validate_project(demo).errors
+    errors = [i for i in validate_project(demo).errors if i.code != "project.qa_signoff_required"]
     assert [i.code for i in errors] == ["project.publication_blocked"]
     assert "claim.critical_unreviewed" in errors[0].message
 

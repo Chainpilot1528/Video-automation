@@ -1,0 +1,300 @@
+{
+  "schema_version": "1.0",
+  "project_id": "mathematics-of-success",
+  "profile": "preview",
+  "generated_at": "2026-10-19T22:03:13Z",
+  "pipeline_version": "0.1.0",
+  "render_report": "reports/render-preview-20261018T203234Z.json",
+  "output_path": "/Users/nikhiltalla/Desktop/Video/projects/mathematics-of-success/renders/preview/mathematics-of-success-preview-a9a843ef5767.mp4",
+  "output_sha256": "6c345555bdb66d3fe8d30058870416bcbe2622cdbbe103658662e0dffcb163b0",
+  "inputs_fingerprint": "8f25a57751b34030e4fc5ebc620fccad8b02e08de01883263a236d91d68dc031",
+  "media_analysed": true,
+  "measurements": {
+    "duration_seconds": 131.788,
+    "integrated_lufs": -20.5,
+    "true_peak_dbtp": -5.2,
+    "loudness_range_lu": 3.4,
+    "black_intervals": [],
+    "frozen_intervals": [
+      [
+        18.588,
+        4.867
+      ],
+      [
+        63.021,
+        4.633
+      ],
+      [
+        85.421,
+        5.0
+      ]
+    ],
+    "silent_intervals": []
+  },
+  "checks": [
+    {
+      "code": "render.stale",
+      "subject": "mathematics-of-success-preview-a9a843ef5767.mp4",
+      "severity": "blocker",
+      "message": "the project changed since this render; render again",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "research.claim.critical_unreviewed",
+      "subject": "c-identical-start",
+      "severity": "blocker",
+      "message": "critical claim used in narration is unverified",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "research.claim.critical_unreviewed",
+      "subject": "c-matthew",
+      "severity": "blocker",
+      "message": "critical claim used in narration is unverified",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "research.claim.critical_unreviewed",
+      "subject": "c-power-law",
+      "severity": "blocker",
+      "message": "critical claim used in narration is unverified",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "research.claim.critical_unreviewed",
+      "subject": "c-superstars",
+      "severity": "blocker",
+      "message": "critical claim used in narration is unverified",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "g-close",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "g-compounding",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "g-luck",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "g-power-law",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "g-songs",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "g-title",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "music-pad",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s01-cold-open",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s02-same-start",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s03-compounding",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s04-superstars",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s05-luck",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s06-strategy",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s07-close",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "stock-city",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "stock-crowd",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "stock-dice",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "stock-music",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "stock-notebook",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "script.not_approved",
+      "subject": "script",
+      "severity": "blocker",
+      "message": "script is not approved; run 'pipeline script approve'",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "captions.readability",
+      "subject": "mathematics-of-success-preview-a9a843ef5767.srt",
+      "severity": "warning",
+      "message": "2 readability note(s): cue 9: 3 lines (max 2); cue 34: 3 lines (max 2)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "18.6s",
+      "severity": "warning",
+      "message": "4.9 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "63.0s",
+      "severity": "warning",
+      "message": "4.6 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "85.4s",
+      "severity": "warning",
+      "message": "5.0 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    }
+  ],
+  "blocker_count": 25,
+  "open_warning_count": 4,
+  "fingerprint": "c0d9a6b94e95166113b6461bd58e56851156eb41f9b0a15c3b396b1f9661baad"
+}

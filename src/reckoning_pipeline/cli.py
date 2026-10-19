@@ -45,7 +45,8 @@ from .assets.stock import add_stock_item, existing_for
 from .providers.stock import StockError, get_stock_provider, parse_ref
 from .script.draft import DraftError, draft_script
 from .approvals import active_exceptions, append_event, check_reviewer, claim_fingerprint, load_log
-from .project.validate import ValidationResult, music_ids
+from .project.validate import STATUS_GATE_CODES, ValidationResult, extra_used_ids
+from .qa import QAError, load_report, revoke_signoff, run_qa, sign_off, verdict, waive_warning, write_report
 from .providers.llm import ProviderUnavailableError, get_llm_provider
 from .research import (
     LedgerError, build_bibliography, build_report, format_report, import_records, parse_import,
@@ -77,6 +78,7 @@ captions_app = typer.Typer(help="Build and check SRT captions.", no_args_is_help
 visuals_app = typer.Typer(help="Visual plan report, contact sheet and placeholders.", no_args_is_help=True)
 graphics_app = typer.Typer(help="Deterministic original graphics (SVG).", no_args_is_help=True)
 music_app = typer.Typer(help="Music beds: create, attach, remove.", no_args_is_help=True)
+qa_app = typer.Typer(help="Automated QA, warning waivers and human sign-off.", no_args_is_help=True)
 stock_app = typer.Typer(help="Search and add licensed stock media (contacts the provider's API).",
                         no_args_is_help=True)
 app.add_typer(project_app, name="project")
@@ -92,6 +94,7 @@ app.add_typer(visuals_app, name="visuals")
 app.add_typer(graphics_app, name="graphics")
 app.add_typer(stock_app, name="stock")
 app.add_typer(music_app, name="music")
+app.add_typer(qa_app, name="qa")
 
 
 def _config(ctx: typer.Context) -> PipelineConfig:
@@ -429,7 +432,8 @@ def assets_report(
 ) -> None:
     """Group assets by publication status and list what blocks each one."""
     result = _load_valid(ctx, path)
-    report = build_rights_report(result.registry, result.scenes, result.approvals, music_ids(result.manifest))
+    report = build_rights_report(result.registry, result.scenes, result.approvals,
+                                 extra_used_ids(result.manifest, result.visuals))
     typer.echo(json.dumps(report.to_dict(), indent=2) if as_json else format_rights_report(report))
     if strict and report.blockers:
         raise typer.Exit(EXIT_FAILED)
@@ -552,7 +556,7 @@ def assets_credits(
 ) -> None:
     """Print exact attributions and licence credits for assets used in scenes."""
     result = _load_valid(ctx, path)
-    credits = build_credits(result.registry, result.scenes, music_ids(result.manifest))
+    credits = build_credits(result.registry, result.scenes, extra_used_ids(result.manifest, result.visuals))
     text = credits.to_markdown(result.manifest.title)
     typer.echo(text, nl=False)
     for aid, reason in credits.skipped.items():
@@ -1061,6 +1065,119 @@ def render_vertical(path: Path = typer.Argument(..., help="Project folder")) -> 
     """9:16 derivatives (Phase 11, after the landscape master is approved)."""
     typer.echo("error: vertical renders come after the landscape master is approved (Phase 11).", err=True)
     raise typer.Exit(EXIT_NOT_IMPLEMENTED)
+
+
+_QA_PROFILES = {"master": "master_16x9", "master_16x9": "master_16x9", "preview": "preview"}
+
+
+def _qa_profile(name: str) -> str:
+    if name not in _QA_PROFILES:
+        _fail(f"unknown profile {name!r}; use master or preview")
+    return _QA_PROFILES[name]
+
+
+@qa_app.command("report")
+def qa_report(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    profile: str = typer.Option("master", "--profile", help="master or preview: which render to check."),
+    skip_media: bool = typer.Option(False, "--skip-media",
+                                    help="Skip the FFmpeg loudness/black/frozen pass (can't be signed off)."),
+) -> None:
+    """Check the latest render and every publication gate; write reports/qa-<profile>.json and .md."""
+    config = _config(ctx)
+    name = _qa_profile(profile)
+    result = validate_project(path, media_root=config.media_root, verify_checksums=True)
+    if result.manifest is None:
+        for issue in result.errors:
+            typer.echo(str(issue), err=True)
+        _fail(f"{path} has no readable project.json")
+    report = run_qa(result, _tools(ctx), name, media_root=config.media_root, min_free_gb=config.min_free_disk_gb,
+                    analyse_media=not skip_media)
+    json_path, md_path = write_report(path, report)
+    for k in report.checks:
+        if k.severity == "blocker" or k.open:
+            typer.echo(f"{k.severity.upper():<8} {k.check_id}: {k.message}")
+    waived = sum(k.waived_by is not None for k in report.checks)
+    typer.echo(f"\n{verdict(report)}: {report.blocker_count} blocker(s), {report.open_warning_count} open "
+               f"warning(s), {waived} waived")
+    typer.echo(f"Reports: {json_path} and {md_path}")
+    if report.blocker_count:
+        raise typer.Exit(EXIT_FAILED)
+
+
+def _load_for_gate(ctx: typer.Context, path: Path) -> ValidationResult:
+    """Like _load_valid, but tolerate the status-gate errors that sign-off and revoke exist to resolve."""
+    result = validate_project(path, media_root=_config(ctx).media_root, verify_checksums=False)
+    other = [i for i in result.errors if i.code not in STATUS_GATE_CODES]
+    if not result.loaded:
+        for issue in other:
+            typer.echo(str(issue), err=True)
+        _fail(f"{path} has {len(other)} validation error(s); fix them first")
+    return result
+
+
+def _qa_loaded(ctx: typer.Context, path: Path, profile: str):
+    result = _load_for_gate(ctx, path)
+    report = load_report(path, profile)
+    if report is None:
+        _fail(f"no {profile} QA report yet; run 'pipeline qa report {path}' first")
+    return result, report
+
+
+@qa_app.command("waive")
+def qa_waive(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    check_id: str = typer.Argument(..., help="The warning's id, e.g. picture.frozen@41.2s (from the QA report)."),
+    by: str = typer.Option(..., "--by", help="Your name, recorded with the waiver."),
+    rationale: str = typer.Option(..., "--rationale", help="Why this warning is acceptable (20+ characters)."),
+    profile: str = typer.Option("master", "--profile", help="master or preview."),
+) -> None:
+    """Accept one QA warning with a recorded rationale (blockers can't be waived)."""
+    result, report = _qa_loaded(ctx, path, _qa_profile(profile))
+    try:
+        event = waive_warning(result, report, check_id, by=by, rationale=rationale,
+                              authorized=_config(ctx).authorized_reviewers)
+    except (QAError, ValueError) as exc:
+        _fail(_error_text(exc))
+    typer.echo(f"{check_id} waived by {event.by} ({event.event_id}). Run 'pipeline qa report' to refresh the report.")
+
+
+@qa_app.command("signoff")
+def qa_signoff(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    by: str = typer.Option(..., "--by", help="Your name, recorded as the reviewer."),
+    checklist_done: bool = typer.Option(False, "--checklist-done",
+                                        help="Confirm you completed the human review checklist."),
+    note: str = typer.Option("", "--note", help="Optional note."),
+) -> None:
+    """Sign off a clean master QA report and mark the project publication_ready. Publishing stays manual."""
+    result, report = _qa_loaded(ctx, path, "master_16x9")
+    try:
+        event = sign_off(result, report, by=by, checklist_done=checklist_done, note=note,
+                         authorized=_config(ctx).authorized_reviewers)
+    except (QAError, ValueError) as exc:
+        _fail(_error_text(exc))
+    typer.echo(f"QA signed off by {event.by} ({event.event_id}); status: publication_ready. "
+               "Upload and publish manually.")
+
+
+@qa_app.command("revoke")
+def qa_revoke(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    by: str = typer.Option(..., "--by", help="Your name."),
+    reason: str = typer.Option(..., "--reason", help="Why the sign-off is withdrawn."),
+) -> None:
+    """Withdraw the QA sign-off (status returns to in_review)."""
+    result = _load_for_gate(ctx, path)
+    try:
+        event = revoke_signoff(result, by=by, reason=reason, authorized=_config(ctx).authorized_reviewers)
+    except (QAError, ValueError) as exc:
+        _fail(_error_text(exc))
+    typer.echo(f"QA sign-off revoked by {event.by} ({event.event_id})")
 
 
 def main() -> None:

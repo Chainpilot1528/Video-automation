@@ -280,7 +280,7 @@ def test_publication_ready_requires_approved_assets(demo):
     result = validate_project(demo)
     approve_script(result, result.approvals, by="Test")
     edit_json(demo / "project.json", lambda d: d.update(project_status="publication_ready"))
-    errors = validate_project(demo).errors
+    errors = [i for i in validate_project(demo).errors if i.code != "project.qa_signoff_required"]
     assert {i.code for i in errors} == {"project.publication_blocked"}
     assert len(errors) == 4  # one per unapproved demo graphic
 
@@ -290,7 +290,7 @@ def test_publication_ready_requires_approved_assets(demo):
         review_asset(demo, result.manifest, result.registry, result.approvals, aid,
                      decision=Decision.APPROVE, by="Test")
     edit_json(demo / "project.json", lambda d: d.update(project_status="publication_ready"))
-    assert validate_project(demo).ok
+    assert [i.code for i in validate_project(demo).errors] == ["project.qa_signoff_required"]  # Phase 8 gate
 
 
 def test_credits_use_exact_attribution_once(demo, photo, tmp_path):

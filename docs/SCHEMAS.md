@@ -110,7 +110,7 @@ Generated assets must record `generation`. Downloaded assets must record `source
 
 ## `approvals.json` — ApprovalLog
 
-An append-only list of events: `event_id`, `kind` (`script_approved`, `script_approval_revoked`, `claim_exception`, `claim_exception_revoked`, `asset_approved`, `asset_blocked`), `by`, `at`, `rationale`, `fingerprint`, `claim_id`, `asset_id`. Current state is always derived from the log, never stored separately. Approvals and exceptions record the fingerprint of the content a person reviewed, and any later change makes them stale. Claim exceptions need a rationale of at least 20 characters. If the file is missing, there are no approvals yet. See `docs/EDITORIAL_QA.md`.
+An append-only list of events: `event_id`, `kind` (`script_approved`, `script_approval_revoked`, `claim_exception`, `claim_exception_revoked`, `asset_approved`, `asset_blocked`, `qa_warning_waived`, `qa_signoff`, `qa_signoff_revoked`), `by`, `at`, `rationale`, `fingerprint`, `claim_id`, `asset_id`, `qa_check`. Current state is always derived from the log, never stored separately. Approvals and exceptions record the fingerprint of the content a person reviewed, and any later change makes them stale. Claim exceptions and QA waivers need a rationale of at least 20 characters. A QA waiver names its check in `qa_check` (`<code>@<subject>`). If the file is missing, there are no approvals yet. See `docs/EDITORIAL_QA.md`.
 
 ## Narration files
 
@@ -132,6 +132,10 @@ An append-only list of events: `event_id`, `kind` (`script_approved`, `script_ap
 
 `reports/render-<profile>-<timestamp>.json` (**RenderReport**) is written for every render, successful or not. It records the profile, status, start and finish times, pipeline and FFmpeg versions, the exact FFmpeg commands run, settings, every input with its checksum and role, output metadata and checksum, warnings and errors.
 
+## QA report
+
+`reports/qa-<profile>.json` (**QAReport**) is rewritten by `pipeline qa report`, with a matching `.md` for people. It records the render report and video checked (path and sha256), `inputs_fingerprint` (the project content checked), `media_analysed`, `measurements` (duration, integrated loudness, true peak, loudness range, and black, frozen and silent intervals), every `check` (`code`, `subject`, `severity` `blocker`/`warning`/`info`, `message`, `waivable`, and `waived_by`/`waiver_rationale` when waived), `blocker_count`, `open_warning_count`, and the `fingerprint` that a QA sign-off binds to. See `docs/EDITORIAL_QA.md`.
+
 ## Validation
 
 ```bash
@@ -139,14 +143,14 @@ An append-only list of events: `event_id`, `kind` (`script_approved`, `script_ap
 ```
 
 - **Errors** (exit 1): invalid JSON, unsupported schema, schema violations, duplicate IDs or scene orders, missing references, unsafe paths, missing files, checksum mismatches, a `media` root with no `PIPELINE_MEDIA_ROOT`.
-- **Status gates** (errors): `script_approved`, `in_production`, `in_review` and `publication_ready` need a current, non-stale script approval. `publication_ready` also needs zero research blockers and zero rights blockers.
+- **Status gates** (errors): `script_approved`, `in_production`, `in_review` and `publication_ready` need a current, non-stale script approval. `publication_ready` also needs zero research blockers and zero rights blockers (including the music bed and every visual-plan asset), plus a clean, current master QA report with a current QA sign-off.
 - Derivatives of assets with `derivatives_allowed: false` are errors.
 - **Warnings** (exit 0, or 1 with `--strict`): folder name differs from `project_id`, asymmetric ledger links, unused assets, approval events that point at deleted claims.
 - `--skip-checksums` skips hashing for a quick check.
 
 ## Compatibility
 
-Adding a new optional field with a safe default doesn't change `schema_version`. Older files remain valid and mean the same thing. Phase 3 added `Claim.review_notes`, `Claim.evidence_basis`, `Claim.origin` and `paths.approvals` this way. Phase 4 added the asset rights-checklist fields and asset events. Phase 4 also tightened what `publication_status: approved` requires, but no existing files were affected because no asset had been approved yet. Renaming, removing or reinterpreting a field requires a new version and a migration.
+Adding a new optional field with a safe default doesn't change `schema_version`. Older files remain valid and mean the same thing. Phase 3 added `Claim.review_notes`, `Claim.evidence_basis`, `Claim.origin` and `paths.approvals` this way. Phase 4 added the asset rights-checklist fields and asset events. Phase 4 also tightened what `publication_status: approved` requires, but no existing files were affected because no asset had been approved yet. Phase 8 added `ApprovalEvent.qa_check` and the three QA event kinds. Renaming, removing or reinterpreting a field requires a new version and a migration.
 
 ## Migration
 

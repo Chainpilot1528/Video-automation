@@ -15,10 +15,13 @@ from typing import Any, Literal, TypeVar
 from pydantic import BaseModel, ValidationError
 
 from ..assets.rights import build_rights_report
-from ..approvals import active_exceptions, script_approval_state, script_fingerprint
+from ..approvals import (
+    active_exceptions, qa_inputs_fingerprint, qa_signoff_state, script_approval_state, script_fingerprint,
+)
 from ..research.report import build_report
 from ..schemas import ApprovalLog, AssetRegistry, ProjectManifest, ResearchLedger, SceneManifest, VisualPlan
 from ..schemas.project import ProjectStatus
+from ..schemas.qa import QAReport
 from ..schemas.asset import AssetRoot, AssetType
 from ..schemas.common import SUPPORTED_SCHEMA_VERSIONS, duplicates
 from ..utils.fs import UnsafePathError, safe_resolve, sha256_file
@@ -30,6 +33,10 @@ NARRATION_TYPES = {AssetType.NARRATION, AssetType.AUDIO}
 APPROVAL_REQUIRED = {ProjectStatus.SCRIPT_APPROVED, ProjectStatus.IN_PRODUCTION,
                      ProjectStatus.IN_REVIEW, ProjectStatus.PUBLICATION_READY}
 _ID_KEYS = ("scene_id", "source_id", "claim_id", "asset_id")
+# Errors raised only because project_status claims more than the approvals support. QA, sign-off
+# and revoke exist to resolve these, so they must still run while these errors are present.
+STATUS_GATE_CODES = frozenset({"project.qa_signoff_required", "project.publication_blocked",
+                               "project.status_requires_approval"})
 
 
 @dataclass(frozen=True)
@@ -65,6 +72,12 @@ class ValidationResult:
     @property
     def ok(self) -> bool:
         return not self.errors
+
+    @property
+    def loaded(self) -> bool:
+        """Every file loaded and no errors except status-gate ones."""
+        return None not in (self.manifest, self.scenes, self.ledger, self.registry, self.approvals) and all(
+            i.code in STATUS_GATE_CODES for i in self.errors)
 
     def add(self, severity: Severity, code: str, location: str, message: str) -> None:
         self.issues.append(Issue(severity, code, location, message))
@@ -259,7 +272,7 @@ def _check_references(result: ValidationResult) -> None:
     if result.registry:
         rel = paths.asset_registry
         used = {a for s in scenes for a in s.asset_ids} | {
-            s.narration_asset_id for s in scenes if s.narration_asset_id}
+            s.narration_asset_id for s in scenes if s.narration_asset_id} | set(music_ids(result.manifest))
         for a in result.registry.assets:
             loc = f"{rel}: {a.asset_id}"
             for sid in a.intended_scene_ids:
@@ -299,6 +312,16 @@ def _check_approvals(result: ValidationResult) -> None:
 
 def music_ids(manifest: ProjectManifest) -> tuple[str, ...]:
     return (manifest.music.asset_id,) if manifest.music else ()
+
+
+def extra_used_ids(manifest: ProjectManifest, visuals: VisualPlan | None) -> tuple[str, ...]:
+    """Assets that reach the video outside scenes' asset_ids: the music bed and visual-plan beats.
+    Only a beat's first asset is rendered, so only that one needs rights clearance."""
+    ids = list(music_ids(manifest))
+    for b in sorted(visuals.beats if visuals else [], key=lambda b: (b.scene_id, b.order)):
+        if b.asset_ids and b.asset_ids[0] not in ids:
+            ids.append(b.asset_ids[0])
+    return tuple(ids)
 
 
 def _check_music(result: ValidationResult) -> None:
@@ -353,10 +376,40 @@ def _check_status_gates(result: ValidationResult) -> None:
         blockers = list(report.blockers)
         if result.registry is not None:
             blockers += build_rights_report(result.registry, result.scenes, result.approvals,
-                                            music_ids(result.manifest)).blockers
+                                            extra_used_ids(result.manifest, result.visuals)).blockers
         for f in blockers:
             result.add("error", "project.publication_blocked", f"{MANIFEST_NAME}: {f.subject}",
                        f"{f.code}: {f.message}")
+        _check_qa_signoff(result)
+
+
+QA_SIGNOFF_REPORT = "reports/qa-master_16x9.json"
+
+
+def _check_qa_signoff(result: ValidationResult) -> None:
+    """publication_ready needs a clean master QA report, still current, and signed off by a person."""
+    def block(message: str) -> None:
+        result.add("error", "project.qa_signoff_required", MANIFEST_NAME, message)
+
+    path = safe_resolve(result.project_dir, QA_SIGNOFF_REPORT)
+    if not path.is_file():
+        return block("publication_ready needs a master QA report and sign-off; run 'pipeline qa report' "
+                     "and 'pipeline qa signoff'")
+    try:
+        report = QAReport.model_validate_json(path.read_text(encoding="utf-8"))
+    except ValueError:
+        return block(f"{QA_SIGNOFF_REPORT} is unreadable; run 'pipeline qa report' again")
+    if report.blocker_count or report.open_warning_count:
+        return block(f"the QA report has {report.blocker_count} blocker(s) and {report.open_warning_count} "
+                     "open warning(s)")
+    if None in (result.registry, result.visuals) or report.inputs_fingerprint != qa_inputs_fingerprint(
+            result.manifest, result.scenes, result.ledger, result.registry, result.visuals):
+        return block("the project changed after QA; run 'pipeline qa report' and sign off again")
+    state = qa_signoff_state(result.approvals, report.fingerprint)
+    if state != "current":
+        return block(f"QA sign-off is {state}; run 'pipeline qa signoff'")
+    if report.output_path is None or not Path(report.output_path).is_file():
+        return block("the signed-off video is missing; render it again")
 
 
 def _check_asset_files(result: ValidationResult, project_dir: Path, media_root: Path | None,

@@ -1,0 +1,288 @@
+{
+  "$defs": {
+    "OutputProfileName": {
+      "enum": [
+        "preview",
+        "master_16x9",
+        "vertical_9x16"
+      ],
+      "title": "OutputProfileName",
+      "type": "string"
+    },
+    "QACheck": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "blocker",
+            "warning",
+            "info"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "subject": {
+          "minLength": 1,
+          "title": "Subject",
+          "type": "string"
+        },
+        "waivable": {
+          "default": true,
+          "title": "Waivable",
+          "type": "boolean"
+        },
+        "waived_by": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Waived By"
+        },
+        "waiver_rationale": {
+          "default": "",
+          "title": "Waiver Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "subject",
+        "severity",
+        "message"
+      ],
+      "title": "QACheck",
+      "type": "object"
+    },
+    "QAMeasurements": {
+      "additionalProperties": false,
+      "properties": {
+        "black_intervals": {
+          "items": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array"
+          },
+          "title": "Black Intervals",
+          "type": "array"
+        },
+        "duration_seconds": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duration Seconds"
+        },
+        "frozen_intervals": {
+          "items": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array"
+          },
+          "title": "Frozen Intervals",
+          "type": "array"
+        },
+        "integrated_lufs": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Integrated Lufs"
+        },
+        "loudness_range_lu": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Loudness Range Lu"
+        },
+        "silent_intervals": {
+          "items": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array"
+          },
+          "title": "Silent Intervals",
+          "type": "array"
+        },
+        "true_peak_dbtp": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "True Peak Dbtp"
+        }
+      },
+      "title": "QAMeasurements",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "blocker_count": {
+      "minimum": 0,
+      "title": "Blocker Count",
+      "type": "integer"
+    },
+    "checks": {
+      "items": {
+        "$ref": "#/$defs/QACheck"
+      },
+      "title": "Checks",
+      "type": "array"
+    },
+    "fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Fingerprint",
+      "type": "string"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "inputs_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Inputs Fingerprint",
+      "type": "string"
+    },
+    "measurements": {
+      "$ref": "#/$defs/QAMeasurements"
+    },
+    "media_analysed": {
+      "default": false,
+      "title": "Media Analysed",
+      "type": "boolean"
+    },
+    "open_warning_count": {
+      "minimum": 0,
+      "title": "Open Warning Count",
+      "type": "integer"
+    },
+    "output_path": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Output Path"
+    },
+    "output_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Output Sha256"
+    },
+    "pipeline_version": {
+      "title": "Pipeline Version",
+      "type": "string"
+    },
+    "profile": {
+      "$ref": "#/$defs/OutputProfileName"
+    },
+    "project_id": {
+      "maxLength": 64,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Project Id",
+      "type": "string"
+    },
+    "render_report": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Render Report"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "project_id",
+    "profile",
+    "generated_at",
+    "pipeline_version",
+    "inputs_fingerprint",
+    "blocker_count",
+    "open_warning_count",
+    "fingerprint"
+  ],
+  "title": "QAReport",
+  "type": "object"
+}

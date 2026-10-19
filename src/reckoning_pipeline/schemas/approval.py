@@ -22,10 +22,14 @@ class ApprovalKind(StrEnum):
     CLAIM_EXCEPTION_REVOKED = "claim_exception_revoked"
     ASSET_APPROVED = "asset_approved"
     ASSET_BLOCKED = "asset_blocked"
+    QA_WARNING_WAIVED = "qa_warning_waived"
+    QA_SIGNOFF = "qa_signoff"
+    QA_SIGNOFF_REVOKED = "qa_signoff_revoked"
 
 
 CLAIM_KINDS = frozenset({ApprovalKind.CLAIM_EXCEPTION, ApprovalKind.CLAIM_EXCEPTION_REVOKED})
 ASSET_KINDS = frozenset({ApprovalKind.ASSET_APPROVED, ApprovalKind.ASSET_BLOCKED})
+MIN_RATIONALE = 20  # characters; exceptions and QA waivers need a real written reason
 
 
 class ApprovalEvent(Record):
@@ -37,6 +41,7 @@ class ApprovalEvent(Record):
     fingerprint: Sha256 | None = None
     claim_id: Identifier | None = None
     asset_id: Identifier | None = None
+    qa_check: str | None = None  # "<code>@<subject>" of a waived QA warning
 
     @model_validator(mode="after")
     def _rules(self) -> "ApprovalEvent":
@@ -48,14 +53,19 @@ class ApprovalEvent(Record):
             raise ValueError(f"'{self.kind}' events need an asset_id")
         if self.kind not in ASSET_KINDS and self.asset_id is not None:
             raise ValueError(f"'{self.kind}' events must not have an asset_id")
+        is_waiver = self.kind is ApprovalKind.QA_WARNING_WAIVED
+        if is_waiver != (self.qa_check is not None):
+            raise ValueError("qa_check is required for, and only allowed on, 'qa_warning_waived' events")
         if self.kind is ApprovalKind.ASSET_BLOCKED and not self.rationale.strip():
             raise ValueError("blocking an asset needs a rationale")
         if self.kind in (ApprovalKind.SCRIPT_APPROVED, ApprovalKind.CLAIM_EXCEPTION,
-                         ApprovalKind.ASSET_APPROVED) \
+                         ApprovalKind.ASSET_APPROVED, ApprovalKind.QA_WARNING_WAIVED, ApprovalKind.QA_SIGNOFF) \
                 and self.fingerprint is None:
             raise ValueError(f"'{self.kind}' events must record the fingerprint they approve")
-        if self.kind is ApprovalKind.CLAIM_EXCEPTION and len(self.rationale.strip()) < 20:
-            raise ValueError("a claim exception needs a written rationale (at least 20 characters)")
+        if self.kind is ApprovalKind.CLAIM_EXCEPTION and len(self.rationale.strip()) < MIN_RATIONALE:
+            raise ValueError(f"a claim exception needs a written rationale (at least {MIN_RATIONALE} characters)")
+        if is_waiver and len(self.rationale.strip()) < MIN_RATIONALE:
+            raise ValueError(f"waiving a QA warning needs a written rationale (at least {MIN_RATIONALE} characters)")
         return self
 
 
