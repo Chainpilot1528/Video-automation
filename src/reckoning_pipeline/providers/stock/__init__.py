@@ -1,7 +1,9 @@
 from .base import MediaKind, StockError, StockFile, StockItem, StockLicense, StockProvider
+from .museums import AICProvider, MetProvider
 from .pexels import PexelsProvider
 
-PROVIDERS = {"pexels": PexelsProvider}
+PROVIDERS = {"pexels": PexelsProvider, "met": MetProvider, "aic": AICProvider}
+MUSEUMS = ("met", "aic")  # public-domain still images only
 
 
 def get_stock_provider(name: str) -> StockProvider:
@@ -20,5 +22,5 @@ def parse_ref(ref: str, default_kind: MediaKind = "video") -> tuple[str, MediaKi
     raise StockError(f"bad stock reference {ref!r}; use provider:video:ID or provider:photo:ID")
 
 
-__all__ = ["MediaKind", "PROVIDERS", "PexelsProvider", "StockError", "StockFile", "StockItem", "StockLicense",
+__all__ = ["AICProvider", "MUSEUMS", "MediaKind", "MetProvider", "PROVIDERS", "PexelsProvider", "StockError", "StockFile", "StockItem", "StockLicense",
            "StockProvider", "get_stock_provider", "parse_ref"]

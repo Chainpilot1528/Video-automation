@@ -16,14 +16,16 @@ same length. Scenes therefore butt-join, and total length = sum of scenes.
 
 from __future__ import annotations
 
+import hashlib
+import json
 from typing import Literal
 
 from pydantic import Field
 
 from .common import SCHEMA_VERSION, Identifier, Record, Sha256
-from .visual import Motion
+from .visual import Layer, Motion
 
-SegmentKind = Literal["image", "video", "placeholder"]
+SegmentKind = Literal["image", "video", "placeholder", "composition"]
 
 
 class RenderProfile(Record):
@@ -39,6 +41,19 @@ class RenderProfile(Record):
     require_narration: bool
 
 
+class TimelineLayer(Layer):
+    """A composition layer with its image resolved to a file (text layers have no file)."""
+
+    path: str = ""
+    sha256: Sha256 | None = None
+
+
+def layers_key(layers: list[TimelineLayer]) -> str:
+    """Stable digest of a composition's layers (paths excluded, file checksums included)."""
+    payload = [layer.model_dump(mode="json", exclude={"path"}) for layer in layers]
+    return hashlib.sha256(json.dumps(payload, sort_keys=True).encode("utf-8")).hexdigest()
+
+
 class TimelineSegment(Record):
     beat_id: str
     kind: SegmentKind
@@ -50,6 +65,7 @@ class TimelineSegment(Record):
     motion: Motion = Motion.NONE
     source_duration: float | None = None  # video assets only
     label: str = ""         # on-screen label for reconstructions / AI illustrations
+    layers: list[TimelineLayer] = Field(default_factory=list)  # compositions only
 
 
 class TimelineNarration(Record):

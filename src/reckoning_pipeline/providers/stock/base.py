@@ -40,6 +40,7 @@ class StockItem:
     duration_seconds: float | None = None
     description: str = ""
     files: list[StockFile] = field(default_factory=list)
+    extra: dict[str, str] = field(default_factory=dict)  # e.g. museum title/artist/date for labels
 
     @property
     def ref(self) -> str:

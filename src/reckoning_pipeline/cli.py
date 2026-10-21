@@ -42,7 +42,7 @@ from .render import render as run_render
 from .timeline import TimelineError
 from .assets.checklist import ChecklistError, record_checklist
 from .assets.stock import add_stock_item, existing_for
-from .providers.stock import StockError, get_stock_provider, parse_ref
+from .providers.stock import MUSEUMS, StockError, get_stock_provider, parse_ref
 from .script.draft import DraftError, draft_script
 from .approvals import active_exceptions, append_event, check_reviewer, claim_fingerprint, load_log
 from .project.validate import STATUS_GATE_CODES, ValidationResult, extra_used_ids
@@ -79,6 +79,8 @@ visuals_app = typer.Typer(help="Visual plan report, contact sheet and placeholde
 graphics_app = typer.Typer(help="Deterministic original graphics (SVG).", no_args_is_help=True)
 music_app = typer.Typer(help="Music beds: create, attach, remove.", no_args_is_help=True)
 qa_app = typer.Typer(help="Automated QA, warning waivers and human sign-off.", no_args_is_help=True)
+archive_app = typer.Typer(help="Public-domain museum images (The Met, Art Institute of Chicago; CC0).",
+                          no_args_is_help=True)
 stock_app = typer.Typer(help="Search and add licensed stock media (contacts the provider's API).",
                         no_args_is_help=True)
 app.add_typer(project_app, name="project")
@@ -93,6 +95,7 @@ app.add_typer(captions_app, name="captions")
 app.add_typer(visuals_app, name="visuals")
 app.add_typer(graphics_app, name="graphics")
 app.add_typer(stock_app, name="stock")
+app.add_typer(archive_app, name="archive")
 app.add_typer(music_app, name="music")
 app.add_typer(qa_app, name="qa")
 
@@ -638,9 +641,12 @@ def narration_build(
     rate: int = typer.Option(None, "--rate", min=80, max=300, help="TTS speaking rate (words/min), if supported."),
     speed: float = typer.Option(None, "--speed", min=0.5, max=2.0,
                                 help="Tempo for TTS output without changing pitch, e.g. 0.87 = 13% slower."),
-    style: str = typer.Option(None, "--style", help="Voice processing: none or documentary."),
-    preset: str = typer.Option(None, "--preset", help="Named voice preset, e.g. reckoner (sets provider, voice, "
-                                                      "speed and style; explicit options win)."),
+    style: str = typer.Option(None, "--style", help="Voice processing: none, documentary, annt or sage."),
+    humanize: bool = typer.Option(None, "--humanize/--no-humanize",
+                                  help="TTS sentence by sentence with natural pauses and room tone."),
+    instruct: str = typer.Option(None, "--instruct", help="Delivery instruction (Qwen3 CustomVoice voices)."),
+    preset: str = typer.Option(None, "--preset", help="Named voice preset: reckoner or sage (sets provider, voice, "
+                                                      "speed, style and delivery; explicit options win)."),
     scenes: list[str] = typer.Option([], "--scene", help="Only these scenes (repeatable)."),
     dry_run: bool = typer.Option(False, "--dry-run", help="Show what would be built."),
 ) -> None:
@@ -654,7 +660,10 @@ def narration_build(
         provider, voice = provider or p.provider, voice or p.voice
         speed = p.speed if speed is None else speed
         style = style or p.style
-        typer.echo(f"preset {p.name}: {p.voice} via {p.provider}, speed {speed:g}, style {style}", err=True)
+        humanize = p.humanize if humanize is None else humanize
+        instruct = p.instruct if instruct is None else instruct
+        typer.echo(f"preset {p.name}: {p.voice} via {p.provider}, speed {speed:g}, style {style}"
+                   + (", humanized" if humanize else ""), err=True)
     speed = 1.0 if speed is None else speed
     style = style or "none"
     try:
@@ -671,7 +680,8 @@ def narration_build(
         if not cleared:
             typer.echo(f"note: {note} Its output is registered as blocked from publication.", err=True)
     options = BuildOptions(provider=tts, voice=voice, rate_wpm=rate, speed=speed, style=style,
-                           scene_ids=scenes or None, dry_run=dry_run)
+                           humanize=bool(humanize), instruct=instruct or "", scene_ids=scenes or None,
+                           dry_run=dry_run)
     try:
         built = build_narration(result, _tools(ctx), options)
     except (NarrationError, ValueError) as exc:
@@ -960,6 +970,64 @@ def stock_add(
     if not dry_run:
         typer.echo(f"Next: watch it, then 'pipeline assets checklist {path} {asset_id} --people no --trademarks no' "
                    f"(with your real answers), then 'pipeline assets review'.")
+
+
+@archive_app.command("search")
+def archive_search(
+    ctx: typer.Context,
+    query: str = typer.Argument(..., help="What to look for, e.g. 'marble bust philosopher'"),
+    source: str = typer.Option("met", "--source", help="met or aic"),
+    count: int = typer.Option(10, "--count", min=1, max=20),
+    project: Path = typer.Option(None, "--project", help="Mark results already used in this project."),
+) -> None:
+    """Search public-domain museum images. Sends only the query; downloads nothing."""
+    if source not in MUSEUMS:
+        _fail(f"--source must be one of: {', '.join(MUSEUMS)}")
+    registry = _load_valid(ctx, project).registry if project else None
+    try:
+        items = get_stock_provider(source).search(query, "photo", per_page=count)
+    except StockError as exc:
+        _fail(str(exc))
+    if not items:
+        typer.echo("No public-domain results with images.")
+        return
+    for it in items:
+        used = existing_for(registry, it) if registry else None
+        x = it.extra
+        typer.echo(f"{source}:{it.item_id:<9} {x.get('title', '')[:44]:<44} {x.get('artist', '')[:22]:<22} "
+                   f"{x.get('date', '')[:16]:<16} {it.page_url}" + (f"  [used as {used}]" if used else ""))
+    typer.echo(f"\nAdd one with: pipeline archive add <project> {source}:{items[0].item_id} --id <asset-id> "
+               "--scene <scene-id>")
+
+
+@archive_app.command("add")
+def archive_add(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    ref: str = typer.Argument(..., help="e.g. met:436105 or aic:28560 (from 'archive search')"),
+    asset_id: str = typer.Option(..., "--id", help="New asset ID"),
+    scenes: list[str] = typer.Option([], "--scene", help="Intended scene (repeatable)."),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Look up and validate; download nothing."),
+) -> None:
+    """Download a public-domain museum image and register it (CC0; still pending your rights review)."""
+    result = _load_valid(ctx, path)
+    config = _config(ctx)
+    try:
+        name, _, item_id = parse_ref(ref, default_kind="photo")
+        if name not in MUSEUMS:
+            raise StockError(f"{name!r} isn't a museum source; use met:<id> or aic:<id>")
+        provider = get_stock_provider(name)
+        item = provider.get("photo", item_id)
+        added = add_stock_item(path, result.manifest, result.registry, provider, item, asset_id, scenes=scenes,
+                               target_width=10_000, media_root=config.media_root,
+                               min_free_gb=config.min_free_disk_gb, dry_run=dry_run)
+    except (StockError, IntakeError) as exc:
+        _fail(str(exc))
+    prefix = "[dry-run] " if dry_run else ""
+    typer.echo(f"{prefix}{item.ref}: {item.description}"
+               + (f" ({added.bytes_downloaded / 1e6:.1f} MB)" if not dry_run else ""))
+    for line in added.plan.describe():
+        typer.echo(prefix + line)
 
 
 @script_app.command("draft")

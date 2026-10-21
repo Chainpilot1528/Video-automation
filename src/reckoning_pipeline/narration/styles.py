@@ -39,6 +39,16 @@ _DOC = VOICE_STYLES["documentary"]
 _SPLIT = _DOC.index("deesser")  # documentary EQ first, then the match EQ, then dynamics
 VOICE_STYLES["annt"] = _DOC[:_SPLIT] + ANNT_MATCH_EQ + "," + _DOC[_SPLIT:]
 
+# Tone match for Qwen3-TTS "Ryan" to a calm philosophy-documentary narrator, measured 2026-10-20:
+# 1/3-octave spectra of 3 min of the reference vs Ryan's raw output, level-aligned at 630-1600 Hz.
+# Ryan needs about +12 dB below 160 Hz (the reference's close-mic warmth) and more presence above
+# 2.5 kHz; about 60% of each difference is applied, as for annt. Then the same dynamics as documentary.
+SAGE_MATCH_EQ = ("highpass=f=60,"
+                 "lowshelf=f=170:g=7,"
+                 "equalizer=f=1000:t=o:w=0.7:g=-2,"
+                 "highshelf=f=3000:g=5")
+VOICE_STYLES["sage"] = SAGE_MATCH_EQ + "," + _DOC[_SPLIT:]
+
 
 @dataclass(frozen=True)
 class VoicePreset:
@@ -48,6 +58,8 @@ class VoicePreset:
     speed: float
     style: str
     description: str
+    humanize: bool = False   # sentence-by-sentence synthesis with natural pauses (narration/humanize.py)
+    instruct: str = ""       # delivery instruction, for engines that take one
 
 
 # "reckoner" is the channel's house narrator. "annt" is kept as an alias so older commands and
@@ -58,8 +70,19 @@ _RECKONER = VoicePreset(
                  "~133 Hz median pitch, ~165 words/min, steady documentary delivery, tone-matched EQ. Kokoro "
                  "am_liam (Apache-2.0) with documentary processing; not a clone of the reference narrator."),
 )
+SAGE_INSTRUCT = ("Speak as a calm, deep-voiced documentary narrator. Unhurried and reflective, warm and "
+                 "intimate, with natural rises and falls, like telling a thoughtful story late at night.")
+_SAGE = VoicePreset(
+    name="sage", provider="voicebox", voice="qwen_custom_voice:Ryan", speed=1.0, style="sage", humanize=True,
+    instruct=SAGE_INSTRUCT,
+    description=("Calm, deep philosophy-documentary narration: ~120 Hz median pitch, wide natural intonation "
+                 "(~11 semitones), reflective pace with sentence pauses, warm close-mic tone. Qwen3-TTS "
+                 "CustomVoice 0.6B preset voice Ryan (Apache-2.0), humanized, with a style instruction; "
+                 "not a clone of any narrator. About 10x slower than real time on this Mac."),
+)
 VOICE_PRESETS: dict[str, VoicePreset] = {
     "reckoner": _RECKONER,
+    "sage": _SAGE,
     "annt": replace(_RECKONER, name="annt", description="Alias of 'reckoner'. " + _RECKONER.description),
 }
 

@@ -57,6 +57,8 @@ def stock_fields(item: StockItem, provider: StockProvider, asset_id: str, scenes
     lic = provider.license
     kind_word = "Video" if item.kind == "video" else "Photo"
     size = f"{chosen.width}x{chosen.height}" if chosen.width else chosen.quality
+    if item.extra.get("museum"):
+        return museum_fields(item, provider, asset_id, scenes, chosen, size)
     return {
         "asset_id": asset_id, "type": "video" if item.kind == "video" else "image",
         "creation_method": "downloaded", "source_url": item.page_url, "provider": provider.name.title(),
@@ -75,9 +77,29 @@ def stock_fields(item: StockItem, provider: StockProvider, asset_id: str, scenes
     }
 
 
+def museum_fields(item: StockItem, provider: StockProvider, asset_id: str, scenes: list[str], chosen: StockFile,
+                  size: str) -> dict:
+    """A public-domain artwork: the museum's CC0 release, with title/artist/date kept for labels."""
+    lic, x = provider.license, item.extra
+    label = "; ".join(f"{k}: {x[k]}" for k in ("title", "artist", "date", "medium") if x.get(k))
+    return {
+        "asset_id": asset_id, "type": "image", "creation_method": "downloaded", "source_url": item.page_url,
+        "provider": x["museum"], "creator": item.creator, "rights_holder": f"Public domain ({x['museum']}, CC0)",
+        "license_name": lic.name, "license_url": lic.url, "commercial_use": "allowed",
+        "attribution_required": False,
+        "attribution_text": f"{x.get('title') or 'Image'}, {item.creator}. {x['museum']}, CC0",
+        "derivatives_allowed": True, "raw_redistribution_allowed": True,
+        "rights_evidence": (f"{lic.name} ({lic.url}); marked public domain by the {x['museum']} API on "
+                            f"{date.today().isoformat()}; object {x.get('object_id')} ({item.page_url}). "
+                            f"Credit line: {x.get('credit_line') or 'n/a'}. {lic.notes}"),
+        "intended_scene_ids": scenes,
+        "notes": f"{item.ref}; {label}; file {size} {chosen.file_type}. People/trademarks not yet checked.",
+    }
+
+
 def download(url: str, dest: Path, *, opener: Opener = verified_urlopen, timeout: float = 120.0,
-             max_bytes: int = MAX_DOWNLOAD_BYTES) -> int:
-    if not is_media_host(url):
+             max_bytes: int = MAX_DOWNLOAD_BYTES, hosts: tuple[str, ...] | None = None) -> int:
+    if not is_media_host(url, *(() if hosts is None else (hosts,))):
         raise StockError(f"refusing to download from an unexpected host: {url[:80]}")
     req = urllib.request.Request(url, headers={"User-Agent": "reckoning-pipeline"})
     written = 0
@@ -125,7 +147,7 @@ def add_stock_item(project_dir: Path, manifest: ProjectManifest, registry: Asset
             tmp.write_bytes(b"dry-run placeholder")  # lets intake validate the record; never registered
             size = 0
         else:
-            size = download(chosen.url, tmp, opener=opener)
+            size = download(chosen.url, tmp, opener=opener, hosts=getattr(provider, "media_hosts", None))
         plan = plan_intake(project_dir, registry, tmp, fields, root=root, media_root=media_root)
         if not dry_run:
             apply_intake(project_dir, manifest, registry, plan, min_free_gb=min_free_gb)

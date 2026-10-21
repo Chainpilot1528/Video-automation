@@ -18,7 +18,8 @@ from ..schemas.asset import AssetRoot, AssetType
 from ..schemas.narration import NarrationReport
 from ..schemas.scene import Scene, TransitionType
 from ..schemas.timeline import (
-    RenderProfile, TimelineCue, TimelineMusic, TimelineNarration, TimelinePlan, TimelineScene, TimelineSegment,
+    RenderProfile, TimelineCue, TimelineLayer, TimelineMusic, TimelineNarration, TimelinePlan, TimelineScene,
+    TimelineSegment, layers_key,
 )
 from ..schemas.visual import Motion, VisualBeat
 from ..subtitles.srt import SceneSpan, approximate_cues
@@ -28,8 +29,9 @@ RENDER_VERSION = "1"      # bump when the renderer's output for the same plan ch
 MIX_VERSION = "1"         # bump when the music mix changes
 # The command builder's source is part of every scene fingerprint, so editing how
 # scenes are drawn can never silently reuse renders made by older code.
-_COMMANDS_SOURCE = Path(__file__).resolve().parent.parent / "render" / "commands.py"
-RENDERER_DIGEST = hashlib.sha256(_COMMANDS_SOURCE.read_bytes()).hexdigest()
+_RENDER_DIR = Path(__file__).resolve().parent.parent / "render"
+RENDERER_DIGEST = hashlib.sha256(b"".join((_RENDER_DIR / name).read_bytes()
+                                          for name in ("commands.py", "compose.py"))).hexdigest()
 LEAD_IN = 0.25            # seconds of picture before narration starts
 TAIL_HOLD = 0.5           # seconds of picture after narration ends
 DEFAULT_SILENT = 3.0      # silent scene with no planned duration
@@ -94,7 +96,8 @@ def compile_timeline(result: ValidationResult, profile: RenderProfile, *, ffmpeg
         body = {
             "scene_id": scene.scene_id, "duration": duration, "lead_in": lead, "fade_in": fade_in,
             "fade_out": fade_out, "narration": narration.model_dump() if narration else None,
-            "segments": [{**s.model_dump(exclude={"path"}), "ref": s.sha256 or s.placeholder_text} for s in segments],
+            "segments": [{**s.model_dump(exclude={"path": True, "layers": {"__all__": {"path"}}}),
+                          "ref": s.sha256 or s.placeholder_text} for s in segments],
             "cues": [c.model_dump() for c in cues] if burn_captions else [],
             "profile": profile.model_dump(), "burn_captions": burn_captions,
             "render_version": RENDER_VERSION, "renderer": RENDERER_DIGEST, "pipeline_version": __version__,
@@ -162,6 +165,9 @@ def _segments(scene: Scene, beats: list[VisualBeat], duration: float, assets, as
     items = []  # (beat_id, beat or None, asset or None, placeholder text)
     if beats:
         for b in beats:
+            if b.layers:
+                items.append((b.beat_id, b, None, ""))
+                continue
             if len(b.asset_ids) > 1:
                 warnings.append(f"{b.beat_id}: only the first of {len(b.asset_ids)} assets is rendered")
             asset = assets.get(b.asset_ids[0]) if b.asset_ids else None
@@ -188,7 +194,17 @@ def _segments(scene: Scene, beats: list[VisualBeat], duration: float, assets, as
             motion = Motion.NONE
         label = beat.label if beat and (beat.is_reconstruction or beat.visual_type.value == "generated") else ""
         common = dict(beat_id=beat_id, start=round(start, 3), duration=seg_duration, motion=motion, label=label)
-        if asset is not None and asset.type in IMAGE_TYPES:
+        if beat is not None and beat.layers:
+            layers = _layers(beat, assets, asset_path, warnings)
+            if layers is None:
+                segments.append(TimelineSegment(kind="placeholder", path=str(placeholder_dir / f"{beat_id}.svg"),
+                                                sha256=None, placeholder_text=f"Composition {beat_id}: an image "
+                                                "layer can't be shown", **common))
+                continue
+            key = layers_key(layers)[:12]
+            clip = placeholder_dir.parent / scene.scene_id / f"comp-{beat_id}-{key}.mp4"
+            segments.append(TimelineSegment(kind="composition", path=str(clip), sha256=None, layers=layers, **common))
+        elif asset is not None and asset.type in IMAGE_TYPES:
             segments.append(TimelineSegment(kind="image", path=str(asset_path(asset)), sha256=asset.sha256, **common))
         elif asset is not None and asset.type is AssetType.VIDEO:
             path = asset_path(asset)
@@ -202,6 +218,22 @@ def _segments(scene: Scene, beats: list[VisualBeat], duration: float, assets, as
             segments.append(TimelineSegment(kind="placeholder", path=str(placeholder_dir / f"{beat_id}.svg"),
                                             sha256=None, placeholder_text=ph_text, **common))
     return segments
+
+
+def _layers(beat: VisualBeat, assets, asset_path, warnings) -> list[TimelineLayer] | None:
+    """Resolve a composition's image layers to files; None if one can't be shown."""
+    out = []
+    for layer in beat.layers:
+        if layer.kind == "text":
+            out.append(TimelineLayer(**layer.model_dump()))
+            continue
+        asset = assets.get(layer.asset_id)
+        if asset is None or asset.type not in IMAGE_TYPES:
+            what = "missing" if asset is None else f"a {asset.type}, not an image"
+            warnings.append(f"{beat.beat_id}: layer asset {layer.asset_id!r} is {what}; using a placeholder")
+            return None
+        out.append(TimelineLayer(**layer.model_dump(), path=str(asset_path(asset)), sha256=asset.sha256))
+    return out
 
 
 def _starts(beats: list[VisualBeat | None], duration: float) -> list[float]:

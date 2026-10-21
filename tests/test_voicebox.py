@@ -40,6 +40,7 @@ class FakeVoicebox:
         self.stream_requests = []
         self.downloaded = True
         self.has_openai_route = True  # False mimics Voicebox 0.5.0
+        self.engine_presets = {}       # extra engines, e.g. {"qwen_custom_voice": [...]}
         fake = self
 
         class Handler(BaseHTTPRequestHandler):
@@ -66,6 +67,9 @@ class FakeVoicebox:
                     return self._json(200, fake.profiles)
                 if self.path == "/profiles/presets/kokoro":
                     return self._json(200, {"engine": "kokoro", "voices": fake.presets})
+                engine = self.path.removeprefix("/profiles/presets/")
+                if engine in fake.engine_presets:
+                    return self._json(200, {"engine": engine, "voices": fake.engine_presets[engine]})
                 self._json(404, {"detail": "not found"})
 
             def do_POST(self):

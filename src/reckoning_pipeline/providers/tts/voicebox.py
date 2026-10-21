@@ -14,9 +14,10 @@ Rights are decided per voice, not per app:
   other engines need a licence review, so their output is registered
   ``not_allowed`` / ``blocked`` until a person records that and reviews it.
 
-Voices are Voicebox profiles (by name or id). ``kokoro:<voice_id>`` (e.g.
-``kokoro:af_heart``) selects a Kokoro preset, creating a matching preset
-profile in Voicebox on first use.
+Voices are Voicebox profiles (by name or id). ``<engine>:<voice_id>`` selects a
+built-in preset voice, creating a matching preset profile in Voicebox on first
+use: ``kokoro:af_heart`` (Kokoro-82M) or ``qwen_custom_voice:Ryan`` (Qwen3-TTS
+CustomVoice, which also takes a delivery instruction via ``TTSOptions.extra``).
 """
 
 from __future__ import annotations
@@ -46,7 +47,14 @@ class EngineLicense:
 # Engines whose *model* licence has been reviewed for commercial narration.
 REVIEWED_ENGINES = {
     "kokoro": EngineLicense("Apache-2.0", "https://huggingface.co/hexgrad/Kokoro-82M"),
+    "qwen_custom_voice": EngineLicense("Apache-2.0",
+                                       "https://huggingface.co/Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice"),
 }
+# Engines whose preset voices can be named as "<engine>:<voice_id>".
+PRESET_ENGINES = ("kokoro", "qwen_custom_voice")
+# Qwen3-TTS runs about 10x slower than real time on a CPU; give each request room.
+SLOW_ENGINES = {"qwen_custom_voice": 3600.0}
+DEFAULT_MODEL_SIZE = {"qwen_custom_voice": "0.6B"}  # 1.7B doesn't fit in 8 GB of RAM
 
 
 @dataclass(frozen=True)
@@ -139,9 +147,14 @@ class VoiceboxProvider:
         result = self._request("GET", "/profiles")
         return result if isinstance(result, list) else []
 
-    def presets(self) -> list[dict]:
-        result = self._request("GET", f"/profiles/presets/{self.engine}")
+    def presets(self, engine: str | None = None) -> list[dict]:
+        result = self._request("GET", f"/profiles/presets/{engine or self.engine}")
         return result.get("voices", []) if isinstance(result, dict) else []
+
+    def engine_for(self, voice: str) -> str:
+        """The engine a voice runs on: its "<engine>:" prefix, else this provider's default."""
+        prefix, sep, _ = voice.partition(":")
+        return prefix if sep and prefix in PRESET_ENGINES else self.engine
 
     def list_voices(self) -> list[Voice]:
         voices = []
@@ -149,21 +162,29 @@ class VoiceboxProvider:
             kind = p.get("voice_type", "cloned")
             detail = f"{kind}" + (f" {p.get('preset_engine')}:{p.get('preset_voice_id')}" if kind == "preset" else "")
             voices.append(Voice(p["name"], p.get("language", ""), detail))
-        for v in self.presets():
-            voices.append(Voice(f"{self.engine}:{v['voice_id']}", v.get("language", ""),
-                                f"{self.engine} preset {v.get('name', '')} ({v.get('gender', '')}); profile created on first use"))
+        for engine in dict.fromkeys((self.engine, *PRESET_ENGINES)):
+            try:
+                presets = self.presets(engine)
+            except TTSError:
+                if engine == self.engine:
+                    raise
+                continue  # an older Voicebox without this engine
+            for v in presets:
+                voices.append(Voice(f"{engine}:{v['voice_id']}", v.get("language", ""),
+                                    f"{engine} preset {v.get('name', '')} ({v.get('gender', '')}); "
+                                    "profile created on first use"))
         return voices
 
     def resolve_profile(self, voice: str, *, create: bool = True) -> dict:
         """Find the Voicebox profile for ``voice``; ``engine:voice_id`` may create a preset profile."""
         profiles = self.profiles()
         engine, _, preset_id = voice.partition(":")
-        if preset_id and engine == self.engine:
+        if preset_id and engine in PRESET_ENGINES:
             for p in profiles:
                 if (p.get("voice_type") == "preset" and p.get("preset_engine") == engine
                         and p.get("preset_voice_id") == preset_id):
                     return p
-            preset = next((v for v in self.presets() if v.get("voice_id") == preset_id), None)
+            preset = next((v for v in self.presets(engine) if v.get("voice_id") == preset_id), None)
             if preset is None:
                 raise TTSError(f"{engine} has no preset voice {preset_id!r}; see 'pipeline narration voices "
                                "--provider voicebox'")
@@ -184,16 +205,17 @@ class VoiceboxProvider:
     def voice_clearance(self, voice: str) -> Clearance:
         profile = self.resolve_profile(voice)
         kind = profile.get("voice_type", "cloned")
-        lic = REVIEWED_ENGINES.get(self.engine)
-        if kind == "preset" and lic and profile.get("preset_engine") == self.engine:
-            return Clearance(True, f"Voicebox (MIT) {self.engine} preset voice "
+        engine = profile.get("preset_engine") or self.engine
+        lic = REVIEWED_ENGINES.get(engine)
+        if kind == "preset" and lic:
+            return Clearance(True, f"Voicebox (MIT) {engine} preset voice "
                                    f"'{profile.get('preset_voice_id')}'; model licensed {lic.name} ({lic.url}).",
                              lic.url)
         if kind == "cloned":
             return Clearance(False, "Cloned voice: publishing needs the voice owner's written consent. Record it in "
                                     "rights_evidence, set commercial_use, then review the asset.",
                              "https://github.com/jamiepine/voicebox")
-        return Clearance(False, f"{kind} voice on engine {self.engine!r}: model licence not reviewed for "
+        return Clearance(False, f"{kind} voice on engine {engine!r}: model licence not reviewed for "
                                 "commercial narration.", "https://github.com/jamiepine/voicebox")
 
     def synthesize(self, text: str, voice: str, output_path: Path, options: TTSOptions) -> None:
@@ -202,17 +224,29 @@ class VoiceboxProvider:
         if len(text) > MAX_INPUT_CHARS:
             raise TTSError(f"narration is {len(text)} characters; Voicebox accepts at most {MAX_INPUT_CHARS} per request")
         profile = self.resolve_profile(voice)
-        if self._has_route("/v1/audio/speech"):
+        engine = self.engine_for(voice)
+        extra = options.extra or {}
+        if engine in SLOW_ENGINES or extra.get("instruct"):
+            # Only the native endpoint carries a model size and a delivery instruction.
+            body = {"profile_id": profile["id"], "text": text, "engine": engine,
+                    "language": profile.get("language") or "en", "seed": 0}
+            if extra.get("model_size") or engine in DEFAULT_MODEL_SIZE:
+                body["model_size"] = extra.get("model_size") or DEFAULT_MODEL_SIZE[engine]
+            if extra.get("instruct"):
+                body["instruct"] = extra["instruct"]
+            audio = self._request("POST", "/generate/stream", body,
+                                  timeout=max(self.timeout, SLOW_ENGINES.get(engine, 0.0)), raw=True)
+        elif self._has_route("/v1/audio/speech"):
             speed = float(options.extra.get("speed", 1.0)) if options.extra else 1.0
             audio = self._request("POST", "/v1/audio/speech",
-                                  {"model": self.engine, "input": text, "voice": profile["id"],
+                                  {"model": engine, "input": text, "voice": profile["id"],
                                    "response_format": "wav", "speed": speed},
                                   timeout=self.timeout, raw=True)
         else:
             # Voicebox <= 0.5.0: stream the WAV directly (nothing saved to its history). Fixed seed
             # keeps repeat builds of the same text as stable as the engine allows.
             audio = self._request("POST", "/generate/stream",
-                                  {"profile_id": profile["id"], "text": text, "engine": self.engine,
+                                  {"profile_id": profile["id"], "text": text, "engine": engine,
                                    "language": profile.get("language") or "en", "seed": 0},
                                   timeout=self.timeout, raw=True)
         if not audio or audio[:4] != b"RIFF":

@@ -40,7 +40,9 @@ Opener = Callable[..., Any]
 
 class PexelsProvider:
     name = "pexels"
+    display_name = "Pexels"
     license = PEXELS_LICENSE
+    media_hosts = MEDIA_HOSTS
 
     def __init__(self, api_key: str | None = None, *, base_url: str = API_BASE,
                  opener: Opener = verified_urlopen, timeout: float = 30.0) -> None:
@@ -103,7 +105,7 @@ def _photo(p: dict) -> StockItem:
                      p.get("photographer_url", ""), p.get("width"), p.get("height"), None, p.get("alt") or "", files)
 
 
-def is_media_host(url: str) -> bool:
+def is_media_host(url: str, hosts: tuple[str, ...] = MEDIA_HOSTS) -> bool:
     parsed = urllib.parse.urlparse(url)
     host = (parsed.hostname or "").lower()
-    return parsed.scheme == "https" and any(host == h or host.endswith("." + h) for h in MEDIA_HOSTS)
+    return parsed.scheme == "https" and any(host == h or host.endswith("." + h) for h in hosts)

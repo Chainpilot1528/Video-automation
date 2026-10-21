@@ -30,6 +30,9 @@ from ..timeline.compiler import compile_timeline
 from ..utils.fs import safe_resolve, sha256_file, write_json_atomic, write_text_atomic
 from ..visuals.placeholders import placeholder_svg_text
 from .commands import concat_command, concat_list, music_mix_command, scene_command
+from .compose import (
+    composition_command, image_prepare_command, prepare_layer_files, svg_to_png_command, text_svg,
+)
 from .profiles import get_profile
 
 RENDERS_DIR = "renders"
@@ -162,6 +165,7 @@ def _final_problems(info: VideoInfo, plan: TimelinePlan) -> list[str]:
 def _render_scene(tools: Tools, plan: TimelinePlan, scene: TimelineScene, base: Path, target: Path) -> list[str]:
     work = base / "build" / scene.scene_id
     work.mkdir(parents=True, exist_ok=True)
+    scene = _render_compositions(tools, plan, scene, work, base / "logs" / f"{scene.scene_id}-compose.log")
     for seg in scene.segments:
         if seg.kind == "placeholder":
             ph = Path(seg.path)
@@ -191,6 +195,50 @@ def _render_scene(tools: Tools, plan: TimelinePlan, scene: TimelineScene, base: 
                           f"{scene.duration:.2f} s; kept {partial.name} and {log} for inspection")
     os.replace(partial, target)
     return cmd
+
+
+def _render_compositions(tools: Tools, plan: TimelinePlan, scene: TimelineScene, work: Path,
+                         log: Path) -> TimelineScene:
+    """Render each composition segment to its clip, then treat it as an ordinary video segment."""
+    if not any(seg.kind == "composition" for seg in scene.segments):
+        return scene
+    segments = []
+    for seg in scene.segments:
+        if seg.kind != "composition":
+            segments.append(seg)
+            continue
+        clip = Path(seg.path)
+        if not _clip_ok(tools, clip, seg.duration):
+            prepared = prepare_layer_files(seg.layers, plan.profile, work)
+            for layer, png in prepared:
+                if png.is_file():
+                    continue
+                if layer.kind == "image":
+                    cmd = image_prepare_command(tools.ffmpeg, layer.path, layer, plan.profile, png.name)
+                else:
+                    svg = png.with_suffix(".svg")
+                    write_text_atomic(svg, text_svg(layer, plan.profile))
+                    cmd = svg_to_png_command(tools.ffmpeg, svg.name, png.name)
+                _run(cmd, cwd=work, log=log, what=f"{seg.beat_id}: prepare layer", timeout=120)
+            partial = clip.with_name(clip.stem + ".partial.mp4")
+            cmd = composition_command(tools.ffmpeg, seg.layers, [png.name for _, png in prepared], plan.profile,
+                                      seg.duration, partial.name)
+            _run(cmd, cwd=work, log=log, what=f"{seg.beat_id}: composition",
+                 timeout=max(120.0, seg.duration * SCENE_TIMEOUT_FACTOR))
+            if not _clip_ok(tools, partial, seg.duration):
+                raise RenderError(f"{seg.beat_id}: composition clip has the wrong length; kept {partial.name}")
+            os.replace(partial, clip)
+        segments.append(seg.model_copy(update={"kind": "video", "source_duration": seg.duration, "layers": []}))
+    return scene.model_copy(update={"segments": segments})
+
+
+def _clip_ok(tools: Tools, path: Path, duration: float) -> bool:
+    if not path.is_file():
+        return False
+    try:
+        return abs(probe_video(tools, path).duration_seconds - duration) <= SCENE_TOLERANCE
+    except MediaError:
+        return False
 
 
 def _check_decodable(tools: Tools, scene: TimelineScene, log: Path) -> None:
@@ -282,6 +330,11 @@ def _write_report(result: ValidationResult, plan: TimelinePlan, started: datetim
                 seen.add(seg.path)
                 inputs.append(RenderInput(path=seg.path, sha256=seg.sha256, role=f"visual:{seg.kind}",
                                           scene_id=s.scene_id))
+            for layer in seg.layers:
+                if layer.sha256 and layer.path not in seen:
+                    seen.add(layer.path)
+                    inputs.append(RenderInput(path=layer.path, sha256=layer.sha256, role="visual:layer",
+                                              scene_id=s.scene_id))
     output = None
     if final is not None and info is not None:
         output = RenderOutput(path=str(final), sha256=sha256_file(final), size_bytes=final.stat().st_size,

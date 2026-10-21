@@ -316,11 +316,11 @@ def music_ids(manifest: ProjectManifest) -> tuple[str, ...]:
 
 def extra_used_ids(manifest: ProjectManifest, visuals: VisualPlan | None) -> tuple[str, ...]:
     """Assets that reach the video outside scenes' asset_ids: the music bed and visual-plan beats.
-    Only a beat's first asset is rendered, so only that one needs rights clearance."""
+    A plain beat renders only its first asset; a composition renders every layer's image."""
     ids = list(music_ids(manifest))
     for b in sorted(visuals.beats if visuals else [], key=lambda b: (b.scene_id, b.order)):
-        if b.asset_ids and b.asset_ids[0] not in ids:
-            ids.append(b.asset_ids[0])
+        shown = b.asset_ids if b.layers else b.asset_ids[:1]
+        ids += [a for a in shown if a not in ids]
     return tuple(ids)
 
 

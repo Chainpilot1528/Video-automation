@@ -558,3 +558,43 @@ Tests: 6 new tests for the music pad (deterministic, registered, loudness), sett
 ### Next action
 - Approve the clips' rights and the script, render the master, then `qa report`, `qa waive` as needed, and `qa signoff`.
 
+---
+
+## 2026-10-20: "sage" voice: Qwen3 Ryan, humanized
+
+The user supplied a second style reference (a calm philosophy-documentary narrator) and asked for that kind of voice, without cloning. See `references/sage/README.md`. The audio was analysed in place and not copied.
+
+- **Measured:** male, about 118 Hz; wide intonation (11.5 semitones); about 14 short pauses per minute; a strong low end; -14 LUFS.
+- **Kokoro comparison:** all 13 Kokoro male voices were compared. am_echo matched the pitch but was flat (6 semitones).
+- **Humanize pass** (`narration/humanize.py`, `--humanize`): TTS sentence by sentence, deterministic pauses from the measured pattern, a slight tempo drift, and room tone. It's part of the fingerprint only when on, so existing caches stay valid. On am_echo it widened intonation from 6.0 to 10.3 semitones.
+- **Qwen3-TTS CustomVoice 0.6B** (Apache-2.0, 2.5 GB) downloaded with approval. The Voicebox adapter now takes the engine from the voice name (`qwen_custom_voice:Ryan`) and sends `model_size` and an `instruct` delivery instruction through `/generate/stream`, with a 1-hour request timeout. The engine licence was added to `REVIEWED_ENGINES`. The voice list includes Qwen voices and skips engines an older Voicebox lacks.
+- **`sage` style and preset:** a tone-match EQ fitted to Ryan's raw output (60% of the difference), plus the documentary dynamics, the Ryan voice, humanizing and a calm-narrator instruction. Ryan was chosen by the user from an A/B against am_echo, am_puck and Aiden.
+- **Voicebox issue found:** an orphaned `voicebox-server` from 18 Oct still held port 17493 after the app was reopened, so Qwen requests failed with 500 / "Broken pipe". It was stopped, Voicebox was reopened, and the fix is documented in `OPERATIONS.md`.
+- **Verification:** a real `--preset sage` build of a demo scene. Intonation 11.7 st vs 11.5, pitch movement 24.7 vs 24.9 st/s, tone gap 2.3 dB, about 12x real time. 7 new tests in `tests/test_humanize.py`.
+
+---
+
+## 2026-10-21: Archival style, steps 1 and 2 (`docs/PILOT_ARCHIVAL_PLAN.md`)
+
+Pilot topic chosen by the user: "Every Philosopher's Answer to Happiness".
+
+### Step 1: public-domain museum images
+- `providers/stock/museums.py`: **The Met** and the **Art Institute of Chicago** open-access APIs. Both are free with no key, and both release public-domain works as CC0. Only items flagged public domain *with* an image are ever returned.
+  - Requests are paced (about 4 per second) and retried with back-off; the Met dropped connections during rapid lookups.
+  - Search index entries that 404 are skipped.
+- **Met API change found:** `/public/collection/v1/search` returns `410 Gone` (retired on 2026-10-01). The pipeline uses `/v1.1/search`, which takes `isPublicDomain`, `hasImages`, `limit` and `offset`. Object lookups are unchanged.
+- **AIC:** its search endpoint answered `503` throughout testing, though the listing endpoint worked. The adapter is tested against a fake API; live use is still to confirm.
+- Stock intake now takes each provider's own `media_hosts`, so museum images download only from `images.metmuseum.org` and `www.artic.edu`. Museum assets are registered as CC0 with museum, object ID, credit line, and title/artist/date (for labels), and stay `pending_review`.
+- CLI: `pipeline archive search` and `pipeline archive add`. `stock` also accepts `--provider met|aic`.
+
+### Step 2: compositions on a dark canvas
+- `VisualBeat.layers` (new optional **Layer** model): image or text layers with position, size, timing, fades, drift, zoom, edge (`feather`, `oval`, `circle`), feather width and crop. Text styles are `quote` (italic, red highlight), `label` (spaced capitals) and `caption` (dim). A composition's `asset_ids` must match its image layers.
+- `render/compose.py`: each layer is prepared once as a transparent PNG (fit, crop, geq alpha mask, or SVG text via librsvg with system Georgia), then one FFmpeg overlay pass animates them on a near-black canvas with alpha fades, drift and frame-evaluated zoom. The runner renders the clip (named by a layer digest) and hands it to the normal scene renderer as a video segment.
+- `compose.py` is part of the renderer digest, so scene fingerprints change when it does. Layer images are recorded as `visual:layer` inputs in render reports. `extra_used_ids` counts every layer image for rights, credits and the publication gate.
+
+### Test scene (tmp/archival-test, git-ignored)
+Two CC0 Met images (met:248475 "Marble head of Epikouros", met:437394 Rembrandt "Aristotle with a Bust of Homer"), one 24 s scene in two beats: a feathered bust with label, date and a highlighted quote, then a fade through black to a feathered Rembrandt with a caption. Music pad underneath. Rendered at 960×540 in 8 s. Known flaw: the Met's navy studio backdrop shows faintly around the bust (step 3 background removal fixes this). The test quote (Principal Doctrines V, tr. Hicks) is used for layout only and must be verified against the source in step 4 before any real use.
+
+### Verification
+`pytest`: **357 passed** (17 new: `test_archive.py`, `test_compose.py`). JSON Schemas regenerated.
+

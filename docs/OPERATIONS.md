@@ -65,6 +65,25 @@ It warns about near-empty or silent audio, true peak above -1 dBTP, leading sile
 .venv/bin/pipeline narration build projects/my-film --preset reckoner
 ```
 
+- `--humanize` reads TTS **sentence by sentence**, so each sentence gets its own intonation. Joined with a single request per scene, TTS tends to flatten into a monotone. The pieces are rejoined with:
+  - natural pauses: 0.33–0.62 s between sentences, a little more after a question, about 1 s at a blank-line paragraph break
+  - a slight tempo drift between sentences
+  - very quiet room tone, so pauses don't fall to digital silence
+
+  It's deterministic and part of the cache key. On Kokoro it widened the measured intonation range from 6 to 10 semitones.
+- `--instruct "..."` passes a delivery instruction to engines that take one (Qwen3-TTS CustomVoice).
+- **`--preset sage`**: calm, deep philosophy-documentary narration. It's shorthand for `--provider voicebox --voice qwen_custom_voice:Ryan --style sage --humanize --instruct "<calm, reflective narrator>"`.
+  - Matched to the **style** of a reference narrator (`references/sage/README.md`): about 120 Hz pitch, about 11 semitones of intonation, a warm close-mic tone.
+  - It uses Qwen3-TTS CustomVoice 0.6B's built-in voice "Ryan" (Apache-2.0); it is not a clone.
+  - Needs the Qwen CustomVoice 0.6B model in Voicebox (2.5 GB).
+  - About **10× slower than real time** on this Mac, so a 4-minute film takes about 40 minutes. Scenes are cached, so only changed scenes rebuild.
+
+```bash
+.venv/bin/pipeline narration build projects/my-film --preset sage
+```
+
+- If Voicebox answers `500` or "Broken pipe" for Qwen, its background server may be orphaned from an earlier session. Quit Voicebox, make sure no `voicebox-server` process is left (`pgrep -fl voicebox-server`), then reopen it.
+
 ### Per-scene pacing
 
 Two optional fields in `scenes.json`:
@@ -160,6 +179,50 @@ Deterministic SVGs from a JSON spec. The same spec always produces the same file
 - Charts and timelines print their source citation in the frame, taken from the research ledger.
 - The output goes to `assets/graphics/<asset_id>.svg` and is registered as an `original_graphic` asset with pending rights review. An existing file is never overwritten; give a changed graphic a new `asset_id`.
 - Text sizes are chosen for phone legibility (body text at least 34 px at 1080p).
+
+### Public-domain museum images: `pipeline archive`
+
+```bash
+.venv/bin/pipeline archive search "marble bust" --source met
+```
+
+```bash
+.venv/bin/pipeline archive add projects/my-film met:248475 --id met-epicurus-head --scene s01-intro
+```
+
+- **Sources:** `--source met` (The Metropolitan Museum of Art) or `--source aic` (Art Institute of Chicago). Both are official open-access APIs: free, no key, and they release public-domain works as **CC0**.
+- **Search:** only public-domain items with an image are listed. Only the query is sent, and nothing is downloaded. Requests are paced and retried politely.
+- **Add:**
+  - Downloads the museum's full image from its own image host only (verified HTTPS), stores it read-only with a checksum, and registers it with the CC0 licence, museum, object ID and credit line.
+  - Title, artist and date are kept in the asset notes for on-screen labels.
+  - It's `pending_review` like any asset. Record the people/trademark checklist, then review it.
+- The Met retired its old `/v1/search` on 2026-10-01; the pipeline uses `/v1.1/search`.
+
+### Compositions: layered images and text on a dark canvas
+
+Give a beat `layers` instead of a single picture. This is the archival look: artworks floating on near-black, with quotes, names and dates fading in.
+
+```json
+{"beat_id": "v01", "scene_id": "s01-intro", "order": 1, "takeaway": "Epicurus on the pleasant life",
+ "visual_type": "licensed_stock", "asset_ids": ["met-epicurus-head"],
+ "layers": [
+   {"kind": "image", "asset_id": "met-epicurus-head", "x": 0.29, "width": 0.36, "edge": "feather",
+    "feather": 0.16, "crop": [0, 0, 1, 0.84], "zoom_to": 1.05, "drift_y": -0.012},
+   {"kind": "text", "text": "Epicurus", "text_style": "label", "x": 0.29, "y": 0.885, "start": 1.6},
+   {"kind": "text", "text": "“…a quote from a ledger claim…”", "text_style": "quote",
+    "highlight": "a quote", "x": 0.69, "y": 0.44, "width": 0.4, "start": 3.6}]}
+```
+
+- **Layout:** positions are layer centres as fractions of the frame, so a layout works at any resolution. Each layer has its own start and end, fades, drift and zoom.
+- **Edges:** `feather` melts a painting or a backdrop into the black, and `oval` and `circle` make medallions. `crop` trims a source, for example a museum pedestal.
+- **Text styles:**
+  - `quote`: serif italics, with the `highlight` phrase in muted red
+  - `label`: letter-spaced capitals
+  - `caption`: small, dimmed
+
+  Quotes on screen must come from a verified ledger claim.
+- **Rendering:** each layer is prepared once as a transparent PNG at its largest zoom, then one FFmpeg pass animates them into a clip that the scene renders like a video. It's cached and fingerprinted like everything else. Every layer image counts for rights, credits and QA.
+- A plain studio backdrop still shows faintly with `feather`. Background removal (step 3 of `docs/PILOT_ARCHIVAL_PLAN.md`) is the proper fix.
 
 ## Rendering (Phase 7)
 

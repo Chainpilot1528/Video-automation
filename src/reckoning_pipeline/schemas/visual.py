@@ -55,6 +55,57 @@ class BeatReview(StrEnum):
     CHANGES_REQUESTED = "changes_requested"
 
 
+class Layer(Record):
+    """One element of a composition: an image or a block of text placed on a dark canvas.
+
+    Positions and sizes are fractions of the frame, so a layout works at any resolution.
+    Times are seconds from the start of the beat. Motion is a slow, linear drift and zoom
+    over the layer's own lifetime.
+    """
+
+    kind: Literal["image", "text"]
+    asset_id: Identifier | None = None          # image layers
+    text: str = ""                              # text layers
+    text_style: Literal["quote", "label", "caption"] = "label"
+    highlight: str = ""                         # part of ``text`` drawn in the accent colour
+    x: float = Field(default=0.5, ge=0, le=1)   # centre of the layer, across the frame
+    y: float = Field(default=0.5, ge=0, le=1)   # centre of the layer, down the frame
+    width: float = Field(default=0.4, gt=0, le=1.5)    # fraction of frame width
+    max_height: float = Field(default=0.8, gt=0, le=1.5)  # images are fitted inside width x max_height
+    start: float = Field(default=0.0, ge=0)
+    end: float | None = Field(default=None, gt=0)  # None = until the beat ends
+    fade_in: float = Field(default=1.2, ge=0, le=10)
+    fade_out: float = Field(default=1.2, ge=0, le=10)
+    drift_x: float = Field(default=0.0, ge=-0.3, le=0.3)  # total travel, fraction of frame width
+    drift_y: float = Field(default=0.0, ge=-0.3, le=0.3)
+    zoom_from: float = Field(default=1.0, ge=0.5, le=2.0)
+    zoom_to: float = Field(default=1.0, ge=0.5, le=2.0)
+    edge: Literal["none", "feather", "oval", "circle"] = "none"
+    feather: float = Field(default=0.09, gt=0, le=0.5)  # feathered/oval edge width, fraction of the shorter side
+    crop: tuple[float, float, float, float] | None = None  # (left, top, right, bottom) fractions of the source
+
+    @model_validator(mode="after")
+    def _rules(self) -> "Layer":
+        if self.kind == "image" and not self.asset_id:
+            raise ValueError("image layers need an asset_id")
+        if self.kind == "text":
+            if not self.text.strip():
+                raise ValueError("text layers need text")
+            if self.asset_id:
+                raise ValueError("text layers take no asset_id")
+            if self.highlight and self.highlight not in self.text:
+                raise ValueError("highlight must be part of the layer's text")
+        if self.end is not None and self.end <= self.start:
+            raise ValueError("a layer must end after it starts")
+        if self.crop is not None:
+            left, top, right, bottom = self.crop
+            if not (0 <= left < right <= 1 and 0 <= top < bottom <= 1):
+                raise ValueError("crop is (left, top, right, bottom) as fractions with left < right and top < bottom")
+            if self.kind != "image":
+                raise ValueError("only image layers can be cropped")
+        return self
+
+
 class GenerationRequest(Record):
     """A request for a generated visual, linked to its beat and scene."""
 
@@ -84,6 +135,7 @@ class VisualBeat(Record):
     duration_seconds: float | None = Field(default=None, gt=0)
     is_reconstruction: bool = False              # depicts a real event without being genuine footage
     label: str = ""                              # on-screen label, e.g. "Reconstruction" / "AI illustration"
+    layers: list[Layer] = Field(default_factory=list)   # a composition on a dark canvas instead of one picture
     generation: GenerationRequest | None = None
     review_status: BeatReview = BeatReview.PENDING
     notes: str = ""
@@ -115,8 +167,14 @@ class VisualBeat(Record):
             raise ValueError("reconstructions must be labelled on screen (label), never passed off as genuine")
         if self.motion is not Motion.NONE and not self.motion_purpose.strip():
             raise ValueError("motion needs a motion_purpose: clarify, reveal evidence, guide attention, or pacing")
-        if not self.asset_ids and not self.requirements.strip():
+        if not self.asset_ids and not self.requirements.strip() and not self.layers:
             raise ValueError("unresolved beats (no asset_ids) must state their requirements")
+        if self.layers:
+            images = list(dict.fromkeys(layer.asset_id for layer in self.layers if layer.kind == "image"))
+            if sorted(images) != sorted(self.asset_ids):
+                raise ValueError("a composition's asset_ids must list exactly the assets its image layers use")
+            if self.motion is not Motion.NONE:
+                raise ValueError("compositions move per layer (drift, zoom); leave the beat's motion as none")
         return self
 
 

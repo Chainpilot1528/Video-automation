@@ -1,6 +1,6 @@
 # Pilot plan: archival-style episode
 
-**Status:** plan only. Nothing is built yet. Written 2026-10-21.
+**Status:** steps 1 and 2 built and tested (2026-10-21); a test scene was rendered for review. Pilot topic: "Every Philosopher's Answer to Happiness". Written 2026-10-21.
 **Goal:** make videos in the visual style of the reference below, using our own design, sources and script, and the `sage` voice.
 
 ---
