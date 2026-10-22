@@ -37,6 +37,14 @@ class PronunciationList(Record):
         return text
 
 
+class SentenceTiming(Record):
+    """Where one sentence sits in a narration file (humanized TTS records these exactly)."""
+
+    text: str
+    start: float = Field(ge=0)
+    end: float = Field(ge=0)
+
+
 class ChunkReport(Record):
     scene_id: Identifier
     asset_id: Identifier
@@ -52,6 +60,7 @@ class ChunkReport(Record):
     true_peak_dbtp: float | None = None
     leading_silence_seconds: float = 0.0
     trailing_silence_seconds: float = 0.0
+    sentences: list[SentenceTiming] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list)
 
 

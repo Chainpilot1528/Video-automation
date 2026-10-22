@@ -32,7 +32,7 @@ from ..providers.tts import TTSError, TTSOptions, TTSProvider
 from ..schemas import Asset, AssetRegistry, SceneManifest
 from ..schemas.asset import CommercialUse, CreationMethod, PublicationStatus, ReviewStatus
 from ..schemas.common import utcnow
-from ..schemas.narration import ChunkReport, NarrationReport, PronunciationList
+from ..schemas.narration import ChunkReport, NarrationReport, PronunciationList, SentenceTiming
 from ..schemas.scene import CaptionStatus, Scene
 from .humanize import humanized_tts
 from .humanize import settings_key as humanize_settings
@@ -229,7 +229,7 @@ def build_narration(result: ValidationResult, tools: Tools, options: BuildOption
             duration_seconds=info.duration_seconds, sample_rate=info.sample_rate, channels=info.channels,
             integrated_lufs=loud.integrated_lufs, true_peak_dbtp=loud.true_peak_dbtp,
             leading_silence_seconds=silence.leading_seconds, trailing_silence_seconds=silence.trailing_seconds,
-            warnings=warnings))
+            sentences=_sentences(path), warnings=warnings))
         scenes[chunk.scene.scene_id] = _update_scene(chunk.scene, asset.asset_id, info.duration_seconds)
 
     report.warnings = _project_warnings(report)
@@ -257,17 +257,33 @@ def _render_chunk(result: ValidationResult, tools: Tools, options: BuildOptions,
             with tempfile.TemporaryDirectory() as tmp:
                 raw = Path(tmp) / "raw.aiff"
                 if options.humanize:
-                    humanized_tts(tools, lambda text, path: options.provider.synthesize(
+                    timings = humanized_tts(tools, lambda text, path: options.provider.synthesize(
                         text, options.voice, path, tts_options), chunk.tts_text, raw.with_suffix(".wav"),
                         speed=chunk.speed, work_dir=Path(tmp))
                     normalize_audio(tools, raw.with_suffix(".wav"), out, sample_rate=rate,
                                     extra_filters=style_filters(options.style))  # tempo already applied
+                    write_json_atomic(timing_path(out), [{"text": t, "start": a, "end": b} for t, a, b in timings])
                 else:
                     options.provider.synthesize(chunk.tts_text, options.voice, raw, tts_options)
                     normalize_audio(tools, raw, out, sample_rate=rate, tempo=chunk.speed,
                                     extra_filters=style_filters(options.style))
     except (MediaError, TTSError) as exc:
         raise NarrationError(f"{chunk.scene.scene_id}: {exc}") from exc
+
+
+def timing_path(audio: Path) -> Path:
+    """Sidecar with per-sentence timings, written next to humanized narration."""
+    return audio.with_suffix(".timing.json")
+
+
+def _sentences(path: Path) -> list[SentenceTiming]:
+    sidecar = timing_path(path)
+    if not sidecar.is_file():
+        return []
+    try:
+        return [SentenceTiming.model_validate(x) for x in json.loads(sidecar.read_text(encoding="utf-8"))]
+    except ValueError:
+        return []
 
 
 def _narration_record(chunk: PlannedChunk, options: BuildOptions, path: Path, rate: int) -> Asset:

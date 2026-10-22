@@ -46,6 +46,10 @@ class TimelineLayer(Layer):
 
     path: str = ""
     sha256: Sha256 | None = None
+    word_times: list[float] = Field(default_factory=list)  # reveal="words": start of each word, beat-relative
+    visible_words: list[int] | None = None   # renderer-internal: draw only these words (layout unchanged)
+    motion_start: float | None = None        # renderer-internal: drift/zoom clock of the parent layer
+    motion_end: float | None = None
 
 
 def layers_key(layers: list[TimelineLayer]) -> str:

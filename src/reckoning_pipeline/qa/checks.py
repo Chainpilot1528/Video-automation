@@ -96,6 +96,7 @@ def run_qa(result: ValidationResult, tools: Tools, profile_name: str, *, media_r
         _gate_checks(c, result)
         _narration_checks(c, result)
         _visual_checks(c, result)
+        _quote_checks(c, result)
 
     found = latest_render_report(project_dir, profile_name) if usable else None
     output_path = output_sha = render_rel = None
@@ -187,6 +188,24 @@ def _gate_checks(c: _Checks, result: ValidationResult) -> None:
         if a is not None and a.attribution_required and not (a.attribution_text or "").strip():
             c.blocker("credits.attribution_missing", aid, "the licence requires attribution, but no attribution "
                                                           "text is recorded")
+
+
+def _quote_checks(c: _Checks, result: ValidationResult) -> None:
+    """Every on-screen quote must reproduce a verified (or knowingly excepted) quotation claim."""
+    claims = {cl.claim_id: cl for cl in result.ledger.claims}
+    excepted = active_exceptions(result.approvals, result.ledger)
+    for b in (result.visuals.beats if result.visuals else []):
+        for layer in b.layers:
+            if layer.kind != "text" or layer.text_style != "quote":
+                continue
+            if not layer.claim_id:
+                c.blocker("visual.quote_unsourced", b.beat_id, "an on-screen quote has no claim_id; quotes must "
+                                                              "come from a ledger quotation with its source")
+                continue
+            claim = claims.get(layer.claim_id)
+            if claim is not None and claim.verification_status != "verified" and layer.claim_id not in excepted:
+                c.blocker("visual.quote_unverified", b.beat_id,
+                          f"quote claim {layer.claim_id!r} is {claim.verification_status}; check it against the source")
 
 
 def _narration_checks(c: _Checks, result: ValidationResult) -> None:

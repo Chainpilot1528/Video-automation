@@ -224,6 +224,26 @@ Give a beat `layers` instead of a single picture. This is the archival look: art
 - **Rendering:** each layer is prepared once as a transparent PNG at its largest zoom, then one FFmpeg pass animates them into a clip that the scene renders like a video. It's cached and fingerprinted like everything else. Every layer image counts for rights, credits and QA.
 - A plain studio backdrop still shows faintly with `feather`. Background removal (step 3 of `docs/PILOT_ARCHIVAL_PLAN.md`) is the proper fix.
 
+#### Kinetic quotes
+
+```json
+{"kind": "text", "text_style": "quote", "reveal": "words", "claim_id": "q-epicurus-pd5",
+ "text": "“It is impossible to live a pleasant life without living wisely and well and justly…”",
+ "highlight": "living wisely and well and justly", "x": 0.69, "y": 0.44, "width": 0.4}
+```
+
+- `"reveal": "words"`: the quote appears **phrase by phrase as the narrator reads it**. Phrases have at most 4 words and break at punctuation, and each fades in over 0.45 s.
+- **Timing:**
+  - The quote is found inside the scene's narration (ignoring case and punctuation).
+  - With humanized narration (`--humanize`, or the `sage` preset), each sentence's start and end are recorded in `narration/<scene>/<id>.timing.json` and the narration report. The reveal is sentence-accurate, with words spread by character count.
+  - Otherwise, words are spread over the measured speech span.
+  - If the quote isn't read in the scene, its words are paced evenly (2.6 per second) and the timeline warns.
+- **Layout stays exact:** each phrase step renders the whole quote with the other words transparent, so nothing shifts as words appear, even while the quote drifts.
+- **Fonts:** **Cormorant Garamond** (SIL Open Font License) is bundled in `src/reckoning_pipeline/render/fonts/` and used through a private font configuration, so nothing is installed system-wide. Georgia is the fallback.
+- **Honesty rule:** a `quote` layer must name its `claim_id`: a ledger **quotation** claim with its source and translation.
+  - `project validate` warns about a quote without one, and errors on an unknown claim.
+  - QA **blocks** publication until the claim is verified (or knowingly excepted).
+
 ## Rendering (Phase 7)
 
 ```bash

@@ -25,6 +25,9 @@ pipeline = "reckoning_pipeline.cli:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+"reckoning_pipeline.render" = ["fonts/*.ttf", "fonts/OFL.txt"]  # Cormorant Garamond (SIL OFL 1.1)
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"

@@ -24,6 +24,7 @@ from ..schemas.timeline import (
 from ..schemas.visual import Motion, VisualBeat
 from ..subtitles.srt import SceneSpan, approximate_cues
 from ..utils.fs import safe_resolve
+from .quotes import word_times
 
 RENDER_VERSION = "1"      # bump when the renderer's output for the same plan changes
 MIX_VERSION = "1"         # bump when the music mix changes
@@ -87,8 +88,9 @@ def compile_timeline(result: ValidationResult, profile: RenderProfile, *, ffmpeg
             warnings.append("dissolves are rendered as a dip through black of the same length")
             dissolve_noted = True
 
+        chunk = _current_chunk(chunks.get(scene.scene_id), narration)
         segments = _segments(scene, beats_by_scene.get(scene.scene_id, []), duration, assets, asset_path,
-                             placeholder_dir, probe_video, warnings)
+                             placeholder_dir, probe_video, warnings, chunk=chunk, lead=lead)
         cues = _cues(scene, chunks.get(scene.scene_id), narration, lead)
         if narration and scene.narration_text.strip() and not cues:
             warnings.append(f"{scene.scene_id}: no current narration report entry, so no captions for this scene")
@@ -160,7 +162,7 @@ def _fade(transition, duration: float) -> float:
 
 
 def _segments(scene: Scene, beats: list[VisualBeat], duration: float, assets, asset_path, placeholder_dir: Path,
-              probe_video, warnings) -> list[TimelineSegment]:
+              probe_video, warnings, *, chunk=None, lead: float = 0.0) -> list[TimelineSegment]:
     beats = sorted(beats, key=lambda b: b.order)
     items = []  # (beat_id, beat or None, asset or None, placeholder text)
     if beats:
@@ -196,6 +198,9 @@ def _segments(scene: Scene, beats: list[VisualBeat], duration: float, assets, as
         common = dict(beat_id=beat_id, start=round(start, 3), duration=seg_duration, motion=motion, label=label)
         if beat is not None and beat.layers:
             layers = _layers(beat, assets, asset_path, warnings)
+            if layers is not None:
+                layers = [_with_word_times(layer, beat.beat_id, scene, chunk, lead, start, warnings)
+                          for layer in layers]
             if layers is None:
                 segments.append(TimelineSegment(kind="placeholder", path=str(placeholder_dir / f"{beat_id}.svg"),
                                                 sha256=None, placeholder_text=f"Composition {beat_id}: an image "
@@ -234,6 +239,26 @@ def _layers(beat: VisualBeat, assets, asset_path, warnings) -> list[TimelineLaye
             return None
         out.append(TimelineLayer(**layer.model_dump(), path=str(asset_path(asset)), sha256=asset.sha256))
     return out
+
+
+def _current_chunk(chunk, narration: TimelineNarration | None):
+    """The narration report entry, only if it describes the audio this timeline actually uses."""
+    if narration is None or chunk is None:
+        return None
+    if chunk.asset_id != narration.asset_id or abs(chunk.duration_seconds - narration.duration) > 0.001:
+        return None
+    return chunk
+
+
+def _with_word_times(layer: TimelineLayer, beat_id: str, scene: Scene, chunk, lead: float, beat_start: float,
+                     warnings: list[str]) -> TimelineLayer:
+    if layer.kind != "text" or layer.reveal != "words":
+        return layer
+    times, warning = word_times(layer.text, scene.narration_text, chunk, lead_in=lead, beat_start=beat_start,
+                                layer_start=layer.start)
+    if warning:
+        warnings.append(f"{beat_id}: quote reveal: {warning}")
+    return layer.model_copy(update={"word_times": times})
 
 
 def _starts(beats: list[VisualBeat | None], duration: float) -> list[float]:

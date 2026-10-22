@@ -598,3 +598,38 @@ Two CC0 Met images (met:248475 "Marble head of Epikouros", met:437394 Rembrandt 
 ### Verification
 `pytest`: **357 passed** (17 new: `test_archive.py`, `test_compose.py`). JSON Schemas regenerated.
 
+
+---
+
+## 2026-10-22: Archival style, step 4: kinetic quotes (`docs/PILOT_ARCHIVAL_PLAN.md`)
+
+### Word-by-word reveal
+- Text layers take `"reveal": "words"`. The quote then appears **phrase by phrase as the narrator reads it**: at most 4 words per phrase, breaking at punctuation, each phrase fading in over 0.45 s.
+- **Timing** (`timeline/quotes.py`): the quote is found inside the scene's narration, ignoring case and punctuation. The timeline compiler stores a start time for each word on the layer (`word_times`), relative to the beat.
+  - **Humanized narration:** `humanized_tts` now returns where each sentence's speech starts and ends. The build writes this to `narration/<scene>/<id>.timing.json` and to the narration report (`ChunkReport.sentences`). The reveal is accurate to the sentence, with words spread by character count inside it.
+  - **Other narration:** words are spread across the measured speech span.
+  - **Quote not read in the scene:** words are paced evenly (2.6 per second) and the timeline warns.
+  - Timings are used only if the report entry matches the audio the timeline actually uses.
+- **Rendering** (`render/compose.py`): `expand_reveals` turns a reveal layer into one layer per phrase. Each phrase layer renders the *whole* quote with the other words transparent (`visible_words`) and shares the parent layer's drift and zoom clock (`motion_start`/`motion_end`). This way nothing shifts as words appear, even while the quote moves.
+
+### Font
+- **Cormorant Garamond** (SIL OFL 1.1, roman and italic variable fonts) is bundled in `render/fonts/` and listed as package data in `pyproject.toml`.
+- It reaches librsvg through a private fontconfig file per render (`font_env`) that includes the system configuration. Nothing is installed system-wide. Georgia is the fallback.
+- Glyph widths and text sizes were retuned for Cormorant.
+
+### Honesty rule for quotes
+- A `quote` layer must name a `claim_id`: a ledger **quotation** claim with its source and translation.
+- `project validate`:
+  - a missing `claim_id` is a warning;
+  - a claim that doesn't exist is an error;
+  - a claim that isn't a quotation is a warning.
+- **QA** blocks publication when a quote has no claim (`visual.quote_unsourced`) or when its claim isn't verified or knowingly excepted (`visual.quote_unverified`).
+
+### Verification
+- `pytest`: all tests pass, including 10 new ones in `tests/test_quotes.py`. They cover quote matching, sentence-timed versus evenly paced reveals, phrase expansion, stable layout, font configuration, the validation and QA rules, sentence timings from a humanized build, and an end-to-end render with phrase layers.
+- JSON Schemas regenerated.
+- In the test scene (`tmp/archival-test`), the humanized sage narration was rebuilt and recorded 4 sentence timings. The quote's sentence runs from 5.54 s to 18.60 s. **The preview still predates the reveal**, so re-render it to review the effect on screen.
+
+### Next action
+- Re-render the test scene and review the reveal.
+- Then **step 3**: medallions, cut-outs and background removal. This needs a decision on the rembg model download (about 170 MB).

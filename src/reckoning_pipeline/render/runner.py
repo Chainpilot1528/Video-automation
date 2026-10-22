@@ -31,7 +31,8 @@ from ..utils.fs import safe_resolve, sha256_file, write_json_atomic, write_text_
 from ..visuals.placeholders import placeholder_svg_text
 from .commands import concat_command, concat_list, music_mix_command, scene_command
 from .compose import (
-    composition_command, image_prepare_command, prepare_layer_files, svg_to_png_command, text_svg,
+    composition_command, expand_reveals, font_env, image_prepare_command, prepare_layer_files, svg_to_png_command,
+    text_svg,
 )
 from .profiles import get_profile
 
@@ -209,7 +210,9 @@ def _render_compositions(tools: Tools, plan: TimelinePlan, scene: TimelineScene,
             continue
         clip = Path(seg.path)
         if not _clip_ok(tools, clip, seg.duration):
-            prepared = prepare_layer_files(seg.layers, plan.profile, work)
+            layers = expand_reveals(seg.layers)
+            env = font_env(work)
+            prepared = prepare_layer_files(layers, plan.profile, work)
             for layer, png in prepared:
                 if png.is_file():
                     continue
@@ -219,9 +222,9 @@ def _render_compositions(tools: Tools, plan: TimelinePlan, scene: TimelineScene,
                     svg = png.with_suffix(".svg")
                     write_text_atomic(svg, text_svg(layer, plan.profile))
                     cmd = svg_to_png_command(tools.ffmpeg, svg.name, png.name)
-                _run(cmd, cwd=work, log=log, what=f"{seg.beat_id}: prepare layer", timeout=120)
+                _run(cmd, cwd=work, log=log, what=f"{seg.beat_id}: prepare layer", timeout=120, env=env)
             partial = clip.with_name(clip.stem + ".partial.mp4")
-            cmd = composition_command(tools.ffmpeg, seg.layers, [png.name for _, png in prepared], plan.profile,
+            cmd = composition_command(tools.ffmpeg, layers, [png.name for _, png in prepared], plan.profile,
                                       seg.duration, partial.name)
             _run(cmd, cwd=work, log=log, what=f"{seg.beat_id}: composition",
                  timeout=max(120.0, seg.duration * SCENE_TIMEOUT_FACTOR))
@@ -277,12 +280,14 @@ def _concat(tools: Tools, base: Path, files: list[Path], final: Path, plan: Time
     return cmds
 
 
-def _run(cmd: list[str], *, cwd: Path, log: Path, what: str, timeout: float) -> None:
+def _run(cmd: list[str], *, cwd: Path, log: Path, what: str, timeout: float,
+         env: dict[str, str] | None = None) -> None:
     with log.open("w", encoding="utf-8") as fh:
         fh.write("$ " + " ".join(cmd) + "\n\n")
         fh.flush()
         try:
-            proc = subprocess.run(cmd, cwd=cwd, stdout=fh, stderr=subprocess.STDOUT, timeout=timeout, check=False)
+            proc = subprocess.run(cmd, cwd=cwd, stdout=fh, stderr=subprocess.STDOUT, timeout=timeout, check=False,
+                                  env={**os.environ, **env} if env else None)
         except (OSError, subprocess.TimeoutExpired) as exc:
             raise RenderError(f"{what}: FFmpeg could not run ({exc}); see {log}") from exc
     if proc.returncode != 0:

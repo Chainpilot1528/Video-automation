@@ -28,11 +28,17 @@ CANVAS = "0x0b0b0d"            # near-black, a touch warm
 INK = "#ece6da"                # parchment white for text
 ACCENT = "#b3261e"             # muted red for highlighted words
 DIM = "#9b9488"                # citations and small captions
-SERIF = "Georgia, 'Times New Roman', serif"
+SERIF = "'Cormorant Garamond', Georgia, 'Times New Roman', serif"
+FONT_DIR = Path(__file__).resolve().parent / "fonts"   # Cormorant Garamond, SIL Open Font License (OFL.txt)
+SYSTEM_FONT_CONFS = ("/opt/local/etc/fonts/fonts.conf", "/opt/homebrew/etc/fonts/fonts.conf",
+                     "/usr/local/etc/fonts/fonts.conf", "/etc/fonts/fonts.conf")
+PHRASE_WORDS = 4               # a word reveal steps through phrases of at most this many words
+PHRASE_FADE = 0.45             # each phrase fades in over this long
+_PHRASE_END = (",", ".", ";", ":", "!", "?", "—", "–", "…", "”")
 FEATHER = 0.09                 # feathered edge, as a fraction of the layer's shorter side
 OVAL_SOFTNESS = 0.05           # softness of oval/circle edges, in normalized radius
-CHAR_WIDTH = {"quote": 0.47, "label": 0.62, "caption": 0.5}   # average glyph width / font size
-SIZE = {"quote": 1 / 22, "label": 1 / 42, "caption": 1 / 34}  # font size as a fraction of frame height
+CHAR_WIDTH = {"quote": 0.42, "label": 0.82, "caption": 0.46}  # average advance / font size (Cormorant)
+SIZE = {"quote": 1 / 19, "label": 1 / 38, "caption": 1 / 30}  # font size as a fraction of frame height
 LINE = {"quote": 1.45, "label": 1.3, "caption": 1.35}
 
 
@@ -103,8 +109,46 @@ def _marked_words(text: str, highlight: str) -> list[tuple[str, bool]]:
     return out
 
 
+def font_env(work: Path) -> dict[str, str]:
+    """Environment that lets the SVG renderer see the bundled fonts, without installing them system-wide."""
+    base = next((c for c in SYSTEM_FONT_CONFS if Path(c).is_file()), None)
+    include = f'<include ignore_missing="yes">{base}</include>' if base else ""
+    conf = work / "fonts.conf"
+    conf.write_text('<?xml version="1.0"?><!DOCTYPE fontconfig SYSTEM "fonts.dtd">\n'
+                    f"<fontconfig>{include}<dir>{escape(str(FONT_DIR))}</dir>"
+                    f"<cachedir>{escape(str(work / '.fontcache'))}</cachedir></fontconfig>\n", encoding="utf-8")
+    return {"FONTCONFIG_FILE": str(conf), "PANGOCAIRO_BACKEND": "fc"}
+
+
+def expand_reveals(layers: list[TimelineLayer]) -> list[TimelineLayer]:
+    """Turn each word-reveal layer into phrase steps. Each step draws only its own words, but in the
+    full quote's layout and on the full layer's motion clock, so the phrases line up exactly."""
+    out: list[TimelineLayer] = []
+    for layer in layers:
+        words = layer.text.split()
+        if layer.kind != "text" or layer.reveal != "words" or len(layer.word_times) != len(words) or not words:
+            out.append(layer)
+            continue
+        groups: list[list[int]] = [[]]
+        for i, word in enumerate(words):
+            groups[-1].append(i)
+            if len(groups[-1]) >= PHRASE_WORDS or word.endswith(_PHRASE_END):
+                groups.append([])
+        groups = [g for g in groups if g]
+        end = layer.end
+        for g in groups:
+            start = layer.word_times[g[0]]
+            if end is not None:
+                start = min(start, end - 0.1)
+            out.append(layer.model_copy(update={
+                "visible_words": g, "start": round(start, 3), "fade_in": PHRASE_FADE,
+                "motion_start": layer.start, "motion_end": layer.end, "word_times": []}))
+    return out
+
+
 def text_svg(layer: TimelineLayer, profile: RenderProfile) -> str:
-    """Transparent SVG for a text layer. Labels are set in letter-spaced capitals (a small-caps look)."""
+    """Transparent SVG for a text layer. Labels are set in letter-spaced capitals (a small-caps look).
+    With ``visible_words``, the other words are laid out but transparent, so positions never shift."""
     style = layer.text_style
     bw = _even(profile.width * layer.width * max(layer.zoom_from, layer.zoom_to))
     size = max(round(profile.height * SIZE[style] * max(layer.zoom_from, layer.zoom_to)), 8)
@@ -118,11 +162,15 @@ def text_svg(layer: TimelineLayer, profile: RenderProfile) -> str:
     spacing = f' letter-spacing="{size * 0.18:.1f}"' if style == "label" else ""
     base_fill = DIM if style == "caption" else INK
     rows = []
+    visible = set(layer.visible_words) if layer.visible_words is not None else None
+    index = 0
     for n, line in enumerate(lines):
         spans = []
         for k, (word, hl) in enumerate(line):
             fill = ACCENT if hl else base_fill
-            spans.append(f'<tspan fill="{fill}">{escape(word)}{" " if k < len(line) - 1 else ""}</tspan>')
+            hidden = ' fill-opacity="0"' if visible is not None and index not in visible else ""
+            spans.append(f'<tspan fill="{fill}"{hidden}>{escape(word)}{" " if k < len(line) - 1 else ""}</tspan>')
+            index += 1
         y = size * 1.05 + n * line_h
         rows.append(f'<text x="{bw / 2:.1f}" y="{y:.1f}" text-anchor="middle" font-family="{SERIF}" '
                     f'font-size="{size}"{italic}{spacing} xml:space="preserve">{"".join(spans)}</text>')
@@ -155,8 +203,12 @@ def composition_command(ffmpeg: str, layers: list[TimelineLayer], pngs: list[str
         start = min(layer.start, duration)
         end = min(layer.end if layer.end is not None else duration, duration)
         life = max(end - start, 0.04)
+        # Drift and zoom follow the parent layer's clock (phrase steps of a reveal share it).
+        m_start = min(layer.motion_start if layer.motion_start is not None else start, duration)
+        m_end = min(layer.motion_end if layer.motion_end is not None else end, duration)
+        m_life = max(m_end - m_start, 0.04)
         zmax = max(layer.zoom_from, layer.zoom_to)
-        p = f"clip((t-{_num(start)})/{_num(life)},0,1)"
+        p = f"clip((t-{_num(m_start)})/{_num(m_life)},0,1)"
         z = f"({_num(layer.zoom_from)}+({_num(layer.zoom_to - layer.zoom_from)})*{p})/{_num(zmax)}"
         chain = f"[{i}:v]format=rgba"
         if layer.zoom_from != layer.zoom_to:

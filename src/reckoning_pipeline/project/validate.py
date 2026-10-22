@@ -358,6 +358,18 @@ def _check_visuals(result: ValidationResult) -> None:
             for ref in ids:
                 if pool is not None and ref not in pool:
                     result.add("error", f"ref.missing_{kind}", loc, f"unknown {kind} {ref!r}")
+        claims = {c.claim_id: c for c in result.ledger.claims} if result.ledger else None
+        for layer in b.layers:
+            if layer.claim_id and claims is not None:
+                claim = claims.get(layer.claim_id)
+                if claim is None:
+                    result.add("error", "ref.missing_claim", loc, f"layer quotes unknown claim {layer.claim_id!r}")
+                elif claim.claim_type != "quotation":
+                    result.add("warning", "visual.quote_claim_type", loc,
+                               f"layer cites {layer.claim_id!r}, a {claim.claim_type} claim, not a quotation")
+            if layer.kind == "text" and layer.text_style == "quote" and not layer.claim_id:
+                result.add("warning", "visual.quote_unsourced", loc,
+                           "an on-screen quote needs claim_id: a ledger quotation with its source and translation")
 
 
 def _check_status_gates(result: ValidationResult) -> None:

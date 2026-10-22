@@ -79,6 +79,19 @@
           "default": null,
           "title": "Asset Id"
         },
+        "claim_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Claim Id"
+        },
         "crop": {
           "anyOf": [
             {
@@ -185,6 +198,15 @@
           "maximum": 1.5,
           "title": "Max Height",
           "type": "number"
+        },
+        "reveal": {
+          "default": "fade",
+          "enum": [
+            "fade",
+            "words"
+          ],
+          "title": "Reveal",
+          "type": "string"
         },
         "start": {
           "default": 0.0,

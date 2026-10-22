@@ -68,6 +68,8 @@ class Layer(Record):
     text: str = ""                              # text layers
     text_style: Literal["quote", "label", "caption"] = "label"
     highlight: str = ""                         # part of ``text`` drawn in the accent colour
+    reveal: Literal["fade", "words"] = "fade"   # "words": appear phrase by phrase as the narrator reads them
+    claim_id: Identifier | None = None          # quotes: the ledger quotation claim this text reproduces
     x: float = Field(default=0.5, ge=0, le=1)   # centre of the layer, across the frame
     y: float = Field(default=0.5, ge=0, le=1)   # centre of the layer, down the frame
     width: float = Field(default=0.4, gt=0, le=1.5)    # fraction of frame width
@@ -95,6 +97,8 @@ class Layer(Record):
                 raise ValueError("text layers take no asset_id")
             if self.highlight and self.highlight not in self.text:
                 raise ValueError("highlight must be part of the layer's text")
+        elif self.reveal != "fade" or self.claim_id:
+            raise ValueError("reveal and claim_id are for text layers")
         if self.end is not None and self.end <= self.start:
             raise ValueError("a layer must end after it starts")
         if self.crop is not None:

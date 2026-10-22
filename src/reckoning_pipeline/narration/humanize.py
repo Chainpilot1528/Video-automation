@@ -91,15 +91,18 @@ def _ffmpeg(tools: Tools, args: list[str], what: str) -> None:
 
 
 def humanized_tts(tools: Tools, synthesize: Callable[[str, Path], None], text: str, out: Path, *,
-                  speed: float, work_dir: Path) -> None:
+                  speed: float, work_dir: Path) -> list[tuple[str, float, float]]:
     """Synthesize ``text`` piece by piece with ``synthesize(sentence, path)`` and write one WAV to ``out``.
 
-    The result is at the final tempo already, so normalize it with tempo 1.0.
+    The result is at the final tempo already, so normalize it with tempo 1.0. Returns where each
+    sentence's speech starts and ends in the file: (sentence, start, end) in seconds.
     """
     pieces = plan_pieces(text)
     if not pieces:
         raise MediaError("nothing to synthesize")
     parts = []
+    timings: list[tuple[str, float, float]] = []
+    clock = 0.0
     for i, piece in enumerate(pieces):
         raw = work_dir / f"s{i:03d}.aiff"  # providers write WAV or AIFF; FFmpeg probes the content
         synthesize(piece.text, raw)
@@ -112,6 +115,10 @@ def humanized_tts(tools: Tools, synthesize: Callable[[str, Path], None], text: s
                         "-ac", "1", "-ar", str(WORK_RATE), "-c:a", "pcm_s16le", str(part)],
                 f"sentence {i + 1}")
         parts.append(part)
+        length = probe_audio(tools, part).duration_seconds
+        speech = max(length - piece.gap_after, 0.0)
+        timings.append((piece.text, round(clock, 3), round(clock + speech, 3)))
+        clock += length
     listing = work_dir / "parts.txt"
     listing.write_text("".join(f"file '{p.name}'\n" for p in parts), encoding="utf-8")
     joined = work_dir / "joined.wav"
@@ -123,3 +130,4 @@ def humanized_tts(tools: Tools, synthesize: Callable[[str, Path], None], text: s
                     "[0:a][room]amix=inputs=2:normalize=0:duration=first[out]",
                     "-map", "[out]", "-ac", "1", "-ar", str(WORK_RATE), "-c:a", "pcm_s16le", str(out)],
             "room tone")
+    return timings

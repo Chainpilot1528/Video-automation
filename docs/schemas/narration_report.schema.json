@@ -63,6 +63,13 @@
           "title": "Scene Id",
           "type": "string"
         },
+        "sentences": {
+          "items": {
+            "$ref": "#/$defs/SentenceTiming"
+          },
+          "title": "Sentences",
+          "type": "array"
+        },
         "sha256": {
           "pattern": "^[0-9a-f]{64}$",
           "title": "Sha256",
@@ -106,6 +113,33 @@
         "channels"
       ],
       "title": "ChunkReport",
+      "type": "object"
+    },
+    "SentenceTiming": {
+      "additionalProperties": false,
+      "description": "Where one sentence sits in a narration file (humanized TTS records these exactly).",
+      "properties": {
+        "end": {
+          "minimum": 0,
+          "title": "End",
+          "type": "number"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "number"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "start",
+        "end"
+      ],
+      "title": "SentenceTiming",
       "type": "object"
     }
   },
