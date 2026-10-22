@@ -11,7 +11,7 @@
     },
     "ChapterMapView": {
       "additionalProperties": false,
-      "description": "Show the chapter map: rest on ``from_level``, ease down to ``level``, and place the medallions.\n\nThe new level's medallions fade in once the camera arrives; the others are there from the start.",
+      "description": "Show the chapter map: rest on ``from_level``, ease down to ``level``, and place the medallions.\n\nGoing down, the new level's medallions fade in once the camera arrives; the others (and all of\nthem when the camera climbs back up, as a recap) are there from the start.",
       "properties": {
         "asset_id": {
           "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",

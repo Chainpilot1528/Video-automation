@@ -279,7 +279,7 @@ def _map_layers(beat_id: str, view: ChapterMapView, assets, asset_path, warnings
             warnings.append(f"{beat_id}: medallion asset {m.asset_id!r} is not an image; using a placeholder")
             return None
         ax, ay = cmap.marker_anchor(m.level, slot, n)
-        new = pans and m.level == view.level
+        new = view.level > view.start_level() and m.level == view.level   # arriving downward; a climb is a recap
         timing = dict(start=round(max(arrive - 0.3, 0.0), 3), fade_in=1.2) if new else dict(fade_in=1.0)
         x, y = round(ax / fw, 4), round(0.5 + (ay - v0) / fh, 4)
         out.append(TimelineLayer(kind="image", asset_id=m.asset_id, path=str(asset_path(a)), sha256=a.sha256,

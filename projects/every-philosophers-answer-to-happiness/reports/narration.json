@@ -1,0 +1,319 @@
+{
+  "schema_version": "1.0",
+  "project_id": "every-philosophers-answer-to-happiness",
+  "built_at": "2026-10-22T19:07:51Z",
+  "provider": "voicebox",
+  "voice": "kokoro:am_liam",
+  "chunks": [
+    {
+      "scene_id": "s01-cold-open",
+      "asset_id": "narr-s01-cold-open",
+      "route": "tts",
+      "path": "narration/s01-cold-open/bd9a060783fc935d.wav",
+      "sha256": "d02dd2e4145fd34981397f0ca4c66b0ea4a644d13b0547652101b984f4926261",
+      "fingerprint": "bd9a060783fc935d87e39017a439fc35c161485b4183c621a5c6896193549107",
+      "cached": false,
+      "duration_seconds": 14.76,
+      "sample_rate": 48000,
+      "channels": 1,
+      "integrated_lufs": -19.9,
+      "true_peak_dbtp": -3.5,
+      "leading_silence_seconds": 0.0,
+      "trailing_silence_seconds": 0.0,
+      "sentences": [
+        {
+          "text": "For more than two thousand years, philosophers have tried to answer one question.",
+          "start": 0.0,
+          "end": 4.467
+        },
+        {
+          "text": "What does it take to be happy?",
+          "start": 4.887,
+          "end": 6.493
+        },
+        {
+          "text": "Their answers don't agree.",
+          "start": 7.193,
+          "end": 8.989
+        },
+        {
+          "text": "Each one goes a little deeper than the last.",
+          "start": 9.319,
+          "end": 11.763
+        },
+        {
+          "text": "So let's go down, one step at a time.",
+          "start": 12.383,
+          "end": 14.742
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "scene_id": "s02-epicurus",
+      "asset_id": "narr-s02-epicurus",
+      "route": "tts",
+      "path": "narration/s02-epicurus/4c3bfc6347cfa382.wav",
+      "sha256": "7cbae1332f8ebfa03ba1dfec6aa211d67b5156eaea85ac26e089e5c014cd15c8",
+      "fingerprint": "4c3bfc6347cfa3822eb9fff9d2b7e7a526053f3c9356b4c73a050b9352df5445",
+      "cached": false,
+      "duration_seconds": 24.06,
+      "sample_rate": 48000,
+      "channels": 1,
+      "integrated_lufs": -20.2,
+      "true_peak_dbtp": -2.3,
+      "leading_silence_seconds": 0.0,
+      "trailing_silence_seconds": 0.0,
+      "sentences": [
+        {
+          "text": "At the top is Epicurus.",
+          "start": 0.0,
+          "end": 1.786
+        },
+        {
+          "text": "In a garden in Athens, he taught his friends that pleasure is the point of life.",
+          "start": 2.206,
+          "end": 6.286
+        },
+        {
+          "text": "But not the pleasure you might think.",
+          "start": 6.836,
+          "end": 8.841
+        },
+        {
+          "text": "In his words: it is impossible to live a pleasant life without living wisely and well and justly, and it is impossible to live wisely and well and justly without living pleasantly.",
+          "start": 9.171,
+          "end": 19.863
+        },
+        {
+          "text": "For Epicurus, a good life and a happy life were the same life.",
+          "start": 20.483,
+          "end": 24.043
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "scene_id": "s03-aristotle",
+      "asset_id": "narr-s03-aristotle",
+      "route": "tts",
+      "path": "narration/s03-aristotle/00ba58ed205a6ab0.wav",
+      "sha256": "b2ea684d733019b1fd51d210aad4181f44cbfd1f2626998d97c934dc2b12d3b8",
+      "fingerprint": "00ba58ed205a6ab06fdb1f811e54c0a5a39c86a45c2b10a7265a3fd6117c3e6c",
+      "cached": false,
+      "duration_seconds": 20.093,
+      "sample_rate": 48000,
+      "channels": 1,
+      "integrated_lufs": -20.1,
+      "true_peak_dbtp": -1.4,
+      "leading_silence_seconds": 0.0,
+      "trailing_silence_seconds": 0.0,
+      "sentences": [
+        {
+          "text": "One step down is Aristotle.",
+          "start": 0.0,
+          "end": 2.086
+        },
+        {
+          "text": "For him, happiness isn't a feeling you have.",
+          "start": 2.506,
+          "end": 5.005
+        },
+        {
+          "text": "It's something you do: living out what you are best at, and doing it well.",
+          "start": 5.555,
+          "end": 9.223
+        },
+        {
+          "text": "And it takes time.",
+          "start": 9.553,
+          "end": 10.864
+        },
+        {
+          "text": "As he put it: it is not one swallow or one fine day that makes a spring, so it is not one day or a short time that makes a man blessed and happy.",
+          "start": 11.484,
+          "end": 20.075
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "scene_id": "s04-stoics",
+      "asset_id": "narr-s04-stoics",
+      "route": "tts",
+      "path": "narration/s04-stoics/c6b1c5b18ef53ad9.wav",
+      "sha256": "81e1ac5f50d32c5c6b709f9bbb5de37d414bc68948db95d7f5887a0ea3827592",
+      "fingerprint": "c6b1c5b18ef53ad926352693def3d80d23d29df58479621ac2c1d362bb6deccb",
+      "cached": false,
+      "duration_seconds": 19.365,
+      "sample_rate": 48000,
+      "channels": 1,
+      "integrated_lufs": -20.1,
+      "true_peak_dbtp": -2.9,
+      "leading_silence_seconds": 0.0,
+      "trailing_silence_seconds": 0.0,
+      "sentences": [
+        {
+          "text": "Deeper still are the Stoics.",
+          "start": 0.0,
+          "end": 1.828
+        },
+        {
+          "text": "Epictetus was born a slave, so he knew how little of life we control.",
+          "start": 2.248,
+          "end": 6.391
+        },
+        {
+          "text": "He moved happiness to the one place no one else can reach: our own judgements.",
+          "start": 6.941,
+          "end": 11.442
+        },
+        {
+          "text": "Men are disturbed not by things, but by the views which they take of things.",
+          "start": 11.772,
+          "end": 15.945
+        },
+        {
+          "text": "Change the view, and the storm loses its grip.",
+          "start": 16.565,
+          "end": 19.347
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "scene_id": "s05-schopenhauer",
+      "asset_id": "narr-s05-schopenhauer",
+      "route": "tts",
+      "path": "narration/s05-schopenhauer/8612bc388ad9c303.wav",
+      "sha256": "6adca9ab455319d899de504dac39ab1c36c5a3a2d329dced62cb7507ce78feb2",
+      "fingerprint": "8612bc388ad9c303c38094003309917f2196cf3b6513e5ffca4ecaea556319a3",
+      "cached": false,
+      "duration_seconds": 20.525,
+      "sample_rate": 48000,
+      "channels": 1,
+      "integrated_lufs": -20.0,
+      "true_peak_dbtp": -3.2,
+      "leading_silence_seconds": 0.0,
+      "trailing_silence_seconds": 0.0,
+      "sentences": [
+        {
+          "text": "Then the ground gives way.",
+          "start": 0.0,
+          "end": 1.625
+        },
+        {
+          "text": "In 1818, Arthur Schopenhauer argued that all wanting comes from lack, and lack is a kind of pain.",
+          "start": 2.045,
+          "end": 8.391
+        },
+        {
+          "text": "Get what you want, and boredom moves in.",
+          "start": 8.941,
+          "end": 11.244
+        },
+        {
+          "text": "In his words, life swings like a pendulum backwards and forwards between pain and ennui.",
+          "start": 11.574,
+          "end": 16.699
+        },
+        {
+          "text": "On this view, lasting happiness was never on offer.",
+          "start": 17.319,
+          "end": 20.508
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "scene_id": "s06-mill",
+      "asset_id": "narr-s06-mill",
+      "route": "tts",
+      "path": "narration/s06-mill/6c7ed903268406ec.wav",
+      "sha256": "46557b4c3ff5e73f6533352e4110ac9d36747c25db6ded9232fe4174c4ac20e2",
+      "fingerprint": "6c7ed903268406ec3fec109346864ab935c0318820af4c21d6c7dcd7173044ed",
+      "cached": false,
+      "duration_seconds": 20.575,
+      "sample_rate": 48000,
+      "channels": 1,
+      "integrated_lufs": -20.0,
+      "true_peak_dbtp": -1.8,
+      "leading_silence_seconds": 0.0,
+      "trailing_silence_seconds": 0.0,
+      "sentences": [
+        {
+          "text": "At the bottom is a surprise.",
+          "start": 0.0,
+          "end": 1.932
+        },
+        {
+          "text": "In the autumn of 1826, a young John Stuart Mill fell into a crisis he could not shake.",
+          "start": 2.352,
+          "end": 8.2
+        },
+        {
+          "text": "What he took from it is the strangest advice on this list.",
+          "start": 8.75,
+          "end": 12.244
+        },
+        {
+          "text": "Ask yourself whether you are happy, and you cease to be so.",
+          "start": 12.574,
+          "end": 15.797
+        },
+        {
+          "text": "Happiness, he decided, comes by the way, while you are aiming at something else.",
+          "start": 16.417,
+          "end": 20.556
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "scene_id": "s07-close",
+      "asset_id": "narr-s07-close",
+      "route": "tts",
+      "path": "narration/s07-close/93c424b3ff5ae364.wav",
+      "sha256": "1a583e43c71be16a57257f05306b462dc4f56b05735d01ee3f4f9a74a54d721b",
+      "fingerprint": "93c424b3ff5ae364af9f21a61672c2f82735db8fd505194c98f7bab37a550a61",
+      "cached": false,
+      "duration_seconds": 15.066,
+      "sample_rate": 48000,
+      "channels": 1,
+      "integrated_lufs": -19.9,
+      "true_peak_dbtp": -3.8,
+      "leading_silence_seconds": 0.0,
+      "trailing_silence_seconds": 0.0,
+      "sentences": [
+        {
+          "text": "Five steps down, the answers have turned upside down.",
+          "start": 0.0,
+          "end": 2.99
+        },
+        {
+          "text": "Pleasure, then purpose, then control, then doubt.",
+          "start": 3.41,
+          "end": 6.045
+        },
+        {
+          "text": "And finally: stop looking straight at it.",
+          "start": 6.595,
+          "end": 8.844
+        },
+        {
+          "text": "Maybe happiness isn't something you hold.",
+          "start": 9.174,
+          "end": 11.536
+        },
+        {
+          "text": "Maybe it's what happens while you're holding something else.",
+          "start": 12.156,
+          "end": 15.048
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "missing": [],
+  "warnings": []
+}

@@ -1,0 +1,467 @@
+{
+  "schema_version": "1.0",
+  "sources": [
+    {
+      "source_id": "src-dl-hicks",
+      "title": "Lives of Eminent Philosophers, Book X (Epicurus)",
+      "authors": [
+        "Diogenes Laërtius",
+        "R. D. Hicks (translator)"
+      ],
+      "publisher": "Loeb Classical Library (Heinemann / Putnam)",
+      "url": "https://en.wikisource.org/wiki/Lives_of_the_Eminent_Philosophers/Book_X",
+      "archive_id": null,
+      "identifier": "Loeb Classical Library 185, vol. II, Book X",
+      "published_date": "1925-01-01",
+      "accessed_date": "2026-10-23",
+      "source_type": "book",
+      "classification": "primary",
+      "supported_claim_ids": [
+        "q-epicurus-pd5",
+        "c-epicurus-garden",
+        "c-epicurus-dates"
+      ],
+      "excerpts": [
+        {
+          "claim_id": "q-epicurus-pd5",
+          "text": "It is impossible to live a pleasant life without living wisely and well and justly, and it is impossible to live wisely and well and justly without living pleasantly.",
+          "locator": "X.140, Principal Doctrines V"
+        },
+        {
+          "claim_id": "c-epicurus-garden",
+          "text": "Friends indeed came to him from all parts and lived with him in his garden.",
+          "locator": "X.10"
+        },
+        {
+          "claim_id": "c-epicurus-dates",
+          "text": "He was born ... in the third year of the 109th Olympiad, in the archonship of Sosigenes [341 B.C.] ... died ... in the archonship of Pytharatus, at the age of seventy-two",
+          "locator": "X.14-15 (with Hicks's notes giving the years)"
+        }
+      ],
+      "reliability_notes": "Standard English translation of the ancient biography; Principal Doctrines are Epicurus's own maxims as preserved by Diogenes.",
+      "verification_status": "checked",
+      "citation_text": "",
+      "usage_notes": "Public domain: published 1925; translator died 1929. Wording matched against the Wikisource transcription on 2026-10-23."
+    },
+    {
+      "source_id": "src-aristotle-chase",
+      "title": "The Nicomachean Ethics of Aristotle",
+      "authors": [
+        "Aristotle",
+        "D. P. Chase (translator)"
+      ],
+      "publisher": "Everyman's Library (J. M. Dent), from Chase's 1847 translation",
+      "url": "https://www.gutenberg.org/ebooks/8438",
+      "archive_id": null,
+      "identifier": "Project Gutenberg eBook #8438; Nicomachean Ethics I.7, 1098a16-20 (Bekker)",
+      "published_date": "1911-01-01",
+      "accessed_date": "2026-10-23",
+      "source_type": "book",
+      "classification": "primary",
+      "supported_claim_ids": [
+        "q-aristotle-swallow",
+        "i-aristotle-activity"
+      ],
+      "excerpts": [
+        {
+          "claim_id": "q-aristotle-swallow",
+          "text": "for as it is not one swallow or one fine day that makes a spring, so it is not one day or a short time that makes a man blessed and happy.",
+          "locator": "Book I (Chase's chapter V), 1098a18-20"
+        },
+        {
+          "claim_id": "i-aristotle-activity",
+          "text": "then the Good of Man comes to be “a working of the Soul in the way of Excellence,” or, if Excellence admits of degrees, in the way of the best and most perfect Excellence.",
+          "locator": "Book I (Chase's chapter V), 1098a16-18"
+        }
+      ],
+      "reliability_notes": "Aristotle's own text in a 19th-century translation.",
+      "verification_status": "checked",
+      "citation_text": "",
+      "usage_notes": "Chosen over Ross (1908) because Ross died in 1971, so his translation is not public domain in the UK/EU. Chase died 1902. The Gutenberg edition names no translator on its title page; its bibliography lists Chase's 1847 translation. Confirm the attribution before publishing."
+    },
+    {
+      "source_id": "src-epictetus-higginson",
+      "title": "The Enchiridion",
+      "authors": [
+        "Epictetus",
+        "Thomas Wentworth Higginson (translator)",
+        "Albert Salomon (introduction)"
+      ],
+      "publisher": "The Liberal Arts Press, New York (reprint of Higginson's 1865 translation)",
+      "url": "https://www.gutenberg.org/ebooks/45109",
+      "archive_id": null,
+      "identifier": "Project Gutenberg eBook #45109; Enchiridion 5",
+      "published_date": "1948-10-01",
+      "accessed_date": "2026-10-23",
+      "source_type": "book",
+      "classification": "primary",
+      "supported_claim_ids": [
+        "q-epictetus-ench5",
+        "c-epictetus-slave"
+      ],
+      "excerpts": [
+        {
+          "claim_id": "q-epictetus-ench5",
+          "text": "Men are disturbed not by things, but by the views which they take of things.",
+          "locator": "Enchiridion 5"
+        },
+        {
+          "claim_id": "c-epictetus-slave",
+          "text": "Epictetus was the son of a woman slave, born between 50 and 60 A.D. at Hieropolis in Phrygia.",
+          "locator": "Introduction (Albert Salomon), p. vii"
+        }
+      ],
+      "reliability_notes": "Translation: Higginson (1865). Biographical fact from the 1948 editor's introduction (secondary).",
+      "verification_status": "checked",
+      "citation_text": "",
+      "usage_notes": "Translation public domain (Higginson died 1911). The 1948 introduction is quoted for a fact only, not reproduced."
+    },
+    {
+      "source_id": "src-schopenhauer-hk",
+      "title": "The World as Will and Idea, Vol. 1",
+      "authors": [
+        "Arthur Schopenhauer",
+        "R. B. Haldane (translator)",
+        "J. Kemp (translator)"
+      ],
+      "publisher": "Trübner / Kegan Paul (London)",
+      "url": "https://www.gutenberg.org/ebooks/38427",
+      "archive_id": null,
+      "identifier": "Project Gutenberg eBook #38427; Book IV, § 57",
+      "published_date": "1883-01-01",
+      "accessed_date": "2026-10-23",
+      "source_type": "book",
+      "classification": "primary",
+      "supported_claim_ids": [
+        "q-schopenhauer-pendulum",
+        "i-schopenhauer-want",
+        "c-schopenhauer-1818"
+      ],
+      "excerpts": [
+        {
+          "claim_id": "q-schopenhauer-pendulum",
+          "text": "Thus its life swings like a pendulum backwards and forwards between pain and ennui.",
+          "locator": "Book IV, § 57"
+        },
+        {
+          "claim_id": "i-schopenhauer-want",
+          "text": "Willing and striving is its whole being, which may be very well compared to an unquenchable thirst. But the basis of all willing is need, deficiency, and thus pain.",
+          "locator": "Book IV, § 57"
+        },
+        {
+          "claim_id": "c-schopenhauer-1818",
+          "text": "Written at Dresden in August 1818.",
+          "locator": "Preface to the first edition"
+        }
+      ],
+      "reliability_notes": "Schopenhauer's own text in the standard 19th-century translation.",
+      "verification_status": "checked",
+      "citation_text": "",
+      "usage_notes": "Published 1883; public domain in the US. Haldane died 1928; check J. Kemp's death date before relying on non-US public-domain status."
+    },
+    {
+      "source_id": "src-mill-autobiography",
+      "title": "Autobiography",
+      "authors": [
+        "John Stuart Mill"
+      ],
+      "publisher": "Longmans, Green, Reader, and Dyer (London)",
+      "url": "https://www.gutenberg.org/ebooks/10378",
+      "archive_id": null,
+      "identifier": "Project Gutenberg eBook #10378; Chapter V",
+      "published_date": "1873-01-01",
+      "accessed_date": "2026-10-23",
+      "source_type": "book",
+      "classification": "primary",
+      "supported_claim_ids": [
+        "q-mill-ask",
+        "c-mill-1826",
+        "i-mill-byway"
+      ],
+      "excerpts": [
+        {
+          "claim_id": "q-mill-ask",
+          "text": "Ask yourself whether you are happy, and you cease to be so.",
+          "locator": "Chapter V, A Crisis in My Mental History"
+        },
+        {
+          "claim_id": "c-mill-1826",
+          "text": "But the time came when I awakened from this as from a dream. It was in the autumn of 1826. I was in a dull state of nerves",
+          "locator": "Chapter V"
+        },
+        {
+          "claim_id": "i-mill-byway",
+          "text": "Those only are happy (I thought) who have their minds fixed on some object other than their own happiness ... Aiming thus at something else, they find happiness by the way.",
+          "locator": "Chapter V"
+        }
+      ],
+      "reliability_notes": "Mill's own account, written in English.",
+      "verification_status": "checked",
+      "citation_text": "",
+      "usage_notes": "Public domain (Mill died 1873)."
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "q-epicurus-pd5",
+      "text": "It is impossible to live a pleasant life without living wisely and well and justly, and it is impossible to live wisely and well and justly without living pleasantly.",
+      "claim_type": "quotation",
+      "importance": "critical",
+      "source_ids": [
+        "src-dl-hicks"
+      ],
+      "verification_status": "unverified",
+      "caveats": [
+        "Translation by R. D. Hicks (1925)."
+      ],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [
+        "documentary"
+      ],
+      "origin": "human"
+    },
+    {
+      "claim_id": "c-epicurus-garden",
+      "text": "Epicurus taught and lived with his friends in a garden in Athens.",
+      "claim_type": "historical",
+      "importance": "supporting",
+      "source_ids": [
+        "src-dl-hicks"
+      ],
+      "verification_status": "unverified",
+      "caveats": [],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [
+        "documentary"
+      ],
+      "origin": "human"
+    },
+    {
+      "claim_id": "c-epicurus-dates",
+      "text": "Epicurus lived from 341 to 270 BC.",
+      "claim_type": "historical",
+      "importance": "contextual",
+      "source_ids": [
+        "src-dl-hicks"
+      ],
+      "verification_status": "unverified",
+      "caveats": [
+        "Years from ancient chronology (Apollodorus), as given in Hicks's notes."
+      ],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [
+        "documentary"
+      ],
+      "origin": "human"
+    },
+    {
+      "claim_id": "q-aristotle-swallow",
+      "text": "for as it is not one swallow or one fine day that makes a spring, so it is not one day or a short time that makes a man blessed and happy.",
+      "claim_type": "quotation",
+      "importance": "critical",
+      "source_ids": [
+        "src-aristotle-chase"
+      ],
+      "verification_status": "unverified",
+      "caveats": [
+        "Translation by D. P. Chase. Other translations read 'one swallow does not make a summer'."
+      ],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [
+        "documentary"
+      ],
+      "origin": "human"
+    },
+    {
+      "claim_id": "i-aristotle-activity",
+      "text": "For Aristotle, happiness is an activity: the soul at work in the way of excellence, over a complete life.",
+      "claim_type": "interpretive",
+      "importance": "supporting",
+      "source_ids": [
+        "src-aristotle-chase"
+      ],
+      "verification_status": "unverified",
+      "caveats": [],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [
+        "documentary"
+      ],
+      "origin": "human"
+    },
+    {
+      "claim_id": "c-epictetus-slave",
+      "text": "Epictetus was born a slave.",
+      "claim_type": "historical",
+      "importance": "supporting",
+      "source_ids": [
+        "src-epictetus-higginson"
+      ],
+      "verification_status": "unverified",
+      "caveats": [
+        "Ancient biography is thin; the edition's introduction states it as fact."
+      ],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [
+        "documentary"
+      ],
+      "origin": "human"
+    },
+    {
+      "claim_id": "q-epictetus-ench5",
+      "text": "Men are disturbed not by things, but by the views which they take of things.",
+      "claim_type": "quotation",
+      "importance": "critical",
+      "source_ids": [
+        "src-epictetus-higginson"
+      ],
+      "verification_status": "unverified",
+      "caveats": [
+        "Translation by T. W. Higginson (1865)."
+      ],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [
+        "documentary"
+      ],
+      "origin": "human"
+    },
+    {
+      "claim_id": "c-schopenhauer-1818",
+      "text": "Schopenhauer finished The World as Will and Idea in Dresden in 1818.",
+      "claim_type": "historical",
+      "importance": "contextual",
+      "source_ids": [
+        "src-schopenhauer-hk"
+      ],
+      "verification_status": "unverified",
+      "caveats": [
+        "The preface is dated August 1818; the book's title page bears 1819."
+      ],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [
+        "documentary"
+      ],
+      "origin": "human"
+    },
+    {
+      "claim_id": "i-schopenhauer-want",
+      "text": "For Schopenhauer, all wanting is rooted in lack, and so in pain.",
+      "claim_type": "interpretive",
+      "importance": "supporting",
+      "source_ids": [
+        "src-schopenhauer-hk"
+      ],
+      "verification_status": "unverified",
+      "caveats": [],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [
+        "documentary"
+      ],
+      "origin": "human"
+    },
+    {
+      "claim_id": "q-schopenhauer-pendulum",
+      "text": "Thus its life swings like a pendulum backwards and forwards between pain and ennui.",
+      "claim_type": "quotation",
+      "importance": "critical",
+      "source_ids": [
+        "src-schopenhauer-hk"
+      ],
+      "verification_status": "unverified",
+      "caveats": [
+        "Translation by Haldane and Kemp (1883). 'Its' refers to the nature of animals and humans; shown on screen with an ellipsis."
+      ],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [
+        "documentary"
+      ],
+      "origin": "human"
+    },
+    {
+      "claim_id": "c-mill-1826",
+      "text": "In the autumn of 1826, John Stuart Mill fell into a mental crisis.",
+      "claim_type": "historical",
+      "importance": "supporting",
+      "source_ids": [
+        "src-mill-autobiography"
+      ],
+      "verification_status": "unverified",
+      "caveats": [],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [
+        "documentary"
+      ],
+      "origin": "human"
+    },
+    {
+      "claim_id": "q-mill-ask",
+      "text": "Ask yourself whether you are happy, and you cease to be so.",
+      "claim_type": "quotation",
+      "importance": "critical",
+      "source_ids": [
+        "src-mill-autobiography"
+      ],
+      "verification_status": "unverified",
+      "caveats": [],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [
+        "documentary"
+      ],
+      "origin": "human"
+    },
+    {
+      "claim_id": "i-mill-byway",
+      "text": "Mill concluded that happiness comes by the way, to people aiming at something other than their own happiness.",
+      "claim_type": "interpretive",
+      "importance": "supporting",
+      "source_ids": [
+        "src-mill-autobiography"
+      ],
+      "verification_status": "unverified",
+      "caveats": [],
+      "counter_evidence": [],
+      "reviewer": null,
+      "review_date": null,
+      "review_notes": "",
+      "evidence_basis": [
+        "documentary"
+      ],
+      "origin": "human"
+    }
+  ]
+}

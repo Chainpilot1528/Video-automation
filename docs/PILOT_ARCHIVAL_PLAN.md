@@ -1,6 +1,6 @@
 # Pilot plan: archival-style episode
 
-**Status:** steps 1-5 built and tested (2026-10-21/23); chapter device: stone steps; a test scene was rendered for review. Narrator switched to `reckoner` on 2026-10-22. Pilot topic: "Every Philosopher's Answer to Happiness". Written 2026-10-21.
+**Status:** steps 1-5 built and tested; step 6 pilot previewed and awaiting human review (2026-10-23); chapter device: stone steps; a test scene was rendered for review. Narrator switched to `reckoner` on 2026-10-22. Pilot topic: "Every Philosopher's Answer to Happiness". Written 2026-10-21.
 **Goal:** make videos in the visual style of the reference below, using our own design, sources and script, and the `reckoner` voice.
 
 ---

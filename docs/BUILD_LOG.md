@@ -702,3 +702,58 @@ The user chose **stone steps** as the chapter device.
 
 ### Next action
 - **Step 6:** the 3-minute pilot "Every Philosopher's Answer to Happiness". It needs research (sources and verified quotations with public-domain translations), the script, `--preset reckoner --humanize` narration, 6-8 scenes, the preview render and QA.
+
+---
+
+## 2026-10-23: Archival style, step 6: pilot "Every Philosopher's Answer to Happiness" (preview)
+
+Project: `projects/every-philosophers-answer-to-happiness`.
+
+### Research: every quotation checked against a public-domain text
+- **Method:** the source texts were downloaded (Project Gutenberg and Wikisource) and each quotation was matched **word for word**. The matched passages and locators are stored as source `excerpts` in the ledger. The ledger has 5 sources and 13 claims: 5 quotations, 4 historical, 4 interpretive.
+
+| Thinker | Quotation (locator) | Translation |
+|---|---|---|
+| Epicurus | Principal Doctrines V (D.L. X.140) | R. D. Hicks, 1925 |
+| Aristotle | "not one swallow or one fine day…" (NE I, 1098a18) | D. P. Chase, 1847 (Everyman 1911) |
+| Epictetus | Enchiridion 5 | T. W. Higginson, 1865 |
+| Schopenhauer | the pendulum, WWI § 57 | Haldane and Kemp, 1883 |
+| Mill | "Ask yourself whether you are happy…" (Autobiography, ch. V) | Mill's own English, 1873 |
+
+- **Rights check:** W. D. Ross's Aristotle (1908) was rejected because Ross died in 1971, so it is not public domain in the UK or EU. Chase died in 1902.
+- **Still to confirm:**
+  - The Gutenberg edition doesn't name its translator on the title page (attributed to Chase via its bibliography).
+  - J. Kemp's death date, for non-US public-domain status of the Schopenhauer translation.
+- Claims stay `unverified` for human review. The Epictetus "born a slave" fact comes from the 1948 editor's introduction (secondary).
+
+### Script and narration
+- **Scenes:** 7 scenes, 394 words, interpretations phrased as interpretations. Each thinker gets one level of the map.
+- **Narration:** `--preset reckoner --humanize`, 134.4 s at about −20 LUFS, with sentence timings recorded for the quote reveals. Total running time **2:24**.
+
+### Visuals
+- **Images:** five Met CC0 images: Epicurus head, Rembrandt's *Aristotle with a Bust of Homer*, a Roman head of **Chrysippus** (for the Stoics, labelled as Chrysippus, not Epictetus), Delaunoy's *pendulum clock* (c. 1815–30) for Schopenhauer, and Constable's *Salisbury Cathedral* (c. 1825) for Mill.
+- **Cut-outs:** three, of the busts and the clock.
+- **Map and music:** a 5-level stone-steps map and a synthesized music bed at −10 dB.
+- **Gap:** neither museum has public-domain portraits of **Schopenhauer** or **Mill**, so their levels have no medallion and their scenes use period objects, honestly captioned.
+- **Structure:** each thinker scene opens with the map easing down one level (the new medallion arrives with the camera), then a composition with the kinetic quote and its citation. The close climbs back up all five levels.
+
+### Fixes found by watching the preview
+- Climbing back up the map (the closing recap) re-faded the top medallion as if it were new. Medallions now fade in only when the camera arrives *downward*; a climb is a recap (new test).
+- Two-line image captions overlapped the name labels; captions were widened to one line. The Rembrandt crop was refocused on the face.
+- The JSON Schemas were regenerated after a docstring change.
+
+### QA (`qa report --profile preview`): NOT READY, as expected before human review
+- **27 blockers, all human gates:** the 5 quotations to verify (`research review`), the script approval, and rights reviews for the 8 images, the map, the music and the 7 narration files.
+- **8 warnings:**
+  - 6 frozen-picture notes (slow still shots; expected for this style). The cold open holds a static map for 15 s; a slow drift would fix it.
+  - the map reused across 6 beats (by design);
+  - 2 caption cues with 3 lines.
+
+### Verification
+- `pytest`: all tests pass.
+- Preview rendered in 92 s. A contact sheet is in `reports/preview-frames.png`.
+
+### Next action
+- **The user:** review and verify the 5 quotations, approve the script, and review the asset rights.
+- **Decide:** whether to add public-domain portraits of Schopenhauer and Mill from Wikimedia Commons (a new source type for the pipeline).
+- **Then:** render the master, run `qa report`, waive the expected warnings, and sign off.

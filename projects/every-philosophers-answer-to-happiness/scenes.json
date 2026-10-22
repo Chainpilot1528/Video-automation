@@ -1,0 +1,250 @@
+{
+  "schema_version": "1.0",
+  "scenes": [
+    {
+      "scene_id": "s01-cold-open",
+      "order": 1,
+      "purpose": "Pose the question and introduce the steps",
+      "narration_text": "For more than two thousand years, philosophers have tried to answer one question. What does it take to be happy? Their answers don't agree. Each one goes a little deeper than the last. So let's go down, one step at a time.",
+      "visual_strategy": "Archival composition on black; see visuals.json",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": 14.0,
+      "actual_narration_duration_seconds": 14.76,
+      "final_duration_seconds": 15.51,
+      "narration_asset_id": "narr-s01-cold-open",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 1.0
+      },
+      "transition_out": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": null
+    },
+    {
+      "scene_id": "s02-epicurus",
+      "order": 2,
+      "purpose": "Level I: Epicurus, pleasure rightly understood",
+      "narration_text": "At the top is Epicurus. In a garden in Athens, he taught his friends that pleasure is the point of life. But not the pleasure you might think. In his words: it is impossible to live a pleasant life without living wisely and well and justly, and it is impossible to live wisely and well and justly without living pleasantly. For Epicurus, a good life and a happy life were the same life.",
+      "visual_strategy": "Archival composition on black; see visuals.json",
+      "asset_ids": [],
+      "source_ids": [
+        "src-dl-hicks"
+      ],
+      "claim_ids": [
+        "c-epicurus-garden",
+        "q-epicurus-pd5",
+        "c-epicurus-dates"
+      ],
+      "planned_duration_seconds": 30.0,
+      "actual_narration_duration_seconds": 24.06,
+      "final_duration_seconds": 24.81,
+      "narration_asset_id": "narr-s02-epicurus",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "transition_out": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": null
+    },
+    {
+      "scene_id": "s03-aristotle",
+      "order": 3,
+      "purpose": "Level II: Aristotle, flourishing over a whole life",
+      "narration_text": "One step down is Aristotle. For him, happiness isn't a feeling you have. It's something you do: living out what you are best at, and doing it well. And it takes time. As he put it: it is not one swallow or one fine day that makes a spring, so it is not one day or a short time that makes a man blessed and happy.",
+      "visual_strategy": "Archival composition on black; see visuals.json",
+      "asset_ids": [],
+      "source_ids": [
+        "src-aristotle-chase"
+      ],
+      "claim_ids": [
+        "i-aristotle-activity",
+        "q-aristotle-swallow"
+      ],
+      "planned_duration_seconds": 28.0,
+      "actual_narration_duration_seconds": 20.093,
+      "final_duration_seconds": 22.843,
+      "narration_asset_id": "narr-s03-aristotle",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "transition_out": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 2.5
+    },
+    {
+      "scene_id": "s04-stoics",
+      "order": 4,
+      "purpose": "Level III: Epictetus and the Stoics, what is up to us",
+      "narration_text": "Deeper still are the Stoics. Epictetus was born a slave, so he knew how little of life we control. He moved happiness to the one place no one else can reach: our own judgements. Men are disturbed not by things, but by the views which they take of things. Change the view, and the storm loses its grip.",
+      "visual_strategy": "Archival composition on black; see visuals.json",
+      "asset_ids": [],
+      "source_ids": [
+        "src-epictetus-higginson"
+      ],
+      "claim_ids": [
+        "c-epictetus-slave",
+        "q-epictetus-ench5"
+      ],
+      "planned_duration_seconds": 26.0,
+      "actual_narration_duration_seconds": 19.365,
+      "final_duration_seconds": 20.115,
+      "narration_asset_id": "narr-s04-stoics",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "transition_out": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": null
+    },
+    {
+      "scene_id": "s05-schopenhauer",
+      "order": 5,
+      "purpose": "Level IV: Schopenhauer, the pendulum",
+      "narration_text": "Then the ground gives way. In 1818, Arthur Schopenhauer argued that all wanting comes from lack, and lack is a kind of pain. Get what you want, and boredom moves in. In his words, life swings like a pendulum backwards and forwards between pain and ennui. On this view, lasting happiness was never on offer.",
+      "visual_strategy": "Archival composition on black; see visuals.json",
+      "asset_ids": [],
+      "source_ids": [
+        "src-schopenhauer-hk"
+      ],
+      "claim_ids": [
+        "c-schopenhauer-1818",
+        "i-schopenhauer-want",
+        "q-schopenhauer-pendulum"
+      ],
+      "planned_duration_seconds": 26.0,
+      "actual_narration_duration_seconds": 20.525,
+      "final_duration_seconds": 21.275,
+      "narration_asset_id": "narr-s05-schopenhauer",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "transition_out": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": null
+    },
+    {
+      "scene_id": "s06-mill",
+      "order": 6,
+      "purpose": "Level V: John Stuart Mill, look away",
+      "narration_text": "At the bottom is a surprise. In the autumn of 1826, a young John Stuart Mill fell into a crisis he could not shake. What he took from it is the strangest advice on this list. Ask yourself whether you are happy, and you cease to be so. Happiness, he decided, comes by the way, while you are aiming at something else.",
+      "visual_strategy": "Archival composition on black; see visuals.json",
+      "asset_ids": [],
+      "source_ids": [
+        "src-mill-autobiography"
+      ],
+      "claim_ids": [
+        "c-mill-1826",
+        "q-mill-ask",
+        "i-mill-byway"
+      ],
+      "planned_duration_seconds": 26.0,
+      "actual_narration_duration_seconds": 20.575,
+      "final_duration_seconds": 21.325,
+      "narration_asset_id": "narr-s06-mill",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "transition_out": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": null
+    },
+    {
+      "scene_id": "s07-close",
+      "order": 7,
+      "purpose": "Close: what the steps add up to",
+      "narration_text": "Five steps down, the answers have turned upside down. Pleasure, then purpose, then control, then doubt. And finally: stop looking straight at it. Maybe happiness isn't something you hold. Maybe it's what happens while you're holding something else.",
+      "visual_strategy": "Archival composition on black; see visuals.json",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": 18.0,
+      "actual_narration_duration_seconds": 15.066,
+      "final_duration_seconds": 17.816,
+      "narration_asset_id": "narr-s07-close",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "transition_out": {
+        "type": "fade",
+        "duration_seconds": 1.5
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 2.5
+    }
+  ]
+}

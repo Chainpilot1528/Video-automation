@@ -121,6 +121,14 @@ def test_compiler_builds_one_eased_camera_move(short_demo):  # noqa: F811
     assert old.x == pytest.approx(cmap.marker_anchor(1, 1, 3)[0] / 1920, abs=1e-3)
 
 
+def test_climbing_back_up_is_a_recap(short_demo):  # noqa: F811
+    add_map_beat(short_demo, level=1, from_level=3)
+    _, seg = compiled(short_demo)
+    medallions = [x for x in seg.layers[1:] if x.kind == "image"]
+    assert seg.layers[0].drift_y == pytest.approx(2 * cmap.PITCH / 1080, abs=1e-3)   # the map moves down
+    assert all(m.start == 0 for m in medallions)
+
+
 def test_compiler_falls_back_to_a_placeholder(short_demo):  # noqa: F811
     add_map_beat(short_demo, level=5)
     plan, seg = compiled(short_demo)

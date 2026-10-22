@@ -1,0 +1,8 @@
+{"asset_id": "chapter-map", "kind": "chapter_map", "title": "Every Philosopher's Answer to Happiness",
+ "levels": [
+  {"title": "Pleasure, Rightly Understood", "subtitle": "Epicurus · Athens, 341–270 BC"},
+  {"title": "Flourishing", "subtitle": "Aristotle · Nicomachean Ethics"},
+  {"title": "What Is Up to Us", "subtitle": "Epictetus and the Stoics"},
+  {"title": "The Pendulum", "subtitle": "Arthur Schopenhauer · Dresden, 1818"},
+  {"title": "Look Away", "subtitle": "John Stuart Mill · Autobiography, 1873"}],
+ "intended_scene_ids": ["s01-cold-open", "s03-aristotle", "s04-stoics", "s05-schopenhauer", "s06-mill", "s07-close"]}

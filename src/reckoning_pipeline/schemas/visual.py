@@ -127,7 +127,8 @@ class MapMarker(Record):
 class ChapterMapView(Record):
     """Show the chapter map: rest on ``from_level``, ease down to ``level``, and place the medallions.
 
-    The new level's medallions fade in once the camera arrives; the others are there from the start.
+    Going down, the new level's medallions fade in once the camera arrives; the others (and all of
+    them when the camera climbs back up, as a recap) are there from the start.
     """
 
     asset_id: Identifier                        # a chapter_map graphic (pipeline graphics render)

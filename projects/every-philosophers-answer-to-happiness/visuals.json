@@ -1,0 +1,666 @@
+{
+  "schema_version": "1.0",
+  "beats": [
+    {
+      "beat_id": "v-s01-cold-open-map",
+      "scene_id": "s01-cold-open",
+      "order": 1,
+      "takeaway": "The question, and the steps we will go down",
+      "visual_type": "original_graphic",
+      "graphic_kind": "chapter_map",
+      "asset_ids": [
+        "chapter-map"
+      ],
+      "chapter_map": {
+        "asset_id": "chapter-map",
+        "level": 1,
+        "pan_start": 0.3,
+        "pan_seconds": 2.6,
+        "markers": []
+      },
+      "offset_seconds": 0.0
+    },
+    {
+      "beat_id": "v-s02-epicurus-comp",
+      "scene_id": "s02-epicurus",
+      "order": 1,
+      "takeaway": "Epicurus: pleasure and virtue are inseparable",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-epicurus-cut"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-epicurus-cut",
+          "x": 0.28,
+          "y": 0.45,
+          "width": 0.34,
+          "max_height": 0.74,
+          "edge": "feather",
+          "feather": 0.07,
+          "crop": [
+            0,
+            0,
+            1,
+            0.93
+          ],
+          "fade_in": 2.0,
+          "zoom_from": 1.0,
+          "zoom_to": 1.05,
+          "drift_y": -0.012
+        },
+        {
+          "kind": "text",
+          "text": "Epicurus",
+          "text_style": "label",
+          "x": 0.28,
+          "y": 0.875,
+          "width": 0.3,
+          "start": 1.2
+        },
+        {
+          "kind": "text",
+          "text": "Athens, 341–270 BC",
+          "text_style": "caption",
+          "x": 0.28,
+          "y": 0.915,
+          "width": 0.52,
+          "start": 1.8
+        },
+        {
+          "kind": "text",
+          "text": "“It is impossible to live a pleasant life without living wisely and well and justly, and it is impossible to live wisely and well and justly without living pleasantly.”",
+          "text_style": "quote",
+          "x": 0.69,
+          "y": 0.42,
+          "width": 0.42,
+          "start": 0,
+          "highlight": "living wisely and well and justly",
+          "reveal": "words",
+          "claim_id": "q-epicurus-pd5",
+          "fade_in": 0.45,
+          "drift_y": -0.006
+        },
+        {
+          "kind": "text",
+          "text": "Principal Doctrines V · tr. R. D. Hicks",
+          "text_style": "caption",
+          "x": 0.69,
+          "y": 0.745,
+          "width": 0.42,
+          "start": 10.2
+        }
+      ],
+      "claim_ids": [
+        "q-epicurus-pd5",
+        "c-epicurus-dates"
+      ],
+      "source_ids": [
+        "src-dl-hicks"
+      ],
+      "offset_seconds": 0
+    },
+    {
+      "beat_id": "v-s03-aristotle-map",
+      "scene_id": "s03-aristotle",
+      "order": 1,
+      "takeaway": "One step down: Aristotle",
+      "visual_type": "original_graphic",
+      "graphic_kind": "chapter_map",
+      "asset_ids": [
+        "chapter-map",
+        "met-epicurus-head",
+        "met-rembrandt-aristotle"
+      ],
+      "chapter_map": {
+        "asset_id": "chapter-map",
+        "level": 2,
+        "pan_start": 0.3,
+        "pan_seconds": 2.6,
+        "markers": [
+          {
+            "level": 1,
+            "asset_id": "met-epicurus-head",
+            "name": "Epicurus",
+            "crop": [
+              0.1,
+              0.03,
+              0.9,
+              0.72
+            ]
+          },
+          {
+            "level": 2,
+            "asset_id": "met-rembrandt-aristotle",
+            "name": "Aristotle",
+            "crop": [
+              0.42,
+              0.14,
+              0.69,
+              0.5
+            ]
+          }
+        ],
+        "from_level": 1
+      },
+      "offset_seconds": 0.0
+    },
+    {
+      "beat_id": "v-s03-aristotle-comp",
+      "scene_id": "s03-aristotle",
+      "order": 2,
+      "takeaway": "Aristotle: happiness is a whole life lived well",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-rembrandt-aristotle"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-rembrandt-aristotle",
+          "x": 0.28,
+          "y": 0.44,
+          "width": 0.36,
+          "max_height": 0.72,
+          "edge": "feather",
+          "feather": 0.16,
+          "crop": [
+            0.32,
+            0.12,
+            0.86,
+            0.8
+          ],
+          "fade_in": 1.6,
+          "zoom_from": 1.0,
+          "zoom_to": 1.04
+        },
+        {
+          "kind": "text",
+          "text": "Aristotle",
+          "text_style": "label",
+          "x": 0.28,
+          "y": 0.875,
+          "width": 0.3,
+          "start": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "Rembrandt, Aristotle with a Bust of Homer, 1653",
+          "text_style": "caption",
+          "x": 0.28,
+          "y": 0.915,
+          "width": 0.52,
+          "start": 1.4
+        },
+        {
+          "kind": "text",
+          "text": "“…it is not one swallow or one fine day that makes a spring, so it is not one day or a short time that makes a man blessed and happy.”",
+          "text_style": "quote",
+          "x": 0.69,
+          "y": 0.42,
+          "width": 0.42,
+          "start": 0,
+          "highlight": "it is not one day or a short time",
+          "reveal": "words",
+          "claim_id": "q-aristotle-swallow",
+          "fade_in": 0.45,
+          "drift_y": -0.006
+        },
+        {
+          "kind": "text",
+          "text": "Nicomachean Ethics, Book I · tr. D. P. Chase",
+          "text_style": "caption",
+          "x": 0.69,
+          "y": 0.745,
+          "width": 0.42,
+          "start": 6.4
+        }
+      ],
+      "claim_ids": [
+        "q-aristotle-swallow"
+      ],
+      "source_ids": [
+        "src-aristotle-chase"
+      ],
+      "offset_seconds": 6.0
+    },
+    {
+      "beat_id": "v-s04-stoics-map",
+      "scene_id": "s04-stoics",
+      "order": 1,
+      "takeaway": "Deeper still: the Stoics",
+      "visual_type": "original_graphic",
+      "graphic_kind": "chapter_map",
+      "asset_ids": [
+        "chapter-map",
+        "met-epicurus-head",
+        "met-rembrandt-aristotle",
+        "met-chrysippus-head"
+      ],
+      "chapter_map": {
+        "asset_id": "chapter-map",
+        "level": 3,
+        "pan_start": 0.3,
+        "pan_seconds": 2.6,
+        "markers": [
+          {
+            "level": 1,
+            "asset_id": "met-epicurus-head",
+            "name": "Epicurus",
+            "crop": [
+              0.1,
+              0.03,
+              0.9,
+              0.72
+            ]
+          },
+          {
+            "level": 2,
+            "asset_id": "met-rembrandt-aristotle",
+            "name": "Aristotle",
+            "crop": [
+              0.42,
+              0.14,
+              0.69,
+              0.5
+            ]
+          },
+          {
+            "level": 3,
+            "asset_id": "met-chrysippus-head",
+            "name": "Chrysippus",
+            "crop": [
+              0.1,
+              0.04,
+              0.9,
+              0.86
+            ]
+          }
+        ],
+        "from_level": 2
+      },
+      "offset_seconds": 0.0
+    },
+    {
+      "beat_id": "v-s04-stoics-comp",
+      "scene_id": "s04-stoics",
+      "order": 2,
+      "takeaway": "Epictetus: we are disturbed by our views, not by things",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-chrysippus-cut"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-chrysippus-cut",
+          "x": 0.28,
+          "y": 0.45,
+          "width": 0.32,
+          "max_height": 0.72,
+          "edge": "feather",
+          "feather": 0.07,
+          "crop": [
+            0,
+            0,
+            1,
+            0.93
+          ],
+          "fade_in": 2.0,
+          "zoom_from": 1.0,
+          "zoom_to": 1.05,
+          "drift_y": -0.012
+        },
+        {
+          "kind": "text",
+          "text": "Chrysippus",
+          "text_style": "label",
+          "x": 0.28,
+          "y": 0.875,
+          "width": 0.3,
+          "start": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "Roman portrait, 1st century CE",
+          "text_style": "caption",
+          "x": 0.28,
+          "y": 0.915,
+          "width": 0.52,
+          "start": 1.4
+        },
+        {
+          "kind": "text",
+          "text": "“Men are disturbed not by things, but by the views which they take of things.”",
+          "text_style": "quote",
+          "x": 0.69,
+          "y": 0.45,
+          "width": 0.42,
+          "start": 0,
+          "highlight": "the views which they take of things",
+          "reveal": "words",
+          "claim_id": "q-epictetus-ench5",
+          "fade_in": 0.45,
+          "drift_y": -0.006
+        },
+        {
+          "kind": "text",
+          "text": "Epictetus, Enchiridion 5 · tr. T. W. Higginson",
+          "text_style": "caption",
+          "x": 0.69,
+          "y": 0.66,
+          "width": 0.42,
+          "start": 6.6
+        }
+      ],
+      "claim_ids": [
+        "q-epictetus-ench5"
+      ],
+      "source_ids": [
+        "src-epictetus-higginson"
+      ],
+      "offset_seconds": 5.6
+    },
+    {
+      "beat_id": "v-s05-schopenhauer-map",
+      "scene_id": "s05-schopenhauer",
+      "order": 1,
+      "takeaway": "The ground gives way: Schopenhauer",
+      "visual_type": "original_graphic",
+      "graphic_kind": "chapter_map",
+      "asset_ids": [
+        "chapter-map",
+        "met-epicurus-head",
+        "met-rembrandt-aristotle",
+        "met-chrysippus-head"
+      ],
+      "chapter_map": {
+        "asset_id": "chapter-map",
+        "level": 4,
+        "pan_start": 0.2,
+        "pan_seconds": 3.0,
+        "markers": [
+          {
+            "level": 1,
+            "asset_id": "met-epicurus-head",
+            "name": "Epicurus",
+            "crop": [
+              0.1,
+              0.03,
+              0.9,
+              0.72
+            ]
+          },
+          {
+            "level": 2,
+            "asset_id": "met-rembrandt-aristotle",
+            "name": "Aristotle",
+            "crop": [
+              0.42,
+              0.14,
+              0.69,
+              0.5
+            ]
+          },
+          {
+            "level": 3,
+            "asset_id": "met-chrysippus-head",
+            "name": "Chrysippus",
+            "crop": [
+              0.1,
+              0.04,
+              0.9,
+              0.86
+            ]
+          }
+        ],
+        "from_level": 3
+      },
+      "offset_seconds": 0.0
+    },
+    {
+      "beat_id": "v-s05-schopenhauer-comp",
+      "scene_id": "s05-schopenhauer",
+      "order": 2,
+      "takeaway": "Schopenhauer: life swings between pain and boredom",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-pendulum-clock-cut"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-pendulum-clock-cut",
+          "x": 0.28,
+          "y": 0.45,
+          "width": 0.3,
+          "max_height": 0.76,
+          "edge": "feather",
+          "feather": 0.04,
+          "fade_in": 2.0,
+          "zoom_from": 1.0,
+          "zoom_to": 1.06
+        },
+        {
+          "kind": "text",
+          "text": "Pendulum clock, Delaunoy, c. 1815–30",
+          "text_style": "caption",
+          "x": 0.28,
+          "y": 0.9,
+          "width": 0.52,
+          "start": 1.4
+        },
+        {
+          "kind": "text",
+          "text": "“…life swings like a pendulum backwards and forwards between pain and ennui.”",
+          "text_style": "quote",
+          "x": 0.69,
+          "y": 0.45,
+          "width": 0.42,
+          "start": 0,
+          "highlight": "between pain and ennui",
+          "reveal": "words",
+          "claim_id": "q-schopenhauer-pendulum",
+          "fade_in": 0.45,
+          "drift_y": -0.006
+        },
+        {
+          "kind": "text",
+          "text": "Arthur Schopenhauer, The World as Will and Idea, § 57 · tr. Haldane and Kemp",
+          "text_style": "caption",
+          "x": 0.69,
+          "y": 0.665,
+          "width": 0.42,
+          "start": 6.4
+        }
+      ],
+      "claim_ids": [
+        "q-schopenhauer-pendulum"
+      ],
+      "source_ids": [
+        "src-schopenhauer-hk"
+      ],
+      "offset_seconds": 5.4
+    },
+    {
+      "beat_id": "v-s06-mill-map",
+      "scene_id": "s06-mill",
+      "order": 1,
+      "takeaway": "At the bottom: John Stuart Mill",
+      "visual_type": "original_graphic",
+      "graphic_kind": "chapter_map",
+      "asset_ids": [
+        "chapter-map",
+        "met-epicurus-head",
+        "met-rembrandt-aristotle",
+        "met-chrysippus-head"
+      ],
+      "chapter_map": {
+        "asset_id": "chapter-map",
+        "level": 5,
+        "pan_start": 0.3,
+        "pan_seconds": 2.6,
+        "markers": [
+          {
+            "level": 1,
+            "asset_id": "met-epicurus-head",
+            "name": "Epicurus",
+            "crop": [
+              0.1,
+              0.03,
+              0.9,
+              0.72
+            ]
+          },
+          {
+            "level": 2,
+            "asset_id": "met-rembrandt-aristotle",
+            "name": "Aristotle",
+            "crop": [
+              0.42,
+              0.14,
+              0.69,
+              0.5
+            ]
+          },
+          {
+            "level": 3,
+            "asset_id": "met-chrysippus-head",
+            "name": "Chrysippus",
+            "crop": [
+              0.1,
+              0.04,
+              0.9,
+              0.86
+            ]
+          }
+        ],
+        "from_level": 4
+      },
+      "offset_seconds": 0.0
+    },
+    {
+      "beat_id": "v-s06-mill-comp",
+      "scene_id": "s06-mill",
+      "order": 2,
+      "takeaway": "Mill: aim at something else, and happiness comes by the way",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-constable-salisbury"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-constable-salisbury",
+          "x": 0.3,
+          "y": 0.44,
+          "width": 0.44,
+          "max_height": 0.7,
+          "edge": "feather",
+          "feather": 0.12,
+          "fade_in": 2.0,
+          "zoom_from": 1.0,
+          "zoom_to": 1.05,
+          "drift_x": 0.008
+        },
+        {
+          "kind": "text",
+          "text": "John Constable, Salisbury Cathedral from the Bishop's Grounds, c. 1825",
+          "text_style": "caption",
+          "x": 0.3,
+          "y": 0.84,
+          "width": 0.52,
+          "start": 1.4
+        },
+        {
+          "kind": "text",
+          "text": "“Ask yourself whether you are happy, and you cease to be so.”",
+          "text_style": "quote",
+          "x": 0.69,
+          "y": 0.45,
+          "width": 0.42,
+          "start": 0,
+          "highlight": "you cease to be so",
+          "reveal": "words",
+          "claim_id": "q-mill-ask",
+          "fade_in": 0.45,
+          "drift_y": -0.006
+        },
+        {
+          "kind": "text",
+          "text": "John Stuart Mill, Autobiography, 1873",
+          "text_style": "caption",
+          "x": 0.69,
+          "y": 0.62,
+          "width": 0.42,
+          "start": 7.2
+        }
+      ],
+      "claim_ids": [
+        "q-mill-ask"
+      ],
+      "source_ids": [
+        "src-mill-autobiography"
+      ],
+      "offset_seconds": 5.4
+    },
+    {
+      "beat_id": "v-s07-close-map",
+      "scene_id": "s07-close",
+      "order": 1,
+      "takeaway": "Back up the steps: five answers",
+      "visual_type": "original_graphic",
+      "graphic_kind": "chapter_map",
+      "asset_ids": [
+        "chapter-map",
+        "met-epicurus-head",
+        "met-rembrandt-aristotle",
+        "met-chrysippus-head"
+      ],
+      "chapter_map": {
+        "asset_id": "chapter-map",
+        "level": 1,
+        "pan_start": 1.0,
+        "pan_seconds": 11.0,
+        "markers": [
+          {
+            "level": 1,
+            "asset_id": "met-epicurus-head",
+            "name": "Epicurus",
+            "crop": [
+              0.1,
+              0.03,
+              0.9,
+              0.72
+            ]
+          },
+          {
+            "level": 2,
+            "asset_id": "met-rembrandt-aristotle",
+            "name": "Aristotle",
+            "crop": [
+              0.42,
+              0.14,
+              0.69,
+              0.5
+            ]
+          },
+          {
+            "level": 3,
+            "asset_id": "met-chrysippus-head",
+            "name": "Chrysippus",
+            "crop": [
+              0.1,
+              0.04,
+              0.9,
+              0.86
+            ]
+          }
+        ],
+        "from_level": 5
+      },
+      "offset_seconds": 0.0
+    }
+  ]
+}
