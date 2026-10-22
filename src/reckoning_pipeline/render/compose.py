@@ -37,6 +37,10 @@ PHRASE_FADE = 0.45             # each phrase fades in over this long
 _PHRASE_END = (",", ".", ";", ":", "!", "?", "—", "–", "…", "”")
 FEATHER = 0.09                 # feathered edge, as a fraction of the layer's shorter side
 OVAL_SOFTNESS = 0.05           # softness of oval/circle edges, in normalized radius
+RING = "#a8946a"               # medallion ring: muted brass
+RING_RADIUS = 0.965            # ring centre line, as a fraction of the oval's radius
+RING_WIDTH = 0.012             # ring thickness, same units
+RING_INNER = 0.925             # the portrait fades out just inside the ring, leaving a dark gap
 CHAR_WIDTH = {"quote": 0.42, "label": 0.82, "caption": 0.46}  # average advance / font size (Cormorant)
 SIZE = {"quote": 1 / 19, "label": 1 / 38, "caption": 1 / 30}  # font size as a fraction of frame height
 LINE = {"quote": 1.45, "label": 1.3, "caption": 1.35}
@@ -55,15 +59,34 @@ def box_px(layer: TimelineLayer, profile: RenderProfile) -> tuple[int, int]:
 # --- stage 1: prepare each layer as a transparent PNG -------------------------------
 
 def mask_expr(edge: str, feather: float = FEATHER) -> str | None:
-    """Alpha expression for geq (X, Y, W, H are the image's pixel coords and size)."""
+    """Alpha expression for geq (X, Y, W, H are the image's pixel coords and size), 0..255.
+
+    It multiplies the image's own alpha, so a cut-out keeps its shape inside the mask.
+    """
     if edge == "feather":
         f = f"(min(W,H)*{feather:.4f})"
         d = "min(min(X,W-1-X),min(Y,H-1-Y))"
-        return f"255*pow(clip({d}/{f},0,1),1.5)"
+        return f"alpha(X,Y)*pow(clip({d}/{f},0,1),1.5)"
     if edge in ("oval", "circle"):
         r = "(pow((X-W/2)/(W/2),2)+pow((Y-H/2)/(H/2),2))"
-        return f"255*clip((1-{r})/{max(feather * OVAL_SOFTNESS / FEATHER, 0.005):.4f},0,1)"
+        return f"alpha(X,Y)*clip((1-{r})/{_oval_softness(feather):.4f},0,1)"
     return None
+
+
+def _oval_softness(feather: float) -> float:
+    return max(feather * OVAL_SOFTNESS / FEATHER, 0.005)
+
+
+def ring_exprs(feather: float = FEATHER) -> dict[str, str]:
+    """geq expressions (r, g, b, a) for a medallion: the portrait inside RING_INNER of the oval,
+    then a thin anti-aliased ring at RING_RADIUS, transparent beyond."""
+    q = "sqrt(pow((X-W/2)/(W/2),2)+pow((Y-H/2)/(H/2),2))"
+    half = f"max({RING_WIDTH / 2:.4f},1.2/min(W,H))"          # at least ~1 px each side of the centre line
+    ring = f"clip(({half}-abs({q}-{RING_RADIUS:.4f}))*min(W,H)/2+0.5,0,1)"   # 1 px anti-aliasing
+    photo = f"clip(({RING_INNER:.4f}-{q})/{_oval_softness(feather) / 2:.4f},0,1)"
+    red, green, blue = (int(RING[i:i + 2], 16) for i in (1, 3, 5))
+    return {"r": f"{red}*{ring}+r(X,Y)*(1-{ring})", "g": f"{green}*{ring}+g(X,Y)*(1-{ring})",
+            "b": f"{blue}*{ring}+b(X,Y)*(1-{ring})", "a": f"max(alpha(X,Y)*{photo},255*{ring})"}
 
 
 def image_prepare_command(ffmpeg: str, src: str, layer: TimelineLayer, profile: RenderProfile,
@@ -77,8 +100,10 @@ def image_prepare_command(ffmpeg: str, src: str, layer: TimelineLayer, profile: 
         chain.append("crop='min(iw,ih)':'min(iw,ih)'")
     chain.append(f"scale={bw}:{bh}:force_original_aspect_ratio=decrease:flags=lanczos")
     chain.append("format=rgba")
-    alpha = mask_expr(layer.edge, layer.feather)
-    if alpha:
+    if layer.ring:
+        e = ring_exprs(layer.feather)
+        chain.append(f"geq=r='{e['r']}':g='{e['g']}':b='{e['b']}':a='{e['a']}'")
+    elif alpha := mask_expr(layer.edge, layer.feather):
         chain.append(f"geq=r='r(X,Y)':g='g(X,Y)':b='b(X,Y)':a='{alpha}'")
     return [ffmpeg, "-nostdin", "-hide_banner", "-loglevel", "error", "-y", "-i", src, "-vf", ",".join(chain),
             "-frames:v", "1", "-update", "1", out]

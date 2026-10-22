@@ -18,6 +18,10 @@ dependencies = [
 dev = [
     "pytest>=8",
 ]
+cutout = [  # background removal (archive cutout): U²-Net through OpenCV's DNN module
+    "numpy>=2",
+    "opencv-python-headless>=4.9",
+]
 
 [project.scripts]
 pipeline = "reckoning_pipeline.cli:main"

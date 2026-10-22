@@ -1,7 +1,7 @@
 # Pilot plan: archival-style episode
 
-**Status:** steps 1 and 2 built and tested (2026-10-21); a test scene was rendered for review. Pilot topic: "Every Philosopher's Answer to Happiness". Written 2026-10-21.
-**Goal:** make videos in the visual style of the reference below, using our own design, sources and script, and the `sage` voice.
+**Status:** steps 1, 2, 3 and 4 built and tested (2026-10-21/23); a test scene was rendered for review. Narrator switched to `reckoner` on 2026-10-22. Pilot topic: "Every Philosopher's Answer to Happiness". Written 2026-10-21.
+**Goal:** make videos in the visual style of the reference below, using our own design, sources and script, and the `reckoner` voice.
 
 ---
 
@@ -18,9 +18,9 @@ The reference is "Every Philosopher's Answer to Death | Iceberg Explained" by *P
 - **Portrait medallions:** a philosopher is introduced as a bust that becomes an oval medallion, with a small-caps name and a place and date ("Athens, c. 300 BC").
 - **A chapter map:** a low-poly iceberg with labelled levels ("Level 1: The Surface" down to "The Bottom") returns between chapters. Medallions are placed on it as each thinker is covered.
 - **Extras:** a small paper-cutout walking figure, and occasional diagrams.
-- **Sound:** a calm, deep narrator over a quiet continuous music bed. We already match this with the `sage` preset (see `references/sage/README.md`).
+- **Sound:** a calm, deep narrator over a quiet continuous music bed. We use the `reckoner` house preset with `--humanize` (sentence-by-sentence TTS, natural pauses, recorded sentence timings for quote sync). The `sage` preset (`references/sage/README.md`) remains an alternative.
 
-**What the pipeline already has:** scenes, research ledger and claims, the `sage` voice, the music bed, rights tracking, per-scene cached rendering, slow push and pan, SVG graphics, captions, and QA with sign-off.
+**What the pipeline already has:** scenes, research ledger and claims, the `reckoner` voice, the music bed, rights tracking, per-scene cached rendering, slow push and pan, SVG graphics, captions, and QA with sign-off.
 
 **What's missing** is the visual layer: archival images, layered compositions on black, kinetic quotes, medallions and the chapter map.
 
@@ -75,7 +75,7 @@ The reference is "Every Philosopher's Answer to Death | Iceberg Explained" by *P
 ### Step 6: Pilot episode (about 3 minutes)
 - **Research:** a ledger with real, checked sources.
 - **Script:** written for the ear.
-- **Narration:** `--preset sage`.
+- **Narration:** `--preset reckoner --humanize`.
 - **Visuals:** the chapter map plus 6–8 scenes.
 - **Finish:** music bed, preview render, then the QA report.
 - **Purpose:** prove the whole chain before scaling to 15-minute episodes.
@@ -97,7 +97,7 @@ Each step gets tests, docs and a build-log entry, and is committed only when you
 
 ## 4. Honest limits
 
-- **Render time:** layered, animated scenes are heavier. A 3-minute preview may take several minutes on this Mac. The `sage` voice runs about 12× slower than real time, so roughly 35 minutes for a 3-minute script. Both are cached, so a change only rebuilds what changed.
+- **Render time:** layered, animated scenes are heavier. A 3-minute preview may take several minutes on this Mac. The `reckoner` voice (Kokoro) is fast, a few seconds per scene; `sage` (Qwen3) would be about 12× slower than real time. Both are cached, so a change only rebuilds what changed.
 - **Quote sync** is sentence-accurate with estimated words, not frame-perfect.
 - **The paper-cutout walking figure** isn't included. It's a custom illustration; a simple silhouette could come later.
 - **Black and frozen-picture QA warnings** will fire often in this style (dark, slow shots). They're expected and can be waived with a rationale.
@@ -119,5 +119,5 @@ Each step gets tests, docs and a build-log entry, and is committed only when you
 - Use only **public-domain or CC0** images, and record each one's rights.
 - Use only quotes with a real source and a public-domain translation, tracked in the research ledger.
 - **Don't copy** the reference's graphics, script, layout or audio. We match the genre and mood, not the work.
-- Narration is the `sage` preset: a stock voice, not a clone.
+- Narration is the `reckoner` preset: a stock voice, not a clone.
 - **Publishing stays manual**, after QA sign-off.

@@ -25,6 +25,7 @@ class PipelineConfig(BaseModel):
 
     projects_root: Path = Field(default=Path("projects"))
     media_root: Path | None = None
+    models_dir: Path = Field(default=Path("models"))  # local model weights (git-ignored)
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
     log_format: Literal["text", "json"] = "text"
     ffmpeg_path: str = "ffmpeg"
@@ -70,6 +71,7 @@ class PipelineConfig(BaseModel):
 _ENV_FIELDS = {
     "PROJECTS_ROOT": "projects_root",
     "MEDIA_ROOT": "media_root",
+    "MODELS_DIR": "models_dir",
     "LOG_LEVEL": "log_level",
     "LOG_FORMAT": "log_format",
     "FFMPEG_PATH": "ffmpeg_path",

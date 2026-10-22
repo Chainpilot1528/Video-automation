@@ -61,6 +61,11 @@ def _base_dir(project_dir: Path, root: AssetRoot, media_root: Path | None) -> Pa
     return project_dir
 
 
+def asset_file(project_dir: Path, asset: Asset, media_root: Path | None) -> Path:
+    """Where a registered asset's file lives."""
+    return safe_resolve(_base_dir(project_dir, asset.root, media_root), asset.path)
+
+
 def _check_source(source: Path) -> None:
     if not source.is_file():
         raise IntakeError(f"{source} is not a file")

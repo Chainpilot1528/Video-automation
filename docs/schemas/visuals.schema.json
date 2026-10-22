@@ -208,6 +208,11 @@
           "title": "Reveal",
           "type": "string"
         },
+        "ring": {
+          "default": false,
+          "title": "Ring",
+          "type": "boolean"
+        },
         "start": {
           "default": 0.0,
           "minimum": 0,

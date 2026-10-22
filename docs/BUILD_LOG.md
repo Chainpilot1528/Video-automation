@@ -633,3 +633,35 @@ Two CC0 Met images (met:248475 "Marble head of Epikouros", met:437394 Rembrandt 
 ### Next action
 - Re-render the test scene and review the reveal.
 - Then **step 3**: medallions, cut-outs and background removal. This needs a decision on the rembg model download (about 170 MB).
+
+---
+
+## 2026-10-23: Archival style, step 3: cut-outs and medallions; narrator switched to Reckoner
+
+### Narrator
+- At the user's request, the pilot now uses **`--preset reckoner --humanize`** instead of `sage`. `--humanize` keeps the per-sentence timings that sync the quote reveal. The plan was updated.
+- The test scene was re-narrated (20.6 s) and re-rendered. This was the first real render of the word reveal: the quote's words land between 5.5 s and 14.7 s, in step with the voice.
+
+### Background removal (`assets/cutout.py`, `pipeline archive cutout`)
+- **Model:** U²-Net, `u2net.onnx` (Apache-2.0, 176 MB), downloaded with the user's approval to `models/u2net/` (git-ignored, new `PIPELINE_MODELS_DIR`). Its MD5 matches the one rembg publishes, and its SHA-256 is pinned and checked before every use.
+- **Why not rembg:** `pip install rembg` failed on this Intel Mac with Python 3.14. llvmlite (pulled in through pymatting and numba) has no wheel, and onnxruntime has no Intel-Mac builds at all. The same model runs through **OpenCV's DNN module** instead, with only NumPy and OpenCV-headless (about 40 MB) as the optional `cutout` extra. One pass takes about 0.8 s.
+- **Output:** a transparent PNG trimmed to the object (2% margin), registered as a **derivative** through the existing `plan_derivative`. It inherits the parent's rights, stays `pending_review`, and its notes ask the reviewer to check the edges.
+- **Test scene:** `met-epicurus-cut`. The navy backdrop and pedestal are gone. A sliver of the dark mounting post remains, hidden with `crop` plus a small `feather`.
+
+### Medallions and alpha-preserving masks (`render/compose.py`)
+- The feather, oval and circle masks now **multiply the image's own alpha**, so a cut-out keeps its shape inside them. Previously a mask replaced the alpha, which would have brought back a cut-out's rectangle.
+- **New `ring` on oval and circle image layers:** the portrait fades out at 92.5% of the radius, and a thin, anti-aliased brass ring (`#a8946a`) sits at 96.5%. It's one `geq` pass at prepare time and cached like every layer.
+- **Test scene:** the cut-out bust "becomes" an oval ringed medallion at about 13 s, with a 0.2 s overlap, while the name and date labels stay. A longer cross-fade looked like a ghosted double image, so it was shortened.
+- **Also fixed in the test layout:** the citation line overlapped the last line of the quote, which is taller since the Cormorant retune. It moved from y 0.66 to 0.73.
+
+### Verification
+- `pytest`: **374 passed**, including 7 new tests in `tests/test_cutout.py`. They cover cut-out and trim with a stand-in predictor, the empty-mask refusal, the model checksum, CLI derivative registration, the real model on a test image, the ring rules, and pixel checks of a rendered ring, gap and masked cut-out.
+- JSON Schemas regenerated.
+- Visual check of the re-rendered test scene: the cut-out bust, the medallion change and the quote reveal.
+
+### Not done in step 3
+- The bust-to-medallion change is a quick cross-fade between two layers, not a morph.
+- The paper-cutout walking figure is out of scope, as the plan says.
+
+### Next action
+- **Step 5:** the chapter map. This needs the decision on the chapter device: iceberg-style levels, stone steps or rock strata.

@@ -84,6 +84,7 @@ class Layer(Record):
     zoom_to: float = Field(default=1.0, ge=0.5, le=2.0)
     edge: Literal["none", "feather", "oval", "circle"] = "none"
     feather: float = Field(default=0.09, gt=0, le=0.5)  # feathered/oval edge width, fraction of the shorter side
+    ring: bool = False                          # oval/circle: a thin brass ring around the portrait (a medallion)
     crop: tuple[float, float, float, float] | None = None  # (left, top, right, bottom) fractions of the source
 
     @model_validator(mode="after")
@@ -99,6 +100,8 @@ class Layer(Record):
                 raise ValueError("highlight must be part of the layer's text")
         elif self.reveal != "fade" or self.claim_id:
             raise ValueError("reveal and claim_id are for text layers")
+        if self.ring and (self.kind != "image" or self.edge not in ("oval", "circle")):
+            raise ValueError("ring is for image layers with an oval or circle edge")
         if self.end is not None and self.end <= self.start:
             raise ValueError("a layer must end after it starts")
         if self.crop is not None:

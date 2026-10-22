@@ -41,6 +41,8 @@ from .render import ProfileError, RenderError, plan_render
 from .render import render as run_render
 from .timeline import TimelineError
 from .assets.checklist import ChecklistError, record_checklist
+from .assets.intake import asset_file
+from .assets.cutout import MODEL_NAME, CutoutError, cut_out, model_path, u2net_predictor
 from .assets.stock import add_stock_item, existing_for
 from .providers.stock import MUSEUMS, StockError, get_stock_provider, parse_ref
 from .script.draft import DraftError, draft_script
@@ -1028,6 +1030,43 @@ def archive_add(
                + (f" ({added.bytes_downloaded / 1e6:.1f} MB)" if not dry_run else ""))
     for line in added.plan.describe():
         typer.echo(prefix + line)
+
+
+@archive_app.command("cutout")
+def archive_cutout(
+    ctx: typer.Context,
+    path: Path = typer.Argument(..., help="Project folder"),
+    parent_id: str = typer.Argument(..., help="Image asset to cut out, e.g. met-epicurus-head"),
+    asset_id: str = typer.Option(..., "--id", help="New asset ID for the cut-out, e.g. met-epicurus-cut"),
+    trim: bool = typer.Option(True, "--trim/--no-trim", help="Trim the PNG to the object (with a small margin)."),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Make the cut-out but register nothing."),
+) -> None:
+    """Remove an image's background (U²-Net, local) and register the transparent PNG as a derivative."""
+    import tempfile
+
+    result = _load_valid(ctx, path)
+    config = _config(ctx)
+    parent = next((a for a in result.registry.assets if a.asset_id == parent_id), None)
+    if parent is None or parent.type is not AssetType.IMAGE:
+        _fail(f"{parent_id!r} is not an image asset in this project")
+    try:
+        predict = u2net_predictor(model_path(config.models_dir))
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / f"{asset_id}.png"
+            w, h = cut_out(asset_file(path, parent, config.media_root), out, predict, trim=trim)
+            plan = plan_derivative(path, result.registry, parent_id, out, asset_id, media_root=config.media_root,
+                                   notes=f"Background removed from {parent_id} with {MODEL_NAME}"
+                                         f"{', trimmed to the object' if trim else ''}. Check the edges "
+                                         "before approving.")
+            prefix = "[dry-run] " if dry_run else ""
+            typer.echo(f"{prefix}cut-out {w}x{h} px")
+            for line in plan.describe():
+                typer.echo(prefix + line)
+            if not dry_run:
+                apply_intake(path, result.manifest, result.registry, plan, min_free_gb=config.min_free_disk_gb)
+                typer.echo(f"Registered cut-out {asset_id} (derived from {parent_id}; pending your review).")
+    except (CutoutError, IntakeError) as exc:
+        _fail(str(exc))
 
 
 @script_app.command("draft")

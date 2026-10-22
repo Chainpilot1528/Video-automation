@@ -198,6 +198,19 @@ Deterministic SVGs from a JSON spec. The same spec always produces the same file
   - It's `pending_review` like any asset. Record the people/trademark checklist, then review it.
 - The Met retired its old `/v1/search` on 2026-10-01; the pipeline uses `/v1.1/search`.
 
+#### Cut-outs: removing a backdrop
+
+```bash
+.venv/bin/pipeline archive cutout projects/my-film met-epicurus-head --id met-epicurus-cut
+```
+
+- **What it does:** removes the backdrop from a bust or object and saves a transparent PNG, trimmed to the object with a small margin (`--no-trim` keeps the full frame). It runs locally and takes about a second.
+- **Registration:** the PNG is registered in `assets/derived/` as a **derivative** of the original. It inherits the original's rights, and it is `pending_review` on its own. Check the edges before approving it: hair, beards and thin parts can be clipped, and dark stands or posts can survive. `crop` and a small `feather` hide what's left.
+- **Model:** U²-Net (`u2net.onnx`, Apache-2.0, about 176 MB, the same file rembg uses). It's stored in `models/u2net/` (`PIPELINE_MODELS_DIR`; git-ignored) and checked against its checksum before every use.
+  - It runs through **OpenCV**, not rembg. rembg's runtime (onnxruntime) has no builds for Intel Macs on Python 3.14.
+  - Install the dependencies with `pip install -e '.[cutout]'` (NumPy and OpenCV).
+  - If the model is missing, the command prints the download line.
+
 ### Compositions: layered images and text on a dark canvas
 
 Give a beat `layers` instead of a single picture. This is the archival look: artworks floating on near-black, with quotes, names and dates fading in.
@@ -214,7 +227,10 @@ Give a beat `layers` instead of a single picture. This is the archival look: art
 ```
 
 - **Layout:** positions are layer centres as fractions of the frame, so a layout works at any resolution. Each layer has its own start and end, fades, drift and zoom.
-- **Edges:** `feather` melts a painting or a backdrop into the black, and `oval` and `circle` make medallions. `crop` trims a source, for example a museum pedestal.
+- **Edges:** `feather` melts a painting or a backdrop into the black, and `oval` and `circle` make medallions. `crop` trims a source, for example a museum pedestal. Masks keep an image's own transparency, so a cut-out keeps its shape inside them.
+- **Medallions:** add `"ring": true` to an `oval` or `circle` image layer. The portrait fades out just inside a thin brass ring, leaving a dark gap.
+  - To make a bust "become" a medallion, end the cut-out bust layer and start the medallion layer about 0.2 s before it, at the same place.
+  - Keep the `label` (name) and `caption` (place and date) layers running across both.
 - **Text styles:**
   - `quote`: serif italics, with the `highlight` phrase in muted red
   - `label`: letter-spaced capitals
@@ -222,7 +238,7 @@ Give a beat `layers` instead of a single picture. This is the archival look: art
 
   Quotes on screen must come from a verified ledger claim.
 - **Rendering:** each layer is prepared once as a transparent PNG at its largest zoom, then one FFmpeg pass animates them into a clip that the scene renders like a video. It's cached and fingerprinted like everything else. Every layer image counts for rights, credits and QA.
-- A plain studio backdrop still shows faintly with `feather`. Background removal (step 3 of `docs/PILOT_ARCHIVAL_PLAN.md`) is the proper fix.
+- A plain studio backdrop still shows faintly with `feather`. Use a cut-out (`archive cutout`, above) instead.
 
 #### Kinetic quotes
 
