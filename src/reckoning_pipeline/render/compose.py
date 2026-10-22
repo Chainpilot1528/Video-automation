@@ -234,6 +234,8 @@ def composition_command(ffmpeg: str, layers: list[TimelineLayer], pngs: list[str
         m_life = max(m_end - m_start, 0.04)
         zmax = max(layer.zoom_from, layer.zoom_to)
         p = f"clip((t-{_num(m_start)})/{_num(m_life)},0,1)"
+        if layer.motion_ease:
+            p = f"({p})*({p})*(3-2*({p}))"
         z = f"({_num(layer.zoom_from)}+({_num(layer.zoom_to - layer.zoom_from)})*{p})/{_num(zmax)}"
         chain = f"[{i}:v]format=rgba"
         if layer.zoom_from != layer.zoom_to:

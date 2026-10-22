@@ -260,6 +260,42 @@ Give a beat `layers` instead of a single picture. This is the archival look: art
   - `project validate` warns about a quote without one, and errors on an unknown claim.
   - QA **blocks** publication until the claim is verified (or knowingly excepted).
 
+#### The chapter map: stone steps
+
+The episode's structure as monumental stone steps, like a temple's stepped base, descending into the dark. There's one step per chapter, and the camera moves down one step at a time.
+
+```json
+{"asset_id": "chapter-map", "kind": "chapter_map", "title": "Every Philosopher's Answer to Happiness",
+ "levels": [{"title": "Pleasure, Rightly Understood", "subtitle": "Epicurus · Athens, c. 300 BC"},
+            {"title": "Flourishing", "subtitle": "Aristotle · Nicomachean Ethics"}]}
+```
+
+```bash
+.venv/bin/pipeline graphics render projects/my-film specs/chapter-map.json
+```
+
+- **The graphic:** a tall, transparent SVG with 2-8 levels. Each level's number and title are cut into its step, which has room on the right for three medallions. Lower steps are wider and sink into the dark.
+  - The stone texture is seeded from the spec, so the same spec gives a byte-identical file.
+  - It's registered as an original graphic, like the other graphics.
+- **Showing it:** give a beat `chapter_map` (the beat's `graphic_kind` is `chapter_map`; it's structure, not data, so no sources are needed):
+
+```json
+{"beat_id": "v05-map", "scene_id": "s05-aristotle", "order": 1, "takeaway": "Down to Aristotle",
+ "visual_type": "original_graphic", "graphic_kind": "chapter_map",
+ "asset_ids": ["chapter-map", "met-epicurus-head", "met-rembrandt-aristotle"],
+ "chapter_map": {"asset_id": "chapter-map", "level": 2, "pan_start": 1.6, "pan_seconds": 3.6,
+   "markers": [{"level": 1, "asset_id": "met-epicurus-head", "name": "Epicurus", "crop": [0.1, 0.03, 0.9, 0.72]},
+               {"level": 2, "asset_id": "met-rembrandt-aristotle", "name": "Aristotle", "crop": [0.42, 0.14, 0.69, 0.5]}]}}
+```
+
+- **What you see:** the camera rests on `from_level` (default: the level above), then eases down to `level` over `pan_seconds`.
+  - Medallions on earlier levels are there from the start.
+  - The new level's medallions fade in as the camera arrives.
+  - Each medallion is an oval with a brass ring, and `name` is set in small capitals under it. `slot` 1 is the rightmost place, and markers without a slot take the next free one.
+- **Adding layers:** extra `layers` on the same beat (a quote, a caption) are drawn on top of the map.
+- **Rights:** the map and every medallion count for rights and credits like any layer.
+- If the map has fewer levels than the beat asks for, the timeline warns and shows a placeholder.
+
 ## Rendering (Phase 7)
 
 ```bash

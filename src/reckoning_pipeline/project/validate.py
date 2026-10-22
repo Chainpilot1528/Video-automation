@@ -272,7 +272,8 @@ def _check_references(result: ValidationResult) -> None:
     if result.registry:
         rel = paths.asset_registry
         used = {a for s in scenes for a in s.asset_ids} | {
-            s.narration_asset_id for s in scenes if s.narration_asset_id} | set(music_ids(result.manifest))
+            s.narration_asset_id for s in scenes if s.narration_asset_id} | set(extra_used_ids(result.manifest,
+                                                                                 result.visuals))
         for a in result.registry.assets:
             loc = f"{rel}: {a.asset_id}"
             for sid in a.intended_scene_ids:
@@ -319,7 +320,7 @@ def extra_used_ids(manifest: ProjectManifest, visuals: VisualPlan | None) -> tup
     A plain beat renders only its first asset; a composition renders every layer's image."""
     ids = list(music_ids(manifest))
     for b in sorted(visuals.beats if visuals else [], key=lambda b: (b.scene_id, b.order)):
-        shown = b.asset_ids if b.layers else b.asset_ids[:1]
+        shown = b.asset_ids if b.is_composition else b.asset_ids[:1]
         ids += [a for a in shown if a not in ids]
     return tuple(ids)
 

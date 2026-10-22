@@ -21,6 +21,26 @@
       "title": "BarDatum",
       "type": "object"
     },
+    "MapLevel": {
+      "additionalProperties": false,
+      "properties": {
+        "subtitle": {
+          "default": "",
+          "title": "Subtitle",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "title": "MapLevel",
+      "type": "object"
+    },
     "TimelineEvent": {
       "additionalProperties": false,
       "properties": {
@@ -82,10 +102,18 @@
       "enum": [
         "title",
         "bar_chart",
-        "timeline"
+        "timeline",
+        "chapter_map"
       ],
       "title": "Kind",
       "type": "string"
+    },
+    "levels": {
+      "items": {
+        "$ref": "#/$defs/MapLevel"
+      },
+      "title": "Levels",
+      "type": "array"
     },
     "schema_version": {
       "const": "1.0",

@@ -33,8 +33,9 @@ class GraphicKind(StrEnum):
     DIAGRAM = "diagram"
     CHART = "chart"
     TIMELINE = "timeline"
-    MAP = "map"
+    MAP = "map"                  # a geographic map (data: cite sources)
     SCREEN = "screen"
+    CHAPTER_MAP = "chapter_map"  # the episode's chapter map (structure, not data)
 
 
 DATA_KINDS = frozenset({GraphicKind.CHART, GraphicKind.TIMELINE, GraphicKind.MAP})
@@ -113,6 +114,49 @@ class Layer(Record):
         return self
 
 
+class MapMarker(Record):
+    """A portrait medallion placed on a level of the chapter map."""
+
+    level: int = Field(ge=1, le=8)
+    asset_id: Identifier
+    slot: int | None = Field(default=None, ge=1, le=3)   # 1 = rightmost place on the step; None = next free
+    name: str = ""                                       # small-caps name under the medallion
+    crop: tuple[float, float, float, float] | None = None  # like an image layer's crop (e.g. just the head)
+
+
+class ChapterMapView(Record):
+    """Show the chapter map: rest on ``from_level``, ease down to ``level``, and place the medallions.
+
+    The new level's medallions fade in once the camera arrives; the others are there from the start.
+    """
+
+    asset_id: Identifier                        # a chapter_map graphic (pipeline graphics render)
+    level: int = Field(ge=1, le=8)
+    from_level: int | None = Field(default=None, ge=1, le=8)   # None = the level above (or none on level 1)
+    pan_start: float = Field(default=0.8, ge=0)   # seconds from the beat start
+    pan_seconds: float = Field(default=3.5, gt=0, le=20)
+    markers: list[MapMarker] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def _rules(self) -> "ChapterMapView":
+        per_level: dict[int, list[int | None]] = {}
+        for m in self.markers:
+            per_level.setdefault(m.level, []).append(m.slot)
+        for level, slots in per_level.items():
+            if len(slots) > 3:
+                raise ValueError(f"level {level} has more than 3 medallions")
+            fixed = [s for s in slots if s is not None]
+            if len(fixed) != len(set(fixed)):
+                raise ValueError(f"two medallions share a slot on level {level}")
+        return self
+
+    def start_level(self) -> int:
+        return self.from_level if self.from_level is not None else max(self.level - 1, 1)
+
+    def image_ids(self) -> list[str]:
+        return [self.asset_id, *(m.asset_id for m in self.markers)]
+
+
 class GenerationRequest(Record):
     """A request for a generated visual, linked to its beat and scene."""
 
@@ -143,6 +187,7 @@ class VisualBeat(Record):
     is_reconstruction: bool = False              # depicts a real event without being genuine footage
     label: str = ""                              # on-screen label, e.g. "Reconstruction" / "AI illustration"
     layers: list[Layer] = Field(default_factory=list)   # a composition on a dark canvas instead of one picture
+    chapter_map: ChapterMapView | None = None   # the chapter map, under any layers
     generation: GenerationRequest | None = None
     review_status: BeatReview = BeatReview.PENDING
     notes: str = ""
@@ -174,15 +219,22 @@ class VisualBeat(Record):
             raise ValueError("reconstructions must be labelled on screen (label), never passed off as genuine")
         if self.motion is not Motion.NONE and not self.motion_purpose.strip():
             raise ValueError("motion needs a motion_purpose: clarify, reveal evidence, guide attention, or pacing")
-        if not self.asset_ids and not self.requirements.strip() and not self.layers:
+        if not self.asset_ids and not self.requirements.strip() and not self.is_composition:
             raise ValueError("unresolved beats (no asset_ids) must state their requirements")
-        if self.layers:
-            images = list(dict.fromkeys(layer.asset_id for layer in self.layers if layer.kind == "image"))
+        if self.is_composition:
+            images = list(dict.fromkeys([*(self.chapter_map.image_ids() if self.chapter_map else []),
+                                         *(layer.asset_id for layer in self.layers if layer.kind == "image")]))
             if sorted(images) != sorted(self.asset_ids):
-                raise ValueError("a composition's asset_ids must list exactly the assets its image layers use")
+                raise ValueError("a composition's asset_ids must list exactly the assets its image layers "
+                                 "(and chapter map) use")
             if self.motion is not Motion.NONE:
                 raise ValueError("compositions move per layer (drift, zoom); leave the beat's motion as none")
         return self
+
+
+    @property
+    def is_composition(self) -> bool:
+        return bool(self.layers or self.chapter_map)
 
 
 class VisualPlan(Record):
@@ -202,12 +254,17 @@ class TimelineEvent(Record):
     text: NonEmptyStr
 
 
+class MapLevel(Record):
+    title: NonEmptyStr          # e.g. "The Garden"
+    subtitle: str = ""          # e.g. "Epicurus · Athens, c. 300 BC"
+
+
 class GraphicSpec(Record):
     """Input for ``pipeline graphics render``. Data must cite ledger sources."""
 
     schema_version: Literal["1.0"] = SCHEMA_VERSION
     asset_id: Identifier
-    kind: Literal["title", "bar_chart", "timeline"]
+    kind: Literal["title", "bar_chart", "timeline", "chapter_map"]
     title: NonEmptyStr
     subtitle: str = ""
     source_ids: list[Identifier] = Field(default_factory=list)
@@ -215,6 +272,7 @@ class GraphicSpec(Record):
     units: str = ""
     bars: list[BarDatum] = Field(default_factory=list)
     events: list[TimelineEvent] = Field(default_factory=list)
+    levels: list[MapLevel] = Field(default_factory=list)   # chapter_map: one per chapter, top to bottom
     intended_scene_ids: list[Identifier] = Field(default_factory=list)
 
     @model_validator(mode="after")
@@ -230,4 +288,11 @@ class GraphicSpec(Record):
             raise ValueError("a timeline needs 2-6 events")
         if self.kind == "title" and (self.bars or self.events):
             raise ValueError("title cards take no data")
+        if self.kind == "chapter_map":
+            if not 2 <= len(self.levels) <= 8:
+                raise ValueError("a chapter map needs 2-8 levels")
+            if self.bars or self.events:
+                raise ValueError("a chapter map takes levels, not bars or events")
+        elif self.levels:
+            raise ValueError("levels are only for chapter maps")
         return self

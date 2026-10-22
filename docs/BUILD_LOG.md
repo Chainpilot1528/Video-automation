@@ -665,3 +665,40 @@ Two CC0 Met images (met:248475 "Marble head of Epikouros", met:437394 Rembrandt 
 
 ### Next action
 - **Step 5:** the chapter map. This needs the decision on the chapter device: iceberg-style levels, stone steps or rock strata.
+
+---
+
+## 2026-10-23: Archival style, step 5: the chapter map (stone steps)
+
+The user chose **stone steps** as the chapter device.
+
+### The graphic (`graphics/chapter_map.py`, `GraphicSpec.kind = "chapter_map"`)
+- **Shape:** a tall, transparent SVG, 1920 wide and 1080 + 540 × (levels − 1) tall, with 2-8 levels. It's drawn like the stepped base of a Greek temple seen from the front: each level is a stone course with a lit, chipped tread, and a face with masonry joints, a hairline crack and feTurbulence grain.
+- **Inscription:** the level number (spaced capitals with a short red rule), the title in Cormorant italic, and an optional subtitle.
+- **Depth:** each lower step is wider and sinks further toward the canvas colour (up to 60%). A faint warm glow sits at the top, with the episode title above level I.
+- **Layout rules:** joints and cracks are kept clear of the inscription, and there's room on the right for three medallions.
+- **Fixed geometry:** `view_y`, `slab_x`, `marker_anchor` and `map_height` depend only on the level count, which the SVG records as `data-chapter-levels`.
+- **Determinism:** the texture is seeded from the spec, so the same spec gives a byte-identical file.
+- **First draft rejected:** it looked like stacked drawers, with blotchy grain, so it was redrawn as widening temple steps with finer grain.
+
+### Showing it (`VisualBeat.chapter_map`)
+- **ChapterMapView:** `asset_id`, `level`, `from_level` (default: the level above), `pan_start`, `pan_seconds` and `markers` (level, asset, slot, name, crop). There are at most 3 markers per level, and slots are unique.
+- **New `graphic_kind: chapter_map`:** structure, not data, unlike `map`, so no sources are required.
+- **Compiler output:** the timeline compiler turns the beat into layers that share one camera move:
+  - the map, positioned so `from_level` is centred, with a drift to `level`;
+  - ringed oval medallions on their steps, with small-capital name labels.
+
+  Earlier levels' medallions show from the start, and the new level's fade in as the camera arrives. Extra beat `layers` go on top.
+- **Renderer:** compiled layers may now sit and travel off-frame (`TimelineLayer` widens `y`, `max_height` and `drift_y`; authored layers keep the strict limits). The new `motion_ease` uses smoothstep within the `motion_start`/`motion_end` window, so the camera holds, eases down and settles.
+- **Rights:** the map and the medallion images are in the beat's `asset_ids`, so they count for rights, credits and the publication gate.
+
+### Fixed along the way
+- `project validate` flagged an asset as "unused" when only a visual beat used it, such as a museum image without `intended_scene_ids`. Beat assets now count as used, and `test_unused_asset_warning` covers both cases.
+
+### Verification
+- `pytest`: all tests pass, including 7 new ones in `tests/test_chapter_map.py`. They cover the spec rules, determinism and geometry, view and beat rules, the compiled camera move and medallion timing, the placeholder fallback, the eased-motion expression, and a real render.
+- JSON Schemas regenerated.
+- **Test scene** (`tmp/archival-test`, new silent scene `s02-map`): a 5-level map. The camera holds on level I with the Epicurus medallion, eases down to level II over 3.6 s, and the Aristotle medallion (cropped from the Rembrandt) fades in. Frames were checked.
+
+### Next action
+- **Step 6:** the 3-minute pilot "Every Philosopher's Answer to Happiness". It needs research (sources and verified quotations with public-domain translations), the script, `--preset reckoner --humanize` narration, 6-8 scenes, the preview render and QA.

@@ -1,3 +1,4 @@
+import json
 import os
 
 from conftest import DEMO, edit_json
@@ -100,6 +101,9 @@ def test_narration_must_be_audio(demo):
 def test_unused_asset_warning(demo):
     edit_json(demo / "assets/registry.json", lambda d: d["assets"][0].update(intended_scene_ids=[]))
     edit_json(demo / "scenes.json", lambda d: d["scenes"][0].update(asset_ids=[]))
+    assert "asset.unused" not in codes(validate_project(demo), "warning")   # a visual beat still shows it
+    first = json.loads((demo / "assets/registry.json").read_text())["assets"][0]["asset_id"]
+    edit_json(demo / "visuals.json", lambda d: d.update(beats=[b for b in d["beats"] if first not in b["asset_ids"]]))
     assert "asset.unused" in codes(validate_project(demo), "warning")
 
 

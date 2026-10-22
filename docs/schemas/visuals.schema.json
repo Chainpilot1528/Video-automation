@@ -9,6 +9,63 @@
       "title": "BeatReview",
       "type": "string"
     },
+    "ChapterMapView": {
+      "additionalProperties": false,
+      "description": "Show the chapter map: rest on ``from_level``, ease down to ``level``, and place the medallions.\n\nThe new level's medallions fade in once the camera arrives; the others are there from the start.",
+      "properties": {
+        "asset_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "from_level": {
+          "anyOf": [
+            {
+              "maximum": 8,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "From Level"
+        },
+        "level": {
+          "maximum": 8,
+          "minimum": 1,
+          "title": "Level",
+          "type": "integer"
+        },
+        "markers": {
+          "items": {
+            "$ref": "#/$defs/MapMarker"
+          },
+          "title": "Markers",
+          "type": "array"
+        },
+        "pan_seconds": {
+          "default": 3.5,
+          "exclusiveMinimum": 0,
+          "maximum": 20,
+          "title": "Pan Seconds",
+          "type": "number"
+        },
+        "pan_start": {
+          "default": 0.8,
+          "minimum": 0,
+          "title": "Pan Start",
+          "type": "number"
+        }
+      },
+      "required": [
+        "asset_id",
+        "level"
+      ],
+      "title": "ChapterMapView",
+      "type": "object"
+    },
     "GenerationRequest": {
       "additionalProperties": false,
       "description": "A request for a generated visual, linked to its beat and scene.",
@@ -57,7 +114,8 @@
         "chart",
         "timeline",
         "map",
-        "screen"
+        "screen",
+        "chapter_map"
       ],
       "title": "GraphicKind",
       "type": "string"
@@ -276,6 +334,76 @@
       "title": "Layer",
       "type": "object"
     },
+    "MapMarker": {
+      "additionalProperties": false,
+      "description": "A portrait medallion placed on a level of the chapter map.",
+      "properties": {
+        "asset_id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "crop": {
+          "anyOf": [
+            {
+              "maxItems": 4,
+              "minItems": 4,
+              "prefixItems": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Crop"
+        },
+        "level": {
+          "maximum": 8,
+          "minimum": 1,
+          "title": "Level",
+          "type": "integer"
+        },
+        "name": {
+          "default": "",
+          "title": "Name",
+          "type": "string"
+        },
+        "slot": {
+          "anyOf": [
+            {
+              "maximum": 3,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Slot"
+        }
+      },
+      "required": [
+        "level",
+        "asset_id"
+      ],
+      "title": "MapMarker",
+      "type": "object"
+    },
     "Motion": {
       "enum": [
         "none",
@@ -303,6 +431,17 @@
           "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
           "title": "Beat Id",
           "type": "string"
+        },
+        "chapter_map": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ChapterMapView"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         },
         "claim_ids": {
           "items": {

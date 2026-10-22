@@ -21,7 +21,8 @@ from ..schemas.timeline import (
     RenderProfile, TimelineCue, TimelineLayer, TimelineMusic, TimelineNarration, TimelinePlan, TimelineScene,
     TimelineSegment, layers_key,
 )
-from ..schemas.visual import Motion, VisualBeat
+from ..graphics import chapter_map as cmap
+from ..schemas.visual import ChapterMapView, Motion, VisualBeat
 from ..subtitles.srt import SceneSpan, approximate_cues
 from ..utils.fs import safe_resolve
 from .quotes import word_times
@@ -167,7 +168,7 @@ def _segments(scene: Scene, beats: list[VisualBeat], duration: float, assets, as
     items = []  # (beat_id, beat or None, asset or None, placeholder text)
     if beats:
         for b in beats:
-            if b.layers:
+            if b.is_composition:
                 items.append((b.beat_id, b, None, ""))
                 continue
             if len(b.asset_ids) > 1:
@@ -196,8 +197,11 @@ def _segments(scene: Scene, beats: list[VisualBeat], duration: float, assets, as
             motion = Motion.NONE
         label = beat.label if beat and (beat.is_reconstruction or beat.visual_type.value == "generated") else ""
         common = dict(beat_id=beat_id, start=round(start, 3), duration=seg_duration, motion=motion, label=label)
-        if beat is not None and beat.layers:
+        if beat is not None and beat.is_composition:
             layers = _layers(beat, assets, asset_path, warnings)
+            if layers is not None and beat.chapter_map is not None:
+                below = _map_layers(beat.beat_id, beat.chapter_map, assets, asset_path, warnings)
+                layers = None if below is None else below + layers
             if layers is not None:
                 layers = [_with_word_times(layer, beat.beat_id, scene, chunk, lead, start, warnings)
                           for layer in layers]
@@ -238,6 +242,54 @@ def _layers(beat: VisualBeat, assets, asset_path, warnings) -> list[TimelineLaye
             warnings.append(f"{beat.beat_id}: layer asset {layer.asset_id!r} is {what}; using a placeholder")
             return None
         out.append(TimelineLayer(**layer.model_dump(), path=str(asset_path(asset)), sha256=asset.sha256))
+    return out
+
+
+def _map_layers(beat_id: str, view: ChapterMapView, assets, asset_path, warnings) -> list[TimelineLayer] | None:
+    """The chapter map and its medallions as layers sharing one eased camera move; None if it can't be shown."""
+    asset = assets.get(view.asset_id)
+    n = cmap.levels_in(Path(asset_path(asset))) if asset is not None and asset.type in IMAGE_TYPES else None
+    if n is None:
+        warnings.append(f"{beat_id}: {view.asset_id!r} is not a rendered chapter map; using a placeholder")
+        return None
+    if max(view.level, view.start_level()) > n:
+        warnings.append(f"{beat_id}: the chapter map {view.asset_id!r} has only {n} levels; using a placeholder")
+        return None
+    fw, fh = cmap.W, cmap.VIEW_H            # map pixels per frame width / height
+    v0, v1 = cmap.view_y(view.start_level()), cmap.view_y(view.level)
+    pans = v0 != v1
+    move = dict(drift_y=round(-(v1 - v0) / fh, 4), motion_start=view.pan_start,
+                motion_end=view.pan_start + view.pan_seconds, motion_ease=True) if pans else {}
+    arrive = view.pan_start + view.pan_seconds if pans else 0.0
+    height = cmap.map_height(n)
+    out = [TimelineLayer(kind="image", asset_id=view.asset_id, path=str(asset_path(asset)), sha256=asset.sha256,
+                         x=0.5, y=round(0.5 + (height / 2 - v0) / fh, 4), width=1.0,
+                         max_height=round(height / fh + 0.01, 4), fade_in=1.0, fade_out=1.0, **move)]
+    taken: dict[int, set[int]] = {}
+    for m in view.markers:
+        taken.setdefault(m.level, set()).update({m.slot} if m.slot else set())
+    for m in view.markers:
+        if m.level > n:
+            warnings.append(f"{beat_id}: medallion {m.asset_id!r} is on level {m.level}, below the map; skipped")
+            continue
+        slot = m.slot or min(set(range(1, cmap.SLOTS + 1)) - taken[m.level])
+        taken[m.level].add(slot)
+        a = assets.get(m.asset_id)
+        if a is None or a.type not in IMAGE_TYPES:
+            warnings.append(f"{beat_id}: medallion asset {m.asset_id!r} is not an image; using a placeholder")
+            return None
+        ax, ay = cmap.marker_anchor(m.level, slot, n)
+        new = pans and m.level == view.level
+        timing = dict(start=round(max(arrive - 0.3, 0.0), 3), fade_in=1.2) if new else dict(fade_in=1.0)
+        x, y = round(ax / fw, 4), round(0.5 + (ay - v0) / fh, 4)
+        out.append(TimelineLayer(kind="image", asset_id=m.asset_id, path=str(asset_path(a)), sha256=a.sha256,
+                                 x=x, y=y, width=round(cmap.MEDALLION_W / fw, 4),
+                                 max_height=round(cmap.MEDALLION_H / fh, 4), edge="oval", ring=True, crop=m.crop,
+                                 fade_out=1.0, **timing, **move))
+        if m.name.strip():
+            out.append(TimelineLayer(kind="text", text=m.name, text_style="label", x=x,
+                                     y=round(y + (cmap.MEDALLION_H / 2 + 34) / fh, 4), width=0.16,
+                                     fade_out=1.0, **timing, **move))
     return out
 
 
