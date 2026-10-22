@@ -158,6 +158,7 @@ class AICProvider(_MuseumAPI):
     license = AIC_LICENSE
     API = "https://api.artic.edu/api/v1/artworks"
     FIELDS = "id,title,artist_display,artist_title,date_display,image_id,is_public_domain,thumbnail,credit_line,medium_display"
+    SEARCH_FIELDS = ("title^4", "artist_title^3", "subject_titles^2", "term_titles")
     IIIF_WIDTH = 1686  # the largest size the museum recommends requesting
 
     def _headers(self) -> dict:
@@ -168,8 +169,15 @@ class AICProvider(_MuseumAPI):
         self._photos_only(kind)
         if not query.strip():
             raise StockError("empty search query")
-        params = urllib.parse.urlencode({"q": query.strip(), "query[term][is_public_domain]": "true",
-                                         "limit": min(per_page * 2, self.max_lookups), "fields": self.FIELDS})
+        # A plain ``q`` falls back to the default listing when nothing matches, so unrelated works look like
+        # hits. Instead every word must appear in the descriptive fields, and only public-domain works count.
+        # The bracket syntax needs explicit indices: a bare ``[]`` starts a new clause per parameter.
+        must = "query[bool][must][0][multi_match]"
+        params = urllib.parse.urlencode([
+            (f"{must}[query]", query.strip()), (f"{must}[type]", "cross_fields"), (f"{must}[operator]", "and"),
+            *((f"{must}[fields][{i}]", f) for i, f in enumerate(self.SEARCH_FIELDS)),
+            ("query[bool][filter][0][term][is_public_domain]", "true"),
+            ("limit", min(per_page * 2, self.max_lookups)), ("fields", self.FIELDS)])
         data = self._get(f"{self.API}/search?{params}", self._headers())
         iiif = (data.get("config") or {}).get("iiif_url") or "https://www.artic.edu/iiif/2"
         items = [i for i in (aic_item(a, iiif) for a in data.get("data") or []) if i is not None]
