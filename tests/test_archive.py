@@ -3,6 +3,7 @@
 import io
 import json
 import urllib.error
+import urllib.parse
 
 import pytest
 from test_stock import FakeResponse
@@ -48,7 +49,11 @@ class FakeMuseums:
             if url == f"{MET_API}/v1/objects/{oid}":
                 return FakeResponse(json.dumps(obj).encode())
         if url.startswith("https://api.artic.edu/api/v1/artworks/search"):
-            return FakeResponse(json.dumps({"data": [AIC, {**AIC, "id": 9, "is_public_domain": False}],
+            q = urllib.parse.parse_qs(urllib.parse.urlsplit(url).query)
+            words = q.get("query[bool][must][0][multi_match][query]", [""])[0].lower().split()
+            hits = [AIC, {**AIC, "id": 9, "is_public_domain": False}] if words and all(
+                w in "the bedroom vincent van gogh" for w in words) else []
+            return FakeResponse(json.dumps({"data": hits,
                                             "config": {"iiif_url": "https://www.artic.edu/iiif/2"}}).encode())
         if url.startswith("https://images.metmuseum.org/"):
             return FakeResponse(b"\xff\xd8\xff fake jpeg bytes", {"Content-Length": "20"})
@@ -98,7 +103,16 @@ def test_aic_search_filters_and_sends_its_user_agent():
     items = AICProvider(opener=api, sleep=lambda s: None).search("bedroom", "photo")
     assert [i.item_id for i in items] == ["28560"]
     url, headers = api.requests[0]
-    assert "is_public_domain" in url and "Aic-user-agent" in headers
+    assert "Aic-user-agent" in headers
+    q = urllib.parse.parse_qs(urllib.parse.urlsplit(url).query)
+    assert "q" not in q  # a bare q returns the default listing when nothing matches
+    assert q["query[bool][filter][0][term][is_public_domain]"] == ["true"]
+    assert q["query[bool][must][0][multi_match][operator]"] == ["and"]
+    assert q["query[bool][must][0][multi_match][fields][0]"] == ["title^4"]
+
+
+def test_aic_search_with_no_match_returns_nothing():
+    assert AICProvider(opener=FakeMuseums(), sleep=lambda s: None).search("schopenhauer", "photo") == []
 
 
 def test_download_only_from_the_museum_image_host(tmp_path):

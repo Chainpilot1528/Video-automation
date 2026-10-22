@@ -702,3 +702,10 @@ The user chose **stone steps** as the chapter device.
 
 ### Next action
 - **Step 6:** the 3-minute pilot "Every Philosopher's Answer to Happiness". It needs research (sources and verified quotations with public-domain translations), the script, `--preset reckoner --humanize` narration, 6-8 scenes, the preview render and QA.
+
+## 2026-10-23: Fix: AIC search returned unrelated works when nothing matched
+
+- **Problem:** `AICProvider.search` sent `q=<query>` with a public-domain term filter. When nothing matched (e.g. "schopenhauer"), the API fell back to its default listing (ids 11, 111, 27, 4…, `_score` ~5), so `pipeline archive search "<x>" --source aic` showed unrelated artworks as results.
+- **Fix:** search now sends an Elasticsearch bool query: a `cross_fields` `multi_match` with `operator: and` over `title^4`, `artist_title^3`, `subject_titles^2` and `term_titles`, plus a `filter` on `is_public_domain`. The bracket parameters use explicit indices, because a bare `[]` makes each parameter a separate clause (and the API answers 400). Pacing, retries, headers and host limits are unchanged.
+- **Checked live:** "philosopher" gives 28 hits (Heraclitus, Democritus, Head of a Philosopher…); "marble head" gives 30 busts and portrait heads; "schopenhauer" and "zzqxv" give 0.
+- **Tests:** the fake AIC API in `tests/test_archive.py` now only answers matching words. The search test checks the request shape (no bare `q`, the filter, `operator=and`, the boosted fields), and a new test checks that a miss returns `[]`.
