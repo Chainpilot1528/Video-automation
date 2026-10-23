@@ -5,7 +5,8 @@ from test_voicebox import fake  # noqa: F401  (fixture: fake Voicebox server)
 from reckoning_pipeline.media.audio import detect_silence, probe_audio
 from reckoning_pipeline.narration import BuildOptions, build_narration
 from reckoning_pipeline.narration.humanize import (
-    PARAGRAPH_GAP, QUESTION_EXTRA, SENTENCE_GAPS, plan_pieces, split_sentences,
+    BEFORE_SHORT_EXTRA, ELLIPSIS_GAP, PARAGRAPH_GAPS, QUESTION_EXTRA, SENTENCE_GAPS, plan_pieces,
+    split_sentences,
 )
 from reckoning_pipeline.narration.styles import get_preset, style_filters
 from reckoning_pipeline.project import validate_project
@@ -22,15 +23,38 @@ def test_split_sentences_keeps_abbreviations_and_ellipses():
 
 
 def test_plan_pieces_pauses():
-    pieces = plan_pieces("What is death? Epicurus answered. Others disagreed.\n\nThe Stoics practised it. Daily.")
-    assert [p.text for p in pieces] == ["What is death?", "Epicurus answered.", "Others disagreed.",
-                                        "The Stoics practised it.", "Daily."]
+    pieces = plan_pieces("What is death? Some people called it a door. Others disagreed with that idea entirely.\n\nThe Stoics practised it every single morning. Daily.")
+    assert [p.text for p in pieces] == ["What is death?", "Some people called it a door.", "Others disagreed with that idea entirely.",
+                                        "The Stoics practised it every single morning.", "Daily."]
     assert pieces[0].gap_after == pytest.approx(SENTENCE_GAPS[0] + QUESTION_EXTRA)  # a question lands
     assert pieces[1].gap_after == SENTENCE_GAPS[1]
-    assert pieces[2].gap_after == PARAGRAPH_GAP                                     # end of paragraph
+    assert pieces[2].gap_after == PARAGRAPH_GAPS[0]                                 # end of paragraph
+    assert pieces[3].gap_after == pytest.approx(SENTENCE_GAPS[3] + BEFORE_SHORT_EXTRA)  # a beat before "Daily."
     assert pieces[-1].gap_after == 0.0                                             # the scene hold follows
     assert plan_pieces("Same text. Same plan.") == plan_pieces("Same text. Same plan.")  # deterministic
     assert len({p.tempo for p in plan_pieces("A. B. C. D.")}) > 1                 # gentle drift
+
+
+def test_short_statements_are_spoken_with_the_next_sentence():
+    pieces = plan_pieces("Here's the situation. For three years you believed one thing. Why? Because.\n\nHard work wins.")
+    assert [p.text for p in pieces] == ["Here's the situation. For three years you believed one thing.", "Why?", "Because.",
+                                        "Hard work wins."]   # questions and a paragraph's last line stay alone
+
+
+def test_even_pace_lifts_only_drawn_out_pieces():
+    from reckoning_pipeline.narration.humanize import EVEN_PACE_MAX, pace_boosts, syllables
+    assert syllables("Here's the situation.") == 6 and syllables("One.") == 1
+    pieces = plan_pieces("This sentence is long enough to set the pace for the scene. Okay?\n\nAnother long sentence sets a steady pace here.")
+    boosts = pace_boosts(pieces, [4.2, 1.5, 4.0])
+    assert boosts[0] == 1.0 and boosts[2] == 1.0 and boosts[1] == EVEN_PACE_MAX   # capped
+    assert pace_boosts(pieces, [4.2, 3.6, 4.0])[1] == pytest.approx(4.2 * 0.95 / 3.6)  # lifted to 95% of the pace
+
+
+def test_talking_rhythm_breathes_after_an_ellipsis_and_varies_paragraphs():
+    pieces = plan_pieces("He broke every rule… and won anyway.\n\nOne.\n\nTwo.\n\nThree.")
+    assert [p.text for p in pieces][:2] == ["He broke every rule…", "and won anyway."]
+    assert pieces[0].gap_after == ELLIPSIS_GAP
+    assert len({p.gap_after for p in pieces[1:-1]}) > 1                            # paragraph gaps vary
 
 
 @pytest.mark.skipif(not HAVE_FFMPEG, reason="FFmpeg not installed")

@@ -19,7 +19,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .. import __version__
-from ..media.audio import MediaError, Tools
+from ..media.audio import MediaError, Tools, measure_loudness
 from ..media.video import VideoInfo, probe_video
 from ..project.validate import ValidationResult
 from ..schemas import SceneManifest
@@ -31,8 +31,8 @@ from ..utils.fs import safe_resolve, sha256_file, write_json_atomic, write_text_
 from ..visuals.placeholders import placeholder_svg_text
 from .commands import concat_command, concat_list, music_mix_command, scene_command
 from .compose import (
-    composition_command, expand_reveals, font_env, image_prepare_command, prepare_layer_files, svg_to_png_command,
-    text_svg,
+    composition_command, expand_reveals, font_env, image_prepare_command, prepare_layer_files, shape_svg,
+    svg_to_png_command, text_svg,
 )
 from .profiles import get_profile
 
@@ -209,7 +209,8 @@ def _render_compositions(tools: Tools, plan: TimelinePlan, scene: TimelineScene,
             segments.append(seg)
             continue
         clip = Path(seg.path)
-        if not _clip_ok(tools, clip, seg.duration):
+        length = seg.duration + seg.overlap
+        if not _clip_ok(tools, clip, length):
             layers = expand_reveals(seg.layers)
             env = font_env(work)
             prepared = prepare_layer_files(layers, plan.profile, work)
@@ -220,18 +221,19 @@ def _render_compositions(tools: Tools, plan: TimelinePlan, scene: TimelineScene,
                     cmd = image_prepare_command(tools.ffmpeg, layer.path, layer, plan.profile, png.name)
                 else:
                     svg = png.with_suffix(".svg")
-                    write_text_atomic(svg, text_svg(layer, plan.profile))
+                    draw = shape_svg if layer.kind == "shape" else text_svg
+                    write_text_atomic(svg, draw(layer, plan.profile))
                     cmd = svg_to_png_command(tools.ffmpeg, svg.name, png.name)
                 _run(cmd, cwd=work, log=log, what=f"{seg.beat_id}: prepare layer", timeout=120, env=env)
             partial = clip.with_name(clip.stem + ".partial.mp4")
             cmd = composition_command(tools.ffmpeg, layers, [png.name for _, png in prepared], plan.profile,
-                                      seg.duration, partial.name)
+                                      length, partial.name)
             _run(cmd, cwd=work, log=log, what=f"{seg.beat_id}: composition",
-                 timeout=max(120.0, seg.duration * SCENE_TIMEOUT_FACTOR))
-            if not _clip_ok(tools, partial, seg.duration):
+                 timeout=max(120.0, length * SCENE_TIMEOUT_FACTOR))
+            if not _clip_ok(tools, partial, length):
                 raise RenderError(f"{seg.beat_id}: composition clip has the wrong length; kept {partial.name}")
             os.replace(partial, clip)
-        segments.append(seg.model_copy(update={"kind": "video", "source_duration": seg.duration, "layers": []}))
+        segments.append(seg.model_copy(update={"kind": "video", "source_duration": length, "layers": []}))
     return scene.model_copy(update={"segments": segments})
 
 
@@ -261,6 +263,10 @@ def _check_decodable(tools: Tools, scene: TimelineScene, log: Path) -> None:
                               f"({Path(seg.path).name}); see {log}")
 
 
+FINAL_LUFS = -14.0     # integrated loudness of every finished video
+FINAL_PEAK = 0.79      # limiter ceiling, about -2 dBFS (AAC encoding adds a little on top)
+
+
 def _concat(tools: Tools, base: Path, files: list[Path], final: Path, plan: TimelinePlan) -> list[list[str]]:
     list_file = base / "build" / "concat.txt"
     write_text_atomic(list_file, concat_list(files))
@@ -273,6 +279,22 @@ def _concat(tools: Tools, base: Path, files: list[Path], final: Path, plan: Time
         cmds.append(music_mix_command(tools.ffmpeg, str(joined), plan.music, plan.profile, plan.total_duration,
                                       str(partial)))
         _run(cmds[1], cwd=base / "build", log=base / "logs" / "music.log", what="music mix", timeout=timeout)
+    level = measure_loudness(tools, partial).integrated_lufs
+    if level is not None and abs(level - FINAL_LUFS) > 0.5 and plan.music:
+        # bring the mix to the platform level (YouTube plays at about -14 LUFS): mix again with the gain
+        # inside the same filter graph, so the audio is encoded once and the limiter really holds the peaks
+        cmds.append(music_mix_command(tools.ffmpeg, str(joined), plan.music, plan.profile, plan.total_duration,
+                                      str(partial), gain_db=FINAL_LUFS - level, peak=FINAL_PEAK))
+        _run(cmds[-1], cwd=base / "build", log=base / "logs" / "level.log", what="loudness", timeout=timeout)
+    elif level is not None and abs(level - FINAL_LUFS) > 0.5:
+        # no music bed: one gain-and-limit pass over the joined audio
+        levelled = partial.with_name(partial.stem + ".level.mp4")
+        cmds.append([tools.ffmpeg, "-nostdin", "-hide_banner", "-loglevel", "warning", "-y", "-i", str(partial),
+                     "-af", f"volume={FINAL_LUFS - level:.2f}dB,alimiter=limit={FINAL_PEAK}:level=disabled",
+                     "-map", "0:v", "-map", "0:a", "-c:v", "copy", "-c:a", "aac", "-b:a", plan.profile.audio_bitrate,
+                     "-ar", str(plan.profile.audio_sample_rate), "-ac", "2", "-movflags", "+faststart", str(levelled)])
+        _run(cmds[-1], cwd=base / "build", log=base / "logs" / "level.log", what="loudness", timeout=timeout)
+        os.replace(levelled, partial)
     problems = _final_problems(probe_video(tools, partial), plan)
     if problems:
         raise RenderError("final render failed checks: " + "; ".join(problems) + f" (kept {partial.name})")

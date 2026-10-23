@@ -1,0 +1,3680 @@
+{
+  "schema_version": "1.0",
+  "beats": [
+    {
+      "beat_id": "v-s01-negotiation-b01",
+      "scene_id": "s01-negotiation",
+      "order": 1,
+      "takeaway": "A hook: someone breaks the rules and wins",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "chapter-core-overview"
+      ],
+      "layers": [
+        {
+          "kind": "shape",
+          "shape": "stars",
+          "x": 0.5,
+          "y": 0.5,
+          "width": 1.0,
+          "max_height": 1.0,
+          "start": 0.0,
+          "seed": 11,
+          "pulse": 3.7,
+          "fade_in": 1.0
+        },
+        {
+          "kind": "shape",
+          "shape": "stars",
+          "x": 0.5,
+          "y": 0.5,
+          "width": 1.0,
+          "max_height": 1.0,
+          "start": 0.0,
+          "seed": 23,
+          "pulse": 5.3,
+          "fade_in": 1.0
+        },
+        {
+          "kind": "image",
+          "asset_id": "chapter-core-overview",
+          "x": 0.5,
+          "y": 1.6111,
+          "width": 1.0,
+          "max_height": 1.0,
+          "start": 0.0,
+          "edge": "none",
+          "fade_in": 1.2,
+          "zoom_from": 2.6,
+          "zoom_to": 0.92,
+          "drift_y": -1.1111,
+          "motion_start": 0.4,
+          "motion_end": 5.33,
+          "motion_ease": true,
+          "feather": 0.025
+        },
+        {
+          "kind": "text",
+          "text": "Have you ever met someone who seems to break every rule… and wins anyway?",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.075,
+          "width": 0.92,
+          "start": 0.0,
+          "highlight": "and wins anyway?",
+          "reveal": "words",
+          "fade_in": 0.45
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 0.0
+    },
+    {
+      "beat_id": "v-s01-negotiation-b02",
+      "scene_id": "s01-negotiation",
+      "order": 2,
+      "takeaway": "Your belief: hard work wins",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "shape",
+          "shape": "person",
+          "x": 0.36,
+          "y": 0.45,
+          "width": 0.09,
+          "max_height": 0.36,
+          "start": 0.2,
+          "fade_in": 1.0
+        },
+        {
+          "kind": "text",
+          "text": "you",
+          "text_style": "caption",
+          "x": 0.36,
+          "y": 0.7,
+          "width": 0.2,
+          "start": 0.6
+        },
+        {
+          "kind": "text",
+          "text": "three years",
+          "text_style": "caption",
+          "x": 0.64,
+          "y": 0.4,
+          "width": 0.3,
+          "start": 1.79
+        },
+        {
+          "kind": "text",
+          "text": "Hard work wins.",
+          "text_style": "statement",
+          "x": 0.64,
+          "y": 0.48,
+          "width": 0.4,
+          "start": 4.64,
+          "highlight": "wins.",
+          "reveal": "words",
+          "fade_in": 0.45
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 5.71
+    },
+    {
+      "beat_id": "v-s01-negotiation-b03",
+      "scene_id": "s01-negotiation",
+      "order": 3,
+      "takeaway": "Sacrifice gives the belief its meaning",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-bruegel-harvesters"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-bruegel-harvesters",
+          "x": 0.5,
+          "y": 0.44,
+          "width": 0.72,
+          "max_height": 0.72,
+          "start": 0.0,
+          "zoom_from": 1.0,
+          "zoom_to": 1.1,
+          "drift_y": -0.02,
+          "edge": "feather",
+          "feather": 0.025,
+          "fade_in": 1.2
+        },
+        {
+          "kind": "text",
+          "text": "Pieter Bruegel the Elder, The Harvesters, 1565",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.9,
+          "width": 0.6,
+          "start": 1.0
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 12.17
+    },
+    {
+      "beat_id": "v-s01-negotiation-b04",
+      "scene_id": "s01-negotiation",
+      "order": 4,
+      "takeaway": "Someone works less and earns more",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "shape",
+          "shape": "person",
+          "x": 0.3,
+          "y": 0.45,
+          "width": 0.09,
+          "max_height": 0.36,
+          "start": 0.0,
+          "fade_in": 0.6
+        },
+        {
+          "kind": "text",
+          "text": "you",
+          "text_style": "caption",
+          "x": 0.3,
+          "y": 0.68,
+          "width": 0.2,
+          "start": 0.3
+        },
+        {
+          "kind": "shape",
+          "shape": "person",
+          "x": 0.88,
+          "y": 0.45,
+          "width": 0.09,
+          "max_height": 0.36,
+          "start": 0.6,
+          "fade_in": 0.5,
+          "flip": true,
+          "drift_x": -0.22,
+          "motion_start": 0.6,
+          "motion_end": 2.0,
+          "motion_ease": true
+        },
+        {
+          "kind": "text",
+          "text": "them",
+          "text_style": "caption",
+          "x": 0.66,
+          "y": 0.68,
+          "width": 0.2,
+          "start": 1.8
+        },
+        {
+          "kind": "text",
+          "text": "fewer hours",
+          "text_style": "statement",
+          "x": 0.66,
+          "y": 0.76,
+          "width": 0.32,
+          "start": 1.67
+        },
+        {
+          "kind": "text",
+          "text": "protects their evenings",
+          "text_style": "statement",
+          "x": 0.66,
+          "y": 0.83,
+          "width": 0.4,
+          "start": 3.22
+        },
+        {
+          "kind": "text",
+          "text": "earns more",
+          "text_style": "statement",
+          "x": 0.66,
+          "y": 0.9,
+          "width": 0.32,
+          "start": 5.21,
+          "highlight": "earns more"
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 24.11
+    },
+    {
+      "beat_id": "v-s01-negotiation-b05",
+      "scene_id": "s01-negotiation",
+      "order": 5,
+      "takeaway": "Two ideas that don't fit together",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "shape",
+          "shape": "circle",
+          "x": 0.34,
+          "y": 0.45,
+          "width": 0.16,
+          "max_height": 0.28,
+          "start": 0.0,
+          "color": "stone",
+          "drift_x": 0.05,
+          "motion_start": 0.3,
+          "motion_end": 3.0,
+          "motion_ease": true,
+          "fade_in": 0.6
+        },
+        {
+          "kind": "shape",
+          "shape": "ring",
+          "x": 0.66,
+          "y": 0.45,
+          "width": 0.16,
+          "max_height": 0.28,
+          "start": 0.4,
+          "drift_x": -0.05,
+          "motion_start": 0.3,
+          "motion_end": 3.0,
+          "motion_ease": true,
+          "fade_in": 0.6
+        },
+        {
+          "kind": "text",
+          "text": "Hard work wins.",
+          "text_style": "caption",
+          "x": 0.39,
+          "y": 0.66,
+          "width": 0.24,
+          "start": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "Someone works less and earns more.",
+          "text_style": "caption",
+          "x": 0.61,
+          "y": 0.66,
+          "width": 0.28,
+          "start": 1.2
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 31.07
+    },
+    {
+      "beat_id": "v-s01-negotiation-b06",
+      "scene_id": "s01-negotiation",
+      "order": 6,
+      "takeaway": "We protect the belief instead of rethinking it",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "Rethink what success really takes.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.26,
+          "width": 0.6,
+          "start": 0.2,
+          "fade_in": 0.6
+        },
+        {
+          "kind": "shape",
+          "shape": "line",
+          "x": 0.512,
+          "y": 0.247,
+          "width": 0.37,
+          "max_height": 0.03,
+          "start": 3.4,
+          "reveal": "draw",
+          "color": "accent",
+          "fade_in": 0.7
+        },
+        {
+          "kind": "text",
+          "text": "They just got lucky.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.46,
+          "width": 0.5,
+          "start": 4.72
+        },
+        {
+          "kind": "text",
+          "text": "It won't last.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.56,
+          "width": 0.5,
+          "start": 6.89
+        },
+        {
+          "kind": "text",
+          "text": "They must know someone.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.66,
+          "width": 0.5,
+          "start": 7.96
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 34.88
+    },
+    {
+      "beat_id": "v-s01-negotiation-b07",
+      "scene_id": "s01-negotiation",
+      "order": 7,
+      "takeaway": "Instead of updating the belief, we protect it",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-rodin-thinker-cut"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-rodin-thinker-cut",
+          "x": 0.28,
+          "y": 0.46,
+          "width": 0.3,
+          "max_height": 0.76,
+          "start": 0.0,
+          "feather": 0.05,
+          "zoom_from": 1.0,
+          "zoom_to": 1.1,
+          "drift_y": -0.01,
+          "edge": "feather",
+          "fade_in": 1.2
+        },
+        {
+          "kind": "text",
+          "text": "Auguste Rodin, The Thinker, modeled c. 1880",
+          "text_style": "caption",
+          "x": 0.28,
+          "y": 0.9,
+          "width": 0.52,
+          "start": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "“Instead of changing your understanding of the world, you found a way to preserve it.”",
+          "text_style": "quote",
+          "x": 0.69,
+          "y": 0.44,
+          "width": 0.42,
+          "start": 0.0,
+          "highlight": "found a way to preserve it",
+          "reveal": "words",
+          "claim_id": "q-art-preserve",
+          "fade_in": 0.45
+        },
+        {
+          "kind": "text",
+          "text": "Reckoning Self, “Why Your Brain Hates Contradictions”",
+          "text_style": "caption",
+          "x": 0.69,
+          "y": 0.64,
+          "width": 0.42,
+          "start": 3.62
+        }
+      ],
+      "claim_ids": [
+        "q-art-preserve"
+      ],
+      "source_ids": [
+        "src-article"
+      ],
+      "offset_seconds": 45.24
+    },
+    {
+      "beat_id": "v-s01-negotiation-b08",
+      "scene_id": "s01-negotiation",
+      "order": 8,
+      "takeaway": "Rationalisation feels like logic from the inside",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "It doesn't feel like an excuse.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.42,
+          "width": 0.6,
+          "start": 2.79
+        },
+        {
+          "kind": "text",
+          "text": "It feels like logic.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.52,
+          "width": 0.6,
+          "start": 5.78,
+          "highlight": "logic.",
+          "reveal": "words",
+          "fade_in": 0.45
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 51.94
+    },
+    {
+      "beat_id": "v-s02-theory-b01",
+      "scene_id": "s02-theory",
+      "order": 1,
+      "takeaway": "Level II: cognitive dissonance",
+      "visual_type": "original_graphic",
+      "graphic_kind": "chapter_map",
+      "asset_ids": [
+        "chapter-core",
+        "met-rodin-thinker",
+        "met-brouwer-smokers"
+      ],
+      "chapter_map": {
+        "asset_id": "chapter-core",
+        "level": 2,
+        "from_level": 1,
+        "pan_start": 0.3,
+        "pan_seconds": 2.6,
+        "markers": [
+          {
+            "level": 1,
+            "asset_id": "met-rodin-thinker",
+            "name": "The Thinker",
+            "crop": [
+              0.2,
+              0.05,
+              0.85,
+              0.6
+            ]
+          },
+          {
+            "level": 2,
+            "asset_id": "met-brouwer-smokers",
+            "name": "The Smokers",
+            "crop": [
+              0.25,
+              0.1,
+              0.75,
+              0.7
+            ]
+          }
+        ]
+      },
+      "offset_seconds": 0.0
+    },
+    {
+      "beat_id": "v-s02-theory-b02",
+      "scene_id": "s02-theory",
+      "order": 2,
+      "takeaway": "Festinger named it in 1957",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "Cognitive dissonance",
+          "text_style": "heading",
+          "x": 0.5,
+          "y": 0.42,
+          "width": 0.8,
+          "start": 0.2,
+          "fade_in": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "Leon Festinger, 1957",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.56,
+          "width": 0.5,
+          "start": 1.2
+        }
+      ],
+      "claim_ids": [
+        "c-festinger-1957"
+      ],
+      "source_ids": [
+        "src-festinger-carlsmith-1959"
+      ],
+      "offset_seconds": 4.6
+    },
+    {
+      "beat_id": "v-s02-theory-b03",
+      "scene_id": "s02-theory",
+      "order": 3,
+      "takeaway": "Two things that don't fit together feel uncomfortable",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "shape",
+          "shape": "circle",
+          "x": 0.36,
+          "y": 0.42,
+          "width": 0.15,
+          "max_height": 0.27,
+          "start": 0.2,
+          "color": "stone",
+          "drift_x": 0.04,
+          "motion_start": 0.5,
+          "motion_end": 3.0,
+          "motion_ease": true
+        },
+        {
+          "kind": "text",
+          "text": "what you believe",
+          "text_style": "caption",
+          "x": 0.4,
+          "y": 0.62,
+          "width": 0.26,
+          "start": 0.6
+        },
+        {
+          "kind": "shape",
+          "shape": "ring",
+          "x": 0.64,
+          "y": 0.42,
+          "width": 0.15,
+          "max_height": 0.27,
+          "start": 4.76,
+          "drift_x": -0.04,
+          "motion_start": 0.3,
+          "motion_end": 2.5,
+          "motion_ease": true
+        },
+        {
+          "kind": "text",
+          "text": "what you do",
+          "text_style": "caption",
+          "x": 0.6,
+          "y": 0.62,
+          "width": 0.26,
+          "start": 5.16
+        },
+        {
+          "kind": "text",
+          "text": "It feels uncomfortable.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.78,
+          "width": 0.5,
+          "start": 7.81,
+          "highlight": "uncomfortable.",
+          "reveal": "words",
+          "fade_in": 0.45
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 10.01
+    },
+    {
+      "beat_id": "v-s02-theory-b04",
+      "scene_id": "s02-theory",
+      "order": 4,
+      "takeaway": "A smoker who knows smoking is harmful",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-brouwer-smokers"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-brouwer-smokers",
+          "x": 0.3,
+          "y": 0.44,
+          "width": 0.42,
+          "max_height": 0.74,
+          "start": 0.0,
+          "zoom_from": 1.0,
+          "zoom_to": 1.1,
+          "edge": "feather",
+          "feather": 0.025,
+          "fade_in": 1.2
+        },
+        {
+          "kind": "text",
+          "text": "Adriaen Brouwer, The Smokers, c. 1636",
+          "text_style": "caption",
+          "x": 0.3,
+          "y": 0.9,
+          "width": 0.52,
+          "start": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "Knows smoking is harmful.",
+          "text_style": "statement",
+          "x": 0.72,
+          "y": 0.42,
+          "width": 0.4,
+          "start": 1.05
+        },
+        {
+          "kind": "text",
+          "text": "Still smokes.",
+          "text_style": "statement",
+          "x": 0.72,
+          "y": 0.52,
+          "width": 0.4,
+          "start": 3.5,
+          "highlight": "Still smokes."
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 21.73
+    },
+    {
+      "beat_id": "v-s02-theory-b05",
+      "scene_id": "s02-theory",
+      "order": 5,
+      "takeaway": "Several ways to ease the conflict",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "So what do they do?",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.24,
+          "width": 0.6,
+          "start": 0.2
+        },
+        {
+          "kind": "text",
+          "text": "Quit.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.4,
+          "width": 0.5,
+          "start": 1.99
+        },
+        {
+          "kind": "text",
+          "text": "Admit the clash.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.5,
+          "width": 0.5,
+          "start": 2.83
+        },
+        {
+          "kind": "text",
+          "text": "“I don't smoke enough for it to matter.”",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.62,
+          "width": 0.7,
+          "start": 8.3,
+          "highlight": "for it to matter.”"
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 27.03
+    },
+    {
+      "beat_id": "v-s02-theory-b06",
+      "scene_id": "s02-theory",
+      "order": 6,
+      "takeaway": "Changing your mind is only one way out",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-durer-hercules-crossroad"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-durer-hercules-crossroad",
+          "x": 0.28,
+          "y": 0.45,
+          "width": 0.36,
+          "max_height": 0.78,
+          "start": 0.0,
+          "crop": [
+            0.12,
+            0.0,
+            0.88,
+            0.62
+          ],
+          "zoom_from": 1.0,
+          "zoom_to": 1.1,
+          "edge": "feather",
+          "feather": 0.025,
+          "fade_in": 1.2
+        },
+        {
+          "kind": "text",
+          "text": "Albrecht Dürer, Hercules at the Crossroad, c. 1498",
+          "text_style": "caption",
+          "x": 0.28,
+          "y": 0.9,
+          "width": 0.52,
+          "start": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "Change your mind",
+          "text_style": "statement",
+          "x": 0.7,
+          "y": 0.3,
+          "width": 0.42,
+          "start": 1.11
+        },
+        {
+          "kind": "text",
+          "text": "Change what you do",
+          "text_style": "statement",
+          "x": 0.7,
+          "y": 0.42,
+          "width": 0.42,
+          "start": 3.71
+        },
+        {
+          "kind": "text",
+          "text": "Reinterpret the evidence",
+          "text_style": "statement",
+          "x": 0.7,
+          "y": 0.54,
+          "width": 0.42,
+          "start": 5.68
+        },
+        {
+          "kind": "text",
+          "text": "Add a new story",
+          "text_style": "statement",
+          "x": 0.7,
+          "y": 0.66,
+          "width": 0.42,
+          "start": 8.14,
+          "highlight": "new story"
+        }
+      ],
+      "claim_ids": [
+        "c-festinger-1957"
+      ],
+      "source_ids": [
+        "src-festinger-carlsmith-1959"
+      ],
+      "offset_seconds": 38.02
+    },
+    {
+      "beat_id": "v-s02-theory-b07",
+      "scene_id": "s02-theory",
+      "order": 7,
+      "takeaway": "It depends on how much the belief matters",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "Which way you go depends on the situation… and on how much that belief matters to you.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.46,
+          "width": 0.66,
+          "start": 0.2,
+          "highlight": "how much that belief matters to you.",
+          "reveal": "words",
+          "fade_in": 0.45
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 50.52
+    },
+    {
+      "beat_id": "v-s03-experiment-b01",
+      "scene_id": "s03-experiment",
+      "order": 1,
+      "takeaway": "Level III: the $1 / $20 experiment",
+      "visual_type": "original_graphic",
+      "graphic_kind": "chapter_map",
+      "asset_ids": [
+        "chapter-core",
+        "met-rodin-thinker",
+        "met-brouwer-smokers"
+      ],
+      "chapter_map": {
+        "asset_id": "chapter-core",
+        "level": 3,
+        "from_level": 2,
+        "pan_start": 0.3,
+        "pan_seconds": 2.6,
+        "markers": [
+          {
+            "level": 1,
+            "asset_id": "met-rodin-thinker",
+            "name": "The Thinker",
+            "crop": [
+              0.2,
+              0.05,
+              0.85,
+              0.6
+            ]
+          },
+          {
+            "level": 2,
+            "asset_id": "met-brouwer-smokers",
+            "name": "The Smokers",
+            "crop": [
+              0.25,
+              0.1,
+              0.75,
+              0.7
+            ]
+          }
+        ]
+      },
+      "offset_seconds": 0.0
+    },
+    {
+      "beat_id": "v-s03-experiment-b02",
+      "scene_id": "s03-experiment",
+      "order": 2,
+      "takeaway": "An hour of deliberately boring tasks",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "shape",
+          "shape": "person",
+          "x": 0.3,
+          "y": 0.45,
+          "width": 0.09,
+          "max_height": 0.36,
+          "start": 0.2,
+          "fade_in": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "a student",
+          "text_style": "caption",
+          "x": 0.3,
+          "y": 0.68,
+          "width": 0.2,
+          "start": 0.6
+        },
+        {
+          "kind": "text",
+          "text": "about an hour of boring tasks",
+          "text_style": "caption",
+          "x": 0.66,
+          "y": 0.24,
+          "width": 0.5,
+          "start": 2.4
+        },
+        {
+          "kind": "shape",
+          "shape": "ring",
+          "x": 0.56,
+          "y": 0.38,
+          "width": 0.045,
+          "max_height": 0.08,
+          "start": 5.35,
+          "fade_in": 0.4
+        },
+        {
+          "kind": "shape",
+          "shape": "ring",
+          "x": 0.6300000000000001,
+          "y": 0.38,
+          "width": 0.045,
+          "max_height": 0.08,
+          "start": 5.47,
+          "fade_in": 0.4
+        },
+        {
+          "kind": "shape",
+          "shape": "ring",
+          "x": 0.7000000000000001,
+          "y": 0.38,
+          "width": 0.045,
+          "max_height": 0.08,
+          "start": 5.59,
+          "fade_in": 0.4
+        },
+        {
+          "kind": "shape",
+          "shape": "ring",
+          "x": 0.77,
+          "y": 0.38,
+          "width": 0.045,
+          "max_height": 0.08,
+          "start": 5.71,
+          "fade_in": 0.4
+        },
+        {
+          "kind": "shape",
+          "shape": "ring",
+          "x": 0.56,
+          "y": 0.5,
+          "width": 0.045,
+          "max_height": 0.08,
+          "start": 5.83,
+          "fade_in": 0.4
+        },
+        {
+          "kind": "shape",
+          "shape": "ring",
+          "x": 0.6300000000000001,
+          "y": 0.5,
+          "width": 0.045,
+          "max_height": 0.08,
+          "start": 5.95,
+          "fade_in": 0.4
+        },
+        {
+          "kind": "shape",
+          "shape": "ring",
+          "x": 0.7000000000000001,
+          "y": 0.5,
+          "width": 0.045,
+          "max_height": 0.08,
+          "start": 6.07,
+          "fade_in": 0.4
+        },
+        {
+          "kind": "shape",
+          "shape": "ring",
+          "x": 0.77,
+          "y": 0.5,
+          "width": 0.045,
+          "max_height": 0.08,
+          "start": 6.19,
+          "fade_in": 0.4
+        },
+        {
+          "kind": "shape",
+          "shape": "ring",
+          "x": 0.56,
+          "y": 0.62,
+          "width": 0.045,
+          "max_height": 0.08,
+          "start": 6.31,
+          "fade_in": 0.4
+        },
+        {
+          "kind": "shape",
+          "shape": "ring",
+          "x": 0.6300000000000001,
+          "y": 0.62,
+          "width": 0.045,
+          "max_height": 0.08,
+          "start": 6.43,
+          "fade_in": 0.4
+        },
+        {
+          "kind": "shape",
+          "shape": "ring",
+          "x": 0.7000000000000001,
+          "y": 0.62,
+          "width": 0.045,
+          "max_height": 0.08,
+          "start": 6.55,
+          "fade_in": 0.4
+        },
+        {
+          "kind": "shape",
+          "shape": "ring",
+          "x": 0.77,
+          "y": 0.62,
+          "width": 0.045,
+          "max_height": 0.08,
+          "start": 6.67,
+          "fade_in": 0.4
+        },
+        {
+          "kind": "text",
+          "text": "a quarter turn at a time",
+          "text_style": "caption",
+          "x": 0.66,
+          "y": 0.74,
+          "width": 0.5,
+          "start": 7.54
+        }
+      ],
+      "claim_ids": [
+        "c-fc-design"
+      ],
+      "source_ids": [
+        "src-festinger-carlsmith-1959"
+      ],
+      "offset_seconds": 7.35
+    },
+    {
+      "beat_id": "v-s03-experiment-b03",
+      "scene_id": "s03-experiment",
+      "order": 3,
+      "takeaway": "Paid $1 or $20 to call it enjoyable",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-durand-one-dollar",
+        "met-saint-gaudens-twenty-cut"
+      ],
+      "layers": [
+        {
+          "kind": "shape",
+          "shape": "person",
+          "x": 0.3,
+          "y": 0.45,
+          "width": 0.09,
+          "max_height": 0.36,
+          "start": 0.1,
+          "fade_in": 0.8
+        },
+        {
+          "kind": "shape",
+          "shape": "person",
+          "x": 0.7,
+          "y": 0.45,
+          "width": 0.09,
+          "max_height": 0.36,
+          "start": 0.4,
+          "fade_in": 0.8,
+          "flip": true
+        },
+        {
+          "kind": "text",
+          "text": "the next student",
+          "text_style": "caption",
+          "x": 0.7,
+          "y": 0.68,
+          "width": 0.24,
+          "start": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "“It was enjoyable.”",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.22,
+          "width": 0.5,
+          "start": 1.36
+        },
+        {
+          "kind": "image",
+          "asset_id": "met-durand-one-dollar",
+          "x": 0.38,
+          "y": 0.82,
+          "width": 0.2,
+          "max_height": 0.13,
+          "start": 6.18,
+          "crop": [
+            0.17,
+            0.02,
+            0.98,
+            0.47
+          ],
+          "fade_in": 0.6,
+          "edge": "feather",
+          "feather": 0.025,
+          "zoom_from": 1.0,
+          "zoom_to": 1.1,
+          "enter": "slide_right"
+        },
+        {
+          "kind": "text",
+          "text": "$1",
+          "text_style": "label",
+          "x": 0.38,
+          "y": 0.92,
+          "width": 0.2,
+          "start": 6.48
+        },
+        {
+          "kind": "image",
+          "asset_id": "met-saint-gaudens-twenty-cut",
+          "x": 0.62,
+          "y": 0.81,
+          "width": 0.08,
+          "max_height": 0.14,
+          "start": 8.79,
+          "edge": "none",
+          "fade_in": 0.6,
+          "feather": 0.025,
+          "zoom_from": 1.0,
+          "zoom_to": 1.1,
+          "enter": "slide_left"
+        },
+        {
+          "kind": "text",
+          "text": "$20",
+          "text_style": "label",
+          "x": 0.62,
+          "y": 0.92,
+          "width": 0.2,
+          "start": 9.09
+        },
+        {
+          "kind": "text",
+          "text": "control group: never asked",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.93,
+          "width": 0.5,
+          "start": 10.35
+        }
+      ],
+      "claim_ids": [
+        "c-fc-design"
+      ],
+      "source_ids": [
+        "src-festinger-carlsmith-1959"
+      ],
+      "offset_seconds": 17.53
+    },
+    {
+      "beat_id": "v-s03-experiment-b04",
+      "scene_id": "s03-experiment",
+      "order": 4,
+      "takeaway": "Everyone rated how enjoyable the tasks were",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "How enjoyable were the tasks, really?",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.3,
+          "width": 0.7,
+          "start": 0.2
+        },
+        {
+          "kind": "shape",
+          "shape": "line",
+          "x": 0.5,
+          "y": 0.52,
+          "width": 0.6,
+          "max_height": 0.03,
+          "start": 1.0,
+          "reveal": "draw",
+          "color": "dim",
+          "fade_in": 1.2
+        },
+        {
+          "kind": "text",
+          "text": "−5 extremely boring",
+          "text_style": "caption",
+          "x": 0.2,
+          "y": 0.6,
+          "width": 0.24,
+          "start": 1.8
+        },
+        {
+          "kind": "text",
+          "text": "+5 extremely enjoyable",
+          "text_style": "caption",
+          "x": 0.8,
+          "y": 0.6,
+          "width": 0.24,
+          "start": 2.0
+        }
+      ],
+      "claim_ids": [
+        "c-fc-results"
+      ],
+      "source_ids": [
+        "src-festinger-carlsmith-1959"
+      ],
+      "offset_seconds": 31.22
+    },
+    {
+      "beat_id": "v-s03-experiment-b05",
+      "scene_id": "s03-experiment",
+      "order": 5,
+      "takeaway": "The expectation, and the surprise",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "Expected: the $20 group likes it more.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.4,
+          "width": 0.7,
+          "start": 0.3
+        },
+        {
+          "kind": "text",
+          "text": "The opposite happened.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.54,
+          "width": 0.6,
+          "start": 4.55,
+          "highlight": "opposite"
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 36.01
+    },
+    {
+      "beat_id": "v-s03-experiment-b06",
+      "scene_id": "s03-experiment",
+      "order": 6,
+      "takeaway": "Paid $1, people rated the boring task higher",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "How enjoyable were the tasks?  (−5 boring … +5 enjoyable)",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.22,
+          "width": 0.8,
+          "start": 0.2
+        },
+        {
+          "kind": "text",
+          "text": "Paid $1",
+          "text_style": "label",
+          "x": 0.36,
+          "y": 0.38,
+          "width": 0.3,
+          "start": 0.4
+        },
+        {
+          "kind": "text",
+          "text": "+1.35",
+          "text_style": "heading",
+          "x": 0.64,
+          "y": 0.38,
+          "width": 0.2,
+          "start": 0.4,
+          "highlight": "+1.35"
+        },
+        {
+          "kind": "text",
+          "text": "Paid $20",
+          "text_style": "label",
+          "x": 0.36,
+          "y": 0.52,
+          "width": 0.3,
+          "start": 3.82
+        },
+        {
+          "kind": "text",
+          "text": "−0.05",
+          "text_style": "heading",
+          "x": 0.64,
+          "y": 0.52,
+          "width": 0.2,
+          "start": 3.82
+        },
+        {
+          "kind": "text",
+          "text": "Control (not asked)",
+          "text_style": "label",
+          "x": 0.36,
+          "y": 0.66,
+          "width": 0.3,
+          "start": 5.02
+        },
+        {
+          "kind": "text",
+          "text": "−0.45",
+          "text_style": "heading",
+          "x": 0.64,
+          "y": 0.66,
+          "width": 0.2,
+          "start": 5.02
+        },
+        {
+          "kind": "text",
+          "text": "Average ratings, 20 students per group · Festinger & Carlsmith (1959), J. Abnormal and Social Psychology 58",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.86,
+          "width": 0.9,
+          "start": 6.22
+        }
+      ],
+      "claim_ids": [
+        "c-fc-results"
+      ],
+      "source_ids": [
+        "src-festinger-carlsmith-1959"
+      ],
+      "offset_seconds": 42.6
+    },
+    {
+      "beat_id": "v-s03-experiment-b07",
+      "scene_id": "s03-experiment",
+      "order": 7,
+      "takeaway": "$20 justified the lie; $1 didn't",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-saint-gaudens-twenty-cut",
+        "met-durand-one-dollar"
+      ],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "Why?",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.2,
+          "width": 0.3,
+          "start": 0.2
+        },
+        {
+          "kind": "image",
+          "asset_id": "met-saint-gaudens-twenty-cut",
+          "x": 0.32,
+          "y": 0.42,
+          "width": 0.13,
+          "max_height": 0.24,
+          "start": 1.2,
+          "edge": "none",
+          "zoom_from": 1.0,
+          "zoom_to": 1.1,
+          "feather": 0.025,
+          "fade_in": 1.2,
+          "enter": "slide_left"
+        },
+        {
+          "kind": "text",
+          "text": "$20 · reason enough to say it",
+          "text_style": "caption",
+          "x": 0.32,
+          "y": 0.6,
+          "width": 0.34,
+          "start": 1.8
+        },
+        {
+          "kind": "image",
+          "asset_id": "met-durand-one-dollar",
+          "x": 0.68,
+          "y": 0.42,
+          "width": 0.3,
+          "max_height": 0.2,
+          "start": 5.3,
+          "crop": [
+            0.17,
+            0.02,
+            0.98,
+            0.47
+          ],
+          "zoom_from": 1.0,
+          "zoom_to": 1.1,
+          "edge": "feather",
+          "feather": 0.025,
+          "fade_in": 1.2,
+          "enter": "slide_right"
+        },
+        {
+          "kind": "text",
+          "text": "$1 · not enough",
+          "text_style": "caption",
+          "x": 0.68,
+          "y": 0.6,
+          "width": 0.34,
+          "start": 5.7
+        },
+        {
+          "kind": "text",
+          "text": "Augustus Saint-Gaudens, twenty-dollar gold piece, 1905–7 · Asher B. Durand, Bank of New York $1 proof, 1824–37",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.94,
+          "width": 0.9,
+          "start": 6.5
+        },
+        {
+          "kind": "text",
+          "text": "“The tasks weren't that bad.”",
+          "text_style": "statement",
+          "x": 0.68,
+          "y": 0.76,
+          "width": 0.42,
+          "start": 9.05,
+          "highlight": "that bad.”"
+        }
+      ],
+      "claim_ids": [
+        "i-fc-justification"
+      ],
+      "source_ids": [
+        "src-festinger-carlsmith-1959"
+      ],
+      "offset_seconds": 50.54
+    },
+    {
+      "beat_id": "v-s03-experiment-b08",
+      "scene_id": "s03-experiment",
+      "order": 8,
+      "takeaway": "What we do can shape what we believe",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "It doesn't prove we always rewrite our beliefs.",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.34,
+          "width": 0.7,
+          "start": 0.3
+        },
+        {
+          "kind": "text",
+          "text": "What we do can shape what we believe…",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.48,
+          "width": 0.7,
+          "start": 6.54,
+          "highlight": "shape what we believe…",
+          "reveal": "words",
+          "fade_in": 0.45
+        },
+        {
+          "kind": "text",
+          "text": "especially when we can't easily justify it to ourselves",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.6,
+          "width": 0.7,
+          "start": 9.25
+        }
+      ],
+      "claim_ids": [
+        "i-fc-justification"
+      ],
+      "source_ids": [
+        "src-festinger-carlsmith-1959"
+      ],
+      "offset_seconds": 62.62
+    },
+    {
+      "beat_id": "v-s04-identity-b01",
+      "scene_id": "s04-identity",
+      "order": 1,
+      "takeaway": "Level IV: beliefs as identity",
+      "visual_type": "original_graphic",
+      "graphic_kind": "chapter_map",
+      "asset_ids": [
+        "chapter-core",
+        "met-rodin-thinker",
+        "met-brouwer-smokers",
+        "met-lahyre-narcissus"
+      ],
+      "chapter_map": {
+        "asset_id": "chapter-core",
+        "level": 4,
+        "from_level": 3,
+        "pan_start": 0.3,
+        "pan_seconds": 2.6,
+        "markers": [
+          {
+            "level": 1,
+            "asset_id": "met-rodin-thinker",
+            "name": "The Thinker",
+            "crop": [
+              0.2,
+              0.05,
+              0.85,
+              0.6
+            ]
+          },
+          {
+            "level": 2,
+            "asset_id": "met-brouwer-smokers",
+            "name": "The Smokers",
+            "crop": [
+              0.25,
+              0.1,
+              0.75,
+              0.7
+            ]
+          },
+          {
+            "level": 4,
+            "asset_id": "met-lahyre-narcissus",
+            "name": "Narcissus",
+            "crop": [
+              0.55,
+              0.25,
+              0.9,
+              0.7
+            ]
+          }
+        ]
+      },
+      "offset_seconds": 0.0
+    },
+    {
+      "beat_id": "v-s04-identity-b02",
+      "scene_id": "s04-identity",
+      "order": 2,
+      "takeaway": "Small facts versus beliefs that matter",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "shape",
+          "shape": "ring",
+          "x": 0.32,
+          "y": 0.44,
+          "width": 0.07,
+          "max_height": 0.12,
+          "start": 0.2
+        },
+        {
+          "kind": "text",
+          "text": "a film's release year",
+          "text_style": "caption",
+          "x": 0.32,
+          "y": 0.6,
+          "width": 0.3,
+          "start": 0.4
+        },
+        {
+          "kind": "shape",
+          "shape": "circle",
+          "x": 0.66,
+          "y": 0.44,
+          "width": 0.2,
+          "max_height": 0.36,
+          "start": 3.66,
+          "color": "stone"
+        },
+        {
+          "kind": "text",
+          "text": "your politics",
+          "text_style": "caption",
+          "x": 0.66,
+          "y": 0.7,
+          "width": 0.3,
+          "start": 4.06
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 4.6
+    },
+    {
+      "beat_id": "v-s04-identity-b03",
+      "scene_id": "s04-identity",
+      "order": 3,
+      "takeaway": "Some beliefs are tied to who you are",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-lahyre-narcissus"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-lahyre-narcissus",
+          "x": 0.5,
+          "y": 0.36,
+          "width": 0.62,
+          "max_height": 0.52,
+          "start": 0.0,
+          "zoom_from": 1.0,
+          "zoom_to": 1.1,
+          "edge": "feather",
+          "feather": 0.025,
+          "fade_in": 1.2
+        },
+        {
+          "kind": "text",
+          "text": "Laurent de La Hyre, Narcissus, 17th century",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.65,
+          "width": 0.6,
+          "start": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "tied to who you are",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.78,
+          "width": 0.5,
+          "start": 5.63,
+          "highlight": "who you are"
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 13.56
+    },
+    {
+      "beat_id": "v-s04-identity-b04",
+      "scene_id": "s04-identity",
+      "order": 4,
+      "takeaway": "Career, relationship, upbringing",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "the career you spent years building",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.34,
+          "width": 0.7,
+          "start": 0.2
+        },
+        {
+          "kind": "text",
+          "text": "the relationship you defended",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.46,
+          "width": 0.7,
+          "start": 3.22
+        },
+        {
+          "kind": "text",
+          "text": "the beliefs you grew up with",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.58,
+          "width": 0.7,
+          "start": 6.18
+        },
+        {
+          "kind": "text",
+          "text": "shared with people you love",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.66,
+          "width": 0.5,
+          "start": 8.42
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 25.08
+    },
+    {
+      "beat_id": "v-s04-identity-b05",
+      "scene_id": "s04-identity",
+      "order": 5,
+      "takeaway": "Changing your mind can mean admitting a cost",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "Changing your mind can mean admitting…",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.32,
+          "width": 0.6,
+          "start": 0.3
+        },
+        {
+          "kind": "text",
+          "text": "a sacrifice was unnecessary",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.46,
+          "width": 0.6,
+          "start": 4.36,
+          "highlight": "unnecessary"
+        },
+        {
+          "kind": "text",
+          "text": "a decision was wrong",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.58,
+          "width": 0.6,
+          "start": 7.98,
+          "highlight": "wrong"
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 36.03
+    },
+    {
+      "beat_id": "v-s04-identity-b06",
+      "scene_id": "s04-identity",
+      "order": 6,
+      "takeaway": "A contradiction carries consequences",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-lahyre-narcissus"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-lahyre-narcissus",
+          "x": 0.28,
+          "y": 0.45,
+          "width": 0.4,
+          "max_height": 0.5,
+          "start": 0.0,
+          "crop": [
+            0.45,
+            0.1,
+            1.0,
+            0.95
+          ],
+          "zoom_from": 1.1,
+          "zoom_to": 1.0,
+          "edge": "feather",
+          "feather": 0.025,
+          "fade_in": 1.2
+        },
+        {
+          "kind": "text",
+          "text": "“The contradiction is carrying more than information. It is carrying consequences.”",
+          "text_style": "quote",
+          "x": 0.69,
+          "y": 0.44,
+          "width": 0.42,
+          "start": 0.0,
+          "highlight": "It is carrying consequences.",
+          "reveal": "words",
+          "claim_id": "q-art-consequences",
+          "fade_in": 0.45
+        },
+        {
+          "kind": "text",
+          "text": "Reckoning Self, “Why Your Brain Hates Contradictions”",
+          "text_style": "caption",
+          "x": 0.69,
+          "y": 0.62,
+          "width": 0.42,
+          "start": 8.66
+        }
+      ],
+      "claim_ids": [
+        "q-art-consequences"
+      ],
+      "source_ids": [
+        "src-article"
+      ],
+      "offset_seconds": 46.68
+    },
+    {
+      "beat_id": "v-s05-motivated-b01",
+      "scene_id": "s05-motivated",
+      "order": 1,
+      "takeaway": "Level V: motivated reasoning",
+      "visual_type": "original_graphic",
+      "graphic_kind": "chapter_map",
+      "asset_ids": [
+        "chapter-core",
+        "met-rodin-thinker",
+        "met-brouwer-smokers",
+        "met-lahyre-narcissus",
+        "met-caraglio-diogenes"
+      ],
+      "chapter_map": {
+        "asset_id": "chapter-core",
+        "level": 5,
+        "from_level": 4,
+        "pan_start": 0.3,
+        "pan_seconds": 2.6,
+        "markers": [
+          {
+            "level": 1,
+            "asset_id": "met-rodin-thinker",
+            "name": "The Thinker",
+            "crop": [
+              0.2,
+              0.05,
+              0.85,
+              0.6
+            ]
+          },
+          {
+            "level": 2,
+            "asset_id": "met-brouwer-smokers",
+            "name": "The Smokers",
+            "crop": [
+              0.25,
+              0.1,
+              0.75,
+              0.7
+            ]
+          },
+          {
+            "level": 4,
+            "asset_id": "met-lahyre-narcissus",
+            "name": "Narcissus",
+            "crop": [
+              0.55,
+              0.25,
+              0.9,
+              0.7
+            ]
+          },
+          {
+            "level": 5,
+            "asset_id": "met-caraglio-diogenes",
+            "name": "Diogenes",
+            "crop": [
+              0.3,
+              0.12,
+              0.62,
+              0.45
+            ]
+          }
+        ]
+      },
+      "offset_seconds": 0.0
+    },
+    {
+      "beat_id": "v-s05-motivated-b02",
+      "scene_id": "s05-motivated",
+      "order": 2,
+      "takeaway": "Goals shape how we judge information",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "Motivated reasoning",
+          "text_style": "heading",
+          "x": 0.5,
+          "y": 0.42,
+          "width": 0.8,
+          "start": 0.1
+        },
+        {
+          "kind": "text",
+          "text": "our goals and commitments shape how we judge information",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.56,
+          "width": 0.7,
+          "start": 0.8
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 5.86
+    },
+    {
+      "beat_id": "v-s05-motivated-b03",
+      "scene_id": "s05-motivated",
+      "order": 3,
+      "takeaway": "Same study, different scrutiny",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "the same study",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.2,
+          "width": 0.4,
+          "start": 0.6
+        },
+        {
+          "kind": "shape",
+          "shape": "line",
+          "x": 0.5,
+          "y": 0.25,
+          "width": 0.16,
+          "max_height": 0.02,
+          "start": 0.8,
+          "reveal": "draw",
+          "color": "dim",
+          "fade_in": 0.6
+        },
+        {
+          "kind": "shape",
+          "shape": "person",
+          "x": 0.3,
+          "y": 0.45,
+          "width": 0.09,
+          "max_height": 0.36,
+          "start": 0.2,
+          "fade_in": 0.8
+        },
+        {
+          "kind": "shape",
+          "shape": "person",
+          "x": 0.7,
+          "y": 0.45,
+          "width": 0.09,
+          "max_height": 0.36,
+          "start": 0.5,
+          "fade_in": 0.8,
+          "flip": true
+        },
+        {
+          "kind": "text",
+          "text": "supports me",
+          "text_style": "caption",
+          "x": 0.3,
+          "y": 0.68,
+          "width": 0.3,
+          "start": 3.61
+        },
+        {
+          "kind": "text",
+          "text": "solid methods",
+          "text_style": "statement",
+          "x": 0.3,
+          "y": 0.76,
+          "width": 0.3,
+          "start": 6.7
+        },
+        {
+          "kind": "text",
+          "text": "clear results",
+          "text_style": "statement",
+          "x": 0.3,
+          "y": 0.83,
+          "width": 0.3,
+          "start": 9.35
+        },
+        {
+          "kind": "text",
+          "text": "challenges me",
+          "text_style": "caption",
+          "x": 0.7,
+          "y": 0.68,
+          "width": 0.3,
+          "start": 10.62
+        },
+        {
+          "kind": "text",
+          "text": "limitations",
+          "text_style": "statement",
+          "x": 0.7,
+          "y": 0.76,
+          "width": 0.3,
+          "start": 13.0
+        },
+        {
+          "kind": "text",
+          "text": "what could be wrong",
+          "text_style": "statement",
+          "x": 0.7,
+          "y": 0.83,
+          "width": 0.34,
+          "start": 15.63
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 10.89
+    },
+    {
+      "beat_id": "v-s05-motivated-b04",
+      "scene_id": "s05-motivated",
+      "order": 4,
+      "takeaway": "The problem: a moving standard",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-caraglio-diogenes"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-caraglio-diogenes",
+          "x": 0.28,
+          "y": 0.45,
+          "width": 0.32,
+          "max_height": 0.78,
+          "start": 0.0,
+          "crop": [
+            0.12,
+            0.1,
+            0.9,
+            0.9
+          ],
+          "zoom_from": 1.0,
+          "zoom_to": 1.1,
+          "edge": "feather",
+          "feather": 0.025,
+          "fade_in": 1.2
+        },
+        {
+          "kind": "text",
+          "text": "Giovanni Jacopo Caraglio, Diogenes, c. 1527",
+          "text_style": "caption",
+          "x": 0.28,
+          "y": 0.91,
+          "width": 0.52,
+          "start": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "Being critical is good science.",
+          "text_style": "statement",
+          "x": 0.7,
+          "y": 0.34,
+          "width": 0.42,
+          "start": 0.3
+        },
+        {
+          "kind": "text",
+          "text": "the standard changes… depending on whether we like the answer",
+          "text_style": "statement",
+          "x": 0.7,
+          "y": 0.52,
+          "width": 0.42,
+          "start": 2.42,
+          "highlight": "whether we like the answer",
+          "reveal": "words",
+          "fade_in": 0.45
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 29.12
+    },
+    {
+      "beat_id": "v-s05-motivated-b05",
+      "scene_id": "s05-motivated",
+      "order": 5,
+      "takeaway": "People do update on clear evidence",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "4 studies",
+          "text_style": "heading",
+          "x": 0.5,
+          "y": 0.26,
+          "width": 0.5,
+          "start": 2.7
+        },
+        {
+          "kind": "text",
+          "text": "Stephanie Anglin, 2019 · Journal of Experimental Social Psychology",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.37,
+          "width": 0.7,
+          "start": 3.4
+        },
+        {
+          "kind": "text",
+          "text": "People often changed their beliefs.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.5,
+          "width": 0.7,
+          "start": 6.61,
+          "highlight": "changed their beliefs."
+        },
+        {
+          "kind": "text",
+          "text": "religion · politics · capital punishment",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.6,
+          "width": 0.6,
+          "start": 10.95
+        },
+        {
+          "kind": "text",
+          "text": "bias: sometimes… but not always",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.7,
+          "width": 0.6,
+          "start": 14.91
+        }
+      ],
+      "claim_ids": [
+        "c-anglin-2019"
+      ],
+      "source_ids": [
+        "src-anglin-2019"
+      ],
+      "offset_seconds": 37.53
+    },
+    {
+      "beat_id": "v-s05-motivated-b06",
+      "scene_id": "s05-motivated",
+      "order": 6,
+      "takeaway": "When do we judge evidence on its merits?",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "The real question isn't whether people are rational.",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.32,
+          "width": 0.7,
+          "start": 0.3
+        },
+        {
+          "kind": "text",
+          "text": "When do we judge evidence on its merits…",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.46,
+          "width": 0.7,
+          "start": 4.34
+        },
+        {
+          "kind": "text",
+          "text": "and when by whether we want it to be true?",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.56,
+          "width": 0.7,
+          "start": 7.08,
+          "highlight": "want it to be true?"
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 56.44
+    },
+    {
+      "beat_id": "v-s06-brain-b01",
+      "scene_id": "s06-brain",
+      "order": 1,
+      "takeaway": "Level VI: the brain",
+      "visual_type": "original_graphic",
+      "graphic_kind": "chapter_map",
+      "asset_ids": [
+        "chapter-core",
+        "met-rodin-thinker",
+        "met-brouwer-smokers",
+        "met-lahyre-narcissus",
+        "met-caraglio-diogenes",
+        "met-remmelin-microcosme"
+      ],
+      "chapter_map": {
+        "asset_id": "chapter-core",
+        "level": 6,
+        "from_level": 5,
+        "pan_start": 0.3,
+        "pan_seconds": 2.6,
+        "markers": [
+          {
+            "level": 1,
+            "asset_id": "met-rodin-thinker",
+            "name": "The Thinker",
+            "crop": [
+              0.2,
+              0.05,
+              0.85,
+              0.6
+            ]
+          },
+          {
+            "level": 2,
+            "asset_id": "met-brouwer-smokers",
+            "name": "The Smokers",
+            "crop": [
+              0.25,
+              0.1,
+              0.75,
+              0.7
+            ]
+          },
+          {
+            "level": 4,
+            "asset_id": "met-lahyre-narcissus",
+            "name": "Narcissus",
+            "crop": [
+              0.55,
+              0.25,
+              0.9,
+              0.7
+            ]
+          },
+          {
+            "level": 5,
+            "asset_id": "met-caraglio-diogenes",
+            "name": "Diogenes",
+            "crop": [
+              0.3,
+              0.12,
+              0.62,
+              0.45
+            ]
+          },
+          {
+            "level": 6,
+            "asset_id": "met-remmelin-microcosme",
+            "name": "Microcosm",
+            "crop": [
+              0.37,
+              0.27,
+              0.65,
+              0.5
+            ]
+          }
+        ]
+      },
+      "offset_seconds": 0.0
+    },
+    {
+      "beat_id": "v-s06-brain-b02",
+      "scene_id": "s06-brain",
+      "order": 2,
+      "takeaway": "A 2026 review of brain studies",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-remmelin-microcosme"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-remmelin-microcosme",
+          "x": 0.28,
+          "y": 0.44,
+          "width": 0.34,
+          "max_height": 0.74,
+          "start": 0.0,
+          "crop": [
+            0.37,
+            0.27,
+            0.65,
+            0.5
+          ],
+          "zoom_from": 1.0,
+          "zoom_to": 1.1,
+          "edge": "feather",
+          "feather": 0.025,
+          "fade_in": 1.2
+        },
+        {
+          "kind": "text",
+          "text": "Johann Remmelin, A Survey of the Microcosme (anatomical print), 1675",
+          "text_style": "caption",
+          "x": 0.28,
+          "y": 0.88,
+          "width": 0.52,
+          "start": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "Veiga-Zarza and colleagues, 2026 · scoping review",
+          "text_style": "caption",
+          "x": 0.7,
+          "y": 0.36,
+          "width": 0.42,
+          "start": 0.6
+        },
+        {
+          "kind": "text",
+          "text": "Two different jobs.",
+          "text_style": "statement",
+          "x": 0.7,
+          "y": 0.48,
+          "width": 0.42,
+          "start": 6.67,
+          "highlight": "Two different jobs."
+        }
+      ],
+      "claim_ids": [
+        "c-vz-2026"
+      ],
+      "source_ids": [
+        "src-veiga-zarza-2026"
+      ],
+      "offset_seconds": 4.6
+    },
+    {
+      "beat_id": "v-s06-brain-b03",
+      "scene_id": "s06-brain",
+      "order": 3,
+      "takeaway": "Noticing the conflict, then updating the attitude",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "shape",
+          "shape": "circle",
+          "x": 0.3,
+          "y": 0.42,
+          "width": 0.14,
+          "max_height": 0.25,
+          "start": 0.2,
+          "color": "stone"
+        },
+        {
+          "kind": "text",
+          "text": "noticing the conflict",
+          "text_style": "statement",
+          "x": 0.3,
+          "y": 0.62,
+          "width": 0.32,
+          "start": 0.4
+        },
+        {
+          "kind": "text",
+          "text": "anterior cingulate cortex",
+          "text_style": "caption",
+          "x": 0.3,
+          "y": 0.7,
+          "width": 0.32,
+          "start": 1.93
+        },
+        {
+          "kind": "shape",
+          "shape": "arrow",
+          "x": 0.5,
+          "y": 0.42,
+          "width": 0.14,
+          "max_height": 0.05,
+          "start": 9.01,
+          "reveal": "draw",
+          "fade_in": 0.8
+        },
+        {
+          "kind": "shape",
+          "shape": "ring",
+          "x": 0.7,
+          "y": 0.42,
+          "width": 0.14,
+          "max_height": 0.25,
+          "start": 9.61
+        },
+        {
+          "kind": "text",
+          "text": "updating the attitude",
+          "text_style": "statement",
+          "x": 0.7,
+          "y": 0.62,
+          "width": 0.32,
+          "start": 9.81
+        },
+        {
+          "kind": "text",
+          "text": "dorsolateral prefrontal cortex",
+          "text_style": "caption",
+          "x": 0.7,
+          "y": 0.7,
+          "width": 0.34,
+          "start": 12.14
+        }
+      ],
+      "claim_ids": [
+        "c-vz-2026"
+      ],
+      "source_ids": [
+        "src-veiga-zarza-2026"
+      ],
+      "offset_seconds": 14.21
+    },
+    {
+      "beat_id": "v-s06-brain-b04",
+      "scene_id": "s06-brain",
+      "order": 4,
+      "takeaway": "Spotting and resolving may be different steps",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "spotting a contradiction and resolving it… may not be the same step",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.46,
+          "width": 0.7,
+          "start": 0.2,
+          "highlight": "may not be the same step",
+          "reveal": "words",
+          "fade_in": 0.45
+        }
+      ],
+      "claim_ids": [
+        "c-vz-2026"
+      ],
+      "source_ids": [
+        "src-veiga-zarza-2026"
+      ],
+      "offset_seconds": 30.69
+    },
+    {
+      "beat_id": "v-s06-brain-b05",
+      "scene_id": "s06-brain",
+      "order": 5,
+      "takeaway": "No single contradiction detector",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "But be careful.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.26,
+          "width": 0.5,
+          "start": 0.2
+        },
+        {
+          "kind": "text",
+          "text": "No single “contradiction detector”.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.4,
+          "width": 0.7,
+          "start": 2.06
+        },
+        {
+          "kind": "text",
+          "text": "No brain scan can spot rationalising.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.5,
+          "width": 0.7,
+          "start": 5.85
+        },
+        {
+          "kind": "text",
+          "text": "these regions do many jobs… the details are still being worked out",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.62,
+          "width": 0.7,
+          "start": 9.82
+        }
+      ],
+      "claim_ids": [
+        "c-vz-2026"
+      ],
+      "source_ids": [
+        "src-veiga-zarza-2026"
+      ],
+      "offset_seconds": 36.84
+    },
+    {
+      "beat_id": "v-s07-everyday-b01",
+      "scene_id": "s07-everyday",
+      "order": 1,
+      "takeaway": "Level VII: explaining it away",
+      "visual_type": "original_graphic",
+      "graphic_kind": "chapter_map",
+      "asset_ids": [
+        "chapter-core",
+        "met-rodin-thinker",
+        "met-brouwer-smokers",
+        "met-lahyre-narcissus",
+        "met-caraglio-diogenes",
+        "met-remmelin-microcosme",
+        "met-sisyphus-tantalus"
+      ],
+      "chapter_map": {
+        "asset_id": "chapter-core",
+        "level": 7,
+        "from_level": 6,
+        "pan_start": 0.3,
+        "pan_seconds": 2.6,
+        "markers": [
+          {
+            "level": 1,
+            "asset_id": "met-rodin-thinker",
+            "name": "The Thinker",
+            "crop": [
+              0.2,
+              0.05,
+              0.85,
+              0.6
+            ]
+          },
+          {
+            "level": 2,
+            "asset_id": "met-brouwer-smokers",
+            "name": "The Smokers",
+            "crop": [
+              0.25,
+              0.1,
+              0.75,
+              0.7
+            ]
+          },
+          {
+            "level": 4,
+            "asset_id": "met-lahyre-narcissus",
+            "name": "Narcissus",
+            "crop": [
+              0.55,
+              0.25,
+              0.9,
+              0.7
+            ]
+          },
+          {
+            "level": 5,
+            "asset_id": "met-caraglio-diogenes",
+            "name": "Diogenes",
+            "crop": [
+              0.3,
+              0.12,
+              0.62,
+              0.45
+            ]
+          },
+          {
+            "level": 6,
+            "asset_id": "met-remmelin-microcosme",
+            "name": "Microcosm",
+            "crop": [
+              0.37,
+              0.27,
+              0.65,
+              0.5
+            ]
+          },
+          {
+            "level": 7,
+            "asset_id": "met-sisyphus-tantalus",
+            "name": "Sisyphus",
+            "crop": [
+              0.4,
+              0.1,
+              0.95,
+              0.6
+            ]
+          }
+        ]
+      },
+      "offset_seconds": 0.0
+    },
+    {
+      "beat_id": "v-s07-everyday-b02",
+      "scene_id": "s07-everyday",
+      "order": 2,
+      "takeaway": "Patterns to look for in yourself",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "shape",
+          "shape": "person",
+          "x": 0.5,
+          "y": 0.4,
+          "width": 0.09,
+          "max_height": 0.36,
+          "start": 0.2,
+          "fade_in": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "yourself",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.63,
+          "width": 0.3,
+          "start": 3.35
+        },
+        {
+          "kind": "text",
+          "text": "Not labels for other people.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.78,
+          "width": 0.6,
+          "start": 0.86
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 4.6
+    },
+    {
+      "beat_id": "v-s07-everyday-b03",
+      "scene_id": "s07-everyday",
+      "order": 3,
+      "takeaway": "We change the meaning of success",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "shape",
+          "shape": "person",
+          "x": 0.28,
+          "y": 0.45,
+          "width": 0.09,
+          "max_height": 0.36,
+          "start": 0.2,
+          "fade_in": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "missed a promotion",
+          "text_style": "caption",
+          "x": 0.28,
+          "y": 0.68,
+          "width": 0.3,
+          "start": 0.5
+        },
+        {
+          "kind": "text",
+          "text": "“Promotions never really mattered.”",
+          "text_style": "statement",
+          "x": 0.68,
+          "y": 0.38,
+          "width": 0.44,
+          "start": 1.94
+        },
+        {
+          "kind": "text",
+          "text": "honest reflection?",
+          "text_style": "caption",
+          "x": 0.68,
+          "y": 0.52,
+          "width": 0.4,
+          "start": 5.11
+        },
+        {
+          "kind": "text",
+          "text": "or protecting self-esteem?",
+          "text_style": "caption",
+          "x": 0.68,
+          "y": 0.59,
+          "width": 0.4,
+          "start": 7.51
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 10.87
+    },
+    {
+      "beat_id": "v-s07-everyday-b04",
+      "scene_id": "s07-everyday",
+      "order": 4,
+      "takeaway": "We defend what we have already paid for",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-sisyphus-tantalus"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-sisyphus-tantalus",
+          "x": 0.3,
+          "y": 0.45,
+          "width": 0.4,
+          "max_height": 0.78,
+          "start": 0.0,
+          "crop": [
+            0.0,
+            0.0,
+            1.0,
+            0.75
+          ],
+          "zoom_from": 1.0,
+          "zoom_to": 1.1,
+          "edge": "feather",
+          "feather": 0.025,
+          "fade_in": 1.2
+        },
+        {
+          "kind": "text",
+          "text": "Sisyphus and Tantalus, Italian, 16th century",
+          "text_style": "caption",
+          "x": 0.3,
+          "y": 0.9,
+          "width": 0.52,
+          "start": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "pouring more into a failing project",
+          "text_style": "statement",
+          "x": 0.7,
+          "y": 0.4,
+          "width": 0.42,
+          "start": 0.4
+        },
+        {
+          "kind": "text",
+          "text": "because quitting would make it all feel wasted",
+          "text_style": "caption",
+          "x": 0.7,
+          "y": 0.52,
+          "width": 0.42,
+          "start": 3.5
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 21.67
+    },
+    {
+      "beat_id": "v-s07-everyday-b05",
+      "scene_id": "s07-everyday",
+      "order": 5,
+      "takeaway": "We reinterpret our own behaviour",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "shape",
+          "shape": "person",
+          "x": 0.28,
+          "y": 0.45,
+          "width": 0.09,
+          "max_height": 0.36,
+          "start": 0.2,
+          "fade_in": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "“I'm honest.”",
+          "text_style": "caption",
+          "x": 0.28,
+          "y": 0.68,
+          "width": 0.3,
+          "start": 0.6
+        },
+        {
+          "kind": "text",
+          "text": "a small lie",
+          "text_style": "statement",
+          "x": 0.68,
+          "y": 0.38,
+          "width": 0.4,
+          "start": 2.38,
+          "highlight": "small lie"
+        },
+        {
+          "kind": "text",
+          "text": "“The situation made it necessary.”",
+          "text_style": "statement",
+          "x": 0.68,
+          "y": 0.5,
+          "width": 0.44,
+          "start": 3.75
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 29.5
+    },
+    {
+      "beat_id": "v-s07-everyday-b06",
+      "scene_id": "s07-everyday",
+      "order": 6,
+      "takeaway": "More certain instead of more curious",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "more certain",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.4,
+          "width": 0.5,
+          "start": 2.74,
+          "highlight": "more certain"
+        },
+        {
+          "kind": "text",
+          "text": "instead of more curious",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.5,
+          "width": 0.5,
+          "start": 4.39
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 36.86
+    },
+    {
+      "beat_id": "v-s07-everyday-b07",
+      "scene_id": "s07-everyday",
+      "order": 7,
+      "takeaway": "The double standard",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "The double standard.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.2,
+          "width": 0.6,
+          "start": 2.68,
+          "highlight": "double standard."
+        },
+        {
+          "kind": "shape",
+          "shape": "ring",
+          "x": 0.34,
+          "y": 0.5,
+          "width": 0.2,
+          "max_height": 0.36,
+          "start": 3.91,
+          "color": "accent"
+        },
+        {
+          "kind": "text",
+          "text": "evidence against us",
+          "text_style": "caption",
+          "x": 0.34,
+          "y": 0.74,
+          "width": 0.3,
+          "start": 4.31
+        },
+        {
+          "kind": "shape",
+          "shape": "ring",
+          "x": 0.68,
+          "y": 0.53,
+          "width": 0.08,
+          "max_height": 0.14,
+          "start": 7.12
+        },
+        {
+          "kind": "text",
+          "text": "evidence for us",
+          "text_style": "caption",
+          "x": 0.68,
+          "y": 0.66,
+          "width": 0.3,
+          "start": 7.42
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 43.38
+    },
+    {
+      "beat_id": "v-s08-dangerous-b01",
+      "scene_id": "s08-dangerous",
+      "order": 1,
+      "takeaway": "Not proof that people are irrational",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "Proof that people are irrational?",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.42,
+          "width": 0.6,
+          "start": 0.3
+        },
+        {
+          "kind": "shape",
+          "shape": "line",
+          "x": 0.5,
+          "y": 0.415,
+          "width": 0.42,
+          "max_height": 0.03,
+          "start": 4.16,
+          "reveal": "draw",
+          "color": "accent",
+          "fade_in": 0.7
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 0.0
+    },
+    {
+      "beat_id": "v-s08-dangerous-b02",
+      "scene_id": "s08-dangerous",
+      "order": 2,
+      "takeaway": "Beliefs connect us to people; challenging them costs",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "shape",
+          "shape": "person",
+          "x": 0.38,
+          "y": 0.45,
+          "width": 0.09,
+          "max_height": 0.36,
+          "start": 0.2,
+          "fade_in": 0.8
+        },
+        {
+          "kind": "shape",
+          "shape": "person",
+          "x": 0.5,
+          "y": 0.45,
+          "width": 0.09,
+          "max_height": 0.36,
+          "start": 0.4,
+          "fade_in": 0.8
+        },
+        {
+          "kind": "shape",
+          "shape": "person",
+          "x": 0.62,
+          "y": 0.45,
+          "width": 0.09,
+          "max_height": 0.36,
+          "start": 0.6,
+          "fade_in": 0.8,
+          "flip": true
+        },
+        {
+          "kind": "text",
+          "text": "beliefs connect us to other people",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.7,
+          "width": 0.5,
+          "start": 1.99
+        },
+        {
+          "kind": "text",
+          "text": "Sometimes the evidence against it really is weak.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.82,
+          "width": 0.7,
+          "start": 10.88
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 6.19
+    },
+    {
+      "beat_id": "v-s08-dangerous-b03",
+      "scene_id": "s08-dangerous",
+      "order": 3,
+      "takeaway": "Evidence-backed belief versus invested belief",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "Tell the difference.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.24,
+          "width": 0.5,
+          "start": 3.55
+        },
+        {
+          "kind": "text",
+          "text": "a belief you hold because",
+          "text_style": "caption",
+          "x": 0.3,
+          "y": 0.42,
+          "width": 0.36,
+          "start": 5.47
+        },
+        {
+          "kind": "text",
+          "text": "the evidence supports it",
+          "text_style": "statement",
+          "x": 0.3,
+          "y": 0.5,
+          "width": 0.36,
+          "start": 6.27
+        },
+        {
+          "kind": "text",
+          "text": "a belief you hold because",
+          "text_style": "caption",
+          "x": 0.7,
+          "y": 0.42,
+          "width": 0.36,
+          "start": 8.83
+        },
+        {
+          "kind": "text",
+          "text": "you've invested in defending it",
+          "text_style": "statement",
+          "x": 0.7,
+          "y": 0.5,
+          "width": 0.36,
+          "start": 9.63,
+          "highlight": "invested in defending it"
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 21.03
+    },
+    {
+      "beat_id": "v-s08-dangerous-b04",
+      "scene_id": "s08-dangerous",
+      "order": 4,
+      "takeaway": "A rationalisation arrives dressed as an explanation",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-durer-melencolia"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-durer-melencolia",
+          "x": 0.28,
+          "y": 0.45,
+          "width": 0.36,
+          "max_height": 0.8,
+          "start": 0.0,
+          "crop": [
+            0.04,
+            0.02,
+            0.96,
+            0.98
+          ],
+          "zoom_from": 1.0,
+          "zoom_to": 1.1,
+          "edge": "feather",
+          "feather": 0.025,
+          "fade_in": 1.2
+        },
+        {
+          "kind": "text",
+          "text": "Albrecht Dürer, Melencolia I, 1514",
+          "text_style": "caption",
+          "x": 0.28,
+          "y": 0.92,
+          "width": 0.52,
+          "start": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "“A rationalisation rarely announces itself as one. It usually arrives dressed as an explanation.”",
+          "text_style": "quote",
+          "x": 0.69,
+          "y": 0.44,
+          "width": 0.42,
+          "start": 0.0,
+          "highlight": "arrives dressed as an explanation",
+          "reveal": "words",
+          "claim_id": "q-art-rationalisation",
+          "fade_in": 0.45
+        },
+        {
+          "kind": "text",
+          "text": "Reckoning Self, “Why Your Brain Hates Contradictions”",
+          "text_style": "caption",
+          "x": 0.69,
+          "y": 0.64,
+          "width": 0.42,
+          "start": 5.58
+        }
+      ],
+      "claim_ids": [
+        "q-art-rationalisation"
+      ],
+      "source_ids": [
+        "src-article"
+      ],
+      "offset_seconds": 33.82
+    },
+    {
+      "beat_id": "v-s08-dangerous-b05",
+      "scene_id": "s08-dangerous",
+      "order": 5,
+      "takeaway": "What evidence would change my mind?",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "What evidence, specifically, would change my mind?",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.34,
+          "width": 0.66,
+          "start": 1.94,
+          "highlight": "would change my mind?",
+          "reveal": "words",
+          "fade_in": 0.45
+        },
+        {
+          "kind": "text",
+          "text": "nothing",
+          "text_style": "heading",
+          "x": 0.5,
+          "y": 0.52,
+          "width": 0.4,
+          "start": 5.35,
+          "highlight": "nothing"
+        },
+        {
+          "kind": "text",
+          "text": "You may be protecting a commitment.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.7,
+          "width": 0.7,
+          "start": 10.31,
+          "highlight": "protecting a commitment."
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 44.25
+    },
+    {
+      "beat_id": "v-s09-exercise-b01",
+      "scene_id": "s09-exercise",
+      "order": 1,
+      "takeaway": "Level VIII: a field exercise",
+      "visual_type": "original_graphic",
+      "graphic_kind": "chapter_map",
+      "asset_ids": [
+        "chapter-core",
+        "met-rodin-thinker",
+        "met-brouwer-smokers",
+        "met-lahyre-narcissus",
+        "met-caraglio-diogenes",
+        "met-remmelin-microcosme",
+        "met-sisyphus-tantalus",
+        "met-parmigianino-justice"
+      ],
+      "chapter_map": {
+        "asset_id": "chapter-core",
+        "level": 8,
+        "from_level": 7,
+        "pan_start": 0.3,
+        "pan_seconds": 2.6,
+        "markers": [
+          {
+            "level": 1,
+            "asset_id": "met-rodin-thinker",
+            "name": "The Thinker",
+            "crop": [
+              0.2,
+              0.05,
+              0.85,
+              0.6
+            ]
+          },
+          {
+            "level": 2,
+            "asset_id": "met-brouwer-smokers",
+            "name": "The Smokers",
+            "crop": [
+              0.25,
+              0.1,
+              0.75,
+              0.7
+            ]
+          },
+          {
+            "level": 4,
+            "asset_id": "met-lahyre-narcissus",
+            "name": "Narcissus",
+            "crop": [
+              0.55,
+              0.25,
+              0.9,
+              0.7
+            ]
+          },
+          {
+            "level": 5,
+            "asset_id": "met-caraglio-diogenes",
+            "name": "Diogenes",
+            "crop": [
+              0.3,
+              0.12,
+              0.62,
+              0.45
+            ]
+          },
+          {
+            "level": 6,
+            "asset_id": "met-remmelin-microcosme",
+            "name": "Microcosm",
+            "crop": [
+              0.37,
+              0.27,
+              0.65,
+              0.5
+            ]
+          },
+          {
+            "level": 7,
+            "asset_id": "met-sisyphus-tantalus",
+            "name": "Sisyphus",
+            "crop": [
+              0.4,
+              0.1,
+              0.95,
+              0.6
+            ]
+          },
+          {
+            "level": 8,
+            "asset_id": "met-parmigianino-justice",
+            "name": "Justice",
+            "crop": [
+              0.2,
+              0.05,
+              0.8,
+              0.5
+            ]
+          }
+        ]
+      },
+      "offset_seconds": 0.0
+    },
+    {
+      "beat_id": "v-s09-exercise-b02",
+      "scene_id": "s09-exercise",
+      "order": 2,
+      "takeaway": "Five steps to find the belief you are protecting",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-parmigianino-justice"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-parmigianino-justice",
+          "x": 0.26,
+          "y": 0.45,
+          "width": 0.28,
+          "max_height": 0.8,
+          "start": 0.0,
+          "zoom_from": 1.0,
+          "zoom_to": 1.1,
+          "edge": "feather",
+          "feather": 0.025,
+          "fade_in": 1.2
+        },
+        {
+          "kind": "text",
+          "text": "Parmigianino, Justice Holding Scales, 1503–40",
+          "text_style": "caption",
+          "x": 0.26,
+          "y": 0.92,
+          "width": 0.46,
+          "start": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "1 · Name the contradiction",
+          "text_style": "statement",
+          "x": 0.68,
+          "y": 0.13,
+          "width": 0.56,
+          "start": 0.2
+        },
+        {
+          "kind": "text",
+          "text": "2 · Separate fact from meaning",
+          "text_style": "statement",
+          "x": 0.68,
+          "y": 0.26,
+          "width": 0.56,
+          "start": 8.36
+        },
+        {
+          "kind": "text",
+          "text": "3 · Ask what being wrong would cost",
+          "text_style": "statement",
+          "x": 0.68,
+          "y": 0.47,
+          "width": 0.56,
+          "start": 18.6
+        },
+        {
+          "kind": "text",
+          "text": "4 · Decide what would change your mind",
+          "text_style": "statement",
+          "x": 0.68,
+          "y": 0.62,
+          "width": 0.56,
+          "start": 24.61
+        },
+        {
+          "kind": "text",
+          "text": "5 · Same standard, both directions",
+          "text_style": "statement",
+          "x": 0.68,
+          "y": 0.76,
+          "width": 0.56,
+          "start": 28.31
+        },
+        {
+          "kind": "text",
+          "text": "“I didn't get the job” is a fact.",
+          "text_style": "caption",
+          "x": 0.68,
+          "y": 0.335,
+          "width": 0.56,
+          "start": 12.04
+        },
+        {
+          "kind": "text",
+          "text": "“I'm not good enough” is an interpretation.",
+          "text_style": "caption",
+          "x": 0.68,
+          "y": 0.385,
+          "width": 0.56,
+          "start": 14.39
+        },
+        {
+          "kind": "text",
+          "text": "pride? status? years of effort?",
+          "text_style": "caption",
+          "x": 0.68,
+          "y": 0.54,
+          "width": 0.56,
+          "start": 21.1
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 5.18
+    },
+    {
+      "beat_id": "v-s09-exercise-b03",
+      "scene_id": "s09-exercise",
+      "order": 3,
+      "takeaway": "Confidence that survived an examination",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-parmigianino-justice"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-parmigianino-justice",
+          "x": 0.26,
+          "y": 0.45,
+          "width": 0.28,
+          "max_height": 0.8,
+          "start": 0.0,
+          "zoom_from": 1.1,
+          "zoom_to": 1.0,
+          "fade_in": 0.8,
+          "edge": "feather",
+          "feather": 0.025
+        },
+        {
+          "kind": "text",
+          "text": "Parmigianino, Justice Holding Scales, 1503–40",
+          "text_style": "caption",
+          "x": 0.26,
+          "y": 0.92,
+          "width": 0.46,
+          "start": 0.6
+        },
+        {
+          "kind": "text",
+          "text": "You might still keep your belief, and that's fine.",
+          "text_style": "caption",
+          "x": 0.68,
+          "y": 0.36,
+          "width": 0.5,
+          "start": 0.3
+        },
+        {
+          "kind": "text",
+          "text": "your confidence survived an examination… instead of avoiding one",
+          "text_style": "statement",
+          "x": 0.68,
+          "y": 0.5,
+          "width": 0.5,
+          "start": 3.21,
+          "highlight": "instead of avoiding one",
+          "reveal": "words",
+          "fade_in": 0.45
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 38.28
+    },
+    {
+      "beat_id": "v-s10-question-b01",
+      "scene_id": "s10-question",
+      "order": 1,
+      "takeaway": "Being smart doesn't protect you",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "Being smart doesn't protect you.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.36,
+          "width": 0.6,
+          "start": 2.07,
+          "highlight": "doesn't protect you."
+        },
+        {
+          "kind": "text",
+          "text": "the skills that examine a belief… can build a better defence for it",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.48,
+          "width": 0.7,
+          "start": 4.37
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 0.0
+    },
+    {
+      "beat_id": "v-s10-question-b02",
+      "scene_id": "s10-question",
+      "order": 2,
+      "takeaway": "People do change their minds",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "no reason for cynicism",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.34,
+          "width": 0.5,
+          "start": 0.3
+        },
+        {
+          "kind": "text",
+          "text": "People do change their minds.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.46,
+          "width": 0.6,
+          "start": 3.08,
+          "highlight": "change their minds."
+        },
+        {
+          "kind": "text",
+          "text": "when the evidence is clear… and there's room to look honestly",
+          "text_style": "caption",
+          "x": 0.5,
+          "y": 0.56,
+          "width": 0.7,
+          "start": 4.91
+        }
+      ],
+      "claim_ids": [
+        "c-anglin-2019"
+      ],
+      "source_ids": [
+        "src-anglin-2019"
+      ],
+      "offset_seconds": 10.84
+    },
+    {
+      "beat_id": "v-s10-question-b03",
+      "scene_id": "s10-question",
+      "order": 3,
+      "takeaway": "Meet a contradiction without treating it as an enemy",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-friedrich-moon"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-friedrich-moon",
+          "x": 0.3,
+          "y": 0.45,
+          "width": 0.44,
+          "max_height": 0.7,
+          "start": 0.0,
+          "zoom_from": 1.0,
+          "zoom_to": 1.1,
+          "drift_x": 0.006,
+          "edge": "feather",
+          "feather": 0.025,
+          "fade_in": 1.2
+        },
+        {
+          "kind": "text",
+          "text": "Caspar David Friedrich, Two Men Contemplating the Moon, c. 1825–30",
+          "text_style": "caption",
+          "x": 0.3,
+          "y": 0.86,
+          "width": 0.5,
+          "start": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "meet a contradiction… without treating it as an enemy",
+          "text_style": "statement",
+          "x": 0.71,
+          "y": 0.46,
+          "width": 0.44,
+          "start": 3.47,
+          "highlight": "without treating it as an enemy",
+          "reveal": "words",
+          "fade_in": 0.45
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 21.15
+    },
+    {
+      "beat_id": "v-s10-question-b04",
+      "scene_id": "s10-question",
+      "order": 4,
+      "takeaway": "Evidence, belief, or the story around it",
+      "visual_type": "typography",
+      "asset_ids": [],
+      "layers": [
+        {
+          "kind": "text",
+          "text": "Sometimes the evidence is wrong.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.34,
+          "width": 0.6,
+          "start": 0.2
+        },
+        {
+          "kind": "text",
+          "text": "Sometimes the belief is wrong.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.45,
+          "width": 0.6,
+          "start": 3.06
+        },
+        {
+          "kind": "text",
+          "text": "Sometimes the story needs to change.",
+          "text_style": "statement",
+          "x": 0.5,
+          "y": 0.56,
+          "width": 0.6,
+          "start": 8.2,
+          "highlight": "the story needs to change."
+        }
+      ],
+      "claim_ids": [],
+      "source_ids": [],
+      "offset_seconds": 29.59
+    },
+    {
+      "beat_id": "v-s10-question-b05",
+      "scene_id": "s10-question",
+      "order": 5,
+      "takeaway": "The final question",
+      "visual_type": "licensed_stock",
+      "asset_ids": [
+        "met-rodin-thinker-cut"
+      ],
+      "layers": [
+        {
+          "kind": "image",
+          "asset_id": "met-rodin-thinker-cut",
+          "x": 0.28,
+          "y": 0.46,
+          "width": 0.3,
+          "max_height": 0.76,
+          "start": 0.0,
+          "feather": 0.05,
+          "zoom_from": 1.1,
+          "zoom_to": 1.0,
+          "edge": "feather",
+          "fade_in": 1.2
+        },
+        {
+          "kind": "text",
+          "text": "Auguste Rodin, The Thinker, modeled c. 1880",
+          "text_style": "caption",
+          "x": 0.28,
+          "y": 0.9,
+          "width": 0.52,
+          "start": 0.8
+        },
+        {
+          "kind": "text",
+          "text": "“Am I trying to understand what is true, or am I trying to preserve the person I believe myself to be?”",
+          "text_style": "quote",
+          "x": 0.69,
+          "y": 0.44,
+          "width": 0.42,
+          "start": 0.0,
+          "highlight": "preserve the person I believe myself to be",
+          "reveal": "words",
+          "claim_id": "q-art-final",
+          "fade_in": 0.45
+        },
+        {
+          "kind": "text",
+          "text": "Reckoning Self, “Why Your Brain Hates Contradictions”",
+          "text_style": "caption",
+          "x": 0.69,
+          "y": 0.66,
+          "width": 0.42,
+          "start": 8.21
+        }
+      ],
+      "claim_ids": [
+        "q-art-final"
+      ],
+      "source_ids": [
+        "src-article"
+      ],
+      "offset_seconds": 41.33
+    }
+  ]
+}

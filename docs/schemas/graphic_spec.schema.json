@@ -129,6 +129,15 @@
       "title": "Source Ids",
       "type": "array"
     },
+    "style": {
+      "default": "steps",
+      "enum": [
+        "steps",
+        "core"
+      ],
+      "title": "Style",
+      "type": "string"
+    },
     "subtitle": {
       "default": "",
       "title": "Subtitle",
@@ -142,6 +151,15 @@
     "units": {
       "default": "",
       "title": "Units",
+      "type": "string"
+    },
+    "variant": {
+      "default": "map",
+      "enum": [
+        "map",
+        "overview"
+      ],
+      "title": "Variant",
       "type": "string"
     }
   },

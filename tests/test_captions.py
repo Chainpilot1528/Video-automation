@@ -25,7 +25,7 @@ def test_timestamps_round_trip():
 
 def test_segment_respects_sentence_and_line_limits():
     pieces = segment(LONG)
-    assert pieces[-1] == "Short one."
+    assert pieces[-1].endswith("Short one.")   # a two-word sentence joins its neighbour instead of flashing by
     for p in pieces:
         lines = layout(p).split("\n")
         assert len(lines) <= 2 and all(len(line) <= MAX_LINE_CHARS for line in lines)
@@ -47,12 +47,17 @@ def test_approximate_cues_fill_speech_span_in_order():
 
 
 def test_aligned_cues_follow_word_timings():
-    span = SceneSpan("s1", "One two three. Four five.", offset=5.0, speech_start=0, speech_end=3)
-    words = [WordTiming(w, i * 0.5, i * 0.5 + 0.4) for i, w in enumerate("One two three. Four five.".split())]
+    span = SceneSpan("s1", "One two three. Four five six.", offset=5.0, speech_start=0, speech_end=3)
+    words = [WordTiming(w, i * 0.5, i * 0.5 + 0.4) for i, w in enumerate("One two three. Four five six.".split())]
     cues = aligned_cues(span, words)
-    assert [(c.start, c.end) for c in cues] == [(5.0, 6.4), (6.5, 7.4)]
+    assert [(c.start, c.end) for c in cues] == [(5.0, 6.4), (6.5, 7.9)]
     with pytest.raises(ValueError, match="words"):
         aligned_cues(span, words[:-1])
+
+
+def test_tiny_pieces_join_a_neighbour():
+    assert segment("Or… you could decide. Why? Because it was fine.") == ["Or… you could decide.", "Why? Because it was fine."]
+    assert segment("It was the longest sentence anyone had heard. Truly.")[-1].endswith("heard. Truly.")
 
 
 def test_srt_round_trip_and_parse_errors():

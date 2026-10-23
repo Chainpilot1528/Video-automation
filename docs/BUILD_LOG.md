@@ -766,3 +766,193 @@ Project: `projects/every-philosophers-answer-to-happiness`.
 - **Fix:** search now sends an Elasticsearch bool query: a `cross_fields` `multi_match` with `operator: and` over `title^4`, `artist_title^3`, `subject_titles^2` and `term_titles`, plus a `filter` on `is_public_domain`. The bracket parameters use explicit indices, because a bare `[]` makes each parameter a separate clause (and the API answers 400). Pacing, retries, headers and host limits are unchanged.
 - **Checked live:** "philosopher" gives 28 hits (Heraclitus, Democritus, Head of a Philosopher…); "marble head" gives 30 busts and portrait heads; "schopenhauer" and "zzqxv" give 0.
 - **Tests:** the fake AIC API in `tests/test_archive.py` now only answers matching words. The search test checks the request shape (no bare `q`, the filter, `operator=and`, the boosted fields), and a new test checks that a miss returns `[]`.
+
+---
+
+## 2026-10-23: "Why Your Brain Hates Contradictions" (preview from the creator's Substack essay)
+
+Project: `projects/why-your-brain-hates-contradictions`. Source: https://reckoningself.substack.com/p/why-your-brain-hates-contradictions (the creator's own essay, 3,147 words).
+
+### What was built
+- **Script:** a spoken adaptation in 10 scenes following the essay's 10 sections, 1,367 words, written in-session (no LLM drafting tool, no sub-agents).
+- **Narration:** `--preset reckoner --humanize`, 8:40. The video runs 8:51.
+- **Research:** every research statement checked against the essay's references:
+  - Festinger & Carlsmith 1959, full text: means −0.45 / +1.35 / −0.05, 71 male Stanford students, 20 per condition, a −5 to +5 scale, about an hour of tasks;
+  - Anglin 2019: abstract, via Semantic Scholar (ScienceDirect returned 403);
+  - Veiga-Zarza et al. 2026: PubMed abstract.
+- **On-screen quotations:** 4 of the essay's own sentences, matched verbatim against the published page.
+- **Visuals:** 8 Met CC0 artworks used as captioned metaphors, a cut-out of Rodin's *The Thinker*, and an 8-level stone-steps map with artwork medallions. The experiment's results are shown as large figures.
+
+### Pipeline issues found and fixed
+- **New `heading` text style:** large, upright figures and titles. The `label` style was too small for data.
+- **Paper prints:** a wide feather made them look like glowing blobs on black, so they now use a 0.025 feather and read like framed works.
+
+### Pipeline issues found, not fixed (follow-ups)
+- **Registry race:** `narration build` loads the asset registry at the start and writes it back at the end. Assets added by another command in the meantime (`archive add`, `archive cutout`, `graphics render`) were silently erased. They were recovered by deleting the orphaned files and re-adding them, with `visuals.json` moved aside because every command refuses to run while the visual plan references missing assets.
+- **Bar charts:** `graphics render` bar charts accept only values ≥ 0. Two of the three Festinger means are negative, so the results were shown as text, not a chart.
+- **Met rate limit:** the Met API started answering 403 after about seven quick searches; it worked again a minute later.
+- **QA noise:** QA flags many "frozen picture" stretches, because the slow 4-6% zooms fall below its change threshold. Most are expected for this style.
+
+### QA (`qa report --profile preview`): NOT READY, as expected before human review
+- **30 blockers, all human gates:**
+  - rights reviews of 21 assets;
+  - 4 critical research claims to verify;
+  - 4 on-screen quotations to verify (the creator's own sentences);
+  - script approval.
+- **54 warnings:** mostly frozen-picture notes, the map reused across 8 beats, and 13 caption readability notes (short or three-line cues).
+
+---
+
+## 2026-10-23: "Why Your Brain Hates Contradictions", rebuilt as talking narration with per-sentence visuals
+
+The user compared our first cut with the reference ("Every Philosopher's Answer to Death") and found the narration sounded like someone reading to themselves, and the pictures too static.
+
+### Analysis
+- **Narration:** we measured the reference against ours.
+  - Our pitch range matched the reference (13 semitones each).
+  - Our sentences ran at a metronome rhythm: about 2.8 s of speech, then a 0.4-0.6 s gap, every time.
+  - The script read like an essay.
+- **Pictures:** the reference changes the visual idea every 6-9 s, driven by the sentence being spoken: single objects, a key phrase, small animated diagrams, figures, and title cards. Ours held one composition for 45-55 s.
+
+### Narration (the voice itself is unchanged: Reckoner at its preset speed)
+- **Script:** rewritten as speech. It opens with a question, uses short lines, puts key lines on their own, and uses paragraph breaks and ellipses as breaths. 1,397 words, 10:11 of narration, 10:28 in total.
+- **New pause rules** in `narration/humanize.py` (version 2):
+  - a held beat (+0.2 s) before a short line of 4 words or fewer;
+  - a 0.5 s breath where "…" splits a sentence;
+  - paragraph gaps that vary (0.85-1.1 s).
+- **Slowdown rejected:** slower narration was tried (15% and 9%) and rejected by the user, so speed stays at the preset. Saved as a standing preference.
+
+### New visual building blocks (`schemas/visual.py`, `render/compose.py`)
+- **Shape layers:** circle, ring, line, arrow, and a paper-cutout `person`, with colours `ink`, `dim`, `accent` and `stone`, and `flip`.
+- **`reveal: "draw"`:** lines and arrows draw themselves on, using a per-frame alpha wipe (`geq` with `T`). This replaces their fade-in.
+- **Authored motion windows:** `motion_start`, `motion_end` and `motion_ease` are now available on any layer, so an element can slide into place at a chosen moment. They were previously renderer-internal.
+- **New text style `statement`:** upright, mid-size, for spoken key lines. A separate `heading` style (large figures and titles) was added earlier in the day.
+- **Tests:** schema rules, the shape SVGs, the draw wipe, an eased slide window, and a real render of every shape.
+
+### The video
+- **60 visual beats**, each placed on its sentence from the narration timings. Each chapter opens with the stone-steps map easing down a level.
+- **New image:** Brouwer's *The Smokers* (Met CC0) for the smoking example. The old 537 s music bed was replaced by a 629 s one.
+- **Fixed after review:** the cross-out line's position, and the spacing of the five steps in the exercise scene.
+
+### QA (preview): NOT READY, as expected before human review
+- **32 blockers, all human gates:** rights reviews for 23 assets, 4 essay quotations, 4 research claims, and script approval.
+- **61 warnings:** "frozen" stills and "black" frames are expected for this style (text-only moments on the near-black canvas), plus 3 repeated visuals and 1 captions note.
+
+---
+
+## 2026-10-23: Chapter map "The core" replaces the stone steps
+
+### How it was chosen
+- The user asked for a map in the spirit of the reference's iceberg, but our own design.
+- Eleven rough concept mockups were drawn: sunken pyramid, labyrinth, cave descent, tree and roots, rock strata, inside the head, ocean depths, spiral well, the core, hall of frames, and constellation. They were saved to `~/Desktop/Map design options/` for the user.
+- **The user chose "The core".**
+
+### What was built
+- **`graphics/chapter_core.py`:** a planet cut open, level I being the grey crust and the last level the red core.
+  - 300 px faceted bands with seeded shading; the facet angles are shared between bands so they meet without seams.
+  - A radial glow at the core, and stars wherever the planet isn't.
+  - The episode title in the sky.
+  - Inscriptions to the left of the axis, and one empty portrait place per level.
+  - The same spec always gives a byte-identical file.
+- **`graphics/maps.py`:** the style registry. Each style module offers the same geometry (`map_size`, `view_center`, `marker_anchor`, medallion size, slots). The SVG records `data-chapter-style`; older maps without it default to steps.
+- **Spec:** `GraphicSpec.style` takes `steps` (default) or `core`.
+- **Timeline compiler:** `_map_layers` now works from the style's geometry: map size, camera centre (x and y drift), and medallion size. Compiled layers may be up to 4 frames wide.
+- **This video:** it now uses `chapter-core`. The old stone-steps map asset was removed from this project; the style itself stays in the pipeline.
+- **First draft fixed:** it had dark seams between bands, the core was cut off below the deepest view, and three empty places per band looked busy.
+
+### Verification
+- `pytest`: all tests pass, including new ones for the core (deterministic SVG, style detection, band geometry, the compiler's camera move and medallion size).
+- A 36.5 s test clip of all seven chapter moves: `renders/prototype/core-map-test.mp4`.
+
+### Same day: the core gets a pull-back, a figure, a pulsing glow and twinkling stars
+- **Opening pull-back:** `GraphicSpec.variant = "overview"` (core style only) draws the whole planet in one 1920×1080 frame, without inscriptions. The video now opens close on the planet's surface, with the question revealed word by word in the sky, then eases back to the whole planet (zoom 2.6 → 0.92, drift tied to zoom so the surface stays put).
+  - Authored layers may now start off-frame (x, y from −2 to 3), travel further (drift ±2) and zoom 0.25-4.
+- **Paper figure:** our silhouette with a lantern stands on the surface in both the map and the overview (`chapter_core.figure_svg`).
+- **New layer fields:**
+  - `pulse` (seconds per cycle): a slow sine on the layer's alpha, from 55% to 100%, through `geq` on `T`;
+  - `seed`: chooses a star pattern, and the phase of a pulse.
+- **New shapes:** `glow` (a soft radial light) and `stars` (a seeded star field).
+- **The compiler, for core-style maps:**
+  - adds two twinkling star fields behind the planet (periods 3.7 s and 5.3 s);
+  - adds a pulsing glow (4 s) on the core that moves with the camera.
+- **Fixed on review:** on the deep, tightly curved bands the level names drifted below their own band. They now sit closer to the axis (at most half the band radius), so each name lines up with its portrait.
+- **Verification:** `pytest` all pass, with new tests for the overview, the pulse expression, and the stars and glow layers. The test clip is `renders/prototype/core-map-test.mp4` (42 s: the opening plus all seven chapter moves).
+
+---
+
+## 2026-10-23: Even narration pace, loudness, captions and fewer text-only stretches
+
+The user heard the voice slow down in places ("Here's the situation…").
+
+### Why it slowed down
+- Humanized TTS speaks each sentence on its own, and Kokoro drawls short sentences when they stand alone. Measured across all 208 pieces:
+  - 1-3 word pieces ran about 30% slower than the median (4.21 syllables/s);
+  - 48 pieces were more than 15% slow;
+  - the numbered exercise steps ("One.", "Two.") ran at about 40% speed.
+- The "beat before a short line" rule added a pause in front of them, which made it worse.
+
+### Fixes (`narration/humanize.py`, version 3; the voice itself is unchanged)
+- **Join short statements:** a statement of 4 words or fewer is now spoken together with the next sentence ("Here's the situation. For three years…"). Questions, trailing ellipses and a paragraph's last line stay alone, because their pause is deliberate.
+- **Even pace:** every piece is synthesized and trimmed first, and its syllable rate measured. A piece slower than 88% of the scene's pace (the median of its 7+ word pieces) is sped up toward 95% of it, at most 1.45×. `atempo` keeps the pitch.
+- **Beat before a short line:** tried 0.1 s; the user preferred 0.2 s, so it stays at 0.2 s.
+- **Result:** slow pieces went from 48 to 3, and the remaining 3 are deliberate one-beat lines ("Or…", "Why?", "Hard work wins."). Narration went from 10:11 to 9:31.
+- **Script:**
+  - the exercise is now "First, … Second, …" instead of "One. Two.";
+  - "Pride? Status? Years of effort?" is now one line;
+  - pronunciation overrides added for Veiga-Zarza, cingulate, dorsolateral and Carlsmith.
+
+### Loudness (`render/runner.py`)
+- Every finished render is measured and brought to **−14 LUFS** (YouTube's playback level), with a −1.5 dBFS limiter. The preview measured −14.1 LUFS with peaks at −1.3 dBFS; before the fix it was −20.2 LUFS.
+
+### Captions (`subtitles/srt.py`)
+- Caption pieces of one or two words ("Or…", "Why?") now join a neighbour, so no cue flashes by.
+
+### Visuals
+- **Experiment scene:** a Bank of New York $1 proof (Asher B. Durand, 1824–37) and the Saint-Gaudens twenty-dollar gold piece (1905–7, cut out) now appear in the "$1 / $20" and "Why?" beats.
+- **Ending:** Friedrich's *Two Men Contemplating the Moon* (c. 1825–30) sits beside the closing line.
+- **Exercise:** *Justice* stays on screen for the exercise's last line.
+- **Cue timing:** visual cues inside joined pieces are placed by the cue word's position, by characters.
+
+### Verification
+- New and updated tests: short statements joined; pace boost only for drawn-out pieces, and capped; tiny captions merged.
+
+### Same day: beat back to 0.2 s; loudness levelled inside the mix
+- **Beat:** at the user's request, the beat before a short line is back to **0.2 s** (`BEFORE_SHORT_EXTRA`). Narration rebuilt: 571.4 s.
+- **Loudness:** the first levelling pass re-encoded the already-encoded mix. The second AAC encode pushed the true peak to −0.3 dB, and to +2.2 dB with a lower ceiling.
+  - The gain now goes **inside the music-mix filter graph**, ahead of the limiter (`music_mix_command(gain_db=…, peak=…)`), so the audio is encoded once.
+  - The ceiling is 0.79 (about −2 dBFS).
+  - Videos without a music bed keep the single gain-and-limit pass.
+  - **Master:** −14.0 LUFS, true peak −1.3 dB.
+
+---
+
+## 2026-10-23: Smooth motion: dissolves, a camera push, entrances; pause 0.3 s
+
+The user shared the reference again in 1080p (`New.mp4`, the same video) and asked for its motion and smooth transitions.
+
+### Measured (5 minutes, 10 fps, mean frame difference)
+
+| | Reference | Ours before | Ours now |
+|---|---|---|---|
+| Completely still | 59% | 77% | **59%** |
+| Gentle motion | 25% | 13% | 31% |
+| Longest still stretch | 9.9 s | 29.4 s | under 21 s by the detector. The remaining stretches are dark text-only frames, where the camera push is real but below the detector's threshold (checked frame by frame). |
+
+The reference's smoothness comes from constant gentle motion and overlapping changes, not from fancy transitions: it has only about 2 hard cuts a minute.
+
+### What was built
+- **Dissolves** (`TimelineSegment.overlap`, `commands._join_segments`): each shot in a scene runs 0.7 s past its end (at most a third of either shot) and fades into the next with `xfade`, instead of fading out to near-black first. Layers that last to the end of their beat now leave with the dissolve (their `fade_out` is set to 0). Composition clips include the overlap.
+- **Camera push:** every composition that isn't a chapter-map move gets a gentle `slow_push` (6% over the shot), so no shot is ever dead still.
+- **Entrances** (`Layer.enter`, applied by `compiler._entered`):
+  - `auto`: text rises 1.8% into place over 0.9 s, shapes settle from 96% scale, and images keep a slow eased push (1.08 if they had no motion of their own);
+  - also available: `rise`, `settle`, `slide_left`, `slide_right` and `none`.
+  - Entrances only fill in motion the author left unset.
+- **This video:**
+  - every artwork now pushes or pulls 10% over its time on screen;
+  - the $1 bill and the $20 coin slide in from opposite sides.
+- **Pause:** at the user's request, the beat before a short line is now **0.3 s**. It applies in 7 places and adds 0.7 s in total.
+- `RENDER_VERSION` is now 2.
+
+### Tests
+- Dissolve filter chain (offsets, durations, longer inputs).
+- Entrance presets (only fill unset motion; an image is never dead still; slide direction).

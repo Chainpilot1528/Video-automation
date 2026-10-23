@@ -1,0 +1,278 @@
+{
+  "schema_version": "1.0",
+  "project_id": "why-your-brain-hates-contradictions",
+  "profile": "preview",
+  "status": "succeeded",
+  "started_at": "2026-10-22T21:54:20Z",
+  "finished_at": "2026-10-22T21:54:57Z",
+  "pipeline_version": "0.1.0",
+  "ffmpeg_version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers",
+  "commands": [
+    [
+      "/opt/local/bin/ffmpeg",
+      "-nostdin",
+      "-hide_banner",
+      "-loglevel",
+      "warning",
+      "-y",
+      "-i",
+      "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/renders/preview/build/s09-exercise/comp-v-s09-exercise-b01-ab143d2567a5.mp4",
+      "-i",
+      "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/renders/preview/build/s09-exercise/comp-v-s09-exercise-b02-82ef31ca586d.mp4",
+      "-i",
+      "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/renders/preview/build/s09-exercise/comp-v-s09-exercise-b03-b7bdd1e39331.mp4",
+      "-i",
+      "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/narration/s09-exercise/b2c2f07d10ea85bf.wav",
+      "-filter_complex",
+      "[0:v]scale=960:540:force_original_aspect_ratio=decrease:flags=lanczos,pad=960:540:(ow-iw)/2:(oh-ih)/2:color=0x14161a,setsar=1,fps=30,format=yuv420p,trim=duration=5.180,setpts=PTS-STARTPTS[v0];[1:v]scale=960:540:force_original_aspect_ratio=decrease:flags=lanczos,pad=960:540:(ow-iw)/2:(oh-ih)/2:color=0x14161a,setsar=1,fps=30,format=yuv420p,trim=duration=41.050,setpts=PTS-STARTPTS[v1];[2:v]scale=960:540:force_original_aspect_ratio=decrease:flags=lanczos,pad=960:540:(ow-iw)/2:(oh-ih)/2:color=0x14161a,setsar=1,fps=30,format=yuv420p,trim=duration=10.770,setpts=PTS-STARTPTS[v2];[v0][v1][v2]concat=n=3:v=1:a=0,fade=t=in:st=0:d=0.600,fade=t=out:st=56.400:d=0.600[vout];[3:a]aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo,adelay=250:all=1,apad,atrim=duration=57.000,afade=t=in:st=0:d=0.600,afade=t=out:st=56.400:d=0.600[aout]",
+      "-map",
+      "[vout]",
+      "-map",
+      "[aout]",
+      "-c:v",
+      "libx264",
+      "-preset",
+      "veryfast",
+      "-crf",
+      "28",
+      "-pix_fmt",
+      "yuv420p",
+      "-r",
+      "30",
+      "-g",
+      "60",
+      "-c:a",
+      "aac",
+      "-b:a",
+      "128k",
+      "-ar",
+      "48000",
+      "-ac",
+      "2",
+      "-t",
+      "57.000",
+      "-map_metadata",
+      "-1",
+      "-movflags",
+      "+faststart",
+      "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/renders/preview/scenes/s09-exercise-da5a873b7101695c.partial.mp4"
+    ],
+    [
+      "/opt/local/bin/ffmpeg",
+      "-nostdin",
+      "-hide_banner",
+      "-loglevel",
+      "warning",
+      "-y",
+      "-f",
+      "concat",
+      "-safe",
+      "0",
+      "-i",
+      "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/renders/preview/build/concat.txt",
+      "-c",
+      "copy",
+      "-map_metadata",
+      "-1",
+      "-movflags",
+      "+faststart",
+      "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/renders/preview/build/joined-5f82f7de320a.mp4"
+    ],
+    [
+      "/opt/local/bin/ffmpeg",
+      "-nostdin",
+      "-hide_banner",
+      "-loglevel",
+      "warning",
+      "-y",
+      "-i",
+      "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/renders/preview/build/joined-5f82f7de320a.mp4",
+      "-stream_loop",
+      "-1",
+      "-i",
+      "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/assets/music/music-pad-v2.wav",
+      "-filter_complex",
+      "[0:a]asplit=2[narr][key];[1:a]aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo,atrim=duration=627.656,volume=-10.0dB,afade=t=in:st=0:d=2.000,afade=t=out:st=624.656:d=3.000[bed];[bed][key]sidechaincompress=threshold=0.025:ratio=6:attack=20:release=450:makeup=1[ducked];[narr][ducked]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.89:level=disabled[aout]",
+      "-map",
+      "0:v",
+      "-map",
+      "[aout]",
+      "-c:v",
+      "copy",
+      "-c:a",
+      "aac",
+      "-b:a",
+      "128k",
+      "-ar",
+      "48000",
+      "-ac",
+      "2",
+      "-t",
+      "627.656",
+      "-map_metadata",
+      "-1",
+      "-movflags",
+      "+faststart",
+      "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/renders/preview/why-your-brain-hates-contradictions-preview-5f82f7de320a.partial.mp4"
+    ]
+  ],
+  "settings": {
+    "width": 960,
+    "height": 540,
+    "fps": 30.0,
+    "preset": "veryfast",
+    "crf": 28,
+    "audio_bitrate": "128k",
+    "audio_sample_rate": 48000,
+    "burn_captions": false,
+    "placeholders": 0,
+    "timeline_fingerprint": "5f82f7de320a2c0414b6475a3b632ed439e9f8d2c927f6f0d9fd8d68373c52a6"
+  },
+  "inputs": [
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/narration/s01-negotiation/8670b00bb47157b0.wav",
+      "sha256": "474fc640a5f9887471a11fa630ab687fa875abf4d7739bec8505c541640ccea9",
+      "role": "narration",
+      "scene_id": "s01-negotiation"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/assets/originals/met-bruegel-harvesters.jpg",
+      "sha256": "3d2a611f7787bee1a38ba1e9976535ea5497c2e4a26cd52ae2142c5f74dc6a49",
+      "role": "visual:layer",
+      "scene_id": "s01-negotiation"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/assets/derived/met-rodin-thinker-cut.png",
+      "sha256": "3630a1710263d3f24f5e076817f507ac8111b12c34ef4e8978dcd32676f83bb0",
+      "role": "visual:layer",
+      "scene_id": "s01-negotiation"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/narration/s02-theory/c655c9f441861625.wav",
+      "sha256": "32f4b1c7952f16997ce356d7933f174c0d1b03fbee70cbce31cef49cc994bf79",
+      "role": "narration",
+      "scene_id": "s02-theory"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/assets/graphics/chapter-map.svg",
+      "sha256": "38835983d53d53cdd82af662725692d54a29b7aceaf96d82b228af64fe702bb8",
+      "role": "visual:layer",
+      "scene_id": "s02-theory"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/assets/originals/met-rodin-thinker.jpg",
+      "sha256": "2d21a9389c4393742a7133b4a36d8ac2216f6b99a2fa01cbb0b7587112ece7e7",
+      "role": "visual:layer",
+      "scene_id": "s02-theory"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/assets/originals/met-brouwer-smokers.jpg",
+      "sha256": "d6c4c23df1e5f3031a1b9912453b9e57b360b0a45b50895abdf1cf3779398eac",
+      "role": "visual:layer",
+      "scene_id": "s02-theory"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/assets/originals/met-durer-hercules-crossroad.jpg",
+      "sha256": "441f51cfe7ec95103ec0774f9140f5afe887b66fbe0f469e15f31c0f714883b4",
+      "role": "visual:layer",
+      "scene_id": "s02-theory"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/narration/s03-experiment/f4cc2bf406fea2cd.wav",
+      "sha256": "6fa956cdff13db4ff2f7e59d45cfe9e19ef4ff1b21e4fd6b46f932aede9eea81",
+      "role": "narration",
+      "scene_id": "s03-experiment"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/narration/s04-identity/c8e54c11b0fec8dc.wav",
+      "sha256": "a9b93d5a3aefe89383f9d15f2ba05dba3c2ba5fb76dc9a40394bc60849ff5de0",
+      "role": "narration",
+      "scene_id": "s04-identity"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/assets/originals/met-lahyre-narcissus.jpg",
+      "sha256": "2df445ddd9b661f8c51910f70a7afa5f217b672ed1a4ddc5f9cba4f170b6abca",
+      "role": "visual:layer",
+      "scene_id": "s04-identity"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/narration/s05-motivated/d0c00b47edd12ead.wav",
+      "sha256": "507822b92b4a590431e980326413b509e98e5684701da32a1128777bfc808e11",
+      "role": "narration",
+      "scene_id": "s05-motivated"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/assets/originals/met-caraglio-diogenes.jpg",
+      "sha256": "c2d118e9033006cd021828e2c5ce79c773fff4cf31e40d667a7d4dc7ad3f1c5d",
+      "role": "visual:layer",
+      "scene_id": "s05-motivated"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/narration/s06-brain/26546e20bb3cd29b.wav",
+      "sha256": "b40a9adc886a54f07cff74cdf5798851a4a47f422c4e5198cc1f8fb22f1fc6b5",
+      "role": "narration",
+      "scene_id": "s06-brain"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/assets/originals/met-remmelin-microcosme.jpg",
+      "sha256": "f2be2b936e4b2cfe5424c966ec8569d0f8313224613903dd8814310fd08e2376",
+      "role": "visual:layer",
+      "scene_id": "s06-brain"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/narration/s07-everyday/08a796e528c8f0fc.wav",
+      "sha256": "0c997057e355f10f327cd5c7a6c64f90f74d2d0a0eec38ef158b20ca0d7aa0f3",
+      "role": "narration",
+      "scene_id": "s07-everyday"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/assets/originals/met-sisyphus-tantalus.jpg",
+      "sha256": "d76c7de9d692304951fc418f340f50d437e5d7b9ea1b5465e0b20eb8b4f0957c",
+      "role": "visual:layer",
+      "scene_id": "s07-everyday"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/narration/s08-dangerous/7427c0abf0050db4.wav",
+      "sha256": "d0336dfd0fb54d113f7dea25ea247c0a085cc60c32fe7f3dc9c02c6292bdddd9",
+      "role": "narration",
+      "scene_id": "s08-dangerous"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/assets/originals/met-durer-melencolia.jpg",
+      "sha256": "ea8e4a7d78d56d7b1bfec95c640470a3a768b3f0f9d7bdb520c402791c27a330",
+      "role": "visual:layer",
+      "scene_id": "s08-dangerous"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/narration/s09-exercise/b2c2f07d10ea85bf.wav",
+      "sha256": "cbfb7d6eaf365967c22a5036be2cbfce8e5f5c0850cb6a3f28c9700b18a7904f",
+      "role": "narration",
+      "scene_id": "s09-exercise"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/assets/originals/met-parmigianino-justice.jpg",
+      "sha256": "0dfcd3578c9650bf7b2c3d8fda529d1cddff63eb69fc2ee045b184a6bb1ed647",
+      "role": "visual:layer",
+      "scene_id": "s09-exercise"
+    },
+    {
+      "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/narration/s10-question/1caf25b07787cde2.wav",
+      "sha256": "4b5a85c0758e036114657205012e3e1860a16559cea6f5382decc8ef0692b429",
+      "role": "narration",
+      "scene_id": "s10-question"
+    }
+  ],
+  "output": {
+    "path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/renders/preview/why-your-brain-hates-contradictions-preview-5f82f7de320a.mp4",
+    "sha256": "39e901bb737e066a067b0c861f601b060cb90b1c3fd4bf470bcd126f2aa4d199",
+    "size_bytes": 14814374,
+    "duration_seconds": 627.7,
+    "width": 960,
+    "height": 540,
+    "frame_rate": 30.0,
+    "video_codec": "h264",
+    "audio_codec": "aac"
+  },
+  "warnings": [],
+  "errors": []
+}

@@ -1,0 +1,1097 @@
+{
+  "schema_version": "1.0",
+  "project_id": "why-your-brain-hates-contradictions",
+  "profile": "preview",
+  "generated_at": "2026-10-22T21:55:29Z",
+  "pipeline_version": "0.1.0",
+  "render_report": "reports/render-preview-20261022T215457Z.json",
+  "output_path": "/Users/nikhiltalla/Desktop/Video/projects/why-your-brain-hates-contradictions/renders/preview/why-your-brain-hates-contradictions-preview-5f82f7de320a.mp4",
+  "output_sha256": "39e901bb737e066a067b0c861f601b060cb90b1c3fd4bf470bcd126f2aa4d199",
+  "inputs_fingerprint": "486b90c0ea5d7c4bdf10621c0ea2536c0de10eb3e70906bb244cc6658e9dc926",
+  "media_analysed": true,
+  "measurements": {
+    "duration_seconds": 627.7,
+    "integrated_lufs": -20.2,
+    "true_peak_dbtp": -4.6,
+    "loudness_range_lu": 2.0,
+    "black_intervals": [
+      [
+        0.021,
+        13.533
+      ],
+      [
+        38.488,
+        12.067
+      ],
+      [
+        57.488,
+        9.9
+      ],
+      [
+        71.555,
+        6.433
+      ],
+      [
+        97.121,
+        12.633
+      ],
+      [
+        123.221,
+        7.267
+      ],
+      [
+        137.521,
+        6.133
+      ],
+      [
+        162.721,
+        48.513
+      ],
+      [
+        215.334,
+        4.667
+      ],
+      [
+        238.168,
+        22.0
+      ],
+      [
+        278.547,
+        5.767
+      ],
+      [
+        311.714,
+        32.404
+      ],
+      [
+        375.251,
+        23.091
+      ],
+      [
+        402.475,
+        13.5
+      ],
+      [
+        428.208,
+        32.358
+      ],
+      [
+        475.966,
+        13.2
+      ],
+      [
+        499.533,
+        15.033
+      ],
+      [
+        560.4,
+        53.767
+      ]
+    ],
+    "frozen_intervals": [
+      [
+        0.955,
+        5.767
+      ],
+      [
+        6.721,
+        6.767
+      ],
+      [
+        38.621,
+        11.933
+      ],
+      [
+        57.555,
+        7.933
+      ],
+      [
+        71.655,
+        6.6
+      ],
+      [
+        79.688,
+        9.867
+      ],
+      [
+        97.288,
+        10.167
+      ],
+      [
+        123.855,
+        5.767
+      ],
+      [
+        138.388,
+        5.467
+      ],
+      [
+        148.855,
+        6.033
+      ],
+      [
+        154.888,
+        7.133
+      ],
+      [
+        166.021,
+        15.933
+      ],
+      [
+        181.955,
+        28.4
+      ],
+      [
+        215.468,
+        4.567
+      ],
+      [
+        239.534,
+        20.6
+      ],
+      [
+        278.68,
+        5.667
+      ],
+      [
+        285.08,
+        16.667
+      ],
+      [
+        311.747,
+        8.0
+      ],
+      [
+        319.747,
+        23.467
+      ],
+      [
+        359.051,
+        10.033
+      ],
+      [
+        369.084,
+        5.6
+      ],
+      [
+        375.151,
+        12.833
+      ],
+      [
+        387.984,
+        9.467
+      ],
+      [
+        403.975,
+        4.7
+      ],
+      [
+        410.041,
+        9.9
+      ],
+      [
+        429.108,
+        6.667
+      ],
+      [
+        435.775,
+        17.2
+      ],
+      [
+        454.1,
+        6.533
+      ],
+      [
+        461.3,
+        13.8
+      ],
+      [
+        475.866,
+        7.567
+      ],
+      [
+        483.433,
+        5.667
+      ],
+      [
+        499.6,
+        14.067
+      ],
+      [
+        524.033,
+        5.733
+      ],
+      [
+        529.766,
+        7.667
+      ],
+      [
+        537.433,
+        7.667
+      ],
+      [
+        545.1,
+        6.967
+      ],
+      [
+        552.066,
+        5.6
+      ],
+      [
+        560.466,
+        10.2
+      ],
+      [
+        571.833,
+        42.333
+      ],
+      [
+        615.166,
+        4.167
+      ]
+    ],
+    "silent_intervals": []
+  },
+  "checks": [
+    {
+      "code": "research.claim.critical_unreviewed",
+      "subject": "c-anglin-2019",
+      "severity": "blocker",
+      "message": "critical claim used in narration is unverified",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "research.claim.critical_unreviewed",
+      "subject": "c-fc-design",
+      "severity": "blocker",
+      "message": "critical claim used in narration is unverified",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "research.claim.critical_unreviewed",
+      "subject": "c-fc-results",
+      "severity": "blocker",
+      "message": "critical claim used in narration is unverified",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "research.claim.critical_unreviewed",
+      "subject": "c-vz-2026",
+      "severity": "blocker",
+      "message": "critical claim used in narration is unverified",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "chapter-map",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "met-brouwer-smokers",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "met-bruegel-harvesters",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "met-caraglio-diogenes",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "met-durer-hercules-crossroad",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "met-durer-melencolia",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "met-lahyre-narcissus",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "met-parmigianino-justice",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "met-remmelin-microcosme",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "met-rodin-thinker",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "met-rodin-thinker-cut",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "met-sisyphus-tantalus",
+      "severity": "blocker",
+      "message": "missing: identifiable_people is unknown; trademarks_visible is unknown",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "music-pad-v2",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s01-negotiation",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s02-theory",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s03-experiment",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s04-identity",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s05-motivated",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s06-brain",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s07-everyday",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s08-dangerous",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s09-exercise",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "rights.asset.unapproved_in_use",
+      "subject": "narr-s10-question",
+      "severity": "blocker",
+      "message": "rights recorded; ready for human review",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "script.not_approved",
+      "subject": "script",
+      "severity": "blocker",
+      "message": "script is not approved; run 'pipeline script approve'",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "visual.quote_unverified",
+      "subject": "v-s01-negotiation-b07",
+      "severity": "blocker",
+      "message": "quote claim 'q-art-preserve' is unverified; check it against the source",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "visual.quote_unverified",
+      "subject": "v-s04-identity-b06",
+      "severity": "blocker",
+      "message": "quote claim 'q-art-consequences' is unverified; check it against the source",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "visual.quote_unverified",
+      "subject": "v-s08-dangerous-b04",
+      "severity": "blocker",
+      "message": "quote claim 'q-art-rationalisation' is unverified; check it against the source",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "visual.quote_unverified",
+      "subject": "v-s10-question-b05",
+      "severity": "blocker",
+      "message": "quote claim 'q-art-final' is unverified; check it against the source",
+      "waivable": false,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "captions.readability",
+      "subject": "why-your-brain-hates-contradictions-preview-5f82f7de320a.srt",
+      "severity": "warning",
+      "message": "9 readability note(s): cue 17: on screen only 0.24 s; cue 64: on screen only 0.29 s; cue 170: on screen 7.1 s (max 7); and 6 more",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.black",
+      "subject": "123.2s",
+      "severity": "warning",
+      "message": "7.3 s of near-black picture (may be a deliberate dark shot or fade)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.black",
+      "subject": "137.5s",
+      "severity": "warning",
+      "message": "6.1 s of near-black picture (may be a deliberate dark shot or fade)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.black",
+      "subject": "162.7s",
+      "severity": "warning",
+      "message": "48.5 s of near-black picture (may be a deliberate dark shot or fade)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.black",
+      "subject": "215.3s",
+      "severity": "warning",
+      "message": "4.7 s of near-black picture (may be a deliberate dark shot or fade)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.black",
+      "subject": "238.2s",
+      "severity": "warning",
+      "message": "22.0 s of near-black picture (may be a deliberate dark shot or fade)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.black",
+      "subject": "278.5s",
+      "severity": "warning",
+      "message": "5.8 s of near-black picture (may be a deliberate dark shot or fade)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.black",
+      "subject": "311.7s",
+      "severity": "warning",
+      "message": "32.4 s of near-black picture (may be a deliberate dark shot or fade)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.black",
+      "subject": "375.3s",
+      "severity": "warning",
+      "message": "23.1 s of near-black picture (may be a deliberate dark shot or fade)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.black",
+      "subject": "38.5s",
+      "severity": "warning",
+      "message": "12.1 s of near-black picture (may be a deliberate dark shot or fade)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.black",
+      "subject": "402.5s",
+      "severity": "warning",
+      "message": "13.5 s of near-black picture (may be a deliberate dark shot or fade)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.black",
+      "subject": "428.2s",
+      "severity": "warning",
+      "message": "32.4 s of near-black picture (may be a deliberate dark shot or fade)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.black",
+      "subject": "476.0s",
+      "severity": "warning",
+      "message": "13.2 s of near-black picture (may be a deliberate dark shot or fade)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.black",
+      "subject": "499.5s",
+      "severity": "warning",
+      "message": "15.0 s of near-black picture (may be a deliberate dark shot or fade)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.black",
+      "subject": "560.4s",
+      "severity": "warning",
+      "message": "53.8 s of near-black picture (may be a deliberate dark shot or fade)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.black",
+      "subject": "57.5s",
+      "severity": "warning",
+      "message": "9.9 s of near-black picture (may be a deliberate dark shot or fade)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.black",
+      "subject": "71.6s",
+      "severity": "warning",
+      "message": "6.4 s of near-black picture (may be a deliberate dark shot or fade)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.black",
+      "subject": "97.1s",
+      "severity": "warning",
+      "message": "12.6 s of near-black picture (may be a deliberate dark shot or fade)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "1.0s",
+      "severity": "warning",
+      "message": "5.8 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "123.9s",
+      "severity": "warning",
+      "message": "5.8 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "138.4s",
+      "severity": "warning",
+      "message": "5.5 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "148.9s",
+      "severity": "warning",
+      "message": "6.0 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "154.9s",
+      "severity": "warning",
+      "message": "7.1 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "166.0s",
+      "severity": "warning",
+      "message": "15.9 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "182.0s",
+      "severity": "warning",
+      "message": "28.4 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "215.5s",
+      "severity": "warning",
+      "message": "4.6 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "239.5s",
+      "severity": "warning",
+      "message": "20.6 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "278.7s",
+      "severity": "warning",
+      "message": "5.7 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "285.1s",
+      "severity": "warning",
+      "message": "16.7 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "311.7s",
+      "severity": "warning",
+      "message": "8.0 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "319.7s",
+      "severity": "warning",
+      "message": "23.5 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "359.1s",
+      "severity": "warning",
+      "message": "10.0 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "369.1s",
+      "severity": "warning",
+      "message": "5.6 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "375.2s",
+      "severity": "warning",
+      "message": "12.8 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "38.6s",
+      "severity": "warning",
+      "message": "11.9 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "388.0s",
+      "severity": "warning",
+      "message": "9.5 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "404.0s",
+      "severity": "warning",
+      "message": "4.7 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "410.0s",
+      "severity": "warning",
+      "message": "9.9 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "429.1s",
+      "severity": "warning",
+      "message": "6.7 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "435.8s",
+      "severity": "warning",
+      "message": "17.2 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "454.1s",
+      "severity": "warning",
+      "message": "6.5 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "461.3s",
+      "severity": "warning",
+      "message": "13.8 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "475.9s",
+      "severity": "warning",
+      "message": "7.6 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "483.4s",
+      "severity": "warning",
+      "message": "5.7 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "499.6s",
+      "severity": "warning",
+      "message": "14.1 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "524.0s",
+      "severity": "warning",
+      "message": "5.7 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "529.8s",
+      "severity": "warning",
+      "message": "7.7 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "537.4s",
+      "severity": "warning",
+      "message": "7.7 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "545.1s",
+      "severity": "warning",
+      "message": "7.0 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "552.1s",
+      "severity": "warning",
+      "message": "5.6 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "560.5s",
+      "severity": "warning",
+      "message": "10.2 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "57.6s",
+      "severity": "warning",
+      "message": "7.9 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "571.8s",
+      "severity": "warning",
+      "message": "42.3 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "6.7s",
+      "severity": "warning",
+      "message": "6.8 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "615.2s",
+      "severity": "warning",
+      "message": "4.2 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "71.7s",
+      "severity": "warning",
+      "message": "6.6 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "79.7s",
+      "severity": "warning",
+      "message": "9.9 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "picture.frozen",
+      "subject": "97.3s",
+      "severity": "warning",
+      "message": "10.2 s with no visible change (may be a deliberate still shot)",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "visual.repeated",
+      "subject": "chapter-map",
+      "severity": "warning",
+      "message": "the same visual is used in 7 beats",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "visual.repeated",
+      "subject": "met-lahyre-narcissus",
+      "severity": "warning",
+      "message": "the same visual is used in 2 beats",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    },
+    {
+      "code": "visual.repeated",
+      "subject": "met-rodin-thinker-cut",
+      "severity": "warning",
+      "message": "the same visual is used in 2 beats",
+      "waivable": true,
+      "waived_by": null,
+      "waiver_rationale": ""
+    }
+  ],
+  "blocker_count": 32,
+  "open_warning_count": 61,
+  "fingerprint": "9c849148a95cd0b8e45825c4e6e19ccb4fbc5f062ad78e454f41c223b01ffed6"
+}

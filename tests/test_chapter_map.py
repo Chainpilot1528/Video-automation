@@ -151,3 +151,62 @@ def test_map_beat_renders(short_demo, tools):  # noqa: F811
     assert len(clips) == 1
     roles = [i["role"] for i in json.loads(out.report_path.read_text())["inputs"]]
     assert roles.count("visual:layer") == 3     # the map and both medallions count for rights and credits
+
+
+# --- the core style -----------------------------------------------------------------
+
+def test_core_style_svg_and_geometry(tmp_path):
+    from reckoning_pipeline.graphics import chapter_core as core
+    from reckoning_pipeline.graphics.maps import map_info
+    from reckoning_pipeline.graphics.svg import render_spec
+    s = spec(style="core")
+    svg = render_spec(s, None)
+    assert svg == render_spec(s, None) and 'data-chapter-style="core"' in svg and "LEVEL III" in svg
+    (tmp_path / "c.svg").write_text(svg)
+    module, n = map_info(tmp_path / "c.svg")
+    assert module is core and n == 3
+    (tmp_path / "s.svg").write_text(cmap.render_chapter_map(spec()))
+    assert map_info(tmp_path / "s.svg")[0] is cmap
+    # each level sits one band deeper, and its medallion place is on its own band
+    ys = [core.view_center(lv, 3)[1] for lv in (1, 2, 3)]
+    assert [b - a for a, b in zip(ys, ys[1:])] == [core.BAND, core.BAND]
+    for lv in (1, 2, 3):
+        x, y = core.marker_anchor(lv, 1, 3)
+        assert x > core.view_center(lv, 3)[0] and abs(y - core.view_center(lv, 3)[1]) < core.BAND
+    with pytest.raises(ValidationError, match="only for chapter maps"):
+        GraphicSpec(asset_id="t", kind="title", title="T", style="core")
+
+
+def test_compiler_places_the_core_camera_and_medallions(short_demo):  # noqa: F811
+    from reckoning_pipeline.graphics import chapter_core as core
+    result = validate_project(short_demo)
+    render_graphic(short_demo, result.manifest, result.registry, result.ledger,
+                   spec(asset_id="chapter-core", style="core"))
+    add_map_beat(short_demo, asset_id="chapter-core")
+
+    def retarget(d):
+        b = next(x for x in d["beats"] if x["beat_id"] == "v01-map")
+        b["asset_ids"] = ["chapter-core" if a == "chapter-map" else a for a in b["asset_ids"]]
+    edit_json(short_demo / "visuals.json", retarget)
+    _, seg = compiled(short_demo)
+    stars = [x for x in seg.layers if x.shape == "stars"]
+    glow = next(x for x in seg.layers if x.shape == "glow")
+    assert len(stars) == 2 and all(x.pulse > 0 for x in stars) and seg.layers[:2] == stars   # behind the planet
+    assert glow.pulse > 0 and glow.drift_y == pytest.approx(-core.BAND / 1080, abs=1e-3)       # rides with the core
+    mp, old, _, new, _ = [x for x in seg.layers if x.kind != "shape"]
+    w, h = core.map_size(3)
+    assert mp.width == pytest.approx(w / 1920, abs=1e-3) and mp.drift_y == pytest.approx(-core.BAND / 1080, abs=1e-3)
+    assert new.start == pytest.approx(0.7) and new.width == pytest.approx(core.MEDALLION_W / 1920, abs=1e-3)
+
+
+def test_core_overview_and_pulse():
+    from reckoning_pipeline.graphics.chapter_core import overview_surface, render_chapter_core_overview
+    svg = render_chapter_core_overview(spec(style="core", variant="overview"))
+    assert 'width="1920" height="1080"' in svg and "core-overview" in svg and "LEVEL" not in svg
+    x, y = overview_surface(3)
+    assert x == 960 and 0 < y < 1080
+    with pytest.raises(ValidationError, match="overview variant"):
+        spec(variant="overview")
+    layer = TimelineLayer(kind="shape", shape="glow", path="", pulse=4.0, seed=0)
+    graph = composition_command("ffmpeg", [layer], ["g.png"], PROFILE, 6.0, "o.mp4")
+    assert "sin(2*PI*T/4" in graph[graph.index("-filter_complex") + 1]

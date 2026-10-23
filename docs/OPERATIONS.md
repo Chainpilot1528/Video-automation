@@ -274,6 +274,7 @@ The episode's structure as monumental stone steps, like a temple's stepped base,
 .venv/bin/pipeline graphics render projects/my-film specs/chapter-map.json
 ```
 
+- **Two styles:** `"style": "steps"` (default, stone steps) or `"style": "core"`, a planet cut open, layer by layer, down to a glowing red core. The core is 3000 px wide; each level is one 300 px band, with its inscription left of the axis and one empty portrait place on the right. The timeline treats both styles the same way.
 - **The graphic:** a tall, transparent SVG with 2-8 levels. Each level's number and title are cut into its step, which has room on the right for three medallions. Lower steps are wider and sink into the dark.
   - The stone texture is seeded from the spec, so the same spec gives a byte-identical file.
   - It's registered as an original graphic, like the other graphics.

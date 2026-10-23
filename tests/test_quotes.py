@@ -18,7 +18,7 @@ from reckoning_pipeline.schemas.narration import ChunkReport, SentenceTiming
 from reckoning_pipeline.schemas.timeline import TimelineLayer
 from reckoning_pipeline.timeline.quotes import EVEN_WORDS_PER_SECOND, audio_time, find_quote, word_times
 
-NARRATION = "Epicurus taught one thing. In his words: pleasure is the beginning and end of the blessed life."
+NARRATION = "Epicurus taught his friends one thing. In his words: pleasure is the beginning and end of the blessed life."
 QUOTE = "“Pleasure is the beginning and end of the blessed life.”"
 
 
@@ -38,7 +38,7 @@ def test_find_quote_ignores_case_and_punctuation():
 
 
 def test_audio_time_uses_sentence_timings_when_recorded():
-    timed = chunk(sentences=[SentenceTiming(text="Epicurus taught one thing.", start=0.2, end=1.8),
+    timed = chunk(sentences=[SentenceTiming(text="Epicurus taught his friends one thing.", start=0.2, end=1.8),
                              SentenceTiming(text="In his words: …", start=2.4, end=8.0)])
     second = NARRATION.index("In his")
     assert audio_time(second, NARRATION, timed) == pytest.approx(2.4)

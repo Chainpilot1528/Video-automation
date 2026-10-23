@@ -57,36 +57,49 @@ class BeatReview(StrEnum):
 
 
 class Layer(Record):
-    """One element of a composition: an image or a block of text placed on a dark canvas.
+    """One element of a composition: an image, a block of text or a simple shape on a dark canvas.
 
     Positions and sizes are fractions of the frame, so a layout works at any resolution.
-    Times are seconds from the start of the beat. Motion is a slow, linear drift and zoom
-    over the layer's own lifetime.
+    Times are seconds from the start of the beat. Motion is a drift and zoom over the layer's
+    own lifetime, or over ``motion_start``-``motion_end`` (eased if ``motion_ease``) to make
+    an element slide into place at a given moment.
     """
 
-    kind: Literal["image", "text"]
+    kind: Literal["image", "text", "shape"]
     asset_id: Identifier | None = None          # image layers
     text: str = ""                              # text layers
-    text_style: Literal["quote", "label", "caption"] = "label"
+    text_style: Literal["quote", "label", "caption", "heading", "statement"] = "label"
+    # quote: italic, from a ledger quotation · label: spaced capitals · caption: small, dim
+    # heading: large upright figures and titles · statement: a spoken key line, upright, mid-size
     highlight: str = ""                         # part of ``text`` drawn in the accent colour
-    reveal: Literal["fade", "words"] = "fade"   # "words": appear phrase by phrase as the narrator reads them
+    reveal: Literal["fade", "words", "draw"] = "fade"   # words: phrase by phrase as read · draw: lines draw on
+    shape: Literal["circle", "ring", "line", "arrow", "person", "glow", "stars"] | None = None   # shape layers
+    color: Literal["ink", "dim", "accent", "stone"] = "ink"     # shape colour (stone: a muted grey-brown fill)
+    flip: bool = False                          # arrows point left (and draw from the right); figures face left
+    enter: Literal["auto", "none", "rise", "settle", "slide_left", "slide_right"] = "auto"
+    # how the layer arrives · auto: text rises into place, shapes settle, images keep a slow eased push
     claim_id: Identifier | None = None          # quotes: the ledger quotation claim this text reproduces
-    x: float = Field(default=0.5, ge=0, le=1)   # centre of the layer, across the frame
-    y: float = Field(default=0.5, ge=0, le=1)   # centre of the layer, down the frame
+    x: float = Field(default=0.5, ge=-2, le=3)  # centre of the layer, across the frame (may start off-frame)
+    y: float = Field(default=0.5, ge=-2, le=3)  # centre of the layer, down the frame
     width: float = Field(default=0.4, gt=0, le=1.5)    # fraction of frame width
     max_height: float = Field(default=0.8, gt=0, le=1.5)  # images are fitted inside width x max_height
     start: float = Field(default=0.0, ge=0)
     end: float | None = Field(default=None, gt=0)  # None = until the beat ends
     fade_in: float = Field(default=1.2, ge=0, le=10)
     fade_out: float = Field(default=1.2, ge=0, le=10)
-    drift_x: float = Field(default=0.0, ge=-0.3, le=0.3)  # total travel, fraction of frame width
-    drift_y: float = Field(default=0.0, ge=-0.3, le=0.3)
-    zoom_from: float = Field(default=1.0, ge=0.5, le=2.0)
-    zoom_to: float = Field(default=1.0, ge=0.5, le=2.0)
+    drift_x: float = Field(default=0.0, ge=-2, le=2)  # total travel, fraction of frame width
+    drift_y: float = Field(default=0.0, ge=-2, le=2)
+    zoom_from: float = Field(default=1.0, ge=0.25, le=4.0)
+    zoom_to: float = Field(default=1.0, ge=0.25, le=4.0)
+    pulse: float = Field(default=0.0, ge=0, le=20)   # seconds per slow brighten-and-dim cycle (0 = steady)
+    seed: int = 0                               # stars: which star pattern; pulse: phase
     edge: Literal["none", "feather", "oval", "circle"] = "none"
     feather: float = Field(default=0.09, gt=0, le=0.5)  # feathered/oval edge width, fraction of the shorter side
     ring: bool = False                          # oval/circle: a thin brass ring around the portrait (a medallion)
     crop: tuple[float, float, float, float] | None = None  # (left, top, right, bottom) fractions of the source
+    motion_start: float | None = Field(default=None, ge=0)   # drift/zoom window (default: the layer's lifetime)
+    motion_end: float | None = Field(default=None, gt=0)
+    motion_ease: bool = False                   # ease in and out (smoothstep) instead of linear
 
     @model_validator(mode="after")
     def _rules(self) -> "Layer":
@@ -99,8 +112,21 @@ class Layer(Record):
                 raise ValueError("text layers take no asset_id")
             if self.highlight and self.highlight not in self.text:
                 raise ValueError("highlight must be part of the layer's text")
-        elif self.reveal != "fade" or self.claim_id:
-            raise ValueError("reveal and claim_id are for text layers")
+        elif self.claim_id:
+            raise ValueError("claim_id is for text layers")
+        if self.kind == "shape":
+            if self.shape is None:
+                raise ValueError("shape layers need a shape")
+            if self.asset_id or self.text:
+                raise ValueError("shape layers take no asset_id or text")
+        elif self.shape is not None:
+            raise ValueError("shape is only for shape layers")
+        if self.reveal == "words" and self.kind != "text":
+            raise ValueError("reveal 'words' is for text layers")
+        if self.reveal == "draw" and self.shape not in ("line", "arrow"):
+            raise ValueError("reveal 'draw' is for line and arrow shapes")
+        if self.motion_start is not None and self.motion_end is not None and self.motion_end <= self.motion_start:
+            raise ValueError("motion_end must be after motion_start")
         if self.ring and (self.kind != "image" or self.edge not in ("oval", "circle")):
             raise ValueError("ring is for image layers with an oval or circle edge")
         if self.end is not None and self.end <= self.start:
@@ -274,6 +300,8 @@ class GraphicSpec(Record):
     bars: list[BarDatum] = Field(default_factory=list)
     events: list[TimelineEvent] = Field(default_factory=list)
     levels: list[MapLevel] = Field(default_factory=list)   # chapter_map: one per chapter, top to bottom
+    style: Literal["steps", "core"] = "steps"   # chapter_map: stone steps, or a planet cut open to its core
+    variant: Literal["map", "overview"] = "map"   # core only: the descent map, or the whole planet in one frame
     intended_scene_ids: list[Identifier] = Field(default_factory=list)
 
     @model_validator(mode="after")
@@ -294,6 +322,8 @@ class GraphicSpec(Record):
                 raise ValueError("a chapter map needs 2-8 levels")
             if self.bars or self.events:
                 raise ValueError("a chapter map takes levels, not bars or events")
-        elif self.levels:
-            raise ValueError("levels are only for chapter maps")
+        elif self.levels or self.style != "steps":
+            raise ValueError("levels and style are only for chapter maps")
+        if self.variant == "overview" and self.style != "core":
+            raise ValueError("the overview variant is for the core style")
         return self

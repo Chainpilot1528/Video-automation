@@ -48,13 +48,12 @@ class TimelineLayer(Layer):
     sha256: Sha256 | None = None
     # Compiled layers may sit and travel off-frame (the chapter map is several frames tall).
     y: float = Field(default=0.5, ge=-8, le=9)
+    x: float = Field(default=0.5, ge=-4, le=5)
+    width: float = Field(default=0.4, gt=0, le=4)
     max_height: float = Field(default=0.8, gt=0, le=8)
     drift_y: float = Field(default=0.0, ge=-8, le=8)
     word_times: list[float] = Field(default_factory=list)  # reveal="words": start of each word, beat-relative
     visible_words: list[int] | None = None   # renderer-internal: draw only these words (layout unchanged)
-    motion_start: float | None = None        # renderer-internal: drift/zoom clock of the parent layer
-    motion_end: float | None = None
-    motion_ease: bool = False                # ease drift/zoom in and out (smoothstep) instead of linear
 
 
 def layers_key(layers: list[TimelineLayer]) -> str:
@@ -75,6 +74,7 @@ class TimelineSegment(Record):
     source_duration: float | None = None  # video assets only
     label: str = ""         # on-screen label for reconstructions / AI illustrations
     layers: list[TimelineLayer] = Field(default_factory=list)  # compositions only
+    overlap: float = Field(default=0.0, ge=0)  # rendered past its end, dissolving into the next segment
 
 
 class TimelineNarration(Record):

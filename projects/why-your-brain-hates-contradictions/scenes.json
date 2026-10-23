@@ -1,0 +1,351 @@
+{
+  "schema_version": "1.0",
+  "scenes": [
+    {
+      "scene_id": "s01-negotiation",
+      "order": 1,
+      "purpose": "01 · The moment your mind starts negotiating with reality",
+      "narration_text": "Have you ever met someone who seems to break every rule… and wins anyway?\n\nHere's the situation. For three years, you've believed one thing. Hard work wins.\n\nSo you gave up your weekends. You said no to rest. You watched other people enjoy the things you kept putting off. And it felt worth it… because you believed.\n\nThen you meet someone. They work fewer hours. They protect their evenings. And they earn more than you.\n\nNow you're holding two ideas that don't fit together.\n\nYou could rethink what success really takes. Or… you could decide they just got lucky. That it won't last. That they must know someone.\n\nNotice what just happened. Instead of changing your understanding of the world, you found a way to preserve it.\n\nAnd here's the strange part. From the inside, it doesn't feel like an excuse. It feels like logic.",
+      "visual_strategy": "Archival composition on black; see visuals.json",
+      "asset_ids": [],
+      "source_ids": [
+        "src-article"
+      ],
+      "claim_ids": [
+        "q-art-preserve"
+      ],
+      "planned_duration_seconds": 65.0,
+      "actual_narration_duration_seconds": 58.74,
+      "final_duration_seconds": 60.99,
+      "narration_asset_id": "narr-s01-negotiation",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 1.0
+      },
+      "transition_out": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 2.0
+    },
+    {
+      "scene_id": "s02-theory",
+      "order": 2,
+      "purpose": "02 · The theory: two beliefs that cannot easily coexist",
+      "narration_text": "Psychology has a name for that feeling.\n\nIn 1957, a social psychologist named Leon Festinger called it cognitive dissonance.\n\nThe idea is simple. When two things you believe don't fit together… or when what you do doesn't fit what you believe… it feels uncomfortable. And you want that feeling gone.\n\nTake a smoker. They know smoking is harmful. And they still smoke.\n\nSo what do they do? They could quit. They could admit the habit clashes with their health. Or they could tell themselves… I don't smoke enough for it to matter.\n\nThat's the key. Changing your mind is only one way out. You can change what you do. You can reinterpret the evidence. Or you can add a new story that makes the conflict feel smaller.\n\nWhich way you go depends on the situation… and on how much that belief matters to you.",
+      "visual_strategy": "Archival composition on black; see visuals.json",
+      "asset_ids": [],
+      "source_ids": [
+        "src-festinger-carlsmith-1959"
+      ],
+      "claim_ids": [
+        "c-festinger-1957"
+      ],
+      "planned_duration_seconds": 57.6,
+      "actual_narration_duration_seconds": 56.005,
+      "final_duration_seconds": 57.455,
+      "narration_asset_id": "narr-s02-theory",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "transition_out": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 1.2
+    },
+    {
+      "scene_id": "s03-experiment",
+      "order": 3,
+      "purpose": "03 · The experiment that challenged common sense",
+      "narration_text": "Two years later, Festinger and a colleague, James Carlsmith, published an experiment that still surprises people.\n\nStudents came into a lab and spent about an hour on deliberately boring tasks. Like turning pegs on a board… a quarter turn at a time.\n\nThen came the twist. Some of them were asked to tell the next student that it had all been enjoyable. Some were paid one dollar to say it. Others were paid twenty. And a control group was never asked at all.\n\nAfterwards, everyone rated how enjoyable the tasks really were.\n\nYou'd expect the twenty dollar group to like it more. They were paid more. But the opposite happened.\n\nThe one dollar group rated the tasks clearly higher. The twenty dollar group landed close to the control group.\n\nWhy? Twenty dollars was reason enough to say something you didn't believe. One dollar wasn't. So the easier way to make it fit… was to decide the tasks hadn't been that bad.\n\nIt doesn't prove we always rewrite our beliefs to match our actions. But it shows something real. What we do can shape what we believe… especially when we can't easily justify it to ourselves.",
+      "visual_strategy": "Archival composition on black; see visuals.json",
+      "asset_ids": [],
+      "source_ids": [
+        "src-festinger-carlsmith-1959"
+      ],
+      "claim_ids": [
+        "c-fc-design",
+        "c-fc-results",
+        "i-fc-justification"
+      ],
+      "planned_duration_seconds": 78.0,
+      "actual_narration_duration_seconds": 74.957,
+      "final_duration_seconds": 76.407,
+      "narration_asset_id": "narr-s03-experiment",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "transition_out": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 1.2
+    },
+    {
+      "scene_id": "s04-identity",
+      "order": 4,
+      "purpose": "04 · Why some beliefs feel like parts of our identity",
+      "narration_text": "But not every contradiction hurts the same.\n\nFind out you got a film's release year wrong? You won't lose sleep. Find out your politics rest on a false assumption… that's different.\n\nThe difference is what the belief is carrying. Some beliefs are just information. Others are tied to who you are. Your relationships. The choices you've already made.\n\nThink about the career you spent years building. The relationship you defended to your friends. The beliefs you grew up with… shared with people you love.\n\nChanging your mind about any of these isn't just fixing a fact. It can mean admitting a sacrifice was unnecessary. Or that a decision was wrong.\n\nThat's why an argument that looks simple from the outside can feel so threatening from the inside. The contradiction is carrying more than information. It is carrying consequences.",
+      "visual_strategy": "Archival composition on black; see visuals.json",
+      "asset_ids": [],
+      "source_ids": [
+        "src-article"
+      ],
+      "claim_ids": [
+        "q-art-consequences"
+      ],
+      "planned_duration_seconds": 55.2,
+      "actual_narration_duration_seconds": 58.103,
+      "final_duration_seconds": 59.553,
+      "narration_asset_id": "narr-s04-identity",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "transition_out": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 1.2
+    },
+    {
+      "scene_id": "s05-motivated",
+      "order": 5,
+      "purpose": "05 · Motivated reasoning: judging evidence by what it would mean",
+      "narration_text": "There's a second idea that helps here. It's called motivated reasoning.\n\nIt's the way our goals and commitments shape how we judge information.\n\nPicture two smart people reading the same study. One finds it supports what they already believe. So they notice the solid methods… and the clear results. The other finds it challenges them. So they notice the limitations… and everything that could be wrong.\n\nNow, being critical is good science. The problem is when the standard changes… depending on whether we like the answer.\n\nBut here's the hopeful part. In 2019, the psychologist Stephanie Anglin reported four studies. And people often did change their beliefs when the evidence was clear. Even on religion, politics, and capital punishment. Bias showed up sometimes… but not always.\n\nSo the real question isn't whether people are rational. It's this. When do we judge evidence on its merits… and when do we judge it by whether we want it to be true?",
+      "visual_strategy": "Archival composition on black; see visuals.json",
+      "asset_ids": [],
+      "source_ids": [
+        "src-anglin-2019"
+      ],
+      "claim_ids": [
+        "c-anglin-2019"
+      ],
+      "planned_duration_seconds": 63.6,
+      "actual_narration_duration_seconds": 66.141,
+      "final_duration_seconds": 67.591,
+      "narration_asset_id": "narr-s05-motivated",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "transition_out": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 1.2
+    },
+    {
+      "scene_id": "s06-brain",
+      "order": 6,
+      "purpose": "06 · The brain's conflict-monitoring system",
+      "narration_text": "So what's happening in the brain?\n\nA 2026 review, by Veiga-Zarza and colleagues, pulled together brain studies of attitude change driven by dissonance. And it points to two different jobs.\n\nFirst, noticing the conflict. That seems to involve the anterior cingulate cortex… a region that helps monitor conflict.\n\nSecond, updating the attitude afterwards. That seems linked to the dorsolateral prefrontal cortex.\n\nIn other words, spotting a contradiction and resolving it… may not be the same step.\n\nBut be careful with that. There's no single contradiction detector in your head. No brain scan can tell you whether someone is rationalising. These regions do many jobs… and the details are still being worked out.",
+      "visual_strategy": "Archival composition on black; see visuals.json",
+      "asset_ids": [],
+      "source_ids": [
+        "src-veiga-zarza-2026"
+      ],
+      "claim_ids": [
+        "c-vz-2026"
+      ],
+      "planned_duration_seconds": 44.8,
+      "actual_narration_duration_seconds": 50.966,
+      "final_duration_seconds": 52.416,
+      "narration_asset_id": "narr-s06-brain",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "transition_out": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 1.2
+    },
+    {
+      "scene_id": "s07-everyday",
+      "order": 7,
+      "purpose": "07 · How contradictions get explained away in everyday life",
+      "narration_text": "Now take this out of the lab. You can spot these patterns in ordinary life. Not as labels for other people… but as things to look for in yourself.\n\nSomeone misses a promotion. And decides promotions never really mattered. That could be honest reflection. Or a way to protect their self-esteem.\n\nSomeone keeps pouring money into a failing project. Because quitting would make everything they've already spent feel wasted.\n\nSomeone who sees themselves as honest tells a small lie. And decides the situation made it necessary.\n\nAnd sometimes, when a belief is challenged, we get more certain… instead of more curious.\n\nSo here's the signal to watch for. The double standard. Are we asking more of the evidence against us… than the evidence for us?",
+      "visual_strategy": "Archival composition on black; see visuals.json",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": 50.0,
+      "actual_narration_duration_seconds": 51.832,
+      "final_duration_seconds": 53.282,
+      "narration_asset_id": "narr-s07-everyday",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "transition_out": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 1.2
+    },
+    {
+      "scene_id": "s08-dangerous",
+      "order": 8,
+      "purpose": "08 · The most dangerous contradiction is not always the one we reject",
+      "narration_text": "It's tempting to take all this as proof that people are irrational. But that misses the point.\n\nBeliefs organise our lives. They connect us to other people. So challenging one has real costs. And not every belief that survives criticism is a failure. Sometimes the evidence against it really is weak.\n\nThe goal isn't to accept every contradiction. It's to tell the difference. A belief you hold because the evidence supports it… and a belief you hold because you've invested in defending it.\n\nThat's hard to see from the inside. After all, a rationalisation rarely announces itself as one. It usually arrives dressed as an explanation.\n\nSo ask yourself one thing. What evidence, specifically, would change my mind? If the honest answer is nothing… you may not be weighing a claim anymore. You may be protecting a commitment.",
+      "visual_strategy": "Archival composition on black; see visuals.json",
+      "asset_ids": [],
+      "source_ids": [
+        "src-article"
+      ],
+      "claim_ids": [
+        "q-art-rationalisation"
+      ],
+      "planned_duration_seconds": 55.2,
+      "actual_narration_duration_seconds": 56.354,
+      "final_duration_seconds": 57.804,
+      "narration_asset_id": "narr-s08-dangerous",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "transition_out": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 1.2
+    },
+    {
+      "scene_id": "s09-exercise",
+      "order": 9,
+      "purpose": "09 · A field exercise: find the belief you are protecting",
+      "narration_text": "Here's an exercise for the next time you feel the urge to dismiss an argument.\n\nFirst, name the contradiction. The belief… and the fact that challenges it. Be as specific as you can.\n\nSecond, separate what happened from what you decided it means. I didn't get the job… is a fact. I'm not good enough… is an interpretation.\n\nThird, ask what being wrong would cost you. Your pride, your status, your years of effort?\n\nFourth, decide what evidence would change your mind.\n\nAnd fifth, hold the evidence for and against your view to the same standard.\n\nYou might still keep your belief, and that's fine. The point is that your confidence survived an examination… instead of avoiding one.",
+      "visual_strategy": "Archival composition on black; see visuals.json",
+      "asset_ids": [],
+      "source_ids": [],
+      "claim_ids": [],
+      "planned_duration_seconds": 44.0,
+      "actual_narration_duration_seconds": 46.712,
+      "final_duration_seconds": 48.162,
+      "narration_asset_id": "narr-s09-exercise",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "transition_out": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 1.2
+    },
+    {
+      "scene_id": "s10-question",
+      "order": 10,
+      "purpose": "10 · The final question",
+      "narration_text": "Here's the uncomfortable part. Being smart doesn't protect you. The same skills that help you examine a belief… can help you build a better defence for it.\n\nBut that's no reason for cynicism. People do change their minds. When the evidence is clear… and they have room to look at it honestly.\n\nSo the goal isn't to never contradict yourself. It's to meet a contradiction… without treating it as an enemy.\n\nSometimes the evidence is wrong. Sometimes the belief is wrong. And sometimes the belief is fine… but the story we built around it needs to change.\n\nSo the next time reality disagrees with your story, ask yourself one question. Am I trying to understand what is true, or am I trying to preserve the person I believe myself to be?",
+      "visual_strategy": "Archival composition on black; see visuals.json",
+      "asset_ids": [],
+      "source_ids": [
+        "src-article",
+        "src-anglin-2019"
+      ],
+      "claim_ids": [
+        "q-art-final",
+        "c-anglin-2019"
+      ],
+      "planned_duration_seconds": 52.4,
+      "actual_narration_duration_seconds": 52.278,
+      "final_duration_seconds": 55.028,
+      "narration_asset_id": "narr-s10-question",
+      "caption_status": "none",
+      "approval_status": "pending",
+      "transition_in": {
+        "type": "fade",
+        "duration_seconds": 0.6
+      },
+      "transition_out": {
+        "type": "fade",
+        "duration_seconds": 2.0
+      },
+      "music_cue": null,
+      "on_screen_text": [],
+      "notes": "",
+      "render_status": "not_started",
+      "input_fingerprint": null,
+      "narration_speed": null,
+      "hold_after_seconds": 2.5
+    }
+  ]
+}

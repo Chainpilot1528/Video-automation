@@ -1,0 +1,41 @@
+{
+ "asset_id": "chapter-core-overview",
+ "kind": "chapter_map",
+ "title": "Why Your Brain Hates Contradictions",
+ "levels": [
+  {
+   "title": "Negotiating with Reality",
+   "subtitle": "When the question becomes: what happens to me?"
+  },
+  {
+   "title": "Dissonance",
+   "subtitle": "Leon Festinger, 1957"
+  },
+  {
+   "title": "One Dollar, Twenty Dollars",
+   "subtitle": "Festinger and Carlsmith, 1959"
+  },
+  {
+   "title": "Beliefs as Identity",
+   "subtitle": "When a fact carries consequences"
+  },
+  {
+   "title": "Motivated Reasoning",
+   "subtitle": "Anglin, 2019"
+  },
+  {
+   "title": "The Conflict Monitor",
+   "subtitle": "Veiga-Zarza and colleagues, 2026"
+  },
+  {
+   "title": "Explaining It Away",
+   "subtitle": "Everyday rationalisation"
+  },
+  {
+   "title": "The Belief You Protect",
+   "subtitle": "A field exercise and a final question"
+  }
+ ],
+ "style": "core",
+ "variant": "overview"
+}

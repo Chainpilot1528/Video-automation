@@ -144,6 +144,9 @@ def render_timeline(spec: GraphicSpec, ledger: ResearchLedger) -> str:
 
 def render_spec(spec: GraphicSpec, ledger: ResearchLedger) -> str:
     if spec.kind == "chapter_map":
+        if spec.style == "core":
+            from .chapter_core import render_chapter_core, render_chapter_core_overview
+            return render_chapter_core_overview(spec) if spec.variant == "overview" else render_chapter_core(spec)
         from .chapter_map import render_chapter_map
         return render_chapter_map(spec)
     if spec.kind == "title":

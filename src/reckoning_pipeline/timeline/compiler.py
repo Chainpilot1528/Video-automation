@@ -21,13 +21,19 @@ from ..schemas.timeline import (
     RenderProfile, TimelineCue, TimelineLayer, TimelineMusic, TimelineNarration, TimelinePlan, TimelineScene,
     TimelineSegment, layers_key,
 )
-from ..graphics import chapter_map as cmap
+from ..graphics import maps
 from ..schemas.visual import ChapterMapView, Motion, VisualBeat
 from ..subtitles.srt import SceneSpan, approximate_cues
 from ..utils.fs import safe_resolve
 from .quotes import word_times
 
-RENDER_VERSION = "1"      # bump when the renderer's output for the same plan changes
+RENDER_VERSION = "2"      # bump when the renderer's output for the same plan changes
+DISSOLVE = 0.7            # seconds each shot fades into the next within a scene
+ENTER_SECONDS = 0.9       # how long an entrance (rise, settle, slide) takes
+RISE = 0.018              # text rises this far (fraction of frame height) as it fades in
+SETTLE_FROM = 0.96        # shapes grow from this scale to full size
+SLIDE = 0.06              # a sliding element travels this far (fraction of frame width)
+IMAGE_PUSH = 1.08         # an image with no motion of its own gets this slow push
 MIX_VERSION = "1"         # bump when the music mix changes
 # The command builder's source is part of every scene fingerprint, so editing how
 # scenes are drawn can never silently reuse renders made by older code.
@@ -210,9 +216,9 @@ def _segments(scene: Scene, beats: list[VisualBeat], duration: float, assets, as
                                                 sha256=None, placeholder_text=f"Composition {beat_id}: an image "
                                                 "layer can't be shown", **common))
                 continue
-            key = layers_key(layers)[:12]
-            clip = placeholder_dir.parent / scene.scene_id / f"comp-{beat_id}-{key}.mp4"
-            segments.append(TimelineSegment(kind="composition", path=str(clip), sha256=None, layers=layers, **common))
+            if beat.chapter_map is None:   # a gentle camera push, so no shot is ever dead still (maps move their own)
+                common["motion"] = Motion.SLOW_PUSH
+            segments.append(TimelineSegment(kind="composition", path="", sha256=None, layers=layers, **common))
         elif asset is not None and asset.type in IMAGE_TYPES:
             segments.append(TimelineSegment(kind="image", path=str(asset_path(asset)), sha256=asset.sha256, **common))
         elif asset is not None and asset.type is AssetType.VIDEO:
@@ -226,14 +232,55 @@ def _segments(scene: Scene, beats: list[VisualBeat], duration: float, assets, as
                 ph_text = f"Cannot display {asset.type} asset {asset.asset_id}"
             segments.append(TimelineSegment(kind="placeholder", path=str(placeholder_dir / f"{beat_id}.svg"),
                                             sha256=None, placeholder_text=ph_text, **common))
-    return segments
+    return _dissolve(segments, placeholder_dir.parent / scene.scene_id)
+
+
+def _dissolve(segments: list[TimelineSegment], clip_dir: Path) -> list[TimelineSegment]:
+    """Each shot but the last runs DISSOLVE seconds past its end and fades into the next (no dip to black).
+    A composition's layers that last to the end of their beat then leave with the dissolve, not before it."""
+    out = []
+    for i, seg in enumerate(segments):
+        nxt = segments[i + 1] if i + 1 < len(segments) else None
+        overlap = round(min(DISSOLVE, seg.duration / 3, nxt.duration / 3), 3) if nxt else 0.0
+        update: dict = {"overlap": overlap}
+        if seg.kind == "composition":
+            layers = [_entered(la) for la in seg.layers]
+            if overlap:
+                layers = [la.model_copy(update={"fade_out": 0.0}) if la.end is None else la for la in layers]
+            key = hashlib.sha256((layers_key(layers) + f"|{overlap}").encode()).hexdigest()[:12]
+            update |= {"layers": layers, "path": str(clip_dir / f"comp-{seg.beat_id}-{key}.mp4")}
+        out.append(seg.model_copy(update=update))
+    return out
+
+
+def _entered(layer: TimelineLayer) -> TimelineLayer:
+    """Apply a layer's entrance: text rises into place, shapes settle, images glide (eased) and keep a slow
+    push. Only fills in motion the author left unset; explicit drift, zoom or motion windows win."""
+    kind = layer.enter
+    if kind == "auto":
+        kind = {"text": "rise", "shape": "settle"}.get(layer.kind, "none")
+    free = layer.motion_start is None and layer.motion_end is None
+    up: dict = {}
+    window = dict(motion_start=layer.start, motion_end=round(layer.start + ENTER_SECONDS, 3), motion_ease=True)
+    if kind == "rise" and free and layer.drift_y == 0 and layer.drift_x == 0:
+        up = dict(y=round(layer.y + RISE, 4), drift_y=-RISE, **window)
+    elif kind == "settle" and free and layer.zoom_from == layer.zoom_to == 1.0 and layer.shape not in ("stars", "glow"):
+        up = dict(zoom_from=SETTLE_FROM, zoom_to=1.0, **window)
+    elif kind in ("slide_left", "slide_right") and free and layer.drift_x == 0:
+        sign = 1 if kind == "slide_left" else -1        # slide_left: arrives moving left, from the right
+        up = dict(x=round(layer.x + sign * SLIDE, 4), drift_x=-sign * SLIDE, **window)
+    elif layer.kind == "image" and free:
+        if layer.zoom_from == layer.zoom_to == 1.0 and layer.drift_x == layer.drift_y == 0:
+            up = dict(zoom_to=IMAGE_PUSH)                # never a dead-still picture
+        up["motion_ease"] = True                         # slow moves start and end softly
+    return layer.model_copy(update=up) if up else layer
 
 
 def _layers(beat: VisualBeat, assets, asset_path, warnings) -> list[TimelineLayer] | None:
     """Resolve a composition's image layers to files; None if one can't be shown."""
     out = []
     for layer in beat.layers:
-        if layer.kind == "text":
+        if layer.kind in ("text", "shape"):
             out.append(TimelineLayer(**layer.model_dump()))
             continue
         asset = assets.get(layer.asset_id)
@@ -248,23 +295,33 @@ def _layers(beat: VisualBeat, assets, asset_path, warnings) -> list[TimelineLaye
 def _map_layers(beat_id: str, view: ChapterMapView, assets, asset_path, warnings) -> list[TimelineLayer] | None:
     """The chapter map and its medallions as layers sharing one eased camera move; None if it can't be shown."""
     asset = assets.get(view.asset_id)
-    n = cmap.levels_in(Path(asset_path(asset))) if asset is not None and asset.type in IMAGE_TYPES else None
-    if n is None:
+    info = maps.map_info(Path(asset_path(asset))) if asset is not None and asset.type in IMAGE_TYPES else None
+    if info is None:
         warnings.append(f"{beat_id}: {view.asset_id!r} is not a rendered chapter map; using a placeholder")
         return None
+    style, n = info
     if max(view.level, view.start_level()) > n:
         warnings.append(f"{beat_id}: the chapter map {view.asset_id!r} has only {n} levels; using a placeholder")
         return None
-    fw, fh = cmap.W, cmap.VIEW_H            # map pixels per frame width / height
-    v0, v1 = cmap.view_y(view.start_level()), cmap.view_y(view.level)
-    pans = v0 != v1
-    move = dict(drift_y=round(-(v1 - v0) / fh, 4), motion_start=view.pan_start,
+    fw, fh = 1920, 1080                     # map pixels per frame width / height (maps are drawn for 1920x1080)
+    (x0, y0), (x1, y1) = style.view_center(view.start_level(), n), style.view_center(view.level, n)
+    pans = (x0, y0) != (x1, y1)
+    move = dict(drift_x=round(-(x1 - x0) / fw, 4), drift_y=round(-(y1 - y0) / fh, 4), motion_start=view.pan_start,
                 motion_end=view.pan_start + view.pan_seconds, motion_ease=True) if pans else {}
     arrive = view.pan_start + view.pan_seconds if pans else 0.0
-    height = cmap.map_height(n)
+    mw, mh = style.map_size(n)
     out = [TimelineLayer(kind="image", asset_id=view.asset_id, path=str(asset_path(asset)), sha256=asset.sha256,
-                         x=0.5, y=round(0.5 + (height / 2 - v0) / fh, 4), width=1.0,
-                         max_height=round(height / fh + 0.01, 4), fade_in=1.0, fade_out=1.0, **move)]
+                         x=round(0.5 + (mw / 2 - x0) / fw, 4), y=round(0.5 + (mh / 2 - y0) / fh, 4),
+                         width=round(mw / fw, 4), max_height=round(mh / fh + 0.01, 4), fade_in=1.0, fade_out=1.0, **move)]
+    if hasattr(style, "core_center"):
+        # twinkling stars behind the planet (two fields breathing at different rates), and a glow on the core
+        out = [TimelineLayer(kind="shape", shape="stars", width=1.0, max_height=1.0, seed=seed, pulse=period,
+                             fade_in=1.0, fade_out=1.0) for seed, period in ((11, 3.7), (23, 5.3))] + out
+        gx, gy = style.core_center(n)
+        out.append(TimelineLayer(kind="shape", shape="glow", color="accent", x=round(0.5 + (gx - x0) / fw, 4),
+                                 y=round(0.5 + (gy - y0) / fh, 4), width=round(style.CORE_GLOW / fw, 4),
+                                 max_height=round(style.CORE_GLOW / fh, 4), pulse=4.0, fade_in=1.0, fade_out=1.0,
+                                 **move))
     taken: dict[int, set[int]] = {}
     for m in view.markers:
         taken.setdefault(m.level, set()).update({m.slot} if m.slot else set())
@@ -272,23 +329,23 @@ def _map_layers(beat_id: str, view: ChapterMapView, assets, asset_path, warnings
         if m.level > n:
             warnings.append(f"{beat_id}: medallion {m.asset_id!r} is on level {m.level}, below the map; skipped")
             continue
-        slot = m.slot or min(set(range(1, cmap.SLOTS + 1)) - taken[m.level])
+        slot = m.slot or min(set(range(1, style.SLOTS + 1)) - taken[m.level])
         taken[m.level].add(slot)
         a = assets.get(m.asset_id)
         if a is None or a.type not in IMAGE_TYPES:
             warnings.append(f"{beat_id}: medallion asset {m.asset_id!r} is not an image; using a placeholder")
             return None
-        ax, ay = cmap.marker_anchor(m.level, slot, n)
+        ax, ay = style.marker_anchor(m.level, slot, n)
         new = view.level > view.start_level() and m.level == view.level   # arriving downward; a climb is a recap
         timing = dict(start=round(max(arrive - 0.3, 0.0), 3), fade_in=1.2) if new else dict(fade_in=1.0)
-        x, y = round(ax / fw, 4), round(0.5 + (ay - v0) / fh, 4)
+        x, y = round(0.5 + (ax - x0) / fw, 4), round(0.5 + (ay - y0) / fh, 4)
         out.append(TimelineLayer(kind="image", asset_id=m.asset_id, path=str(asset_path(a)), sha256=a.sha256,
-                                 x=x, y=y, width=round(cmap.MEDALLION_W / fw, 4),
-                                 max_height=round(cmap.MEDALLION_H / fh, 4), edge="oval", ring=True, crop=m.crop,
+                                 x=x, y=y, width=round(style.MEDALLION_W / fw, 4),
+                                 max_height=round(style.MEDALLION_H / fh, 4), edge="oval", ring=True, crop=m.crop,
                                  fade_out=1.0, **timing, **move))
         if m.name.strip():
             out.append(TimelineLayer(kind="text", text=m.name, text_style="label", x=x,
-                                     y=round(y + (cmap.MEDALLION_H / 2 + 34) / fh, 4), width=0.16,
+                                     y=round(y + (style.MEDALLION_H / 2 + 34) / fh, 4), width=0.16,
                                      fade_out=1.0, **timing, **move))
     return out
 

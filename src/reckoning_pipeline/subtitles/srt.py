@@ -102,13 +102,37 @@ def _split_long(piece: str) -> list[str]:
     return out
 
 
+TINY_CUE_WORDS = 2   # a cue this short ("Or…", "Why?") would flash by; it joins a neighbour
+
+
+def _merge_tiny(pieces: list[str]) -> list[str]:
+    """Join one- or two-word pieces to the next piece (or the previous one at the end) when they fit."""
+    out: list[str] = []
+    i = 0
+    while i < len(pieces):
+        p = pieces[i]
+        if len(p.split()) <= TINY_CUE_WORDS:
+            if i + 1 < len(pieces) and len(p) + 1 + len(pieces[i + 1]) <= MAX_CUE_CHARS:
+                pieces[i + 1] = f"{p} {pieces[i + 1]}"
+                i += 1
+                continue
+            if out and len(out[-1]) + 1 + len(p) <= MAX_CUE_CHARS:
+                out[-1] = f"{out[-1]} {p}"
+                i += 1
+                continue
+        out.append(p)
+        i += 1
+    return out
+
+
 def segment(text: str) -> list[str]:
-    """Split narration into caption-sized pieces at sentence, then clause, then word boundaries."""
+    """Split narration into caption-sized pieces at sentence, then clause, then word boundaries;
+    pieces of a word or two are joined to a neighbour so no caption flashes by."""
     pieces = []
     for sentence in _SENTENCE_RE.split(" ".join(text.split())):
         if sentence.strip():
             pieces += _split_long(sentence.strip())
-    return pieces
+    return _merge_tiny(pieces)
 
 
 def layout(piece: str) -> str:

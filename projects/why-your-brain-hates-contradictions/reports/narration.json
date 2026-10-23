@@ -1,0 +1,1076 @@
+{
+  "schema_version": "1.0",
+  "project_id": "why-your-brain-hates-contradictions",
+  "built_at": "2026-10-23T16:36:19Z",
+  "provider": "voicebox",
+  "voice": "kokoro:am_liam",
+  "chunks": [
+    {
+      "scene_id": "s01-negotiation",
+      "asset_id": "narr-s01-negotiation",
+      "route": "tts",
+      "path": "narration/s01-negotiation/0d850cbdd5d292f5.wav",
+      "sha256": "d997525686bde01c4fd857b01a15ce6283f10ed1983cfc88b05ab0ce332e01af",
+      "fingerprint": "0d850cbdd5d292f5ab1dd00b39bccdece1bb4468f88aba37ec84290109ec693f",
+      "cached": false,
+      "duration_seconds": 58.74,
+      "sample_rate": 48000,
+      "channels": 1,
+      "integrated_lufs": -20.1,
+      "true_peak_dbtp": -1.7,
+      "leading_silence_seconds": 0.0,
+      "trailing_silence_seconds": 0.0,
+      "sentences": [
+        {
+          "text": "Have you ever met someone who seems to break every rule…",
+          "start": 0.0,
+          "end": 2.98
+        },
+        {
+          "text": "and wins anyway?",
+          "start": 3.48,
+          "end": 4.706
+        },
+        {
+          "text": "Here's the situation. For three years, you've believed one thing.",
+          "start": 5.656,
+          "end": 9.472
+        },
+        {
+          "text": "Hard work wins.",
+          "start": 10.102,
+          "end": 11.018
+        },
+        {
+          "text": "So you gave up your weekends.",
+          "start": 12.118,
+          "end": 13.914
+        },
+        {
+          "text": "You said no to rest.",
+          "start": 14.294,
+          "end": 15.535
+        },
+        {
+          "text": "You watched other people enjoy the things you kept putting off.",
+          "start": 16.035,
+          "end": 19.445
+        },
+        {
+          "text": "And it felt worth it…",
+          "start": 19.895,
+          "end": 21.141
+        },
+        {
+          "text": "because you believed.",
+          "start": 21.641,
+          "end": 23.208
+        },
+        {
+          "text": "Then you meet someone. They work fewer hours.",
+          "start": 24.058,
+          "end": 26.546
+        },
+        {
+          "text": "They protect their evenings. And they earn more than you.",
+          "start": 26.876,
+          "end": 30.016
+        },
+        {
+          "text": "Now you're holding two ideas that don't fit together.",
+          "start": 31.016,
+          "end": 33.875
+        },
+        {
+          "text": "You could rethink what success really takes.",
+          "start": 34.825,
+          "end": 37.226
+        },
+        {
+          "text": "Or…",
+          "start": 38.026,
+          "end": 38.452
+        },
+        {
+          "text": "you could decide they just got lucky.",
+          "start": 38.952,
+          "end": 41.101
+        },
+        {
+          "text": "That it won't last. That they must know someone.",
+          "start": 41.521,
+          "end": 44.085
+        },
+        {
+          "text": "Notice what just happened. Instead of changing your understanding of the world, you found a way to preserve it.",
+          "start": 45.185,
+          "end": 51.039
+        },
+        {
+          "text": "And here's the strange part.",
+          "start": 51.889,
+          "end": 53.362
+        },
+        {
+          "text": "From the inside, it doesn't feel like an excuse.",
+          "start": 53.982,
+          "end": 56.789
+        },
+        {
+          "text": "It feels like logic.",
+          "start": 57.469,
+          "end": 58.724
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "scene_id": "s02-theory",
+      "asset_id": "narr-s02-theory",
+      "route": "tts",
+      "path": "narration/s02-theory/45fc1ccc81e8fabf.wav",
+      "sha256": "3fe96b42e2ec78822efc3fc65952537ca7c410aaeb8851719a7febce3aeda9c3",
+      "fingerprint": "45fc1ccc81e8fabf6af63871279b4c2638398f3321bb7124624108d667b8e747",
+      "cached": false,
+      "duration_seconds": 56.005,
+      "sample_rate": 48000,
+      "channels": 1,
+      "integrated_lufs": -20.1,
+      "true_peak_dbtp": -1.6,
+      "leading_silence_seconds": 0.0,
+      "trailing_silence_seconds": 0.0,
+      "sentences": [
+        {
+          "text": "Psychology has a name for that feeling.",
+          "start": 0.0,
+          "end": 2.38
+        },
+        {
+          "text": "In 1957, a social psychologist named Leon Festinger called it cognitive dissonance.",
+          "start": 3.33,
+          "end": 8.855
+        },
+        {
+          "text": "The idea is simple. When two things you believe don't fit together…",
+          "start": 9.955,
+          "end": 14.018
+        },
+        {
+          "text": "or when what you do doesn't fit what you believe…",
+          "start": 14.518,
+          "end": 17.072
+        },
+        {
+          "text": "it feels uncomfortable. And you want that feeling gone.",
+          "start": 17.572,
+          "end": 20.827
+        },
+        {
+          "text": "Take a smoker. They know smoking is harmful.",
+          "start": 21.677,
+          "end": 24.181
+        },
+        {
+          "text": "And they still smoke.",
+          "start": 24.981,
+          "end": 25.983
+        },
+        {
+          "text": "So what do they do?",
+          "start": 26.983,
+          "end": 28.203
+        },
+        {
+          "text": "They could quit. They could admit the habit clashes with their health.",
+          "start": 28.773,
+          "end": 32.216
+        },
+        {
+          "text": "Or they could tell themselves…",
+          "start": 32.766,
+          "end": 34.577
+        },
+        {
+          "text": "I don't smoke enough for it to matter.",
+          "start": 35.077,
+          "end": 37.017
+        },
+        {
+          "text": "That's the key. Changing your mind is only one way out.",
+          "start": 37.967,
+          "end": 41.096
+        },
+        {
+          "text": "You can change what you do.",
+          "start": 41.476,
+          "end": 42.955
+        },
+        {
+          "text": "You can reinterpret the evidence.",
+          "start": 43.455,
+          "end": 45.458
+        },
+        {
+          "text": "Or you can add a new story that makes the conflict feel smaller.",
+          "start": 45.908,
+          "end": 49.372
+        },
+        {
+          "text": "Which way you go depends on the situation…",
+          "start": 50.472,
+          "end": 53.101
+        },
+        {
+          "text": "and on how much that belief matters to you.",
+          "start": 53.601,
+          "end": 55.986
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "scene_id": "s03-experiment",
+      "asset_id": "narr-s03-experiment",
+      "route": "tts",
+      "path": "narration/s03-experiment/982414f598dc91b4.wav",
+      "sha256": "0f27cb8066059a95cc8631d62789c428c64961f1f269eb0c85c5791373c2d03c",
+      "fingerprint": "982414f598dc91b4f4759dd6728a2564dda3887daf35c34411e69e8efee34f92",
+      "cached": false,
+      "duration_seconds": 74.957,
+      "sample_rate": 48000,
+      "channels": 1,
+      "integrated_lufs": -20.1,
+      "true_peak_dbtp": -1.5,
+      "leading_silence_seconds": 0.0,
+      "trailing_silence_seconds": 0.0,
+      "sentences": [
+        {
+          "text": "Two years later, Festinger and a colleague, James Carl-smith, published an experiment that still surprises people.",
+          "start": 0.0,
+          "end": 6.35
+        },
+        {
+          "text": "Students came into a lab and spent about an hour on deliberately boring tasks.",
+          "start": 7.3,
+          "end": 11.895
+        },
+        {
+          "text": "Like turning pegs on a board…",
+          "start": 12.445,
+          "end": 14.137
+        },
+        {
+          "text": "a quarter turn at a time.",
+          "start": 14.637,
+          "end": 16.379
+        },
+        {
+          "text": "Then came the twist. Some of them were asked to tell the next student that it had all been enjoyable.",
+          "start": 17.479,
+          "end": 23.081
+        },
+        {
+          "text": "Some were paid one dollar to say it.",
+          "start": 23.461,
+          "end": 25.572
+        },
+        {
+          "text": "Others were paid twenty. And a control group was never asked at all.",
+          "start": 26.072,
+          "end": 30.318
+        },
+        {
+          "text": "Afterwards, everyone rated how enjoyable the tasks really were.",
+          "start": 31.168,
+          "end": 34.956
+        },
+        {
+          "text": "You'd expect the twenty dollar group to like it more.",
+          "start": 35.956,
+          "end": 38.723
+        },
+        {
+          "text": "They were paid more. But the opposite happened.",
+          "start": 39.273,
+          "end": 41.602
+        },
+        {
+          "text": "The one dollar group rated the tasks clearly higher.",
+          "start": 42.552,
+          "end": 45.554
+        },
+        {
+          "text": "The twenty dollar group landed close to the control group.",
+          "start": 46.174,
+          "end": 49.386
+        },
+        {
+          "text": "Why?",
+          "start": 50.486,
+          "end": 50.845
+        },
+        {
+          "text": "Twenty dollars was reason enough to say something you didn't believe.",
+          "start": 51.495,
+          "end": 55.14
+        },
+        {
+          "text": "One dollar wasn't. So the easier way to make it fit…",
+          "start": 55.59,
+          "end": 58.838
+        },
+        {
+          "text": "was to decide the tasks hadn't been that bad.",
+          "start": 59.338,
+          "end": 61.719
+        },
+        {
+          "text": "It doesn't prove we always rewrite our beliefs to match our actions.",
+          "start": 62.569,
+          "end": 66.281
+        },
+        {
+          "text": "But it shows something real.",
+          "start": 66.611,
+          "end": 68.288
+        },
+        {
+          "text": "What we do can shape what we believe…",
+          "start": 68.908,
+          "end": 71.122
+        },
+        {
+          "text": "especially when we can't easily justify it to ourselves.",
+          "start": 71.622,
+          "end": 74.94
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "scene_id": "s04-identity",
+      "asset_id": "narr-s04-identity",
+      "route": "tts",
+      "path": "narration/s04-identity/b224fc34e1821346.wav",
+      "sha256": "110d95d8cd0e877020dd50da5590c6646d160e0b464745d73564682785f29118",
+      "fingerprint": "b224fc34e18213467caabe8e8f2378ffa73c5231fb4b2ec180214a779176e14c",
+      "cached": false,
+      "duration_seconds": 58.103,
+      "sample_rate": 48000,
+      "channels": 1,
+      "integrated_lufs": -20.0,
+      "true_peak_dbtp": -2.5,
+      "leading_silence_seconds": 0.0,
+      "trailing_silence_seconds": 0.0,
+      "sentences": [
+        {
+          "text": "But not every contradiction hurts the same.",
+          "start": 0.0,
+          "end": 2.598
+        },
+        {
+          "text": "Find out you got a film's release year wrong?",
+          "start": 3.548,
+          "end": 6.021
+        },
+        {
+          "text": "You won't lose sleep. Find out your politics rest on a false assumption…",
+          "start": 6.721,
+          "end": 10.953
+        },
+        {
+          "text": "that's different.",
+          "start": 11.453,
+          "end": 12.407
+        },
+        {
+          "text": "The difference is what the belief is carrying.",
+          "start": 13.507,
+          "end": 15.968
+        },
+        {
+          "text": "Some beliefs are just information.",
+          "start": 16.348,
+          "end": 18.438
+        },
+        {
+          "text": "Others are tied to who you are.",
+          "start": 18.938,
+          "end": 20.91
+        },
+        {
+          "text": "Your relationships. The choices you've already made.",
+          "start": 21.36,
+          "end": 24.178
+        },
+        {
+          "text": "Think about the career you spent years building.",
+          "start": 25.028,
+          "end": 27.495
+        },
+        {
+          "text": "The relationship you defended to your friends.",
+          "start": 28.045,
+          "end": 30.681
+        },
+        {
+          "text": "The beliefs you grew up with…",
+          "start": 31.011,
+          "end": 32.75
+        },
+        {
+          "text": "shared with people you love.",
+          "start": 33.25,
+          "end": 34.984
+        },
+        {
+          "text": "Changing your mind about any of these isn't just fixing a fact.",
+          "start": 35.984,
+          "end": 39.644
+        },
+        {
+          "text": "It can mean admitting a sacrifice was unnecessary.",
+          "start": 40.144,
+          "end": 43.314
+        },
+        {
+          "text": "Or that a decision was wrong.",
+          "start": 43.764,
+          "end": 45.678
+        },
+        {
+          "text": "That's why an argument that looks simple from the outside can feel so threatening from the inside.",
+          "start": 46.628,
+          "end": 52.045
+        },
+        {
+          "text": "The contradiction is carrying more than information.",
+          "start": 52.595,
+          "end": 55.541
+        },
+        {
+          "text": "It is carrying consequences.",
+          "start": 56.171,
+          "end": 58.085
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "scene_id": "s05-motivated",
+      "asset_id": "narr-s05-motivated",
+      "route": "tts",
+      "path": "narration/s05-motivated/eb849dab856ee44a.wav",
+      "sha256": "ba31ed69df5aab24e53633921dfc685fb9b85d5f4263982eaf423c4b934ff1c0",
+      "fingerprint": "eb849dab856ee44a3915939501675b60bf75680827e6c8a92fa3f67ead5fad34",
+      "cached": false,
+      "duration_seconds": 66.141,
+      "sample_rate": 48000,
+      "channels": 1,
+      "integrated_lufs": -20.0,
+      "true_peak_dbtp": -1.7,
+      "leading_silence_seconds": 0.0,
+      "trailing_silence_seconds": 0.0,
+      "sentences": [
+        {
+          "text": "There's a second idea that helps here.",
+          "start": 0.0,
+          "end": 2.16
+        },
+        {
+          "text": "It's called motivated reasoning.",
+          "start": 2.88,
+          "end": 4.856
+        },
+        {
+          "text": "It's the way our goals and commitments shape how we judge information.",
+          "start": 5.806,
+          "end": 9.744
+        },
+        {
+          "text": "Picture two smart people reading the same study.",
+          "start": 10.844,
+          "end": 13.634
+        },
+        {
+          "text": "One finds it supports what they already believe.",
+          "start": 14.254,
+          "end": 16.961
+        },
+        {
+          "text": "So they notice the solid methods…",
+          "start": 17.341,
+          "end": 19.488
+        },
+        {
+          "text": "and the clear results. The other finds it challenges them.",
+          "start": 19.988,
+          "end": 23.191
+        },
+        {
+          "text": "So they notice the limitations…",
+          "start": 23.641,
+          "end": 25.768
+        },
+        {
+          "text": "and everything that could be wrong.",
+          "start": 26.268,
+          "end": 28.221
+        },
+        {
+          "text": "Now, being critical is good science.",
+          "start": 29.071,
+          "end": 30.96
+        },
+        {
+          "text": "The problem is when the standard changes…",
+          "start": 31.29,
+          "end": 33.707
+        },
+        {
+          "text": "depending on whether we like the answer.",
+          "start": 34.207,
+          "end": 36.485
+        },
+        {
+          "text": "But here's the hopeful part.",
+          "start": 37.485,
+          "end": 39.177
+        },
+        {
+          "text": "In 2019, the psychologist Stephanie Anglin reported four studies.",
+          "start": 39.677,
+          "end": 43.442
+        },
+        {
+          "text": "And people often did change their beliefs when the evidence was clear.",
+          "start": 43.892,
+          "end": 47.806
+        },
+        {
+          "text": "Even on religion, politics, and capital punishment.",
+          "start": 48.226,
+          "end": 51.341
+        },
+        {
+          "text": "Bias showed up sometimes…",
+          "start": 52.191,
+          "end": 53.981
+        },
+        {
+          "text": "but not always.",
+          "start": 54.481,
+          "end": 55.436
+        },
+        {
+          "text": "So the real question isn't whether people are rational.",
+          "start": 56.386,
+          "end": 59.538
+        },
+        {
+          "text": "It's this. When do we judge evidence on its merits…",
+          "start": 59.918,
+          "end": 62.771
+        },
+        {
+          "text": "and when do we judge it by whether we want it to be true?",
+          "start": 63.271,
+          "end": 66.122
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "scene_id": "s06-brain",
+      "asset_id": "narr-s06-brain",
+      "route": "tts",
+      "path": "narration/s06-brain/515c4a7041ffb039.wav",
+      "sha256": "510e6aab8dd13e798074c91349746964a0edf4c0cdf091504f1887a2c1159f57",
+      "fingerprint": "515c4a7041ffb039dd307a88e4364613655ace87cb67e4f9f0ec258452b4cf7d",
+      "cached": false,
+      "duration_seconds": 50.966,
+      "sample_rate": 48000,
+      "channels": 1,
+      "integrated_lufs": -20.0,
+      "true_peak_dbtp": -2.7,
+      "leading_silence_seconds": 0.0,
+      "trailing_silence_seconds": 0.0,
+      "sentences": [
+        {
+          "text": "So what's happening in the brain?",
+          "start": 0.0,
+          "end": 1.866
+        },
+        {
+          "text": "A 2026 review, by Vayga Zarza and colleagues, pulled together brain studies of attitude change driven by dissonance.",
+          "start": 2.816,
+          "end": 10.47
+        },
+        {
+          "text": "And it points to two different jobs.",
+          "start": 11.02,
+          "end": 13.065
+        },
+        {
+          "text": "First, noticing the conflict. That seems to involve the anterior sing-gyoo-lit cortex…",
+          "start": 14.165,
+          "end": 19.116
+        },
+        {
+          "text": "a region that helps monitor conflict.",
+          "start": 19.616,
+          "end": 22.12
+        },
+        {
+          "text": "Second, updating the attitude afterwards.",
+          "start": 22.97,
+          "end": 25.604
+        },
+        {
+          "text": "That seems linked to the dorso-lateral prefrontal cortex.",
+          "start": 26.104,
+          "end": 29.64
+        },
+        {
+          "text": "In other words, spotting a contradiction and resolving it…",
+          "start": 30.64,
+          "end": 33.895
+        },
+        {
+          "text": "may not be the same step.",
+          "start": 34.395,
+          "end": 35.838
+        },
+        {
+          "text": "But be careful with that.",
+          "start": 36.788,
+          "end": 38.322
+        },
+        {
+          "text": "There's no single contradiction detector in your head.",
+          "start": 38.652,
+          "end": 41.823
+        },
+        {
+          "text": "No brain scan can tell you whether someone is rationalising.",
+          "start": 42.443,
+          "end": 46.027
+        },
+        {
+          "text": "These regions do many jobs…",
+          "start": 46.407,
+          "end": 48.097
+        },
+        {
+          "text": "and the details are still being worked out.",
+          "start": 48.597,
+          "end": 50.949
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "scene_id": "s07-everyday",
+      "asset_id": "narr-s07-everyday",
+      "route": "tts",
+      "path": "narration/s07-everyday/8563c2b7a51344dd.wav",
+      "sha256": "593e74e2c6912ee793ea48dc56d6dc57235af2a40d3a83d9bf5d015300e45499",
+      "fingerprint": "8563c2b7a51344dd8136c29088b79479d5ff2522fb6f1e3967fc4c5406cae625",
+      "cached": false,
+      "duration_seconds": 51.832,
+      "sample_rate": 48000,
+      "channels": 1,
+      "integrated_lufs": -20.0,
+      "true_peak_dbtp": -1.7,
+      "leading_silence_seconds": 0.0,
+      "trailing_silence_seconds": 0.0,
+      "sentences": [
+        {
+          "text": "Now take this out of the lab.",
+          "start": 0.0,
+          "end": 1.602
+        },
+        {
+          "text": "You can spot these patterns in ordinary life.",
+          "start": 2.022,
+          "end": 4.659
+        },
+        {
+          "text": "Not as labels for other people…",
+          "start": 5.209,
+          "end": 7.199
+        },
+        {
+          "text": "but as things to look for in yourself.",
+          "start": 7.699,
+          "end": 9.871
+        },
+        {
+          "text": "Someone misses a promotion. And decides promotions never really mattered.",
+          "start": 10.821,
+          "end": 15.349
+        },
+        {
+          "text": "That could be honest reflection.",
+          "start": 15.729,
+          "end": 17.627
+        },
+        {
+          "text": "Or a way to protect their self-esteem.",
+          "start": 18.127,
+          "end": 20.516
+        },
+        {
+          "text": "Someone keeps pouring money into a failing project.",
+          "start": 21.616,
+          "end": 24.497
+        },
+        {
+          "text": "Because quitting would make everything they've already spent feel wasted.",
+          "start": 24.917,
+          "end": 28.602
+        },
+        {
+          "text": "Someone who sees themselves as honest tells a small lie.",
+          "start": 29.452,
+          "end": 32.667
+        },
+        {
+          "text": "And decides the situation made it necessary.",
+          "start": 32.997,
+          "end": 35.813
+        },
+        {
+          "text": "And sometimes, when a belief is challenged, we get more certain…",
+          "start": 36.813,
+          "end": 40.498
+        },
+        {
+          "text": "instead of more curious.",
+          "start": 40.998,
+          "end": 42.384
+        },
+        {
+          "text": "So here's the signal to watch for.",
+          "start": 43.334,
+          "end": 45.358
+        },
+        {
+          "text": "The double standard. Are we asking more of the evidence against us…",
+          "start": 45.808,
+          "end": 49.746
+        },
+        {
+          "text": "than the evidence for us?",
+          "start": 50.246,
+          "end": 51.812
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "scene_id": "s08-dangerous",
+      "asset_id": "narr-s08-dangerous",
+      "route": "tts",
+      "path": "narration/s08-dangerous/6d1f66a2ffbc1cb3.wav",
+      "sha256": "a53855ebf0add42c492c2ad9e370c44a77c1963142984cb286d55b75a74ea4b3",
+      "fingerprint": "6d1f66a2ffbc1cb3829d70c69c9d2445426eff6b1a211296350822d511713fcc",
+      "cached": false,
+      "duration_seconds": 56.354,
+      "sample_rate": 48000,
+      "channels": 1,
+      "integrated_lufs": -20.1,
+      "true_peak_dbtp": -1.9,
+      "leading_silence_seconds": 0.0,
+      "trailing_silence_seconds": 0.0,
+      "sentences": [
+        {
+          "text": "It's tempting to take all this as proof that people are irrational.",
+          "start": 0.0,
+          "end": 3.492
+        },
+        {
+          "text": "But that misses the point.",
+          "start": 3.912,
+          "end": 5.194
+        },
+        {
+          "text": "Beliefs organise our lives. They connect us to other people.",
+          "start": 6.144,
+          "end": 9.975
+        },
+        {
+          "text": "So challenging one has real costs.",
+          "start": 10.305,
+          "end": 12.04
+        },
+        {
+          "text": "And not every belief that survives criticism is a failure.",
+          "start": 12.66,
+          "end": 16.445
+        },
+        {
+          "text": "Sometimes the evidence against it really is weak.",
+          "start": 16.825,
+          "end": 19.885
+        },
+        {
+          "text": "The goal isn't to accept every contradiction.",
+          "start": 20.985,
+          "end": 23.878
+        },
+        {
+          "text": "It's to tell the difference.",
+          "start": 24.328,
+          "end": 25.827
+        },
+        {
+          "text": "A belief you hold because the evidence supports it…",
+          "start": 26.247,
+          "end": 29.112
+        },
+        {
+          "text": "and a belief you hold because you've invested in defending it.",
+          "start": 29.612,
+          "end": 32.918
+        },
+        {
+          "text": "That's hard to see from the inside.",
+          "start": 33.768,
+          "end": 35.533
+        },
+        {
+          "text": "After all, a rationalisation rarely announces itself as one.",
+          "start": 36.153,
+          "end": 39.976
+        },
+        {
+          "text": "It usually arrives dressed as an explanation.",
+          "start": 40.356,
+          "end": 43.198
+        },
+        {
+          "text": "So ask yourself one thing.",
+          "start": 44.198,
+          "end": 45.491
+        },
+        {
+          "text": "What evidence, specifically, would change my mind?",
+          "start": 45.941,
+          "end": 48.776
+        },
+        {
+          "text": "If the honest answer is nothing…",
+          "start": 49.346,
+          "end": 51.27
+        },
+        {
+          "text": "you may not be weighing a claim anymore.",
+          "start": 51.77,
+          "end": 53.979
+        },
+        {
+          "text": "You may be protecting a commitment.",
+          "start": 54.309,
+          "end": 56.335
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "scene_id": "s09-exercise",
+      "asset_id": "narr-s09-exercise",
+      "route": "tts",
+      "path": "narration/s09-exercise/ce9a0f59888336e6.wav",
+      "sha256": "4eb469e8b42af52cb5c3c987f498ff93db758a2b9ead21e57121d35ca2d9c337",
+      "fingerprint": "ce9a0f59888336e6dc01e450d023079a0fb73f581e1d4484c55f01347b49b76c",
+      "cached": false,
+      "duration_seconds": 46.712,
+      "sample_rate": 48000,
+      "channels": 1,
+      "integrated_lufs": -20.1,
+      "true_peak_dbtp": -1.7,
+      "leading_silence_seconds": 0.0,
+      "trailing_silence_seconds": 0.0,
+      "sentences": [
+        {
+          "text": "Here's an exercise for the next time you feel the urge to dismiss an argument.",
+          "start": 0.0,
+          "end": 4.178
+        },
+        {
+          "text": "First, name the contradiction. The belief…",
+          "start": 5.128,
+          "end": 7.557
+        },
+        {
+          "text": "and the fact that challenges it.",
+          "start": 8.057,
+          "end": 9.875
+        },
+        {
+          "text": "Be as specific as you can.",
+          "start": 10.205,
+          "end": 12.193
+        },
+        {
+          "text": "Second, separate what happened from what you decided it means.",
+          "start": 13.293,
+          "end": 16.591
+        },
+        {
+          "text": "I didn't get the job…",
+          "start": 16.971,
+          "end": 18.164
+        },
+        {
+          "text": "is a fact. I'm not good enough…",
+          "start": 18.664,
+          "end": 20.501
+        },
+        {
+          "text": "is an interpretation.",
+          "start": 21.001,
+          "end": 22.682
+        },
+        {
+          "text": "Third, ask what being wrong would cost you.",
+          "start": 23.532,
+          "end": 25.478
+        },
+        {
+          "text": "Your pride, your status, your years of effort?",
+          "start": 26.028,
+          "end": 28.543
+        },
+        {
+          "text": "Fourth, decide what evidence would change your mind.",
+          "start": 29.543,
+          "end": 32.286
+        },
+        {
+          "text": "And fifth, hold the evidence for and against your view to the same standard.",
+          "start": 33.236,
+          "end": 37.131
+        },
+        {
+          "text": "You might still keep your belief, and that's fine.",
+          "start": 38.231,
+          "end": 40.743
+        },
+        {
+          "text": "The point is that your confidence survived an examination…",
+          "start": 41.243,
+          "end": 44.582
+        },
+        {
+          "text": "instead of avoiding one.",
+          "start": 45.082,
+          "end": 46.696
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "scene_id": "s10-question",
+      "asset_id": "narr-s10-question",
+      "route": "tts",
+      "path": "narration/s10-question/87d146874cc4e97f.wav",
+      "sha256": "3ea46d806153e28faa87f52026958f63954f161e2283d2a50d40b7f4b123867c",
+      "fingerprint": "87d146874cc4e97f69f825a7e2cbba0b948529ffd05cbed43bfe8a5ea4e31875",
+      "cached": false,
+      "duration_seconds": 52.278,
+      "sample_rate": 48000,
+      "channels": 1,
+      "integrated_lufs": -20.0,
+      "true_peak_dbtp": -2.4,
+      "leading_silence_seconds": 0.0,
+      "trailing_silence_seconds": 0.0,
+      "sentences": [
+        {
+          "text": "Here's the uncomfortable part. Being smart doesn't protect you.",
+          "start": 0.0,
+          "end": 3.7
+        },
+        {
+          "text": "The same skills that help you examine a belief…",
+          "start": 4.12,
+          "end": 6.871
+        },
+        {
+          "text": "can help you build a better defence for it.",
+          "start": 7.371,
+          "end": 9.841
+        },
+        {
+          "text": "But that's no reason for cynicism.",
+          "start": 10.791,
+          "end": 13.053
+        },
+        {
+          "text": "People do change their minds.",
+          "start": 13.673,
+          "end": 15.119
+        },
+        {
+          "text": "When the evidence is clear…",
+          "start": 15.499,
+          "end": 17.208
+        },
+        {
+          "text": "and they have room to look at it honestly.",
+          "start": 17.708,
+          "end": 19.999
+        },
+        {
+          "text": "So the goal isn't to never contradict yourself.",
+          "start": 21.099,
+          "end": 23.955
+        },
+        {
+          "text": "It's to meet a contradiction…",
+          "start": 24.375,
+          "end": 26.195
+        },
+        {
+          "text": "without treating it as an enemy.",
+          "start": 26.695,
+          "end": 28.688
+        },
+        {
+          "text": "Sometimes the evidence is wrong.",
+          "start": 29.538,
+          "end": 31.779
+        },
+        {
+          "text": "Sometimes the belief is wrong.",
+          "start": 32.399,
+          "end": 34.427
+        },
+        {
+          "text": "And sometimes the belief is fine…",
+          "start": 34.807,
+          "end": 37.041
+        },
+        {
+          "text": "but the story we built around it needs to change.",
+          "start": 37.541,
+          "end": 40.282
+        },
+        {
+          "text": "So the next time reality disagrees with your story, ask yourself one question.",
+          "start": 41.282,
+          "end": 45.873
+        },
+        {
+          "text": "Am I trying to understand what is true, or am I trying to preserve the person I believe myself to be?",
+          "start": 46.293,
+          "end": 52.26
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "missing": [],
+  "warnings": []
+}

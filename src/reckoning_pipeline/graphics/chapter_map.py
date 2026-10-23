@@ -48,6 +48,17 @@ def levels_in(path: Path) -> int | None:
     return int(m.group(1)) if m else None
 
 
+STYLE = "steps"
+
+
+def map_size(levels: int) -> tuple[int, int]:
+    return W, map_height(levels)
+
+
+def view_center(level: int, levels: int) -> tuple[float, float]:
+    return W / 2, view_y(level)
+
+
 def map_height(levels: int) -> int:
     return VIEW_H + (levels - 1) * PITCH
 
@@ -211,4 +222,4 @@ def render_chapter_map(spec: GraphicSpec) -> str:
     for level in range(n, 0, -1):
         body.append(_level(spec, n, level, rng))
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{h}" viewBox="0 0 {W} {h}" '
-            f'data-chapter-levels="{n}">\n' + "\n".join(body) + "\n</svg>\n")
+            f'data-chapter-levels="{n}" data-chapter-style="{STYLE}">\n' + "\n".join(body) + "\n</svg>\n")
