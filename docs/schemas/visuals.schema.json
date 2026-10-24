@@ -124,6 +124,15 @@
       "additionalProperties": false,
       "description": "One element of a composition: an image, a block of text or a simple shape on a dark canvas.\n\nPositions and sizes are fractions of the frame, so a layout works at any resolution.\nTimes are seconds from the start of the beat. Motion is a drift and zoom over the layer's\nown lifetime, or over ``motion_start``-``motion_end`` (eased if ``motion_ease``) to make\nan element slide into place at a given moment.",
       "properties": {
+        "align": {
+          "default": "center",
+          "enum": [
+            "center",
+            "left"
+          ],
+          "title": "Align",
+          "type": "string"
+        },
         "asset_id": {
           "anyOf": [
             {
@@ -355,7 +364,8 @@
                 "arrow",
                 "person",
                 "glow",
-                "stars"
+                "stars",
+                "shade"
               ],
               "type": "string"
             },
@@ -384,7 +394,9 @@
             "label",
             "caption",
             "heading",
-            "statement"
+            "statement",
+            "title",
+            "chapter"
           ],
           "title": "Text Style",
           "type": "string"

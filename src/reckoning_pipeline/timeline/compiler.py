@@ -34,6 +34,7 @@ RISE = 0.018              # text rises this far (fraction of frame height) as it
 SETTLE_FROM = 0.96        # shapes grow from this scale to full size
 SLIDE = 0.06              # a sliding element travels this far (fraction of frame width)
 IMAGE_PUSH = 1.08         # an image with no motion of its own gets this slow push
+ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"]
 MIX_VERSION = "1"         # bump when the music mix changes
 # The command builder's source is part of every scene fingerprint, so editing how
 # scenes are drawn can never silently reuse renders made by older code.
@@ -151,7 +152,8 @@ def _scene_timing(scene: Scene, assets, asset_path, profile, errors, warnings):
         narration = TimelineNarration(asset_id=a.asset_id, path=str(path), sha256=a.sha256,
                                       duration=scene.actual_narration_duration_seconds)
         hold = TAIL_HOLD if scene.hold_after_seconds is None else scene.hold_after_seconds
-        return narration, round(LEAD_IN + narration.duration + hold, 3), LEAD_IN
+        lead = LEAD_IN if scene.lead_in_seconds is None else scene.lead_in_seconds   # e.g. a silent map move first
+        return narration, round(lead + narration.duration + hold, 3), lead
 
     if scene.narration_text.strip():
         if profile.require_narration:
@@ -264,7 +266,7 @@ def _entered(layer: TimelineLayer) -> TimelineLayer:
     window = dict(motion_start=layer.start, motion_end=round(layer.start + ENTER_SECONDS, 3), motion_ease=True)
     if kind == "rise" and free and layer.drift_y == 0 and layer.drift_x == 0:
         up = dict(y=round(layer.y + RISE, 4), drift_y=-RISE, **window)
-    elif kind == "settle" and free and layer.zoom_from == layer.zoom_to == 1.0 and layer.shape not in ("stars", "glow"):
+    elif kind == "settle" and free and layer.zoom_from == layer.zoom_to == 1.0 and layer.shape not in ("stars", "glow", "shade"):
         up = dict(zoom_from=SETTLE_FROM, zoom_to=1.0, **window)
     elif kind in ("slide_left", "slide_right") and free and layer.drift_x == 0:
         sign = 1 if kind == "slide_left" else -1        # slide_left: arrives moving left, from the right
@@ -322,6 +324,22 @@ def _map_layers(beat_id: str, view: ChapterMapView, assets, asset_path, warnings
                                  y=round(0.5 + (gy - y0) / fh, 4), width=round(style.CORE_GLOW / fw, 4),
                                  max_height=round(style.CORE_GLOW / fh, 4), pulse=4.0, fade_in=1.0, fade_out=1.0,
                                  **move))
+    titles = maps.map_titles(Path(asset_path(asset))) if hasattr(style, "level_label_y") else []
+    if titles:
+        # large level labels in the frame's left corner (the resting level near the top, the next one below),
+        # over a soft shade; they ride with the camera so the next level's name rises into place
+        out.append(TimelineLayer(kind="shape", shape="shade", x=0.25, width=0.5, max_height=1.0, enter="none",
+                                 fade_in=1.0, fade_out=1.0))
+        lo, hi = min(view.start_level(), view.level), min(max(view.start_level(), view.level) + 1, n)
+        left = style.LABEL_X / fw
+        for lv in range(lo, hi + 1):
+            t = titles[lv - 1]
+            y = 0.5 + (style.level_label_y(lv, n) - y0) / fh
+            common = dict(x=round(left + 0.375, 4), width=0.75, align="left", enter="none", fade_in=1.0, fade_out=1.0, **move)
+            out.append(TimelineLayer(kind="text", text=f"Level {ROMAN[lv - 1]}", text_style="label", y=round(y, 4), **common))
+            out.append(TimelineLayer(kind="text", text=t["title"], text_style="chapter", y=round(y + 0.065, 4), **common))
+            if t.get("subtitle"):
+                out.append(TimelineLayer(kind="text", text=t["subtitle"], text_style="caption", y=round(y + 0.13, 4), **common))
     taken: dict[int, set[int]] = {}
     for m in view.markers:
         taken.setdefault(m.level, set()).update({m.slot} if m.slot else set())

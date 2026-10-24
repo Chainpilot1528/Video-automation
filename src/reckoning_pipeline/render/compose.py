@@ -42,9 +42,11 @@ RING = "#a8946a"               # medallion ring: muted brass
 RING_RADIUS = 0.965            # ring centre line, as a fraction of the oval's radius
 RING_WIDTH = 0.012             # ring thickness, same units
 RING_INNER = 0.925             # the portrait fades out just inside the ring, leaving a dark gap
-CHAR_WIDTH = {"quote": 0.42, "label": 0.82, "caption": 0.46, "heading": 0.46, "statement": 0.44}  # average advance / font size (Cormorant)
-SIZE = {"quote": 1 / 19, "label": 1 / 38, "caption": 1 / 30, "heading": 1 / 12, "statement": 1 / 21}  # font size as a fraction of frame height
-LINE = {"quote": 1.45, "label": 1.3, "caption": 1.35, "heading": 1.2, "statement": 1.4}
+CHAR_WIDTH = {"quote": 0.42, "label": 0.82, "caption": 0.46, "heading": 0.46, "statement": 0.44, "title": 0.78,
+              "chapter": 0.74}  # average advance / font size (Cormorant)
+SIZE = {"quote": 1 / 19, "label": 1 / 38, "caption": 1 / 30, "heading": 1 / 12, "statement": 1 / 21, "title": 1 / 13,
+        "chapter": 1 / 19}  # font size as a fraction of frame height
+LINE = {"quote": 1.45, "label": 1.3, "caption": 1.35, "heading": 1.2, "statement": 1.4, "title": 1.25, "chapter": 1.2}
 
 
 def _even(v: float) -> int:
@@ -179,14 +181,22 @@ def text_svg(layer: TimelineLayer, profile: RenderProfile) -> str:
     style = layer.text_style
     bw = _even(profile.width * layer.width * max(layer.zoom_from, layer.zoom_to))
     size = max(round(profile.height * SIZE[style] * max(layer.zoom_from, layer.zoom_to)), 8)
-    text = layer.text.upper() if style == "label" else layer.text
-    highlight = layer.highlight.upper() if style == "label" else layer.highlight
+    caps = style in ("label", "title", "chapter")
+    text = layer.text.upper() if caps else layer.text
+    highlight = layer.highlight.upper() if caps else layer.highlight
     max_chars = max(int(bw / (size * CHAR_WIDTH[style])), 4)
     lines = _wrap(_marked_words(text, highlight), max_chars)
     line_h = size * LINE[style]
-    bh = _even(line_h * len(lines) + size * 0.6)
+    glow = style == "title"
+    pad = size * 0.5 if glow else 0.0          # room for the glow to spread
+    bh = _even(line_h * len(lines) + size * 0.6 + 2 * pad)
     italic = ' font-style="italic"' if style == "quote" else ""
-    spacing = f' letter-spacing="{size * 0.18:.1f}"' if style == "label" else ""
+    track = {"label": 0.18, "title": 0.12, "chapter": 0.06}.get(style)
+    spacing = f' letter-spacing="{size * track:.1f}"' if track else ""
+    weight = ' font-weight="600"' if style in ("title", "chapter") else ""
+    left = layer.align == "left"
+    x0, anchor = (size * 0.1, "start") if left else (bw / 2, "middle")
+    effect = ' filter="url(#glow)"' if glow else ""
     base_fill = DIM if style == "caption" else INK
     rows = []
     visible = set(layer.visible_words) if layer.visible_words is not None else None
@@ -198,11 +208,15 @@ def text_svg(layer: TimelineLayer, profile: RenderProfile) -> str:
             hidden = ' fill-opacity="0"' if visible is not None and index not in visible else ""
             spans.append(f'<tspan fill="{fill}"{hidden}>{escape(word)}{" " if k < len(line) - 1 else ""}</tspan>')
             index += 1
-        y = size * 1.05 + n * line_h
-        rows.append(f'<text x="{bw / 2:.1f}" y="{y:.1f}" text-anchor="middle" font-family="{SERIF}" '
-                    f'font-size="{size}"{italic}{spacing} xml:space="preserve">{"".join(spans)}</text>')
+        y = pad + size * 1.05 + n * line_h
+        rows.append(f'<text x="{x0:.1f}" y="{y:.1f}" text-anchor="{anchor}" font-family="{SERIF}" '
+                    f'font-size="{size}"{italic}{spacing}{weight}{effect} xml:space="preserve">{"".join(spans)}</text>')
+    defs = (f'<defs><filter id="glow" x="-10%" y="-60%" width="120%" height="220%">'
+            f'<feGaussianBlur stdDeviation="{size * 0.09:.1f}" result="b"/>'
+            f'<feColorMatrix in="b" values="1 0 0 0 0.06  0 0.9 0 0 0.03  0 0 0.7 0 0  0 0 0 0.8 0" result="w"/>'
+            f'<feMerge><feMergeNode in="w"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>') if glow else ""
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{bw}" height="{bh}" viewBox="0 0 {bw} {bh}">\n'
-            + "\n".join(rows) + "\n</svg>\n")
+            + defs + "\n".join(rows) + "\n</svg>\n")
 
 
 SHAPE_FILL = {"ink": INK, "dim": DIM, "accent": ACCENT, "stone": "#6f675b"}
@@ -234,6 +248,10 @@ def shape_svg(layer: TimelineLayer, profile: RenderProfile) -> str:
                 f'<stop offset="0.45" stop-color="{glow}" stop-opacity="0.28"/>'
                 f'<stop offset="1" stop-color="{glow}" stop-opacity="0"/></radialGradient></defs>'
                 f'<ellipse cx="{bw / 2:.1f}" cy="{bh / 2:.1f}" rx="{bw / 2:.1f}" ry="{bh / 2:.1f}" fill="url(#g)"/>')
+    elif layer.shape == "shade":  # darkens toward the left edge, so text set there stays readable
+        body = ('<defs><linearGradient id="s" x1="0" x2="1"><stop offset="0" stop-color="#0b0b0d" stop-opacity="0.85"/>'
+                '<stop offset="1" stop-color="#0b0b0d" stop-opacity="0"/></linearGradient></defs>'
+                f'<rect width="{bw}" height="{bh}" fill="url(#s)"/>')
     elif layer.shape == "stars":  # a seeded field of small stars
         rng = random.Random(layer.seed)
         dots = []
@@ -319,6 +337,7 @@ def composition_command(ffmpeg: str, layers: list[TimelineLayer], pngs: list[str
     parts.append(f"{last}format=yuv420p,trim=duration={d},setpts=PTS-STARTPTS[vout]")
     args += ["-filter_complex", ";".join(parts), "-map", "[vout]", "-an",
              "-c:v", "libx264", "-preset", profile.video_preset, "-crf", str(max(profile.crf - 2, 0)),
+             *(["-x264-params", profile.x264_params] if profile.x264_params else []),
              "-pix_fmt", "yuv420p", "-r", fps, "-t", d, out]
     return args
 

@@ -159,12 +159,15 @@ def test_core_style_svg_and_geometry(tmp_path):
     from reckoning_pipeline.graphics import chapter_core as core
     from reckoning_pipeline.graphics.maps import map_info
     from reckoning_pipeline.graphics.svg import render_spec
-    s = spec(style="core")
+    assert "LEVEL III" in render_spec(spec(style="core"), None)                  # carved names by default
+    s = spec(style="core", labels="frame")
     svg = render_spec(s, None)
-    assert svg == render_spec(s, None) and 'data-chapter-style="core"' in svg and "LEVEL III" in svg
+    assert svg == render_spec(s, None) and 'data-chapter-style="core"' in svg and "LEVEL III" not in svg
     (tmp_path / "c.svg").write_text(svg)
     module, n = map_info(tmp_path / "c.svg")
     assert module is core and n == 3
+    from reckoning_pipeline.graphics.maps import map_titles
+    assert [t["title"] for t in map_titles(tmp_path / "c.svg")] == [lv["title"] for lv in LEVELS]   # names live in the frame
     (tmp_path / "s.svg").write_text(cmap.render_chapter_map(spec()))
     assert map_info(tmp_path / "s.svg")[0] is cmap
     # each level sits one band deeper, and its medallion place is on its own band
@@ -181,7 +184,7 @@ def test_compiler_places_the_core_camera_and_medallions(short_demo):  # noqa: F8
     from reckoning_pipeline.graphics import chapter_core as core
     result = validate_project(short_demo)
     render_graphic(short_demo, result.manifest, result.registry, result.ledger,
-                   spec(asset_id="chapter-core", style="core"))
+                   spec(asset_id="chapter-core", style="core", labels="frame"))
     add_map_beat(short_demo, asset_id="chapter-core")
 
     def retarget(d):
@@ -193,7 +196,11 @@ def test_compiler_places_the_core_camera_and_medallions(short_demo):  # noqa: F8
     glow = next(x for x in seg.layers if x.shape == "glow")
     assert len(stars) == 2 and all(x.pulse > 0 for x in stars) and seg.layers[:2] == stars   # behind the planet
     assert glow.pulse > 0 and glow.drift_y == pytest.approx(-core.BAND / 1080, abs=1e-3)       # rides with the core
-    mp, old, _, new, _ = [x for x in seg.layers if x.kind != "shape"]
+    labels = [x for x in seg.layers if x.kind == "text" and x.align == "left"]
+    assert [x.text for x in labels if x.text_style == "chapter"] == [LEVELS[0]["title"], LEVELS[1]["title"], LEVELS[2]["title"]]
+    assert all(x.drift_y == glow.drift_y for x in labels)                        # the names move with the camera
+    assert any(x.shape == "shade" for x in seg.layers)
+    mp, old, _, new, _ = [x for x in seg.layers if x.kind != "shape" and x not in labels]
     w, h = core.map_size(3)
     assert mp.width == pytest.approx(w / 1920, abs=1e-3) and mp.drift_y == pytest.approx(-core.BAND / 1080, abs=1e-3)
     assert new.start == pytest.approx(0.7) and new.width == pytest.approx(core.MEDALLION_W / 1920, abs=1e-3)

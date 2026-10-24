@@ -452,38 +452,6 @@
       "notes": "chapter_map: Why Your Brain Hates Contradictions"
     },
     {
-      "asset_id": "chapter-core",
-      "path": "assets/graphics/chapter-core.svg",
-      "root": "project",
-      "type": "graphic",
-      "creation_method": "original_graphic",
-      "provider": "reckoning-pipeline graphics",
-      "source_url": null,
-      "creator": "Reckoning Self",
-      "rights_holder": "Reckoning Self",
-      "license_name": "Original work, all rights reserved",
-      "license_url": "",
-      "commercial_use": "allowed",
-      "attribution_required": false,
-      "attribution_text": "",
-      "derivatives_allowed": true,
-      "rights_evidence": "Rendered deterministically by 'pipeline graphics render' from chapter-core.json; no third-party imagery or embedded fonts.",
-      "identifiable_people": null,
-      "people_clearance": "",
-      "trademarks_visible": null,
-      "trademark_notes": "",
-      "raw_redistribution_allowed": null,
-      "platform_cleared": null,
-      "generation": null,
-      "acquired_date": null,
-      "sha256": "7fd4020215d45bc253320f7b16d4eb338ab267addf407004cb4b37c9a1ce7765",
-      "derived_from": null,
-      "intended_scene_ids": [],
-      "review_status": "pending",
-      "publication_status": "pending_review",
-      "notes": "chapter_map: Why Your Brain Hates Contradictions"
-    },
-    {
       "asset_id": "met-saint-gaudens-twenty",
       "path": "assets/originals/met-saint-gaudens-twenty.jpg",
       "root": "project",
@@ -620,8 +588,40 @@
       "notes": "Background removed from met-saint-gaudens-twenty with U²-Net (u2net.onnx, Apache-2.0), trimmed to the object. Check the edges before approving."
     },
     {
+      "asset_id": "chapter-core",
+      "path": "assets/graphics/chapter-core.svg",
+      "root": "project",
+      "type": "graphic",
+      "creation_method": "original_graphic",
+      "provider": "reckoning-pipeline graphics",
+      "source_url": null,
+      "creator": "Reckoning Self",
+      "rights_holder": "Reckoning Self",
+      "license_name": "Original work, all rights reserved",
+      "license_url": "",
+      "commercial_use": "allowed",
+      "attribution_required": false,
+      "attribution_text": "",
+      "derivatives_allowed": true,
+      "rights_evidence": "Rendered deterministically by 'pipeline graphics render' from chapter-core.json; no third-party imagery or embedded fonts.",
+      "identifiable_people": null,
+      "people_clearance": "",
+      "trademarks_visible": null,
+      "trademark_notes": "",
+      "raw_redistribution_allowed": null,
+      "platform_cleared": null,
+      "generation": null,
+      "acquired_date": null,
+      "sha256": "26b9d92b88cca5b846a3127d3f525f4b9d1cc3c8c22042e398f463e4a1494a67",
+      "derived_from": null,
+      "intended_scene_ids": [],
+      "review_status": "pending",
+      "publication_status": "pending_review",
+      "notes": "chapter_map: Why Your Brain Hates Contradictions"
+    },
+    {
       "asset_id": "narr-s01-negotiation",
-      "path": "narration/s01-negotiation/0d850cbdd5d292f5.wav",
+      "path": "narration/s01-negotiation/a3fe53102a06ea3f.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -658,7 +658,7 @@
         "terms_url": "https://huggingface.co/hexgrad/Kokoro-82M"
       },
       "acquired_date": null,
-      "sha256": "d997525686bde01c4fd857b01a15ce6283f10ed1983cfc88b05ab0ce332e01af",
+      "sha256": "e96dbde41516f8475661afe58ed58663ee4a6047ec18181389056be2730ded86",
       "derived_from": null,
       "intended_scene_ids": [
         "s01-negotiation"
@@ -669,7 +669,7 @@
     },
     {
       "asset_id": "narr-s02-theory",
-      "path": "narration/s02-theory/45fc1ccc81e8fabf.wav",
+      "path": "narration/s02-theory/00d40cea3868125c.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -706,7 +706,7 @@
         "terms_url": "https://huggingface.co/hexgrad/Kokoro-82M"
       },
       "acquired_date": null,
-      "sha256": "3fe96b42e2ec78822efc3fc65952537ca7c410aaeb8851719a7febce3aeda9c3",
+      "sha256": "731666d32fe1da66e3f6f7f5d794f8be70824bbae2718bf8d2dcf6946d817c0d",
       "derived_from": null,
       "intended_scene_ids": [
         "s02-theory"
@@ -717,7 +717,7 @@
     },
     {
       "asset_id": "narr-s03-experiment",
-      "path": "narration/s03-experiment/982414f598dc91b4.wav",
+      "path": "narration/s03-experiment/edfa56eec5871a5a.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -765,7 +765,7 @@
     },
     {
       "asset_id": "narr-s04-identity",
-      "path": "narration/s04-identity/b224fc34e1821346.wav",
+      "path": "narration/s04-identity/cdac14e923fff454.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -802,7 +802,7 @@
         "terms_url": "https://huggingface.co/hexgrad/Kokoro-82M"
       },
       "acquired_date": null,
-      "sha256": "110d95d8cd0e877020dd50da5590c6646d160e0b464745d73564682785f29118",
+      "sha256": "149c891daf50242a668296c04d5d73c9ebe6321b400a238afd1f34204b009ea3",
       "derived_from": null,
       "intended_scene_ids": [
         "s04-identity"
@@ -813,7 +813,7 @@
     },
     {
       "asset_id": "narr-s05-motivated",
-      "path": "narration/s05-motivated/eb849dab856ee44a.wav",
+      "path": "narration/s05-motivated/540f7ff8a2b50549.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -850,7 +850,7 @@
         "terms_url": "https://huggingface.co/hexgrad/Kokoro-82M"
       },
       "acquired_date": null,
-      "sha256": "ba31ed69df5aab24e53633921dfc685fb9b85d5f4263982eaf423c4b934ff1c0",
+      "sha256": "6a3d63884b653c76a39d67cc479d58dd7dbeb4509bb481791240cef7fd64f009",
       "derived_from": null,
       "intended_scene_ids": [
         "s05-motivated"
@@ -861,7 +861,7 @@
     },
     {
       "asset_id": "narr-s06-brain",
-      "path": "narration/s06-brain/515c4a7041ffb039.wav",
+      "path": "narration/s06-brain/62f120370bd53e99.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -909,7 +909,7 @@
     },
     {
       "asset_id": "narr-s07-everyday",
-      "path": "narration/s07-everyday/8563c2b7a51344dd.wav",
+      "path": "narration/s07-everyday/de0d63c573ebff93.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -957,7 +957,7 @@
     },
     {
       "asset_id": "narr-s08-dangerous",
-      "path": "narration/s08-dangerous/6d1f66a2ffbc1cb3.wav",
+      "path": "narration/s08-dangerous/94f426e6304a8093.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -1005,7 +1005,7 @@
     },
     {
       "asset_id": "narr-s09-exercise",
-      "path": "narration/s09-exercise/ce9a0f59888336e6.wav",
+      "path": "narration/s09-exercise/d507a93e1fe27163.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",
@@ -1053,7 +1053,7 @@
     },
     {
       "asset_id": "narr-s10-question",
-      "path": "narration/s10-question/87d146874cc4e97f.wav",
+      "path": "narration/s10-question/7cdd294bbebbf9fb.wav",
       "root": "project",
       "type": "narration",
       "creation_method": "generated",

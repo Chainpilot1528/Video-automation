@@ -14,6 +14,7 @@ place everything without reading the drawing. Same spec = byte-identical file.
 from __future__ import annotations
 
 import hashlib
+import json
 import math
 import random
 from xml.sax.saxutils import escape
@@ -142,17 +143,20 @@ def render_chapter_core(spec: GraphicSpec) -> str:
     out.append(f'<circle cx="{cx}" cy="{cy}" r="{_radius(n)}" fill="none" stroke="#efe6d6" stroke-opacity="0.45" stroke-width="3"/>')
     fx = cx - 300
     out.append(figure_svg(fx, cy - math.sqrt(_radius(n) ** 2 - 300 ** 2) + 4, FIGURE_H))
-    # inscriptions (left of the axis) and empty medallion rings (right of it)
+    # level names: carved into each band left of the axis ("carved", the default), or left to the timeline,
+    # which draws them as large labels in the frame's corner that ride with the camera ("frame", see LABEL_*);
+    # one empty medallion ring per level sits right of the axis either way
     for lv in range(1, n + 1):
-        level = spec.levels[lv - 1]
-        x, y = _on_band(lv, n, -min(520, 0.5 * _band_mid(lv, n)))   # deep bands curve tightly: stay near the axis
-        out.append(f'<text x="{x:.0f}" y="{y - 30:.0f}" text-anchor="middle" font-family="{SERIF}" font-size="24" '
-                   f'letter-spacing="6" fill="{DIM}">LEVEL {ROMAN[lv - 1]}</text>')
-        out.append(f'<text x="{x:.0f}" y="{y + 22:.0f}" text-anchor="middle" font-family="{SERIF}" font-size="46" '
-                   f'font-style="italic" fill="{INK}">{escape(level.title)}</text>')
-        if level.subtitle:
-            out.append(f'<text x="{x:.0f}" y="{y + 62:.0f}" text-anchor="middle" font-family="{SERIF}" font-size="24" '
-                       f'fill="{DIM}">{escape(level.subtitle)}</text>')
+        if spec.labels == "carved":
+            level = spec.levels[lv - 1]
+            x, y = _on_band(lv, n, -min(520, 0.5 * _band_mid(lv, n)))   # deep bands curve tightly: stay near the axis
+            out.append(f'<text x="{x:.0f}" y="{y - 30:.0f}" text-anchor="middle" font-family="{SERIF}" font-size="24" '
+                       f'letter-spacing="6" fill="{DIM}">LEVEL {ROMAN[lv - 1]}</text>')
+            out.append(f'<text x="{x:.0f}" y="{y + 22:.0f}" text-anchor="middle" font-family="{SERIF}" font-size="46" '
+                       f'font-style="italic" fill="{INK}">{escape(level.title)}</text>')
+            if level.subtitle:
+                out.append(f'<text x="{x:.0f}" y="{y + 62:.0f}" text-anchor="middle" font-family="{SERIF}" font-size="24" '
+                           f'fill="{DIM}">{escape(level.subtitle)}</text>')
         for slot in (1,):   # one waiting place per level; extra medallions bring their own ring
             mx, my = marker_anchor(lv, slot, n)
             out.append(f'<ellipse cx="{mx}" cy="{my}" rx="{MEDALLION_W / 2 - 4}" ry="{MEDALLION_H / 2 - 4}" fill="#0b0b0d" '
@@ -160,8 +164,21 @@ def render_chapter_core(spec: GraphicSpec) -> str:
     # the episode title in the sky
     out.append(f'<text x="{cx}" y="{SKY * 0.42:.0f}" text-anchor="middle" font-family="{SERIF}" font-size="34" '
                f'letter-spacing="10" fill="{DIM}">{escape(spec.title.upper())}</text>')
+    meta = ""
+    if spec.labels == "frame":   # the timeline reads these to draw the corner labels
+        levels = escape(json.dumps([{"title": lv.title, "subtitle": lv.subtitle} for lv in spec.levels], ensure_ascii=False))
+        meta = f'<metadata id="chapter-levels">{levels}</metadata>\n'
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" '
-            f'data-chapter-levels="{n}" data-chapter-style="{STYLE}">\n' + "\n".join(out) + "\n</svg>\n")
+            f'data-chapter-levels="{n}" data-chapter-style="{STYLE}">\n{meta}' + "\n".join(out) + "\n</svg>\n")
+
+
+def level_label_y(level: int, levels: int) -> float:
+    """Map y of a level's large corner label: near the top of the frame when the camera rests on it."""
+    return view_center(level, levels)[1] - LABEL_ABOVE
+
+
+LABEL_ABOVE = 110       # the resting level's label sits this far above the frame centre (map pixels)
+LABEL_X = 90            # left margin of the labels, frame pixels
 
 
 OVERVIEW_MARGIN = 60

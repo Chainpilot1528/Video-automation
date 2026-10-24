@@ -122,7 +122,8 @@ def scene_command(ffmpeg: str, scene: TimelineScene, profile: RenderProfile, out
     parts.append(audio + "[aout]")
 
     args += ["-filter_complex", ";".join(parts), "-map", "[vout]", "-map", "[aout]",
-             "-c:v", "libx264", "-preset", profile.video_preset, "-crf", str(profile.crf), "-pix_fmt", "yuv420p",
+             "-c:v", "libx264", "-preset", profile.video_preset, "-crf", str(profile.crf),
+             *(["-x264-params", profile.x264_params] if profile.x264_params else []), "-pix_fmt", "yuv420p",
              "-r", fps, "-g", str(int(round(profile.fps * 2))), "-c:a", "aac", "-b:a", profile.audio_bitrate,
              "-ar", str(profile.audio_sample_rate), "-ac", "2", "-t", d, "-map_metadata", "-1",
              "-movflags", "+faststart", output]

@@ -110,6 +110,20 @@
           "default": null,
           "title": "Input Fingerprint"
         },
+        "lead_in_seconds": {
+          "anyOf": [
+            {
+              "maximum": 10,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lead In Seconds"
+        },
         "music_cue": {
           "anyOf": [
             {

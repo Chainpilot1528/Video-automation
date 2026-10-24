@@ -82,6 +82,7 @@ class Scene(Record):
     input_fingerprint: Sha256 | None = None
     narration_speed: float | None = Field(default=None, ge=0.7, le=1.3)   # multiplies the TTS speed for this scene
     hold_after_seconds: float | None = Field(default=None, ge=0, le=5)    # picture held after narration ends
+    lead_in_seconds: float | None = Field(default=None, ge=0, le=10)      # picture before narration starts
 
     @field_validator("asset_ids", "source_ids", "claim_ids")
     @classmethod

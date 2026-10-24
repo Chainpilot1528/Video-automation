@@ -20,9 +20,12 @@ def get_profile(name: str, manifest: ProjectManifest) -> RenderProfile:
     if name == "master_16x9":
         return RenderProfile(name="master_16x9", width=manifest.resolution.width,
                              height=manifest.resolution.height, fps=manifest.frame_rate,
-                             video_preset="medium", crf=18, audio_bitrate="192k",
+                             # upload grade: low compression, a careful preset, and dark-scene tuning so the
+                             # near-black canvas and soft glows don't band after YouTube re-encodes them
+                             video_preset="slow", crf=14, audio_bitrate="192k",
                              audio_sample_rate=manifest.audio_sample_rate,
-                             allow_placeholders=False, require_narration=True)
+                             allow_placeholders=False, require_narration=True,
+                             x264_params="aq-mode=3:aq-strength=0.9:deblock=-1,-1")
     if name == "vertical_9x16":
         raise ProfileError("vertical_9x16 is built only after the landscape master is approved (Phase 11)")
     raise ProfileError(f"unknown profile {name!r}; use preview or master_16x9")

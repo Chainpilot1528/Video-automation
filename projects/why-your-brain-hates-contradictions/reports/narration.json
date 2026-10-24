@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "project_id": "why-your-brain-hates-contradictions",
-  "built_at": "2026-10-23T16:36:19Z",
+  "built_at": "2026-10-23T22:02:51Z",
   "provider": "voicebox",
   "voice": "kokoro:am_liam",
   "chunks": [
@@ -9,11 +9,11 @@
       "scene_id": "s01-negotiation",
       "asset_id": "narr-s01-negotiation",
       "route": "tts",
-      "path": "narration/s01-negotiation/0d850cbdd5d292f5.wav",
-      "sha256": "d997525686bde01c4fd857b01a15ce6283f10ed1983cfc88b05ab0ce332e01af",
-      "fingerprint": "0d850cbdd5d292f5ab1dd00b39bccdece1bb4468f88aba37ec84290109ec693f",
+      "path": "narration/s01-negotiation/a3fe53102a06ea3f.wav",
+      "sha256": "e96dbde41516f8475661afe58ed58663ee4a6047ec18181389056be2730ded86",
+      "fingerprint": "a3fe53102a06ea3fede3dfcd0eab63b54b9efcd8c35b4396d18982a95c9b5aca",
       "cached": false,
-      "duration_seconds": 58.74,
+      "duration_seconds": 59.04,
       "sample_rate": 48000,
       "channels": 1,
       "integrated_lufs": -20.1,
@@ -38,88 +38,88 @@
         },
         {
           "text": "Hard work wins.",
-          "start": 10.102,
-          "end": 11.018
+          "start": 10.202,
+          "end": 11.118
         },
         {
           "text": "So you gave up your weekends.",
-          "start": 12.118,
-          "end": 13.914
+          "start": 12.218,
+          "end": 14.014
         },
         {
           "text": "You said no to rest.",
-          "start": 14.294,
-          "end": 15.535
+          "start": 14.394,
+          "end": 15.635
         },
         {
           "text": "You watched other people enjoy the things you kept putting off.",
-          "start": 16.035,
-          "end": 19.445
+          "start": 16.135,
+          "end": 19.545
         },
         {
           "text": "And it felt worth it…",
-          "start": 19.895,
-          "end": 21.141
+          "start": 19.995,
+          "end": 21.241
         },
         {
           "text": "because you believed.",
-          "start": 21.641,
-          "end": 23.208
+          "start": 21.741,
+          "end": 23.308
         },
         {
           "text": "Then you meet someone. They work fewer hours.",
-          "start": 24.058,
-          "end": 26.546
+          "start": 24.158,
+          "end": 26.646
         },
         {
           "text": "They protect their evenings. And they earn more than you.",
-          "start": 26.876,
-          "end": 30.016
+          "start": 26.976,
+          "end": 30.116
         },
         {
           "text": "Now you're holding two ideas that don't fit together.",
-          "start": 31.016,
-          "end": 33.875
+          "start": 31.116,
+          "end": 33.975
         },
         {
           "text": "You could rethink what success really takes.",
-          "start": 34.825,
-          "end": 37.226
+          "start": 34.925,
+          "end": 37.326
         },
         {
           "text": "Or…",
-          "start": 38.026,
-          "end": 38.452
+          "start": 38.226,
+          "end": 38.652
         },
         {
           "text": "you could decide they just got lucky.",
-          "start": 38.952,
-          "end": 41.101
+          "start": 39.152,
+          "end": 41.301
         },
         {
           "text": "That it won't last. That they must know someone.",
-          "start": 41.521,
-          "end": 44.085
+          "start": 41.721,
+          "end": 44.285
         },
         {
           "text": "Notice what just happened. Instead of changing your understanding of the world, you found a way to preserve it.",
-          "start": 45.185,
-          "end": 51.039
+          "start": 45.385,
+          "end": 51.239
         },
         {
           "text": "And here's the strange part.",
-          "start": 51.889,
-          "end": 53.362
+          "start": 52.089,
+          "end": 53.562
         },
         {
           "text": "From the inside, it doesn't feel like an excuse.",
-          "start": 53.982,
-          "end": 56.789
+          "start": 54.182,
+          "end": 56.989
         },
         {
           "text": "It feels like logic.",
-          "start": 57.469,
-          "end": 58.724
+          "start": 57.769,
+          "end": 59.024
         }
       ],
       "warnings": []
@@ -128,11 +128,11 @@
       "scene_id": "s02-theory",
       "asset_id": "narr-s02-theory",
       "route": "tts",
-      "path": "narration/s02-theory/45fc1ccc81e8fabf.wav",
-      "sha256": "3fe96b42e2ec78822efc3fc65952537ca7c410aaeb8851719a7febce3aeda9c3",
-      "fingerprint": "45fc1ccc81e8fabf6af63871279b4c2638398f3321bb7124624108d667b8e747",
+      "path": "narration/s02-theory/00d40cea3868125c.wav",
+      "sha256": "731666d32fe1da66e3f6f7f5d794f8be70824bbae2718bf8d2dcf6946d817c0d",
+      "fingerprint": "00d40cea3868125c7ac52441b09ba0421ed7bc3b2b922ee63cd0db55e5f187c0",
       "cached": false,
-      "duration_seconds": 56.005,
+      "duration_seconds": 56.105,
       "sample_rate": 48000,
       "channels": 1,
       "integrated_lufs": -20.1,
@@ -172,58 +172,58 @@
         },
         {
           "text": "And they still smoke.",
-          "start": 24.981,
-          "end": 25.983
+          "start": 25.081,
+          "end": 26.083
         },
         {
           "text": "So what do they do?",
-          "start": 26.983,
-          "end": 28.203
+          "start": 27.083,
+          "end": 28.303
         },
         {
           "text": "They could quit. They could admit the habit clashes with their health.",
-          "start": 28.773,
-          "end": 32.216
+          "start": 28.873,
+          "end": 32.316
         },
         {
           "text": "Or they could tell themselves…",
-          "start": 32.766,
-          "end": 34.577
+          "start": 32.866,
+          "end": 34.677
         },
         {
           "text": "I don't smoke enough for it to matter.",
-          "start": 35.077,
-          "end": 37.017
+          "start": 35.177,
+          "end": 37.117
         },
         {
           "text": "That's the key. Changing your mind is only one way out.",
-          "start": 37.967,
-          "end": 41.096
+          "start": 38.067,
+          "end": 41.196
         },
         {
           "text": "You can change what you do.",
-          "start": 41.476,
-          "end": 42.955
+          "start": 41.576,
+          "end": 43.055
         },
         {
           "text": "You can reinterpret the evidence.",
-          "start": 43.455,
-          "end": 45.458
+          "start": 43.555,
+          "end": 45.558
         },
         {
           "text": "Or you can add a new story that makes the conflict feel smaller.",
-          "start": 45.908,
-          "end": 49.372
+          "start": 46.008,
+          "end": 49.472
         },
         {
           "text": "Which way you go depends on the situation…",
-          "start": 50.472,
-          "end": 53.101
+          "start": 50.572,
+          "end": 53.201
         },
         {
           "text": "and on how much that belief matters to you.",
-          "start": 53.601,
-          "end": 55.986
+          "start": 53.701,
+          "end": 56.086
         }
       ],
       "warnings": []
@@ -232,10 +232,10 @@
       "scene_id": "s03-experiment",
       "asset_id": "narr-s03-experiment",
       "route": "tts",
-      "path": "narration/s03-experiment/982414f598dc91b4.wav",
+      "path": "narration/s03-experiment/edfa56eec5871a5a.wav",
       "sha256": "0f27cb8066059a95cc8631d62789c428c64961f1f269eb0c85c5791373c2d03c",
-      "fingerprint": "982414f598dc91b4f4759dd6728a2564dda3887daf35c34411e69e8efee34f92",
-      "cached": false,
+      "fingerprint": "edfa56eec5871a5add72c188d618d35e3a32cb8d4a58b5649058439b691837d4",
+      "cached": true,
       "duration_seconds": 74.957,
       "sample_rate": 48000,
       "channels": 1,
@@ -351,11 +351,11 @@
       "scene_id": "s04-identity",
       "asset_id": "narr-s04-identity",
       "route": "tts",
-      "path": "narration/s04-identity/b224fc34e1821346.wav",
-      "sha256": "110d95d8cd0e877020dd50da5590c6646d160e0b464745d73564682785f29118",
-      "fingerprint": "b224fc34e18213467caabe8e8f2378ffa73c5231fb4b2ec180214a779176e14c",
-      "cached": false,
-      "duration_seconds": 58.103,
+      "path": "narration/s04-identity/cdac14e923fff454.wav",
+      "sha256": "149c891daf50242a668296c04d5d73c9ebe6321b400a238afd1f34204b009ea3",
+      "fingerprint": "cdac14e923fff454ea2bb5354e5a49358d21e1ba40157ce28f029d17f85d937f",
+      "cached": true,
+      "duration_seconds": 58.203,
       "sample_rate": 48000,
       "channels": 1,
       "integrated_lufs": -20.0,
@@ -450,8 +450,8 @@
         },
         {
           "text": "It is carrying consequences.",
-          "start": 56.171,
-          "end": 58.085
+          "start": 56.271,
+          "end": 58.185
         }
       ],
       "warnings": []
@@ -460,11 +460,11 @@
       "scene_id": "s05-motivated",
       "asset_id": "narr-s05-motivated",
       "route": "tts",
-      "path": "narration/s05-motivated/eb849dab856ee44a.wav",
-      "sha256": "ba31ed69df5aab24e53633921dfc685fb9b85d5f4263982eaf423c4b934ff1c0",
-      "fingerprint": "eb849dab856ee44a3915939501675b60bf75680827e6c8a92fa3f67ead5fad34",
-      "cached": false,
-      "duration_seconds": 66.141,
+      "path": "narration/s05-motivated/540f7ff8a2b50549.wav",
+      "sha256": "6a3d63884b653c76a39d67cc479d58dd7dbeb4509bb481791240cef7fd64f009",
+      "fingerprint": "540f7ff8a2b505498452b1fa61d7b3c542ae40eecd457c14a93898707f0bbc96",
+      "cached": true,
+      "duration_seconds": 66.341,
       "sample_rate": 48000,
       "channels": 1,
       "integrated_lufs": -20.0,
@@ -479,103 +479,103 @@
         },
         {
           "text": "It's called motivated reasoning.",
-          "start": 2.88,
-          "end": 4.856
+          "start": 2.98,
+          "end": 4.956
         },
         {
           "text": "It's the way our goals and commitments shape how we judge information.",
-          "start": 5.806,
-          "end": 9.744
+          "start": 5.906,
+          "end": 9.844
         },
         {
           "text": "Picture two smart people reading the same study.",
-          "start": 10.844,
-          "end": 13.634
+          "start": 10.944,
+          "end": 13.734
         },
         {
           "text": "One finds it supports what they already believe.",
-          "start": 14.254,
-          "end": 16.961
+          "start": 14.354,
+          "end": 17.061
         },
         {
           "text": "So they notice the solid methods…",
-          "start": 17.341,
-          "end": 19.488
+          "start": 17.441,
+          "end": 19.588
         },
         {
           "text": "and the clear results. The other finds it challenges them.",
-          "start": 19.988,
-          "end": 23.191
+          "start": 20.088,
+          "end": 23.291
         },
         {
           "text": "So they notice the limitations…",
-          "start": 23.641,
-          "end": 25.768
+          "start": 23.741,
+          "end": 25.868
         },
         {
           "text": "and everything that could be wrong.",
-          "start": 26.268,
-          "end": 28.221
+          "start": 26.368,
+          "end": 28.321
         },
         {
           "text": "Now, being critical is good science.",
-          "start": 29.071,
-          "end": 30.96
+          "start": 29.171,
+          "end": 31.06
         },
         {
           "text": "The problem is when the standard changes…",
-          "start": 31.29,
-          "end": 33.707
+          "start": 31.39,
+          "end": 33.807
         },
         {
           "text": "depending on whether we like the answer.",
-          "start": 34.207,
-          "end": 36.485
+          "start": 34.307,
+          "end": 36.585
         },
         {
           "text": "But here's the hopeful part.",
-          "start": 37.485,
-          "end": 39.177
+          "start": 37.585,
+          "end": 39.277
         },
         {
           "text": "In 2019, the psychologist Stephanie Anglin reported four studies.",
-          "start": 39.677,
-          "end": 43.442
+          "start": 39.777,
+          "end": 43.542
         },
         {
           "text": "And people often did change their beliefs when the evidence was clear.",
-          "start": 43.892,
-          "end": 47.806
+          "start": 43.992,
+          "end": 47.906
         },
         {
           "text": "Even on religion, politics, and capital punishment.",
-          "start": 48.226,
-          "end": 51.341
+          "start": 48.326,
+          "end": 51.441
         },
         {
           "text": "Bias showed up sometimes…",
-          "start": 52.191,
-          "end": 53.981
+          "start": 52.391,
+          "end": 54.181
         },
         {
           "text": "but not always.",
-          "start": 54.481,
-          "end": 55.436
+          "start": 54.681,
+          "end": 55.636
         },
         {
           "text": "So the real question isn't whether people are rational.",
-          "start": 56.386,
-          "end": 59.538
+          "start": 56.586,
+          "end": 59.738
         },
         {
           "text": "It's this. When do we judge evidence on its merits…",
-          "start": 59.918,
-          "end": 62.771
+          "start": 60.118,
+          "end": 62.971
         },
         {
           "text": "and when do we judge it by whether we want it to be true?",
-          "start": 63.271,
-          "end": 66.122
+          "start": 63.471,
+          "end": 66.322
         }
       ],
       "warnings": []
@@ -584,10 +584,10 @@
       "scene_id": "s06-brain",
       "asset_id": "narr-s06-brain",
       "route": "tts",
-      "path": "narration/s06-brain/515c4a7041ffb039.wav",
+      "path": "narration/s06-brain/62f120370bd53e99.wav",
       "sha256": "510e6aab8dd13e798074c91349746964a0edf4c0cdf091504f1887a2c1159f57",
-      "fingerprint": "515c4a7041ffb039dd307a88e4364613655ace87cb67e4f9f0ec258452b4cf7d",
-      "cached": false,
+      "fingerprint": "62f120370bd53e9938b878ca2501361274b74b73f0a2998dbe1941fa5398919f",
+      "cached": true,
       "duration_seconds": 50.966,
       "sample_rate": 48000,
       "channels": 1,
@@ -673,10 +673,10 @@
       "scene_id": "s07-everyday",
       "asset_id": "narr-s07-everyday",
       "route": "tts",
-      "path": "narration/s07-everyday/8563c2b7a51344dd.wav",
+      "path": "narration/s07-everyday/de0d63c573ebff93.wav",
       "sha256": "593e74e2c6912ee793ea48dc56d6dc57235af2a40d3a83d9bf5d015300e45499",
-      "fingerprint": "8563c2b7a51344dd8136c29088b79479d5ff2522fb6f1e3967fc4c5406cae625",
-      "cached": false,
+      "fingerprint": "de0d63c573ebff93dbe8656192c9f4d7881adbf034c5aca832117d10153760d2",
+      "cached": true,
       "duration_seconds": 51.832,
       "sample_rate": 48000,
       "channels": 1,
@@ -772,10 +772,10 @@
       "scene_id": "s08-dangerous",
       "asset_id": "narr-s08-dangerous",
       "route": "tts",
-      "path": "narration/s08-dangerous/6d1f66a2ffbc1cb3.wav",
+      "path": "narration/s08-dangerous/94f426e6304a8093.wav",
       "sha256": "a53855ebf0add42c492c2ad9e370c44a77c1963142984cb286d55b75a74ea4b3",
-      "fingerprint": "6d1f66a2ffbc1cb3829d70c69c9d2445426eff6b1a211296350822d511713fcc",
-      "cached": false,
+      "fingerprint": "94f426e6304a809344376f52c07de0ccd58ea6e7dde527fefc8ff114222b3e1f",
+      "cached": true,
       "duration_seconds": 56.354,
       "sample_rate": 48000,
       "channels": 1,
@@ -881,10 +881,10 @@
       "scene_id": "s09-exercise",
       "asset_id": "narr-s09-exercise",
       "route": "tts",
-      "path": "narration/s09-exercise/ce9a0f59888336e6.wav",
+      "path": "narration/s09-exercise/d507a93e1fe27163.wav",
       "sha256": "4eb469e8b42af52cb5c3c987f498ff93db758a2b9ead21e57121d35ca2d9c337",
-      "fingerprint": "ce9a0f59888336e6dc01e450d023079a0fb73f581e1d4484c55f01347b49b76c",
-      "cached": false,
+      "fingerprint": "d507a93e1fe27163ab1ca2dc0ab83d188c0683e7b71222e222007aeb1ff2a93d",
+      "cached": true,
       "duration_seconds": 46.712,
       "sample_rate": 48000,
       "channels": 1,
@@ -975,10 +975,10 @@
       "scene_id": "s10-question",
       "asset_id": "narr-s10-question",
       "route": "tts",
-      "path": "narration/s10-question/87d146874cc4e97f.wav",
+      "path": "narration/s10-question/7cdd294bbebbf9fb.wav",
       "sha256": "3ea46d806153e28faa87f52026958f63954f161e2283d2a50d40b7f4b123867c",
-      "fingerprint": "87d146874cc4e97f69f825a7e2cbba0b948529ffd05cbed43bfe8a5ea4e31875",
-      "cached": false,
+      "fingerprint": "7cdd294bbebbf9fb470bad7536fff6a4a959f2844d48b3f89cc5ae5b051be136",
+      "cached": true,
       "duration_seconds": 52.278,
       "sample_rate": 48000,
       "channels": 1,

@@ -25,3 +25,15 @@ def map_info(path: Path) -> tuple[ModuleType, int] | None:
         return None
     module = STYLES.get(style.group(1) if style else "steps")
     return (module, int(levels.group(1))) if module else None
+
+
+def map_titles(path: Path) -> list[dict]:
+    """The level titles a rendered map records (core style), or an empty list."""
+    import html
+    import json
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError:
+        return []
+    m = re.search(r'<metadata id="chapter-levels">(.*?)</metadata>', text, re.S)
+    return json.loads(html.unescape(m.group(1))) if m else []

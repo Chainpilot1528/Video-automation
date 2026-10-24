@@ -68,12 +68,14 @@ class Layer(Record):
     kind: Literal["image", "text", "shape"]
     asset_id: Identifier | None = None          # image layers
     text: str = ""                              # text layers
-    text_style: Literal["quote", "label", "caption", "heading", "statement"] = "label"
+    text_style: Literal["quote", "label", "caption", "heading", "statement", "title", "chapter"] = "label"
     # quote: italic, from a ledger quotation · label: spaced capitals · caption: small, dim
     # heading: large upright figures and titles · statement: a spoken key line, upright, mid-size
+    # title: a chapter title card, large spaced capitals with a warm glow · chapter: a level name on the map
+    align: Literal["center", "left"] = "center"    # text: centred in its box, or set from its left edge
     highlight: str = ""                         # part of ``text`` drawn in the accent colour
     reveal: Literal["fade", "words", "draw"] = "fade"   # words: phrase by phrase as read · draw: lines draw on
-    shape: Literal["circle", "ring", "line", "arrow", "person", "glow", "stars"] | None = None   # shape layers
+    shape: Literal["circle", "ring", "line", "arrow", "person", "glow", "stars", "shade"] | None = None   # shape layers
     color: Literal["ink", "dim", "accent", "stone"] = "ink"     # shape colour (stone: a muted grey-brown fill)
     flip: bool = False                          # arrows point left (and draw from the right); figures face left
     enter: Literal["auto", "none", "rise", "settle", "slide_left", "slide_right"] = "auto"
@@ -302,6 +304,7 @@ class GraphicSpec(Record):
     levels: list[MapLevel] = Field(default_factory=list)   # chapter_map: one per chapter, top to bottom
     style: Literal["steps", "core"] = "steps"   # chapter_map: stone steps, or a planet cut open to its core
     variant: Literal["map", "overview"] = "map"   # core only: the descent map, or the whole planet in one frame
+    labels: Literal["carved", "frame"] = "carved"  # core only: names carved into the bands, or large corner labels
     intended_scene_ids: list[Identifier] = Field(default_factory=list)
 
     @model_validator(mode="after")

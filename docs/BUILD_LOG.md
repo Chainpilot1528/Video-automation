@@ -956,3 +956,19 @@ The reference's smoothness comes from constant gentle motion and overlapping cha
 ### Tests
 - Dissolve filter chain (offsets, durations, longer inputs).
 - Entrance presets (only fill unset motion; an image is never dead still; slide direction).
+
+---
+
+## 2026-10-24: Chapter title cards, large level labels on the core map; pause 0.4 s
+
+The user asked for the reference's chapter devices: a glowing "LEVEL 2 · SOCRATES" card, and large level names on the map.
+
+- **Title cards:** a typography beat after each chapter's map move (and after the opening pull-back for level I). It shows "Level III" in the `chapter` style above the name in the new **`title`** style: large spaced capitals, weight 600, with a warm glow (an SVG `feGaussianBlur` and colour-matrix halo, padded so it isn't clipped). Each card holds 2.6 s, with the narration continuing underneath.
+- **Level labels on the map** (core style):
+  - The map no longer carves level names into its bands. It records the titles in a `<metadata id="chapter-levels">` block, read back with `maps.map_titles`.
+  - For each move, the compiler adds a left-edge **`shade`** (a new shape: dark to transparent) and, for the levels the camera passes plus the next one, a left-aligned label stack: "Level N" (label), the name (new **`chapter`** style: spaced capitals, 1/19 of the frame height) and the subtitle (caption).
+  - The labels ride with the camera, so the next level's name rises into place. `LABEL_ABOVE = 110` lines each name up with its own band's portrait.
+- **New text option `align: left`.** The `enter` presets skip the shade.
+- **Pause:** the beat before a short line is now **0.4 s**, at the user's request. It applies in 7 places; the longest pause is 0.95 s, before "Bias showed up sometimes…". Narration is 572.8 s.
+- **Fixed on review:** labels sat one band too high (`LABEL_ABOVE` 380 → 110); long names wrapped (the label box is now 0.75 wide and the `chapter` style smaller); "LEVEL N" on the cards was too small.
+- **Tests:** titles are recorded in the core map and not carved; the labels, shade and camera ride are checked in the compiled map move.

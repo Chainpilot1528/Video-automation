@@ -113,7 +113,7 @@
           "x": 0.64,
           "y": 0.48,
           "width": 0.4,
-          "start": 4.64,
+          "start": 4.74,
           "highlight": "wins.",
           "reveal": "words",
           "fade_in": 0.45
@@ -160,7 +160,7 @@
       ],
       "claim_ids": [],
       "source_ids": [],
-      "offset_seconds": 12.17
+      "offset_seconds": 12.27
     },
     {
       "beat_id": "v-s01-negotiation-b04",
@@ -244,7 +244,7 @@
       ],
       "claim_ids": [],
       "source_ids": [],
-      "offset_seconds": 24.11
+      "offset_seconds": 24.21
     },
     {
       "beat_id": "v-s01-negotiation-b05",
@@ -304,7 +304,7 @@
       ],
       "claim_ids": [],
       "source_ids": [],
-      "offset_seconds": 31.07
+      "offset_seconds": 31.17
     },
     {
       "beat_id": "v-s01-negotiation-b06",
@@ -331,7 +331,7 @@
           "y": 0.247,
           "width": 0.37,
           "max_height": 0.03,
-          "start": 3.4,
+          "start": 3.51,
           "reveal": "draw",
           "color": "accent",
           "fade_in": 0.7
@@ -343,7 +343,7 @@
           "x": 0.5,
           "y": 0.46,
           "width": 0.5,
-          "start": 4.72
+          "start": 4.83
         },
         {
           "kind": "text",
@@ -352,7 +352,7 @@
           "x": 0.5,
           "y": 0.56,
           "width": 0.5,
-          "start": 6.89
+          "start": 7.0
         },
         {
           "kind": "text",
@@ -361,12 +361,12 @@
           "x": 0.5,
           "y": 0.66,
           "width": 0.5,
-          "start": 7.96
+          "start": 8.07
         }
       ],
       "claim_ids": [],
       "source_ids": [],
-      "offset_seconds": 34.88
+      "offset_seconds": 34.97
     },
     {
       "beat_id": "v-s01-negotiation-b07",
@@ -422,7 +422,7 @@
           "x": 0.69,
           "y": 0.64,
           "width": 0.42,
-          "start": 3.62
+          "start": 3.63
         }
       ],
       "claim_ids": [
@@ -431,7 +431,7 @@
       "source_ids": [
         "src-article"
       ],
-      "offset_seconds": 45.24
+      "offset_seconds": 45.43
     },
     {
       "beat_id": "v-s01-negotiation-b08",
@@ -457,7 +457,7 @@
           "x": 0.5,
           "y": 0.52,
           "width": 0.6,
-          "start": 5.78,
+          "start": 5.88,
           "highlight": "logic.",
           "reveal": "words",
           "fade_in": 0.45
@@ -465,7 +465,7 @@
       ],
       "claim_ids": [],
       "source_ids": [],
-      "offset_seconds": 51.94
+      "offset_seconds": 52.14
     },
     {
       "beat_id": "v-s02-theory-b01",
@@ -667,7 +667,7 @@
           "x": 0.72,
           "y": 0.52,
           "width": 0.4,
-          "start": 3.5,
+          "start": 3.6,
           "highlight": "Still smokes."
         }
       ],
@@ -723,7 +723,7 @@
       ],
       "claim_ids": [],
       "source_ids": [],
-      "offset_seconds": 27.03
+      "offset_seconds": 27.13
     },
     {
       "beat_id": "v-s02-theory-b06",
@@ -808,7 +808,7 @@
       "source_ids": [
         "src-festinger-carlsmith-1959"
       ],
-      "offset_seconds": 38.02
+      "offset_seconds": 38.12
     },
     {
       "beat_id": "v-s02-theory-b07",
@@ -833,7 +833,7 @@
       ],
       "claim_ids": [],
       "source_ids": [],
-      "offset_seconds": 50.52
+      "offset_seconds": 50.62
     },
     {
       "beat_id": "v-s03-experiment-b01",
@@ -1908,7 +1908,7 @@
       ],
       "claim_ids": [],
       "source_ids": [],
-      "offset_seconds": 5.86
+      "offset_seconds": 5.96
     },
     {
       "beat_id": "v-s05-motivated-b03",
@@ -2017,7 +2017,7 @@
       ],
       "claim_ids": [],
       "source_ids": [],
-      "offset_seconds": 10.89
+      "offset_seconds": 10.99
     },
     {
       "beat_id": "v-s05-motivated-b04",
@@ -2082,7 +2082,7 @@
       ],
       "claim_ids": [],
       "source_ids": [],
-      "offset_seconds": 29.12
+      "offset_seconds": 29.22
     },
     {
       "beat_id": "v-s05-motivated-b05",
@@ -2099,7 +2099,7 @@
           "x": 0.5,
           "y": 0.26,
           "width": 0.5,
-          "start": 2.7
+          "start": 2.69
         },
         {
           "kind": "text",
@@ -2108,7 +2108,7 @@
           "x": 0.5,
           "y": 0.37,
           "width": 0.7,
-          "start": 3.4
+          "start": 3.39
         },
         {
           "kind": "text",
@@ -2117,7 +2117,7 @@
           "x": 0.5,
           "y": 0.5,
           "width": 0.7,
-          "start": 6.61,
+          "start": 6.6,
           "highlight": "changed their beliefs."
         },
         {
@@ -2127,7 +2127,7 @@
           "x": 0.5,
           "y": 0.6,
           "width": 0.6,
-          "start": 10.95
+          "start": 10.94
         },
         {
           "kind": "text",
@@ -2136,7 +2136,7 @@
           "x": 0.5,
           "y": 0.7,
           "width": 0.6,
-          "start": 14.91
+          "start": 15.0
         }
       ],
       "claim_ids": [
@@ -2145,7 +2145,7 @@
       "source_ids": [
         "src-anglin-2019"
       ],
-      "offset_seconds": 37.53
+      "offset_seconds": 37.64
     },
     {
       "beat_id": "v-s05-motivated-b06",
@@ -2186,7 +2186,7 @@
       ],
       "claim_ids": [],
       "source_ids": [],
-      "offset_seconds": 56.44
+      "offset_seconds": 56.64
     },
     {
       "beat_id": "v-s06-brain-b01",

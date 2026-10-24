@@ -39,6 +39,7 @@ class RenderProfile(Record):
     audio_sample_rate: int
     allow_placeholders: bool
     require_narration: bool
+    x264_params: str = ""   # extra encoder tuning, e.g. aq-mode=3 (more bits for dark gradients)
 
 
 class TimelineLayer(Layer):

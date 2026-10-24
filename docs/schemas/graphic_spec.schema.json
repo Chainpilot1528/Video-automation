@@ -108,6 +108,15 @@
       "title": "Kind",
       "type": "string"
     },
+    "labels": {
+      "default": "carved",
+      "enum": [
+        "carved",
+        "frame"
+      ],
+      "title": "Labels",
+      "type": "string"
+    },
     "levels": {
       "items": {
         "$ref": "#/$defs/MapLevel"
